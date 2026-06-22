@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>PANJA KBC QUIZ SYSTEM</title>
+    <style>
+        body { background: #000; color: #fff; text-align: center; font-family: sans-serif; }
+        .box { background: #111; padding: 30px; margin: 50px auto; max-width: 600px; border: 2px solid #ffd700; border-radius: 20px; }
+        .option { background: #222; padding: 15px; margin: 10px; border: 1px solid #555; cursor: pointer; border-radius: 5px; }
+        .option:hover { background: #444; }
+        #timer { color: red; font-size: 25px; }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <div id="timer">সময়: 60:00</div>
+    <h2 id="q">প্রশ্ন এখানে আসবে</h2>
+    <div id="opts"></div>
+    <p>স্কোর: <span id="s">0</span></p>
+</div>
+
+<script>
+// এখানে আপনার প্রশ্নের ভাণ্ডার (আপনি চাইলে আরও বাড়াতে পারেন)
+const questions = [
+    {q: "সূর্যের নিকটতম গ্রহ কোনটি?", a: ["বুধ", "শুক্র", "পৃথিবী", "মঙ্গল"], c: 0},
+    {q: "ভারতের রাজধানীর নাম কি?", a: ["কলকাতা", "দিল্লি", "মুম্বাই", "চেন্নাই"], c: 1},
+    {q: "জলীয় বাষ্পের সংকেত কি?", a: ["H2O", "CO2", "O2", "N2"], c: 0},
+    {q: "কম্পিউটারের জনক কে?", a: ["চার্লস ব্যাবেজ", "বিল গেটস", "স্টিভ জবস", "অ্যালান টুরিং"], c: 0},
+    {q: "পশ্চিমবঙ্গের রাজধানীর নাম কি?", a: ["কলকাতা", "শিলিগুড়ি", "আসানসোল", "দুর্গাপুর"], c: 0},
+    {q: "কোন গ্রহকে লাল গ্রহ বলা হয়?", a: ["মঙ্গল", "বুধ", "বৃহস্পতি", "শুক্র"], c: 0},
+    {q: "মরুভূমির জাহাজ কাকে বলা হয়?", a: ["উট", "ঘোড়া", "গাধা", "হাতি"], c: 0},
+    {q: "ভারতের জাতীয় পাখির নাম কী?", a: ["ময়ূর", "বাজ", "চড়ুই", "কোকিল"], c: 0},
+    {q: "সবচেয়ে শক্ত পদার্থ কোনটি?", a: ["হীরা", "লোহা", "সোনা", "গ্রাফাইট"], c: 0},
+    {q: "পৃথিবীর বৃহত্তম স্তন্যপায়ী প্রাণী কোনটি?", a: ["নীল তিমি", "হাতি", "জিরাফ", "ডলফিন"], c: 0}
+];
+
+let i = 0, score = 0, time = 3600;
+
+function load() {
+    let q = questions.sort(() => Math.random() - 0.5)[0];
+    document.getElementById('q').innerText = q.q;
+    let o = document.getElementById('opts');
+    o.innerHTML = "";
+    q.a.forEach((txt, idx) => {
+        let d = document.createElement('div');
+        d.className = 'option';
+        d.innerText = txt;
+        d.onclick = () => {
+            if(idx === q.c) score += 10;
+            document.getElementById('s').innerText = score;
+            load();
+        };
+        o.appendChild(d);
+    });
+}
+
+setInterval(() => {
+    time--;
+    document.getElementById('timer').innerText = "সময়: " + Math.floor(time/60) + ":" + (time%60);
+}, 1000);
+
+load();
+</script>
+</body>
+</html>

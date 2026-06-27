@@ -1,121 +1,366 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PANJA KBC QUIZ</title>
-<style>
-body{ background:#000; color:white; font-family:Arial; text-align:center; padding:20px; }
-.box{ max-width:700px; margin:auto; background:#111; padding:20px; border-radius:20px; border:2px solid gold; }
-.option{ background:#222; padding:15px; margin:10px; cursor:pointer; border-radius:10px; transition:0.3s; }
-.option:hover{ background:#333; }
-.correct{ background:green !important; }
-.wrong{ background:red !important; }
-.hidden{ display:none !important; }
-button{ padding:12px 20px; background:gold; border:none; cursor:pointer; font-weight:bold; border-radius:8px; margin-top:10px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KBC Quiz - Bengali</title>
+    <style>
+        :root {
+            --bg-color: #020230;
+            --gold: #ffd700;
+            --blue-btn: #1a237e;
+            --correct: #28a745;
+            --wrong: #dc3545;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #game-container {
+            width: 95%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 20px;
+            border: 4px solid var(--gold);
+            padding: 20px;
+            border-radius: 15px;
+            background: radial-gradient(circle, #0c0c4d 0%, #020230 100%);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            text-align: center;
+            position: relative;
+        }
+
+        .lifelines {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .lifeline-btn {
+            background: var(--blue-btn);
+            border: 2px solid var(--gold);
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 50px;
+            font-weight: bold;
+        }
+
+        .lifeline-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .timer-circle {
+            width: 70px;
+            height: 70px;
+            border: 4px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin: 0 auto 20px;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .question-box {
+            border: 2px solid var(--gold);
+            padding: 20px;
+            margin-bottom: 20px;
+            background: rgba(26, 35, 126, 0.7);
+            border-radius: 10px;
+            font-size: 22px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .option-btn {
+            background: var(--blue-btn);
+            border: 1px solid var(--gold);
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: #283593;
+        }
+
+        /* Sidebar - Money Tree */
+        .money-tree {
+            border-left: 2px solid var(--gold);
+            padding-left: 20px;
+            display: flex;
+            flex-direction: column-reverse;
+            justify-content: center;
+        }
+
+        .money-step {
+            padding: 5px 10px;
+            margin: 2px 0;
+            font-size: 16px;
+            color: #aaa;
+        }
+
+        .money-step.active {
+            color: var(--gold);
+            font-weight: bold;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .money-step.reached {
+            color: white;
+        }
+
+        /* Modals and Overlays */
+        #result-screen {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .restart-btn {
+            background: var(--gold);
+            color: black;
+            padding: 15px 30px;
+            border: none;
+            font-weight: bold;
+            font-size: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        /* Audience Poll Modal */
+        #poll-modal {
+            display: none;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a237e;
+            border: 2px solid var(--gold);
+            padding: 20px;
+            width: 300px;
+            z-index: 10;
+        }
+
+        .poll-bar-container {
+            margin: 10px 0;
+        }
+
+        .poll-bar {
+            height: 20px;
+            background: var(--gold);
+            transition: width 1s;
+        }
+
+        @media (max-width: 768px) {
+            #game-container { grid-template-columns: 1fr; }
+            .money-tree { display: none; }
+        }
+    </style>
 </head>
 <body>
 
-<div class="box">
-    <h2>PANJA KBC QUIZ</h2>
-    <div id="status">Round 1 | Question 1/18</div>
-    <h3 id="q">Loading...</h3>
-    <div id="opts"></div>
-    <button id="btn50" onclick="useFiftyFifty()">50-50 Lifeline</button>
-    <h3>Score: <span id="score">0</span></h3>
-</div>
+    <div id="game-container">
+        <!-- Main Quiz Area -->
+        <div class="quiz-section">
+            <div class="lifelines">
+                <button class="lifeline-btn" id="fifty-fifty" onclick="useFiftyFifty()">50-50</button>
+                <button class="lifeline-btn" id="audience-poll" onclick="useAudiencePoll()">Audience Poll</button>
+            </div>
 
-<script>
-const rounds = [
-    // রাউন্ড ১
-    [{q:"ভারতের রাজধানী কোথায়?",a:["কলকাতা","দিল্লি","মুম্বাই","চেন্নাই"],c:1},{q:"বাংলাদেশের জাতীয় ফুল?",a:["গোলাপ","শাপলা","জবা","পদ্ম"],c:1},{q:"সূর্য কোন দিকে ওঠে?",a:["পূর্ব","পশ্চিম","উত্তর","দক্ষিণ"],c:0},{q:"2+2 কত?",a:["3","4","5","6"],c:1},{q:"জাতীয় পাখি?",a:["ময়ূর","কাক","চিল","পায়রা"],c:0},{q:"মানবদেহে কয়টি চোখ?",a:["1","2","3","4"],c:1},{q:"পৃথিবীর উপগ্রহ?",a:["সূর্য","চাঁদ","মঙ্গল","শুক্র"],c:1},{q:"ভারতের জাতীয় পশু?",a:["সিংহ","বাঘ","হাতি","ঘোড়া"],c:1},{q:"জল কোন রঙের?",a:["লাল","নীল","স্বচ্ছ","সবুজ"],c:2},{q:"3×3=?",a:["6","9","12","15"],c:1},{q:"বাংলার রাজধানী?",a:["কলকাতা","দিল্লি","মুম্বাই","চেন্নাই"],c:0},{q:"পৃথিবী গোল?",a:["হ্যাঁ","না","জানি না","কিছুই না"],c:0},{q:"জাতীয় ফল?",a:["আম","কাঁঠাল","আপেল","কমলা"],c:0},{q:"মোবাইলে কথা বলা যায়?",a:["হ্যাঁ","না","জানি না","সম্ভব নয়"],c:0},{q:"বই পড়ার জিনিস?",a:["কলম","বই","টেবিল","চেয়ার"],c:1},{q:"বাংলা ভাষা দিবস?",a:["২১ ফেব্রুয়ারি","১৫ আগস্ট","২৬ জানুয়ারি","১ মে"],c:0},{q:"জাতীয় সংগীত লেখেন কে?",a:["রবীন্দ্রনাথ","নজরুল","বঙ্কিম","শরৎ"],c:0},{q:"গাছের রং?",a:["নীল","সবুজ","লাল","হলুদ"],c:1}],
-    // রাউন্ড ২
-    [{q:"ভারতের জাতীয় সংগীত?",a:["জন গণ মন","বন্দে মাতরম","সারে জাহাঁ","আমার সোনার বাংলা"],c:0},{q:"বাংলার কবি?",a:["রবীন্দ্রনাথ","শেখসপিয়র","কালিদাস","বিদ্যাসাগর"],c:0},{q:"চাঁদে কে গিয়েছিলেন?",a:["নিউটন","নীল আর্মস্ট্রং","এডিসন","আইনস্টাইন"],c:1},{q:"মানুষের কয়টি হাত?",a:["2","4","1","3"],c:0},{q:"জাতীয় খেলা?",a:["ক্রিকেট","হকি","ফুটবল","কাবাডি"],c:1},{q:"5+5=?",a:["8","9","10","12"],c:2},{q:"সবচেয়ে বড় গ্রহ?",a:["পৃথিবী","বৃহস্পতি","শনি","শুক্র"],c:1},{q:"জাতীয় পশু?",a:["বাঘ","হাতি","ঘোড়া","কুকুর"],c:0},{q:"সবচেয়ে দ্রুত প্রাণী?",a:["ঘোড়া","চিতাবাঘ","বাঘ","হরিণ"],c:1},{q:"ভারতের প্রধানমন্ত্রী?",a:["মোদি","রাষ্ট্রপতি","গভর্নর","মন্ত্রী"],c:0},{q:"সমুদ্রের জল?",a:["মিষ্টি","নোনা","তেতো","টক"],c:1},{q:"মানুষের দাঁত?",a:["32","30","28","35"],c:0},{q:"জাতীয় ফুল?",a:["গোলাপ","পদ্ম","শাপলা","জবা"],c:1},{q:"সূর্যের রঙ?",a:["নীল","হলুদ","লাল","সবুজ"],c:1},{q:"পৃথিবী গোল?",a:["হ্যাঁ","না","জানি না","অসম্ভব"],c:0},{q:"7+2=?",a:["8","9","10","11"],c:1},{q:"জাতীয় পতাকা কয় রঙ?",a:["2","3","4","5"],c:1},{q:"সবচেয়ে বড় মহাদেশ?",a:["এশিয়া","আফ্রিকা","ইউরোপ","অস্ট্রেলিয়া"],c:0}],
-    // রাউন্ড ৩
-    [{q:"বাংলাদেশের রাজধানী?",a:["ঢাকা","চট্টগ্রাম","খুলনা","রাজশাহী"],c:0},{q:"ভারতের স্বাধীনতা দিবস?",a:["১৫ আগস্ট","২৬ জানুয়ারি","২১ ফেব্রুয়ারি","১৬ ডিসেম্বর"],c:0},{q:"পৃথিবীর উপগ্রহ?",a:["সূর্য","চাঁদ","মঙ্গল","শুক্র"],c:1},{q:"10+5=?",a:["12","15","18","20"],c:1},{q:"জলের রাসায়নিক সংকেত?",a:["H2O","CO2","O2","NaCl"],c:0},{q:"মানুষের চোখ কয়টি?",a:["1","2","3","4"],c:1},{q:"জাতীয় পাখি?",a:["ময়ূর","কাক","চিল","শালিক"],c:0},{q:"বাংলা নববর্ষ?",a:["১লা বৈশাখ","২৫ ডিসেম্বর","১৫ আগস্ট","২৬ জানুয়ারি"],c:0},{q:"সবচেয়ে বড় সাগর?",a:["আরব সাগর","প্রশান্ত মহাসাগর","বঙ্গোপসাগর","লাল সাগর"],c:1},{q:"ভারতের মুদ্রা?",a:["টাকা","রুপি","ডলার","ইউরো"],c:1},{q:"বাঘের রং?",a:["লাল","হলুদ","সাদা","নীল"],c:1},{q:"সূর্য ওঠে কোথায়?",a:["পূর্ব","পশ্চিম","উত্তর","দক্ষিণ"],c:0},{q:"মানুষের নাক কয়টি?",a:["1","2","3","4"],c:0},{q:"জাতীয় ফল?",a:["আম","কাঁঠাল","লিচু","জাম"],c:0},{q:"গণিতের জনক?",a:["নিউটন","পিথাগোরাস","আর্কিমিডিস","আইনস্টাইন"],c:2},{q:"8+8=?",a:["14","15","16","18"],c:2},{q:"সবচেয়ে ছোট মহাদেশ?",a:["এশিয়া","ইউরোপ","অস্ট্রেলিয়া","আফ্রিকা"],c:2},{q:"জাতীয় সংগীত লেখেন কে?",a:["রবীন্দ্রনাথ","নজরুল","বঙ্কিম","জীবনানন্দ"],c:0}],
-    // রাউন্ড ৪
-    [{q:"ভারতের জাতীয় পশু?",a:["বাঘ","সিংহ","হাতি","ঘোড়া"],c:0},{q:"সূর্যের সবচেয়ে কাছের গ্রহ?",a:["বুধ","শুক্র","পৃথিবী","মঙ্গল"],c:0},{q:"12+8=?",a:["18","19","20","22"],c:2},{q:"বাংলাদেশের জাতীয় ফুল?",a:["গোলাপ","শাপলা","জবা","পদ্ম"],c:1},{q:"মানুষের শরীরে কয়টি হৃদয়?",a:["1","2","3","4"],c:0},{q:"পৃথিবীর সবচেয়ে বড় দেশ?",a:["ভারত","চীন","রাশিয়া","আমেরিকা"],c:2},{q:"জাতীয় বৃক্ষ?",a:["আম","বট","নারকেল","কাঁঠাল"],c:1},{q:"5×5=?",a:["20","25","30","35"],c:1},{q:"চাঁদের আলো কোথা থেকে আসে?",a:["নিজে","সূর্য","পৃথিবী","তারা"],c:1},{q:"মানুষের কয়টি কান?",a:["1","2","3","4"],c:1},{q:"জাতীয় নদী?",a:["গঙ্গা","যমুনা","পদ্মা","নাইল"],c:0},{q:"সবচেয়ে উঁচু পর্বত?",a:["এভারেস্ট","কাঞ্চনজঙ্ঘা","আল্পস","হিমালয়"],c:0},{q:"6+7=?",a:["11","12","13","14"],c:2},{q:"সবচেয়ে বড় প্রাণী?",a:["হাতি","নীল তিমি","ঘোড়া","জিরাফ"],c:1},{q:"বাংলার জাতীয় কবি?",a:["রবীন্দ্রনাথ","নজরুল","জীবনানন্দ","বঙ্কিম"],c:1},{q:"পৃথিবী সূর্যের কত নম্বর গ্রহ?",a:["2","3","4","5"],c:1},{q:"10×2=?",a:["10","20","30","40"],c:1},{q:"ভারতের জাতীয় ফল?",a:["আম","কাঁঠাল","আপেল","লিচু"],c:0}],
-    // রাউন্ড ৫
-    [{q:"ভারতের জাতীয় পাখি?",a:["কাক","ময়ূর","চড়ুই","শালিক"],c:1},{q:"15+10=?",a:["20","25","30","35"],c:1},{q:"পৃথিবীর সবচেয়ে বড় মহাসাগর?",a:["আটলান্টিক","ভারত মহাসাগর","প্রশান্ত","আর্কটিক"],c:2},{q:"বাংলাদেশের জাতীয় ফল?",a:["আম","কাঁঠাল","লিচু","কলা"],c:1},{q:"সূর্য কোন দিকে অস্ত যায়?",a:["পূর্ব","পশ্চিম","উত্তর","দক্ষিণ"],c:1},{q:"মানুষের কয়টি আঙুল?",a:["8","10","12","20"],c:1},{q:"7×6=?",a:["36","40","42","48"],c:2},{q:"সবচেয়ে দ্রুতগামী পাখি?",a:["ঈগল","বাজ","ময়ূর","কাক"],c:1},{q:"জাতীয় গান ‘বন্দে মাতরম’ কে লিখেছেন?",a:["রবীন্দ্রনাথ","নজরুল","বঙ্কিমচন্দ্র","বিদ্যাসাগর"],c:2},{q:"মানুষের রক্তের রং?",a:["নীল","সবুজ","লাল","হলুদ"],c:2},{q:"চাঁদে প্রথম মানুষ?",a:["নিউটন","নীল আর্মস্ট্রং","এডিসন","আইনস্টাইন"],c:1},{q:"20÷4=?",a:["4","5","6","8"],c:1},{q:"পৃথিবীর সবচেয়ে লম্বা নদী?",a:["গঙ্গা","নাইল","আমাজন","যমুনা"],c:1},{q:"বাংলাদেশের জাতীয় মাছ?",a:["ইলিশ","রুই","কাতলা","চিংড়ি"],c:0},{q:"মানুষের শরীরে কতটি ফুসফুস?",a:["1","2","3","4"],c:1},{q:"9+9=?",a:["16","17","18","19"],c:2},{q:"ভারতের জাতীয় ফুল?",a:["পদ্ম","গোলাপ","জবা","শাপলা"],c:0},{q:"সবচেয়ে বড় মরুভূমি?",a:["সাহারা","থর","গোবি","কালাহারি"],c:0}],
-    // রাউন্ড ৬
-    [{q:"ভারতের রাজধানী?",a:["মুম্বাই","দিল্লি","কলকাতা","চেন্নাই"],c:1},{q:"25+15=?",a:["35","40","45","50"],c:1},{q:"বাংলাদেশের জাতীয় পাখি?",a:["দোয়েল","কাক","ময়ূর","চিল"],c:0},{q:"মানুষের শরীরে কয়টি চোখ?",a:["1","2","3","4"],c:1},{q:"পৃথিবীর সবচেয়ে বড় মহাদেশ?",a:["এশিয়া","আফ্রিকা","ইউরোপ","অস্ট্রেলিয়া"],c:0},{q:"8×7=?",a:["54","56","58","60"],c:1},{q:"জাতীয় প্রাণী?",a:["বাঘ","সিংহ","হাতি","ঘোড়া"],c:0},{q:"চাঁদ পৃথিবীর কী?",a:["গ্রহ","উপগ্রহ","তারা","সূর্য"],c:1},{q:"সবচেয়ে বড় গ্রহ?",a:["মঙ্গল","বৃহস্পতি","শনি","পৃথিবী"],c:1},{q:"মানুষের দাঁত কতটি?",a:["28","30","32","34"],c:2},{q:"বাংলা ভাষা দিবস?",a:["২১ ফেব্রুয়ারি","১৫ আগস্ট","২৬ জানুয়ারি","১৬ ডিসেম্বর"],c:0},{q:"30÷5=?",a:["5","6","7","8"],c:1},{q:"জাতীয় ফুল?",a:["গোলাপ","পদ্ম","শাপলা","জবা"],c:1},{q:"সবচেয়ে বড় প্রাণী?",a:["হাতি","নীল তিমি","ঘোড়া","জিরাফ"],c:1},{q:"সূর্যের রং?",a:["নীল","হলুদ","সবুজ","লাল"],c:1},{q:"12×2=?",a:["22","24","26","28"],c:1},{q:"ভারতের জাতীয় খেলা?",a:["ক্রিকেট","হকি","ফুটবল","কাবাডি"],c:1},{q:"সবচেয়ে উঁচু পর্বত?",a:["এভারেস্ট","K2","কাঞ্চনজঙ্ঘা","আল্পস"],c:0}],
-    // রাউন্ড ৭
-    [{q:"ভারতের জাতীয় পতাকায় কয়টি রং আছে?",a:["2","3","4","5"],c:1},{q:"50÷10=?",a:["4","5","6","7"],c:1},{q:"বাংলাদেশের জাতীয় সঙ্গীত কে লিখেছেন?",a:["নজরুল","রবীন্দ্রনাথ","বঙ্কিম","জীবনানন্দ"],c:1},{q:"পৃথিবীর সবচেয়ে ছোট মহাদেশ?",a:["এশিয়া","ইউরোপ","অস্ট্রেলিয়া","আফ্রিকা"],c:2},{q:"9×8=?",a:["70","72","74","76"],c:1},{q:"মানুষের শরীরে কয়টি হাত?",a:["1","2","3","4"],c:1},{q:"ভারতের জাতীয় নদী?",a:["গঙ্গা","যমুনা","ব্রহ্মপুত্র","নর্মদা"],c:0},{q:"সবচেয়ে দ্রুতগামী প্রাণী?",a:["ঘোড়া","চিতাবাঘ","বাঘ","হরিণ"],c:1},{q:"15×2=?",a:["20","25","30","35"],c:2},{q:"বাংলার জাতীয় কবি?",a:["রবীন্দ্রনাথ","নজরুল","সুকান্ত","জীবনানন্দ"],c:1},{q:"সূর্য একটি কী?",a:["গ্রহ","তারা","উপগ্রহ","ধূমকেতু"],c:1},{q:"100÷20=?",a:["4","5","6","7"],c:1},{q:"সবচেয়ে বড় মরুভূমি?",a:["সাহারা","থর","গোবি","কালাহারি"],c:0},{q:"ভারতের প্রথম প্রধানমন্ত্রী?",a:["নেহেরু","গান্ধী","প্যাটেল","ইন্দিরা"],c:0},{q:"7×9=?",a:["61","62","63","64"],c:2},{q:"মানুষের শরীরে কয়টি কান?",a:["1","2","3","4"],c:1},{q:"চাঁদের আলো কোথা থেকে আসে?",a:["নিজে","সূর্য","পৃথিবী","তারা"],c:1},{q:"সবচেয়ে বড় দেশ?",a:["ভারত","চীন","রাশিয়া","আমেরিকা"],c:2}],
-    // রাউন্ড ৮
-    [{q:"বাংলাদেশের স্বাধীনতা দিবস?",a:["২৬ মার্চ","১৬ ডিসেম্বর","২১ ফেব্রুয়ারি","১৫ আগস্ট"],c:0},{q:"20×3=?",a:["50","60","70","80"],c:1},{q:"ভারতের জাতীয় ফল?",a:["আম","কাঁঠাল","লিচু","আপেল"],c:0},{q:"সবচেয়ে বড় সাগর?",a:["আরব সাগর","প্রশান্ত মহাসাগর","বঙ্গোপসাগর","লাল সাগর"],c:1},{q:"12×5=?",a:["50","55","60","65"],c:2},{q:"মানুষের রক্তের রং?",a:["নীল","সবুজ","লাল","হলুদ"],c:2},{q:"পৃথিবীর একমাত্র উপগ্রহ?",a:["সূর্য","চাঁদ","মঙ্গল","শুক্র"],c:1},{q:"বাংলাদেশের জাতীয় মাছ?",a:["রুই","কাতলা","ইলিশ","চিংড়ি"],c:2},{q:"18+12=?",a:["28","29","30","31"],c:2},{q:"কম্পিউটারের মস্তিষ্ক?",a:["RAM","ROM","CPU","SSD"],c:2},{q:"পৃথিবীর সবচেয়ে লম্বা নদী?",a:["গঙ্গা","নাইল","আমাজন","পদ্মা"],c:1},{q:"14×2=?",a:["26","28","30","32"],c:1},{q:"ভারতের জাতীয় পাখি?",a:["কাক","ময়ূর","চড়ুই","শালিক"],c:1},{q:"সবচেয়ে বড় মহাদেশ?",a:["আফ্রিকা","এশিয়া","ইউরোপ","অস্ট্রেলিয়া"],c:1},{q:"16+16=?",a:["30","31","32","33"],c:2},{q:"বাংলা নববর্ষ কবে?",a:["১ বৈশাখ","২ বৈশাখ","৩ বৈশাখ","৪ বৈশাখ"],c:0},{q:"জাতীয় পশু?",a:["বাঘ","সিংহ","হাতি","ঘোড়া"],c:0},{q:"25÷5=?",a:["4","5","6","7"],c:1}],
-    // রাউন্ড ৯
-    [{q:"ভারতের জাতীয় সংগীতের নাম?",a:["বন্দে মাতরম","জন গণ মন","সারে জাহাঁ","আমার সোনার বাংলা"],c:1},{q:"30×2=?",a:["50","60","70","80"],c:1},{q:"বাংলাদেশের জাতীয় ফুল?",a:["গোলাপ","শাপলা","জবা","পদ্ম"],c:1},{q:"পৃথিবীর সবচেয়ে বড় গ্রহ?",a:["মঙ্গল","বৃহস্পতি","শনি","পৃথিবী"],c:1},{q:"18×2=?",a:["34","36","38","40"],c:1},{q:"মানুষের শরীরে কয়টি চোখ?",a:["1","2","3","4"],c:1},{q:"ভারতের জাতীয় নদী?",a:["গঙ্গা","যমুনা","নর্মদা","ব্রহ্মপুত্র"],c:0},{q:"সবচেয়ে দ্রুতগামী পাখি?",a:["ঈগল","বাজ","কাক","চিল"],c:1},{q:"50÷5=?",a:["8","9","10","11"],c:2},{q:"বাংলার জাতীয় কবি?",a:["রবীন্দ্রনাথ","নজরুল","সুকান্ত","জীবনানন্দ"],c:1},{q:"সূর্যের সবচেয়ে কাছের গ্রহ?",a:["বুধ","শুক্র","পৃথিবী","মঙ্গল"],c:0},{q:"12+18=?",a:["28","29","30","31"],c:2},{q:"সবচেয়ে বড় মরুভূমি?",a:["সাহারা","থর","গোবি","কালাহারি"],c:0},{q:"ভারতের স্বাধীনতা দিবস?",a:["১৫ আগস্ট","২৬ জানুয়ারি","২১ ফেব্রুয়ারি","২৬ মার্চ"],c:0},{q:"9×9=?",a:["79","80","81","82"],c:2},{q:"মানুষের শরীরে কয়টি কান?",a:["1","2","3","4"],c:1},{q:"পৃথিবীর সবচেয়ে উঁচু পর্বত?",a:["K2","এভারেস্ট","কাঞ্চনজঙ্ঘা","আল্পস"],c:1},{q:"100÷10=?",a:["8","9","10","11"],c:2}],
-    // রাউন্ড ১০
-    [{q:"ভারতের জাতীয় খেলা?",a:["ক্রিকেট","হকি","ফুটবল","কাবাডি"],c:1},{q:"40÷5=?",a:["6","7","8","9"],c:2},{q:"বাংলাদেশের জাতীয় পাখি?",a:["দোয়েল","কাক","ময়ূর","চিল"],c:0},{q:"পৃথিবীর সবচেয়ে বড় মহাসাগর?",a:["আটলান্টিক","ভারত মহাসাগর","প্রশান্ত মহাসাগর","আর্কটিক"],c:2},{q:"14×3=?",a:["40","42","44","46"],c:1},{q:"মানুষের শরীরে কয়টি দাঁত?",a:["28","30","32","34"],c:2},{q:"ভারতের জাতীয় ফুল?",a:["পদ্ম","গোলাপ","জবা","শাপলা"],c:0},{q:"সবচেয়ে বড় প্রাণী?",a:["হাতি","নীল তিমি","ঘোড়া","জিরাফ"],c:1},{q:"60÷6=?",a:["8","9","10","11"],c:2},{q:"বাংলার জাতীয় কবি?",a:["রবীন্দ্রনাথ","নজরুল","সুকান্ত","জীবনানন্দ"],c:1},{q:"সূর্যের রং?",a:["লাল","হলুদ","নীল","সবুজ"],c:1},{q:"11×11=?",a:["111","121","131","141"],c:1},{q:"সবচেয়ে বড় দেশ?",a:["ভারত","চীন","রাশিয়া","আমেরিকা"],c:2},{q:"বাংলা ভাষা দিবস?",a:["২১ ফেব্রুয়ারি","২৬ জানুয়ারি","১৫ আগস্ট","১৬ ডিসেম্বর"],c:0},{q:"8×12=?",a:["94","95","96","97"],c:2},{q:"মানুষের শরীরে কয়টি ফুসফুস?",a:["1","2","3","4"],c:1},{q:"পৃথিবীর উপগ্রহ?",a:["সূর্য","চাঁদ","মঙ্গল","শুক্র"],c:1},{q:"শেষ প্রশ্ন: KBC মানে কী?",a:["Kaun Banega Crorepati","King Board Challenge","Knowledge Based Contest","None"],c:0}]
-];
+            <div class="timer-circle" id="timer">30</div>
 
-let score = 0;
-let currentRound = 0;
-let currentQIndex = 0;
+            <div class="question-box" id="question">প্রশ্ন এখানে দেখাবে...</div>
 
-function loadQuestion(){
-    let q = rounds[currentRound][currentQIndex];
-    document.getElementById("q").innerText = q.q;
-    document.getElementById("status").innerText = "Round " + (currentRound + 1) + " | Question " + (currentQIndex + 1) + "/18";
+            <div class="options-grid" id="options-container">
+                <!-- Options will be loaded here -->
+            </div>
 
-    let opts = document.getElementById("opts");
-    opts.innerHTML = "";
+            <!-- Audience Poll View -->
+            <div id="poll-modal">
+                <h3>Audience Poll Result</h3>
+                <div id="poll-results"></div>
+                <button onclick="document.getElementById('poll-modal').style.display='none'" style="margin-top: 10px;">Close</button>
+            </div>
+        </div>
 
-    q.a.forEach((opt, index) => {
-        let div = document.createElement("div");
-        div.className = "option";
-        div.innerText = opt;
-        div.onclick = () => checkAnswer(div, index);
-        opts.appendChild(div);
-    });
+        <!-- Sidebar Money Ladder -->
+        <div class="money-tree" id="money-ladder">
+            <!-- Steps will be loaded here -->
+        </div>
+    </div>
 
-    document.getElementById("btn50").style.display = "inline-block";
-}
+    <!-- Final Result Screen -->
+    <div id="result-screen">
+        <h1 id="win-message">আপনি জিতেছেন!</h1>
+        <h2 id="total-money">₹০</h2>
+        <button class="restart-btn" onclick="location.reload()">আবার শুরু করুন</button>
+    </div>
 
-function checkAnswer(el, index){
-    let q = rounds[currentRound][currentQIndex];
-    let all = document.querySelectorAll(".option");
-    all.forEach(btn => btn.style.pointerEvents = "none");
+    <script>
+        const questions = [
+            { q: "ভারতের রাজধানী কোনটি?", a: ["কলকাতা", "মুম্বাই", "নয়াদিল্লি", "চেন্নাই"], correct: 2 },
+            { q: "পশ্চিমবঙ্গের রাজ্য পশু কোনটি?", a: ["রয়্যাল বেঙ্গল টাইগার", "মেছো বিড়াল", "হাতি", "গন্ডার"], correct: 1 },
+            { q: "কোন গ্রহকে লাল গ্রহ বলা হয়?", a: ["শুক্র", "মঙ্গল", "বৃহস্পতি", "শনি"], correct: 1 },
+            { q: "বিশ্বের বৃহত্তম মহাসাগর কোনটি?", a: ["আটলান্টিক", "ভারত", "প্রশান্ত", "সুমেরু"], correct: 2 },
+            { q: "বাংলা সাহিত্যের 'ভোরের পাখি' কাকে বলা হয়?", a: ["রবীন্দ্রনাথ ঠাকুর", "বিহারীলাল চক্রবর্তী", "কাজী নজরুল ইসলাম", "জীবনানন্দ দাশ"], correct: 1 },
+            { q: "অলিম্পিকে স্বর্ণপদক জয়ী প্রথম ভারতীয় জ্যাভলিন থ্রোয়ার কে?", a: ["অভিনব বিন্দ্রা", "পিভি সিন্ধু", "নীরজ চোপড়া", "সুশীল কুমার"], correct: 2 },
+            { q: "কোন শহরকে 'পিঙ্ক সিটি' বলা হয়?", a: ["যোধপুর", "উদয়পুর", "জয়পুর", "আজমের"], correct: 2 }
+        ];
 
-    if(index === q.c){
-        el.classList.add("correct");
-        score += 10;
-    } else {
-        el.classList.add("wrong");
-        all[q.c].classList.add("correct");
-    }
-    document.getElementById("score").innerText = score;
+        const moneyLadderValues = ["₹১,০০০", "₹৫,০০০", "₹১০,০০০", "₹৫০,০০০", "₹১,৬০,০০০", "₹১২,৫০,০০০", "₹৭ কোটি"];
+        
+        let currentLevel = 0;
+        let timeLeft = 30;
+        let timerInterval;
 
-    setTimeout(() => {
-        currentQIndex++;
-        if(currentQIndex >= 18){
-            currentRound++;
-            currentQIndex = 0;
-            if(currentRound < rounds.length) alert("রাউন্ড " + currentRound + " শেষ! পরবর্তী রাউন্ডের জন্য প্রস্তুত হন।");
+        // Initialize Money Tree
+        const ladderDiv = document.getElementById('money-ladder');
+        moneyLadderValues.forEach((val, index) => {
+            const div = document.createElement('div');
+            div.className = 'money-step';
+            div.id = `step-${index}`;
+            div.innerText = `${index + 1}. ${val}`;
+            ladderDiv.appendChild(div);
+        });
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timeLeft = 30;
+            document.getElementById('timer').innerText = timeLeft;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    endGame("সময় শেষ! আপনি হেরে গেছেন।");
+                }
+            }, 1000);
         }
-        if(currentRound >= rounds.length){
-            alert("খেলা শেষ! মোট স্কোর: " + score);
-        } else {
-            loadQuestion();
-        }
-    }, 2000);
-}
 
-function useFiftyFifty(){
-    let q = rounds[currentRound][currentQIndex];
-    let all = document.querySelectorAll(".option");
-    let removed = 0;
-    for(let i = 0; i < all.length; i++){
-        if(i !== q.c && removed < 2){
-            all[i].classList.add("hidden");
-            removed++;
-        }
-    }
-    document.getElementById("btn50").style.display = "none";
-}
+        function loadQuestion() {
+            if (currentLevel >= questions.length) {
+                endGame("অভিনন্দন! আপনি ৭ কোটি টাকা জিতেছেন!", true);
+                return;
+            }
 
-loadQuestion();
-</script>
+            startTimer();
+            const qData = questions[currentLevel];
+            document.getElementById('question').innerText = qData.q;
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            // Money Tree update
+            document.querySelectorAll('.money-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${currentLevel}`).classList.add('active');
+
+            qData.a.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `${String.fromCharCode(65 + index)}: ${opt}`;
+                btn.onclick = () => checkAnswer(index, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, btn) {
+            clearInterval(timerInterval);
+            const correctIndex = questions[currentLevel].correct;
+            const allBtns = document.querySelectorAll('.option-btn');
+
+            if (selectedIndex === correctIndex) {
+                btn.style.backgroundColor = "var(--correct)";
+                setTimeout(() => {
+                    currentLevel++;
+                    loadQuestion();
+                }, 1500);
+            } else {
+                btn.style.backgroundColor = "var(--wrong)";
+                allBtns[correctIndex].style.backgroundColor = "var(--correct)";
+                setTimeout(() => {
+                    endGame(`ভুল উত্তর! আপনি ${currentLevel > 0 ? moneyLadderValues[currentLevel-1] : '০ টাকা'} জিতেছেন।`);
+                }, 1500);
+            }
+        }
+
+        // Lifeline: 50-50
+        function useFiftyFifty() {
+            const correctIndex = questions[currentLevel].correct;
+            const allBtns = document.querySelectorAll('.option-btn');
+            let removed = 0;
+            
+            allBtns.forEach((btn, idx) => {
+                if (idx !== correctIndex && removed < 2) {
+                    btn.style.visibility = "hidden";
+                    removed++;
+                }
+            });
+            document.getElementById('fifty-fifty').disabled = true;
+        }
+
+        // Lifeline: Audience Poll
+        function useAudiencePoll() {
+            const correctIndex = questions[currentLevel].correct;
+            const pollModal = document.getElementById('poll-modal');
+            const pollResults = document.getElementById('poll-results');
+            pollResults.innerHTML = '';
+            pollModal.style.display = 'block';
+
+            let shares = [10, 10, 10, 10];
+            shares[correctIndex] = 70; // High probability for correct answer
+
+            shares.forEach((val, idx) => {
+                const label = String.fromCharCode(65 + idx);
+                pollResults.innerHTML += `
+                    <div class="poll-bar-container">
+                        ${label}: <div class="poll-bar" style="width: ${val}%"></div> ${val}%
+                    </div>
+                `;
+            });
+            document.getElementById('audience-poll').disabled = true;
+        }
+
+        function endGame(msg, isWin = false) {
+            document.getElementById('result-screen').style.display = 'flex';
+            document.getElementById('win-message').innerText = msg;
+            document.getElementById('total-money').innerText = isWin ? "₹৭ কোটি" : "গেম ওভার";
+        }
+
+        // Start the game
+        loadQuestion();
+    </script>
 </body>
 </html>

@@ -3,425 +3,481 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KBC Ultimate - ৭ কোটি টাকার মহাযুদ্ধ</title>
+    <title>?? ??? ??????? - KBC Bengali</title>
     <style>
         :root {
-            --bg: #020230;
+            --primary-dark: #020230;
+            --secondary-blue: #08085e;
             --gold: #ffd700;
-            --blue-light: #1a237e;
-            --correct: #28a745;
-            --wrong: #dc3545;
             --white: #ffffff;
+            --correct-green: #28a745;
+            --wrong-red: #dc3545;
+            --accent-purple: #4b0082;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: var(--bg);
+            background-color: var(--primary-dark);
             color: var(--white);
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            overflow: hidden;
         }
 
-        #game-container {
-            width: 98%;
-            max-width: 1300px;
-            display: grid;
-            grid-template-columns: 3.5fr 1fr;
-            gap: 15px;
-            border: 4px solid var(--gold);
-            padding: 15px;
-            border-radius: 15px;
-            background: radial-gradient(circle, #0c0c4d 0%, #020230 100%);
-            box-shadow: 0 0 50px rgba(255, 215, 0, 0.3);
-            height: 90vh;
-        }
-
-        /* Quiz Area */
-        .quiz-section { 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            padding: 10px;
-        }
-
-        .header-info {
-            display: flex;
-            justify-content: space-between;
+        /* Screens */
+        .screen {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
+            text-align: center;
+            background: radial-gradient(circle, var(--secondary-blue) 0%, var(--primary-dark) 100%);
+            padding: 20px;
         }
 
-        .lifelines { display: flex; gap: 10px; }
-        .lifeline-btn {
-            background: var(--blue-light);
-            border: 2px solid var(--gold);
-            color: white;
-            padding: 8px 15px;
+        .active-screen {
+            display: flex;
+        }
+
+        /* Welcome Screen */
+        .logo-container h1 {
+            font-size: 80px;
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+            margin-bottom: 20px;
+            letter-spacing: 10px;
+        }
+
+        .btn-start, .btn-action {
+            padding: 15px 40px;
+            font-size: 20px;
+            background: linear-gradient(to bottom, #ffd700, #b8860b);
+            border: none;
+            border-radius: 30px;
             cursor: pointer;
-            border-radius: 20px;
             font-weight: bold;
-            font-size: 14px;
+            color: #000;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .lifeline-btn:disabled { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
 
-        .timer-box {
-            width: 80px; height: 80px;
-            border: 5px solid var(--gold);
-            border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            font-size: 30px; font-weight: bold; color: var(--gold);
-            background: rgba(0,0,0,0.5);
+        .btn-start:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--gold);
+        }
+
+        /* Game Board */
+        .game-layout {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            width: 95%;
+            max-width: 1200px;
+            height: 90vh;
+            gap: 20px;
+        }
+
+        .quiz-area {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .question-box {
+            background: rgba(255, 255, 255, 0.1);
             border: 2px solid var(--gold);
-            padding: 25px;
-            background: rgba(26, 35, 126, 0.8);
-            border-radius: 50px 5px 50px 5px;
+            padding: 30px;
+            border-radius: 15px;
             font-size: 24px;
-            text-align: center;
-            margin: 20px 0;
-            min-height: 100px;
-            display: flex; align-items: center; justify-content: center;
+            margin-top: 50px;
+            position: relative;
         }
 
         .options-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .option-btn {
-            background: #020230;
-            border: 1px solid var(--gold);
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid var(--white);
             color: white;
-            padding: 18px;
-            font-size: 18px;
-            cursor: pointer;
-            border-radius: 30px;
+            padding: 15px;
             text-align: left;
-            padding-left: 40px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
             transition: 0.3s;
-            position: relative;
         }
-        .option-btn:hover { background: var(--blue-light); }
-        .option-btn::before { content: "◆"; position: absolute; left: 15px; color: var(--gold); }
 
-        /* Money Ladder (Sidebar) */
-        .money-ladder-container {
+        .option-btn:hover {
+            background: var(--accent-purple);
+            border-color: var(--gold);
+        }
+
+        .option-btn.selected { background: orange; color: black; }
+        .option-btn.correct { background: var(--correct-green) !important; }
+        .option-btn.wrong { background: var(--wrong-red) !important; }
+
+        /* Lifelines */
+        .lifelines {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .lifeline-btn {
+            background: #444;
+            color: white;
+            border: 1px solid var(--gold);
+            padding: 10px 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .lifeline-btn.used {
+            text-decoration: line-through;
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Money Ladder */
+        .money-ladder {
+            background: rgba(0, 0, 0, 0.4);
             border-left: 2px solid var(--gold);
-            padding-left: 10px;
-            height: 100%;
+            padding: 10px;
             overflow-y: auto;
             display: flex;
             flex-direction: column-reverse;
         }
 
         .money-step {
-            padding: 3px 10px;
-            font-size: 13px;
+            padding: 5px 10px;
+            font-size: 14px;
             color: #aaa;
-            border-bottom: 1px solid rgba(255,215,0,0.1);
         }
 
         .money-step.active {
-            background: var(--gold);
-            color: black;
+            color: var(--gold);
             font-weight: bold;
-            border-radius: 5px;
+            background: rgba(255, 215, 0, 0.2);
         }
 
-        .money-step.milestone { color: var(--gold); font-weight: bold; }
+        .money-step.safe { color: var(--white); border-bottom: 1px solid #555; }
 
-        /* Modal & UI Elements */
-        #poll-modal {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: var(--blue-light); border: 3px solid var(--gold); padding: 20px;
-            z-index: 100; border-radius: 15px; width: 300px;
-        }
-        .poll-bar { height: 20px; background: var(--gold); margin: 5px 0; border-radius: 10px; transition: 1s; }
-
-        #result-screen {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); flex-direction: column; justify-content: center; align-items: center; z-index: 200;
-        }
-
-        .restart-btn {
-            background: var(--gold); color: black; padding: 15px 40px; border: none;
-            font-size: 22px; font-weight: bold; cursor: pointer; border-radius: 10px; margin-top: 20px;
-        }
-
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: var(--gold); }
-
-        @media (max-width: 800px) {
-            #game-container { grid-template-columns: 1fr; }
-            .money-ladder-container { display: none; }
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .game-layout { grid-template-columns: 1fr; }
+            .money-ladder { display: none; }
+            .options-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <div id="game-container">
-        <div class="quiz-section">
-            <div class="header-info">
+    <!-- Welcome Screen -->
+    <div id="screen-welcome" class="screen active-screen">
+        <div class="logo-container">
+            <h1>KBC</h1>
+            <p style="margin-bottom: 30px; font-size: 1.2rem;">??? ????? ???????? - ?????</p>
+            <button class="btn-start" onclick="startGame()">??? ???? ????</button>
+        </div>
+    </div>
+
+    <!-- Gameplay Screen -->
+    <div id="screen-game" class="screen">
+        <div class="game-layout">
+            <div class="quiz-area">
                 <div class="lifelines">
-                    <button class="lifeline-btn" id="50-50" onclick="useFiftyFifty()">50-50</button>
-                    <button class="lifeline-btn" id="poll" onclick="usePoll()">Audience Poll</button>
+                    <button class="lifeline-btn" id="life-50" onclick="useFiftyFifty()">50:50</button>
+                    <button class="lifeline-btn" id="life-audience" onclick="useAudiencePoll()">Audience Poll</button>
+                    <button class="btn-action" style="margin-left: auto; background: #900; color: white;" onclick="quitGame()">??? ???? ???</button>
                 </div>
-                <div class="timer-box" id="timer">30</div>
-                <div style="font-weight: bold; color: var(--gold);" id="difficulty-label">লেভেল: সহজ</div>
+                
+                <div class="question-container">
+                    <div class="question-box" id="question-text">
+                        ?????? ????? ??? ???...
+                    </div>
+                    <div class="options-grid" id="options-container">
+                        <!-- Options injected by JS -->
+                    </div>
+                </div>
+
+                <div id="status-msg" style="margin-top: 20px; font-style: italic; color: var(--gold);"></div>
             </div>
 
-            <div class="question-box" id="question">প্রশ্ন লোড হচ্ছে...</div>
-
-            <div class="options-grid" id="options-container">
-                <!-- অপশন এখানে আসবে -->
+            <div class="money-ladder" id="money-ladder">
+                <!-- Ladder injected by JS -->
             </div>
-        </div>
-
-        <div class="money-ladder-container" id="ladder">
-            <!-- মানি ল্যাডার এখানে আসবে -->
         </div>
     </div>
 
-    <!-- Audience Poll Modal -->
-    <div id="poll-modal">
-        <h3 style="text-align: center;">Audience Poll Result</h3>
-        <div id="poll-data"></div>
-        <button class="lifeline-btn" onclick="closePoll()" style="width: 100%; margin-top: 10px;">Close</button>
-    </div>
-
-    <!-- Final Result Screen -->
-    <div id="result-screen">
-        <h1 id="final-msg" style="color: var(--gold); font-size: 50px; text-align: center;"></h1>
-        <h2 id="final-prize" style="font-size: 40px;"></h2>
-        <button class="restart-btn" onclick="initGame()">Restart Game</button>
+    <!-- End Screen -->
+    <div id="screen-end" class="screen">
+        <h2 id="end-title" style="font-size: 40px; color: var(--gold);">???? ???!</h2>
+        <p id="end-message" style="font-size: 24px; margin: 20px 0;"></p>
+        <button class="btn-start" onclick="resetGame()">???? ?????</button>
     </div>
 
     <script>
-        const questionBank = {
-            easy: [
-                {q:"ভারতের রাজধানী কোথায়?", a:["কলকাতা","নয়াদিল্লি","মুম্বাই","চেন্নাই"], c:1},
-                {q:"সূর্য কোন দিকে ওঠে?", a:["পশ্চিম","উত্তর","দক্ষিণ","পূর্ব"], c:3},
-                {q:"মানুষের শরীরে হাড়ের সংখ্যা কত?", a:["২০৬","৩০০","১৫০","২০৫"], c:0},
-                {q:"বাংলাদেশের জাতীয় ফুল কি?", a:["গোলাপ","শাপলা","জবা","পদ্ম"], c:1},
-                {q:"কোন গ্রহকে নীল গ্রহ বলা হয়?", a:["মঙ্গল","শুক্র","পৃথিবী","শনি"], c:2},
-                {q:"পানির রাসায়নিক সংকেত কি?", a:["CO2","H2O","O2","NaCl"], c:1},
-                {q:"ভারতের জাতীয় পশু কোনটি?", a:["সিংহ","হাতি","বাঘ","গন্ডার"], c:2},
-                {q:"সপ্তাহে কত দিন থাকে?", a:["৫","৬","৭","৮"], c:2},
-                {q:"ইংরেজি বর্ণমালায় কতটি অক্ষর আছে?", a:["২১","২৬","২৫","২৭"], c:1},
-                {q:"কোনটি ইনপুট ডিভাইস?", a:["মনিটর","স্পিকার","মাউস","প্রিন্টার"], c:2},
-                {q:"একটি ত্রিভুজের কয়টি বাহু থাকে?", a:["২","৩","৪","৫"], c:1},
-                {q:"সবচেয়ে ছোট মৌলিক সংখ্যা কোনটি?", a:["১","২","৩","০"], c:1},
-                {q:"চাঁদ পৃথিবীর কি?", a:["গ্রহ","উপগ্রহ","নক্ষত্র","ধূমকেতু"], c:1},
-                {q:"বরফ জলে কি হয়?", a:["ডুবে যায়","ভেসে থাকে","গলে যায় না","রং বদলায়"], c:1},
-                {q:"কলকাতার বিখ্যাত ফুটবল ক্লাব কোনটি?", a:["মোহনবাগান","রিয়েল মাদ্রিদ","বার্সেলোনা","চেলসি"], c:0},
-                {q:"৫ + ৭ কত হয়?", a:["১০","১১","১২","১৩"], c:2},
-                {q:"ফলের রাজা কাকে বলা হয়?", a:["আপেল","আম","কাঁঠাল","কলা"], c:1},
-                {q:"ভারতের জাতীয় পাখি কোনটি?", a:["টিয়া","ময়ূর","কাক","চড়ুই"], c:1},
-                {q:"কম্পিউটারের জনক কে?", a:["নিউটন","চার্লস ব্যাবেজ","আইনস্টাইন","বিল গেটস"], c:1},
-                {q:"কোনটি শীতকালীন সবজি?", a:["পটল","ফুলকপি","ঝিঙে","করলা"], c:1}
-            ],
-            medium: [
-                {q:"ভারতের সংবিধান কবে কার্যকর হয়?", a:["১৯৪৭","১৯৫০","১৯৫২","১৯৪৬"], c:1},
-                {q:"মানবদেহের বৃহত্তম অঙ্গ কোনটি?", a:["লিভার","হৃদপিণ্ড","ত্বক","ফুসফুস"], c:2},
-                {q:"সবচেয়ে বড় মহাসাগর কোনটি?", a:["ভারত","আটলান্টিক","প্রশান্ত","আর্কটিক"], c:2},
-                {q:"ভারতের সিলিকন ভ্যালি কাকে বলা হয়?", a:["বেঙ্গালুরু","হায়দ্রাবাদ","পুনে","দিল্লি"], c:0},
-                {q:"আলেকজান্ডার যখন ভারত আক্রমণ করেন তখন মগধের রাজা কে ছিলেন?", a:["চন্দ্রগুপ্ত","ধননন্দ","বিম্বিসার","অজাতশত্রু"], c:1},
-                {q:"আলোর গতিবেগ প্রতি সেকেন্ডে কত?", a:["৩ লক্ষ কিমি","২ লক্ষ কিমি","৫ লক্ষ কিমি","১ লক্ষ কিমি"], c:0},
-                {q:"গান্ধীজি কত সালে ডান্ডি অভিযান শুরু করেন?", a:["১৯৩০","১৯৩২","১৯৪২","১৯১৯"], c:0},
-                {q:"রবীন্দ্রনাথ ঠাকুর কত সালে নোবেল পান?", a:["১৯১০","১৯১৩","১৯১৫","১৯২১"], c:1},
-                {q:"কোন ভিটামিনের অভাবে স্কার্ভি রোগ হয়?", a:["A","B","C","D"], c:2},
-                {q:"পৃথিবীর বৃহত্তম মরুভূমি কোনটি?", a:["থর","সাহারা","গোবি","কালাহারি"], c:1},
-                {q:"১০২ ৪ কিলোবাইট সমান কত?", a:["১ MB","১ GB","১ TB","১ KB"], c:0},
-                {q:"ভারতের দীর্ঘতম নদী কোনটি?", a:["যমুনা","ব্রহ্মপুত্র","গঙ্গা","গোদাবরী"], c:2},
-                {q:"কোন শহরকে 'পিঙ্ক সিটি' বলা হয়?", a:["উদয়পুর","জয়পুর","যোধপুর","আজমীর"], c:1},
-                {q:"শুষ্ক বরফ আসলে কি?", a:["কঠিন নাইট্রোজেন","কঠিন অক্সিজেন","কঠিন কার্বন ডাই অক্সাইড","বরফ ও লবণ"], c:2},
-                {q:"সবচেয়ে হালকা ধাতু কোনটি?", a:["পারদ","লিথিয়াম","সোনা","অ্যালুমিনিয়াম"], c:1},
-                {q:"ভারতের প্রথম মহাকাশচারী কে?", a:["রাকেশ শর্মা","কল্পনা চাওলা","সুনীতা উইলিয়ামস","বিক্রম সারাভাই"], c:0},
-                {q:"দাবা খেলায় কতটি ঘর থাকে?", a:["৫০","৬৪","৭০","৮০"], c:1},
-                {q:"রক্তের গ্রুপ কে আবিষ্কার করেন?", a:["নিউটন","লুুই পাস্তুর","কার্ল ল্যান্ডস্টেইনার","ওয়াটসন"], c:2},
-                {q:"বিশ্ব স্বাস্থ্য দিবস কবে পালিত হয়?", a:["৫ই জুন","৭ই এপ্রিল","১লা মে","১০ই ডিসেম্বর"], c:1},
-                {q:"পশ্চিমবঙ্গের সর্বোচ্চ শৃঙ্গ কোনটি?", a:["সান্দাকফু","ফালুট","সবরগ্রাম","টাইগার হিল"], c:0}
-            ],
-            hard: [
-                {q:"বাংলা সাহিত্যের প্রথম সার্থক উপন্যাস কোনটি?", a:["দুর্গেশনন্দিনী","কপালকুণ্ডলা","বিষবৃক্ষ","আনন্দমঠ"], c:0},
-                {q:"আধুনিক পর্যায় সারণীর জনক কে?", a:["মেন্ডেলিভ","মোজলে","ডাল্টন","বোর"], c:1},
-                {q:"ভারতের বৃহত্তম তৈল শোধনাগার কোথায়?", a:["হলদিয়া","দিগবয়","জামনগর","মথুরা"], c:2},
-                {q:"কত সালে আজাদ হিন্দ ফৌজ গঠিত হয়?", a:["১৯৪১","১৯৪২","১৯৪৩","১৯৪৪"], c:1},
-                {q:"জৈন ধর্মের ২৪তম তীর্থঙ্কর কে ছিলেন?", a:["ঋষভদেব","পার্শ্বনাথ","মহাবীর","অরিষ্টনেমি"], c:2},
-                {q:"পৃথিবীর কেন্দ্রে অভিকর্ষজ ত্বরণের (g) মান কত?", a:["৯.৮","০","১০","১১"], c:1},
-                {q:"কোন গুপ্ত সম্রাটকে 'ভারতের নেপোলিয়ন' বলা হয়?", a:["প্রথম চন্দ্রগুপ্ত","সমুদ্রগুপ্ত","স্কন্দগুপ্ত","দ্বিতীয় চন্দ্রগুপ্ত"], c:1},
-                {q:"সংবিধানের কত নম্বর ধারা অনুযায়ী রাষ্ট্রপতিকে ইমপিচ করা যায়?", a:["৫২","৬১","৭২","১২৩"], c:1},
-                {q:"লোহিত রক্তকণিকার আয়ুষ্কাল কত দিন?", a:["১০ দিন","৫০ দিন","১২০ দিন","২০০ দিন"], c:2},
-                {q:"বিখ্যাত চিত্রকর্ম 'মোনালিসা' কার আঁকা?", a:["পিকাসো","লিওনার্দো দা ভিঞ্চি","মাইকেলেঞ্জেলো","ভ্যান গঘ"], c:1},
-                {q:"কোন মুঘল সম্রাটকে 'জিন্দা পীর' বলা হতো?", a:["আকবর","শাহজাহান","আওরঙ্গজেব","জাহাঙ্গীর"], c:2},
-                {q:"প্রথম এশিয়ান হিসেবে কে অর্থনীতিতে নোবেল পান?", a:["অমর্ত্য সেন","মহম্মদ ইউনুস","অভিজিৎ বন্দ্যোপাধ্যায়","সি ভি রমন"], c:0},
-                {q:"পৃথিবীর উচ্চতম জলপ্রপাত কোনটি?", a:["নায়াগ্রা","অ্যাঞ্জেল","ভিক্টোরিয়া","জোগ"], c:1},
-                {q:"ভারতের কোন রাজ্যে প্রথম সূর্যোদয় হয়?", a:["অসম","অরুণাচল প্রদেশ","মণিপুর","মিজোরাম"], c:1},
-                {q:"প্রথম বিশ্বকাপ ফুটবল কত সালে অনুষ্ঠিত হয়?", a:["১৯২০","১৯৩০","১৯৩৮","১৯৫০"], c:1},
-                {q:"ভারতের সবুজ বিপ্লবের জনক কে?", a:["এম এস স্বামীনাথন","ভার্গিস কুরিয়ান","হীরালাল চৌধুরী","এ পি জে আব্দুল কালাম"], c:0},
-                {q:"সূর্যের শক্তির উৎস কি?", a:["নিউক্লিয়ার ফিশন","নিউক্লিয়ার ফিউশন","রাসায়নিক বিক্রিয়া","ঘর্ষণ"], c:1},
-                {q:"ভারতের প্রাচীনতম পর্বতমালা কোনটি?", a:["হিমালয়","আরাবল্লী","বিন্ধ্য","নীলগিরি"], c:1},
-                {q:"ইউরেনিয়াম উৎপাদনে বিশ্বে প্রথম কোন দেশ?", a:["কানাডা","কাজাখস্তান","অস্ট্রেলিয়া","রাশিয়া"], c:1},
-                {q:"কোনটি তেজস্ক্রিয় মৌল নয়?", a:["ইউরেনিয়াম","থোরিয়াম","রেডিয়াম","ক্যাডমিয়াম"], c:3}
-            ]
-        };
-
-        const moneyLadder = [
-            "₹১", "₹৫", "₹১০", "₹৫০", "₹১০০", "₹৫০০", "₹১,০০০", "₹২,০০০", "₹৫,০০০", "₹১০,০০০",
-            "₹২০,০০০", "₹৪০,০০০", "₹৮০,০০০", "₹১,৬০,০০০", "₹৩,২০,০০০", "₹৬,৪০,০০০", "₹১২,৫০,০০০", "₹২৫,০০,০০০", "₹৫০,০০,০০০", "₹৭৫,০০,০০০",
-            "₹১ কোটি", "₹১.৫ কোটি", "₹২ কোটি", "₹২.৫ কোটি", "₹৩ কোটি", "₹৪ কোটি", "₹৫ কোটি", "₹৬ কোটি", "₹৬.৫ কোটি", "₹৭ কোটি"
+        // --- Questions Data (40 Questions) ---
+        const masterQuestions = [
+            { q: "?????? ????? ????? ???????? ??? ?? ??????", a: ["??????????? ?????", "?? ?? ???", "????? ??????", "??????? ???"], correct: 0 },
+            { q: "???????????? ????? ???? ??? ???", a: ["?????? ?????? ??????", "???? ?????", "????", "??????"], correct: 1 },
+            { q: "?????? ??? ?? ???? ?????? ??????? ???? ??? ????", a: ["????", "????", "????", "????"], correct: 1 },
+            { q: "??????? ????? ????? ????????? ??????", a: ["???????", "???? ?????", "???? ???????", "??????"], correct: 2 },
+            { q: "??? ?????? ???????? ????? ?????? ???? ???? ??? ?????????", a: ["???????? ?????? ???", "????????????? ???", "?????? ????", "??????????? ??????????"], correct: 1 },
+            { q: "?????? ????????? ????? ??????? ??? ??? ???? ???????? ????? ????? ???? ???", a: ["??????????? ??????????", "???????? ???????", "??????", "????? ??????"], correct: 2 },
+            { q: "??? ?????? '??? ????' ??? ???", a: ["?????", "????????", "?????", "???"], correct: 2 },
+            { q: "????? ???? ???????? ??? ???? ?? ??? ?????", a: ["? ?????", "? ?????", "? ????? ?? ???????", "?? ?????"], correct: 2 },
+            { q: "????????? ????????? ????????? ???", a: ["??.? ?????????", "??.? ?????????", "??.? ?????????", "??? ?????????"], correct: 1 },
+            { q: "?????? ???????? ???? ????? ?????? ????", a: ["???", "???", "???", "???"], correct: 1 },
+            { q: "???? ????? ????? ??????? ??? ?????????", a: ["??????", "????????", "??????", "???????"], correct: 2 },
+            { q: "?????? ??????? ??? ??????", a: ["?????", "???????????", "?????", "???????"], correct: 2 },
+            { q: "??? ??? ????? ??????? ?????? ??????? ??????????", a: ["???????", "?????? (??????? ??????)", "????", "???"], correct: 1 },
+            { q: "??????????? ??????? ???????????? ??? ????? ????????", a: ["??????", "???????????", "?????", "???????"], correct: 1 },
+            { q: "????????? ?? ???????? ?????", a: ["??????????? ???????", "??? ???????", "???? ????", "????? ?????"], correct: 0 },
+            { q: "???????? ??????? ???? ??????", a: ["???", "???????", "????????", "??????"], correct: 2 },
+            { q: "??????? ?????? ?????????? ??????", a: ["???????????", "?????? ????????", "??-??", "?????"], correct: 1 },
+            { q: "??? ????????? ????? ???????? ??? ???", a: ["??????? ?", "??????? ??", "??????? ??", "??????? ??"], correct: 2 },
+            { q: "??? ??????? ??????????? ????? ????????", a: ["???????", "??????", "??????", "???????"], correct: 2 },
+            { q: "?????? ?????????? ?????? ???? ???????? ??? ???? ??????????", a: ["????", "????", "????", "????"], correct: 0 },
+            { q: "?????? ??????? ?????????? ???", a: ["???????? ????", "??????? ??????", "?????? ???????", "????? ????"], correct: 1 },
+            { q: "???? ????? ???? ??? ???? ???????", a: ["???", "????", "??????", "????"], correct: 1 },
+            { q: "?? ???????????? ????????? ?????", a: ["???????????? ?????", "??????????? ?????", "???? ??????? ???", "??????????? ??????????"], correct: 0 },
+            { q: "??? ???? ??? ??????? ???? ?????? ???????????", a: ["???????", "????", "???????", "????????????"], correct: 1 },
+            { q: "?????? ??????????? ??? ?? ??? ??????", a: ["??????", "???????", "???????", "??????"], correct: 2 },
+            { q: "?????? ?????? ?????? ?????? ???? ?? ??? ????? ????? ????", a: ["?????", "?????", "????????", "?????????"], correct: 2 },
+            { q: "??????? ??????? ??????? ??????", a: ["????", "??", "??????", "???????"], correct: 2 },
+            { q: "???? ??????? ????????? ?????? ???? ??????? ?? ??????", a: ["???? ????????", "????? ?????", "?? ?? ????", "???? ?????????"], correct: 2 },
+            { q: "??????? '?? ?????' ??????? ?? ??????????", a: ["??? ???", "??????????? ???", "??????? ??????", "??????? ?????"], correct: 1 },
+            { q: "????? ????????? ????? ??????? ??????", a: ["??????????????", "?????? ???? ?????", "???????????", "???? ???????"], correct: 1 },
+            { q: "??? ???????? ??????? ??????", a: ["??????? ??", "??????? ?", "??????? ??", "??????? ??"], correct: 0 },
+            { q: "?????? ??? ???? ???? ????????", a: ["?????", "?????", "???????", "??????"], correct: 1 },
+            { q: "??????????? ???????? ???? ??? ???", a: ["??????", "????? ?????", "?????? (CPU)", "?????"], correct: 2 },
+            { q: "?????? ???????? ?????? ?????? ??????", a: ["????????", "??????????", "???? ????", "??? ??? ????"], correct: 2 },
+            { q: "???????????? ?????? ??????? ???? ??????", a: ["?????????", "?????????", "????????", "????????"], correct: 1 },
+            { q: "??? ????? '?????? ????' ??? ????", a: ["??????", "??????", "???????", "???"], correct: 0 },
+            { q: "?????? ????? ?????? ??????? ????? ?? ??? ????", a: ["?? ?????", "?? ?????", "?? ?????", "?? ?????"], correct: 1 },
+            { q: "?????? ????? ????????????? ?? ??????", a: ["?????? ???????", "??????? ?????", "??? ??????? ????????", "??????? ??????"], correct: 1 },
+            { q: "???????? ??? ????????", a: ["????", "??????? ??????", "?????????? ????? ? ???", "?????"], correct: 2 },
+            { q: "??????? ?????? ?? ???????????? ????? ????????", a: ["????????", "??????", "???????", "??????"], correct: 1 }
         ];
 
-        let currentStep = 0;
-        let selectedQuestions = [];
-        let timer;
-        let timeLeft = 30;
+        // --- Money Ladder ---
+        const moneyLadderValues = [
+            "??", "??", "??", "???", "???", 
+            "???", "???", "????", "????", "????", 
+            "??,???", "??,???", "??,???", "???,???", "???,???", 
+            "???,???", "???,???", "??,??,???", "??,??,???", "??,??,???",
+            "???,??,???", "???,??,???", "???,??,???", "?? ????", "?? ????", 
+            "?? ????", "?? ????", "?? ????", "?? ????", "?? ????"
+        ];
+        const safeZones = [4, 9, 14, 19, 24, 29]; // Index basis
 
+        // --- State Variables ---
+        let currentLevel = 0;
+        let shuffledQuestions = [];
+        let canAnswer = false;
+        let lifelines = { fifty: true, audience: true };
+
+        // --- Audio Context (Public URLs) ---
+        const sounds = {
+            theme: new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'), // Placeholder for Theme
+            suspense: new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'), // Placeholder for Suspense
+            lock: new Audio('https://actions.google.com/sounds/v1/science_fiction/glitch_low_power_sweep.ogg'),
+            correct: new Audio('https://actions.google.com/sounds/v1/cartoon/clime.ogg'),
+            wrong: new Audio('https://actions.google.com/sounds/v1/cartoon/boing.ogg')
+        };
+
+        function playSound(name, loop = false) {
+            try {
+                sounds[name].currentTime = 0;
+                sounds[name].loop = loop;
+                sounds[name].play();
+            } catch (e) { console.log("Audio play blocked"); }
+        }
+
+        function stopAllSounds() {
+            Object.values(sounds).forEach(s => { s.pause(); s.currentTime = 0; });
+        }
+
+        // --- Fisher-Yates Shuffle ---
         function shuffle(array) {
-            return array.sort(() => Math.random() - 0.5);
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
         }
 
-        function initGame() {
-            currentStep = 0;
-            timeLeft = 30;
-            document.getElementById('result-screen').style.display = 'none';
-            document.getElementById('50-50').disabled = false;
-            document.getElementById('poll').disabled = false;
-
-            // বাছাই করা প্রশ্ন
-            let easySet = shuffle([...questionBank.easy]).slice(0, 10);
-            let mediumSet = shuffle([...questionBank.medium]).slice(0, 10);
-            let hardSet = shuffle([...questionBank.hard]).slice(0, 10);
-            selectedQuestions = [...easySet, ...mediumSet, ...hardSet];
-
-            setupLadder();
+        // --- Core Functions ---
+        function startGame() {
+            stopAllSounds();
+            document.getElementById('screen-welcome').classList.remove('active-screen');
+            document.getElementById('screen-game').classList.add('active-screen');
+            
+            shuffledQuestions = shuffle([...masterQuestions]);
+            currentLevel = 0;
+            lifelines = { fifty: true, audience: true };
+            
+            updateLadderUI();
             loadQuestion();
-        }
-
-        function setupLadder() {
-            const ladderContainer = document.getElementById('ladder');
-            ladderContainer.innerHTML = '';
-            moneyLadder.forEach((m, index) => {
-                const div = document.createElement('div');
-                div.className = 'money-step';
-                if (index === 9 || index === 19 || index === 29) div.classList.add('milestone');
-                div.id = `step-${index}`;
-                div.innerText = `${index + 1}. ${m}`;
-                ladderContainer.appendChild(div);
-            });
+            playSound('suspense', true);
         }
 
         function loadQuestion() {
-            clearInterval(timer);
-            timeLeft = 30;
-            document.getElementById('timer').innerText = timeLeft;
-            
-            const qData = selectedQuestions[currentStep];
-            document.getElementById('question').innerText = qData.q;
+            canAnswer = true;
+            const qData = shuffledQuestions[currentLevel];
+            document.getElementById('question-text').innerText = `?????? ${currentLevel + 1}: ${qData.q}`;
+            document.getElementById('status-msg').innerText = "";
             
             const container = document.getElementById('options-container');
-            container.innerHTML = '';
-
-            // লেবেল ও মানি ল্যাডার আপডেট
-            document.querySelectorAll('.money-step').forEach(el => el.classList.remove('active'));
-            document.getElementById(`step-${currentStep}`).classList.add('active');
-            document.getElementById(`step-${currentStep}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-            let difficulty = "সহজ";
-            if(currentStep >= 10) difficulty = "মাঝারি";
-            if(currentStep >= 20) difficulty = "কঠিন";
-            document.getElementById('difficulty-label').innerText = `লেভেল: ${difficulty}`;
-
+            container.innerHTML = "";
+            
             qData.a.forEach((opt, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
-                btn.id = `opt-${index}`;
-                btn.innerText = `${String.fromCharCode(65 + index)}: ${opt}`;
-                btn.onclick = () => checkAnswer(index);
+                btn.innerHTML = `<span style="color: var(--gold)">${String.fromCharCode(65 + index)}:</span> ${opt}`;
+                btn.onclick = () => selectOption(index, btn);
                 container.appendChild(btn);
             });
 
-            timer = setInterval(() => {
-                timeLeft--;
-                document.getElementById('timer').innerText = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(timer);
-                    gameOver("সময় শেষ!");
-                }
-            }, 1000);
+            updateLadderUI();
         }
 
-        function checkAnswer(idx) {
-            clearInterval(timer);
-            const correct = selectedQuestions[currentStep].c;
-            const btns = document.querySelectorAll('.option-btn');
+        function selectOption(index, btn) {
+            if (!canAnswer) return;
+            canAnswer = false;
 
-            if (idx === correct) {
-                btns[idx].style.background = "var(--correct)";
-                setTimeout(() => {
-                    currentStep++;
-                    if (currentStep < 30) {
-                        loadQuestion();
-                    } else {
-                        victory();
-                    }
-                }, 1500);
-            } else {
-                btns[idx].style.background = "var(--wrong)";
-                btns[correct].style.background = "var(--correct)";
-                setTimeout(() => gameOver("ভুল উত্তর!"), 1500);
-            }
+            btn.classList.add('selected');
+            document.getElementById('status-msg').innerText = "????????? ????, ?? ??? ????";
+            playSound('lock');
+
+            setTimeout(() => {
+                const correctIndex = shuffledQuestions[currentLevel].correct;
+                if (index === correctIndex) {
+                    btn.classList.remove('selected');
+                    btn.classList.add('correct');
+                    playSound('correct');
+                    document.getElementById('status-msg').innerText = "??????! ???? ????!";
+                    
+                    setTimeout(() => {
+                        if (currentLevel < moneyLadderValues.length - 1) {
+                            currentLevel++;
+                            loadQuestion();
+                        } else {
+                            gameOver(true);
+                        }
+                    }, 2000);
+                } else {
+                    btn.classList.remove('selected');
+                    btn.classList.add('wrong');
+                    document.querySelectorAll('.option-btn')[correctIndex].classList.add('correct');
+                    playSound('wrong');
+                    document.getElementById('status-msg').innerText = "??? ?????! ???? ?????? ????";
+                    
+                    setTimeout(() => gameOver(false), 2000);
+                }
+            }, 2000);
+        }
+
+        function updateLadderUI() {
+            const ladder = document.getElementById('money-ladder');
+            ladder.innerHTML = "";
+            moneyLadderValues.forEach((val, i) => {
+                const div = document.createElement('div');
+                div.className = `money-step ${i === currentLevel ? 'active' : ''} ${safeZones.includes(i) ? 'safe' : ''}`;
+                div.innerText = `${i + 1}. ${val}`;
+                ladder.appendChild(div);
+            });
+            ladder.scrollTop = 0; 
         }
 
         function useFiftyFifty() {
-            const correct = selectedQuestions[currentStep].c;
-            let hidden = 0;
-            for (let i = 0; i < 4; i++) {
-                if (i !== correct && hidden < 2) {
-                    document.getElementById(`opt-${i}`).style.visibility = 'hidden';
-                    hidden++;
-                }
-            }
-            document.getElementById('50-50').disabled = true;
-        }
-
-        function usePoll() {
-            const correct = selectedQuestions[currentStep].c;
-            const modal = document.getElementById('poll-modal');
-            const dataDiv = document.getElementById('poll-data');
-            dataDiv.innerHTML = '';
-            modal.style.display = 'block';
-
-            let shares = [10, 10, 10, 10];
-            shares[correct] = 60; // সঠিক উত্তরে ভোট বেশি
-
-            shares.forEach((s, i) => {
-                dataDiv.innerHTML += `<div style="margin-top:10px;">${String.fromCharCode(65+i)}</div>
-                                      <div class="poll-bar" style="width: ${s}%"></div>`;
+            if (!canAnswer || !lifelines.fifty) return;
+            lifelines.fifty = false;
+            document.getElementById('life-50').classList.add('used');
+            
+            const correctIndex = shuffledQuestions[currentLevel].correct;
+            let removed = 0;
+            const btns = document.querySelectorAll('.option-btn');
+            
+            let indices = [0, 1, 2, 3].filter(i => i !== correctIndex);
+            shuffle(indices);
+            
+            indices.slice(0, 2).forEach(i => {
+                btns[i].style.visibility = 'hidden';
             });
-            document.getElementById('poll').disabled = true;
         }
 
-        function closePoll() { document.getElementById('poll-modal').style.display = 'none'; }
-
-        function gameOver(msg) {
-            const prize = currentStep > 0 ? moneyLadder[currentStep - 1] : "₹০";
-            document.getElementById('result-screen').style.display = 'flex';
-            document.getElementById('final-msg').innerText = msg;
-            document.getElementById('final-prize').innerText = `আপনি জিতেছেন: ${prize}`;
+        function useAudiencePoll() {
+            if (!canAnswer || !lifelines.audience) return;
+            lifelines.audience = false;
+            document.getElementById('life-audience').classList.add('used');
+            
+            const correctIndex = shuffledQuestions[currentLevel].correct;
+            let poll = [10, 10, 10, 10];
+            poll[correctIndex] = 70; // Bias to correct answer
+            
+            alert(`???????? ??? ?????:\nA: ${poll[0]}%, B: ${poll[1]}%, C: ${poll[2]}%, D: ${poll[3]}%`);
         }
 
-        function victory() {
-            document.getElementById('result-screen').style.display = 'flex';
-            document.getElementById('final-msg').innerText = "অবিশ্বাস্য! আপনি ইতিহাস গড়েছেন!";
-            document.getElementById('final-prize').innerText = `আপনি জিতেছেন: ₹৭ কোটি`;
+        function quitGame() {
+            if (confirm("???? ?? ??????? ?? ???? ???? ???? ???? ????")) {
+                gameOver(false, true);
+            }
         }
 
-        initGame();
+        function gameOver(isWin, isQuit = false) {
+            stopAllSounds();
+            document.getElementById('screen-game').classList.remove('active-screen');
+            document.getElementById('screen-end').classList.add('active-screen');
+
+            let prize = "??";
+            if (isWin) {
+                prize = "?? ????";
+                document.getElementById('end-title').innerText = "????????! ???? ??????????!";
+            } else if (isQuit) {
+                prize = currentLevel > 0 ? moneyLadderValues[currentLevel - 1] : "??";
+                document.getElementById('end-title').innerText = "???? ???? ???? ????????";
+            } else {
+                // Find last safe zone
+                let lastSafeIndex = -1;
+                for (let sz of safeZones) {
+                    if (currentLevel > sz) lastSafeIndex = sz;
+                }
+                prize = lastSafeIndex >= 0 ? moneyLadderValues[lastSafeIndex] : "??";
+                document.getElementById('end-title').innerText = "??! ??? ??????";
+            }
+
+            document.getElementById('end-message').innerText = `???? ??????? ???: ${prize}`;
+        }
+
+        function resetGame() {
+            document.getElementById('screen-end').classList.remove('active-screen');
+            document.getElementById('screen-welcome').classList.add('active-screen');
+            // Reset lifelines UI
+            document.getElementById('life-50').classList.remove('used');
+            document.getElementById('life-audience').classList.remove('used');
+            playSound('theme', true);
+        }
+
+        // On Page Load
+        window.onload = () => {
+            playSound('theme', true);
+        };
     </script>
 </body>
 </html>

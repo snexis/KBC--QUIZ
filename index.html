@@ -1,669 +1,181 @@
 <!DOCTYPE html>
-<html lang="bn"><!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>কে হবে কোটিপতি - KBC Bengali</title>
-    <style>
-        :root {
-            --primary-dark: #020230;
-            --secondary-blue: #08085e;
-            --gold: #ffd700;
-            --white: #ffffff;
-            --correct-green: #28a745;
-            --wrong-red: #dc3545;
-            --accent-purple: #4b0082;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--primary-dark);
-            color: var(--white);
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Screens */
-        .screen {
-            display: none;
-            width: 100%;
-            height: 100%;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle, var(--secondary-blue) 0%, var(--primary-dark) 100%);
-            padding: 20px;
-        }
-
-        .active-screen {
-            display: flex;
-        }
-
-        /* Welcome Screen */
-        .logo-container h1 {
-            font-size: 80px;
-            color: var(--gold);
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-            margin-bottom: 20px;
-            letter-spacing: 10px;
-        }
-
-        .btn-start, .btn-action {
-            padding: 15px 40px;
-            font-size: 20px;
-            background: linear-gradient(to bottom, #ffd700, #b8860b);
-            border: none;
-            border-radius: 30px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #000;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-start:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 15px var(--gold);
-        }
-
-        /* Game Board */
-        .game-layout {
-            display: grid;
-            grid-template-columns: 3fr 1fr;
-            width: 95%;
-            max-width: 1200px;
-            height: 90vh;
-            gap: 20px;
-        }
-
-        .quiz-area {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .question-box {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--gold);
-            padding: 30px;
-            border-radius: 15px;
-            font-size: 24px;
-            margin-top: 50px;
-            position: relative;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .option-btn {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--white);
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-size: 18px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .option-btn:hover {
-            background: var(--accent-purple);
-            border-color: var(--gold);
-        }
-
-        .option-btn.selected { background: orange; color: black; }
-        .option-btn.correct { background: var(--correct-green) !important; }
-        .option-btn.wrong { background: var(--wrong-red) !important; }
-
-        /* Lifelines */
-        .lifelines {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .lifeline-btn {
-            background: #444;
-            color: white;
-            border: 1px solid var(--gold);
-            padding: 10px 15px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .lifeline-btn.used {
-            text-decoration: line-through;
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        /* Money Ladder */
-        .money-ladder {
-            background: rgba(0, 0, 0, 0.4);
-            border-left: 2px solid var(--gold);
-            padding: 10px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column-reverse;
-        }
-
-        .money-step {
-            padding: 5px 10px;
-            font-size: 14px;
-            color: #aaa;
-        }
-
-        .money-step.active {
-            color: var(--gold);
-            font-weight: bold;
-            background: rgba(255, 215, 0, 0.2);
-        }
-
-        .money-step.safe { color: var(--white); border-bottom: 1px solid #555; }
-
-        /* Mobile Adjustments */
-        @media (max-width: 768px) {
-            .game-layout { grid-template-columns: 1fr; }
-            .money-ladder { display: none; }
-            .options-grid { grid-template-columns: 1fr; }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Welcome Screen -->
-    <div id="screen-welcome" class="screen active-screen">
-        <div class="logo-container">
-            <h1>KBC</h1>
-            <p style="margin-bottom: 30px; font-size: 1.2rem;">কৌন বনেগা ক্রোড়পতি - বাংলা</p>
-            <button class="btn-start" onclick="startGame()">গেম শুরু করুন</button>
-        </div>
-    </div>
-
-    <!-- Gameplay Screen -->
-    <div id="screen-game" class="screen">
-        <div class="game-layout">
-            <div class="quiz-area">
-                <div class="lifelines">
-                    <button class="lifeline-btn" id="life-50" onclick="useFiftyFifty()">50:50</button>
-                    <button class="lifeline-btn" id="life-audience" onclick="useAudiencePoll()">Audience Poll</button>
-                    <button class="btn-action" style="margin-left: auto; background: #900; color: white;" onclick="quitGame()">গেম ছেড়ে দিন</button>
-                </div>
-                
-                <div class="question-container">
-                    <div class="question-box" id="question-text">
-                        প্রশ্ন এখানে লোড হবে...
-                    </div>
-                    <div class="options-grid" id="options-container">
-                        <!-- Options injected by JS -->
-                    </div>
-                </div>
-
-                <div id="status-msg" style="margin-top: 20px; font-style: italic; color: var(--gold);"></div>
-            </div>
-
-            <div class="money-ladder" id="money-ladder">
-                <!-- Ladder injected by JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- End Screen -->
-    <div id="screen-end" class="screen">
-        <h2 id="end-title" style="font-size: 40px; color: var(--gold);">খেলা শেষ!</h2>
-        <p id="end-message" style="font-size: 24px; margin: 20px 0;"></p>
-        <button class="btn-start" onclick="resetGame()">আবার খেলুন</button>
-    </div>
-
-    <script>
-        // --- Questions Data (40 Questions) ---
-        const masterQuestions = [
-            { q: "ভারতের প্রথম নোবেল পুরস্কার জয়ী কে ছিলেন?", a: ["রবীন্দ্রনাথ ঠাকুর", "সি ভি রমন", "মাদার টেরেসা", "অমর্ত্য সেন"], correct: 0 },
-            { q: "পশ্চিমবঙ্গের রাজ্য পশুর নাম কি?", a: ["রয়্যাল বেঙ্গল টাইগার", "মেছো বিড়াল", "হাতি", "গন্ডার"], correct: 1 },
-            { q: "কলকাতা শহর কত সালে ভারতের রাজধানী থেকে সরে যায়?", a: ["১৯০৫", "১৯১১", "১৯৪৭", "১৯৫০"], correct: 1 },
-            { q: "সত্যজিৎ রায়ের প্রথম চলচ্চিত্র কোনটি?", a: ["অপরাজিত", "অপুর সংসার", "পথের পাঁচালী", "জলসাঘর"], correct: 2 },
-            { q: "কোন বাঙালি বিজ্ঞানী জগদীশ চন্দ্র বসুর সাথে কাজ করেছিলেন?", a: ["প্রফুল্ল চন্দ্র রায়", "সত্যেন্দ্রনাথ বসু", "মেঘনাদ সাহা", "উপেন্দ্রনাথ ব্রহ্মচারী"], correct: 1 },
-            { q: "ভারতের স্বাধীনতা দিবসে কলকাতার কোন লাল রঙের প্রাসাদে জাতীয় পতাকা তোলা হয়?", a: ["ভিক্টোরিয়া মেমোরিয়াল", "রাইটার্স বিল্ডিং", "রাজভবন", "হাওড়া স্টেশন"], correct: 2 },
-            { q: "কোন গ্রহকে 'লাল গ্রহ' বলা হয়?", a: ["শুক্র", "বৃহস্পতি", "মঙ্গল", "শনি"], correct: 2 },
-            { q: "সূর্য থেকে পৃথিবীতে আলো আসতে কত সময় লাগে?", a: ["২ মিনিট", "৫ মিনিট", "৮ মিনিট ২০ সেকেন্ড", "১০ মিনিট"], correct: 2 },
-            { q: "মানবদেহের স্বাভাবিক তাপমাত্রা কত?", a: ["৯৬.৪ ফারেনহাইট", "৯৮.৪ ফারেনহাইট", "৯৯.০ ফারেনহাইট", "১০০ ফারেনহাইট"], correct: 1 },
-            { q: "ভারতীয় সংবিধানে কয়টি মৌলিক অধিকার আছে?", a: ["৫টি", "৬টি", "৭টি", "৮টি"], correct: 1 },
-            { q: "গৌতম বুদ্ধ কোথায় নির্বাণ লাভ করেছিলেন?", a: ["সারনাথ", "লুম্বিনি", "বোধগয়া", "কুশিনগর"], correct: 2 },
-            { q: "ভারতের দীর্ঘতম নদী কোনটি?", a: ["যমুনা", "ব্রহ্মপুত্র", "গঙ্গা", "গোদাবরী"], correct: 2 },
-            { q: "কোন দেশ প্রথম কৃত্রিম উপগ্রহ মহাকাশে পাঠিয়েছিল?", a: ["আমেরিকা", "রাশিয়া (সোভিয়েত ইউনিয়ন)", "ভারত", "চীন"], correct: 1 },
-            { q: "হাজারদুয়ারি প্যালেস পশ্চিমবঙ্গের কোন জেলায় অবস্থিত?", a: ["বীরভূম", "মুর্শিদাবাদ", "মালদা", "বাঁকুড়া"], correct: 1 },
-            { q: "পেনিসিলিন কে আবিষ্কার করেন?", a: ["আলেকজান্ডার ফ্লেমিং", "লুই পাস্তুর", "মেরি কুরি", "আইজাক নিউটন"], correct: 0 },
-            { q: "সৌরজগতের বৃহত্তম গ্রহ কোনটি?", a: ["শনি", "ইউরেনাস", "বৃহস্পতি", "নেপচুন"], correct: 2 },
-            { q: "বিশ্বের উচ্চতম পর্বতশৃঙ্গ কোনটি?", a: ["কাঞ্চনজঙ্ঘা", "মাউন্ট এভারেস্ট", "কে-টু", "লোৎসে"], correct: 1 },
-            { q: "কোন ভিটামিনের অভাবে স্কার্ভি রোগ হয়?", a: ["ভিটামিন এ", "ভিটামিন বি", "ভিটামিন সি", "ভিটামিন ডি"], correct: 2 },
-            { q: "ইডন গার্ডেন স্টেডিয়ামটি কোথায় অবস্থিত?", a: ["মুম্বাই", "দিল্লি", "কলকাতা", "চেন্নাই"], correct: 2 },
-            { q: "স্বামী বিবেকানন্দ শিকাগো ধর্ম সম্মেলনে কবে ভাষণ দিয়েছিলেন?", a: ["১৮৯৩", "১৮৯৬", "১৮৯৯", "১৯০২"], correct: 0 },
-            { q: "ভারতের বর্তমান রাষ্ট্রপতি কে?", a: ["নরেন্দ্র মোদী", "দ্রৌপদী মুর্মু", "রামনাথ কোবিন্দ", "জগদীপ ধনখর"], correct: 1 },
-            { q: "দাবা খেলার জন্ম কোন দেশে হয়েছিল?", a: ["চীন", "ভারত", "পারস্য", "মিশর"], correct: 1 },
-            { q: "কে শান্তিনিকেতন প্রতিষ্ঠা করেন?", a: ["দেবেন্দ্রনাথ ঠাকুর", "রবীন্দ্রনাথ ঠাকুর", "রাজা রামমোহন রায়", "ঈশ্বরচন্দ্র বিদ্যাসাগর"], correct: 0 },
-            { q: "কোন ধাতু তরল অবস্থায় থাকে সাধারণ তাপমাত্রায়?", a: ["সোডিয়াম", "পারদ", "লিথিয়াম", "ম্যাগনেসিয়াম"], correct: 1 },
-            { q: "ভারতের প্রবেশদ্বার বলা হয় কোন শহরকে?", a: ["কলকাতা", "চেন্নাই", "মুম্বাই", "দিল্লি"], correct: 2 },
-            { q: "রয়্যাল বেঙ্গল টাইগার ভারতের ছাড়া আর কোন দেশের জাতীয় পশু?", a: ["নেপাল", "ভুটান", "বাংলাদেশ", "শ্রীলঙ্কা"], correct: 2 },
-            { q: "পৃথিবীর বৃহত্তম মরুভূমি কোনটি?", a: ["গোবি", "থর", "সাহারা", "আটাকামা"], correct: 2 },
-            { q: "২০১১ ক্রিকেট বিশ্বকাপে ভারতীয় দলের অধিনায়ক কে ছিলেন?", a: ["সৌরভ গাঙ্গুলী", "বিরাট কোহলি", "এম এস ধোনি", "শচীন তেন্ডুলকর"], correct: 2 },
-            { q: "বিখ্যাত 'জয় হিন্দ' স্লোগান কে দিয়েছিলেন?", a: ["ভগত সিং", "সুভাষচন্দ্র বসু", "মহাত্মা গান্ধী", "জওহরলাল নেহরু"], correct: 1 },
-            { q: "বাংলা সাহিত্যের প্রথম উপন্যাস কোনটি?", a: ["দুর্গেশনন্দিনী", "আলালের ঘরের দুলাল", "কপালকুণ্ডলা", "পথের পাঁচালী"], correct: 1 },
-            { q: "জলে দ্রবণীয় ভিটামিন কোনটি?", a: ["ভিটামিন বি", "ভিটামিন এ", "ভিটামিন ডি", "ভিটামিন কে"], correct: 0 },
-            { q: "তাজমহল কোন নদীর তীরে অবস্থিত?", a: ["গঙ্গা", "যমুনা", "সরস্বতী", "নর্মদা"], correct: 1 },
-            { q: "কম্পিউটারের মস্তিষ্ক কাকে বলা হয়?", a: ["র‍্যাম", "হার্ড ডিস্ক", "সিপিইউ (CPU)", "মনিটর"], correct: 2 },
-            { q: "ভারতের সর্বোচ্চ নাগরিক সম্মান কোনটি?", a: ["পদ্মভূষণ", "পদ্মবিভূষণ", "ভারত রত্ন", "পরম বীর চক্র"], correct: 2 },
-            { q: "পশ্চিমবঙ্গের সবচেয়ে উত্তরের জেলা কোনটি?", a: ["জলপাইগুড়ি", "দার্জিলিং", "কালিম্পং", "কোচবিহার"], correct: 1 },
-            { q: "কোন নদীকে 'বাংলার দুঃখ' বলা হতো?", a: ["দামোদর", "তিস্তা", "ভাগীরথী", "অজয়"], correct: 0 },
-            { q: "পৃথিবী নিজের অক্ষের চারদিকে ঘুরতে কত সময় নেয়?", a: ["১২ ঘণ্টা", "২৪ ঘণ্টা", "৩৬ ঘণ্টা", "৪৮ ঘণ্টা"], correct: 1 },
-            { q: "ভারতের প্রথম প্রধানমন্ত্রী কে ছিলেন?", a: ["সর্দার প্যাটেল", "জওহরলাল নেহরু", "লাল বাহাদুর শাস্ত্রী", "ইন্দিরা গান্ধী"], correct: 1 },
-            { q: "সুন্দরবন কেন বিখ্যাত?", a: ["হাতি", "একশৃঙ্গ গন্ডার", "ম্যানগ্রোভ অরণ্য ও বাঘ", "পাহাড়"], correct: 2 },
-            { q: "গোল্ডেন টেম্পল বা স্বর্ণমন্দির কোথায় অবস্থিত?", a: ["লুধিয়ানা", "অমৃতসর", "চণ্ডীগড়", "জলন্ধর"], correct: 1 }
-        ];
-
-        // --- Money Ladder ---
-        const moneyLadderValues = [
-            "₹১", "₹২", "₹৫", "₹১০", "₹২০", 
-            "₹৪০", "₹৮০", "₹১৬০", "₹৩২০", "₹৬৪০", 
-            "₹১,২৫০", "₹২,৫০০", "₹৫,০০০", "₹১০,০০০", "₹২০,০০০", 
-            "₹৪০,০০০", "₹৮০,০০০", "₹১,৬০,০০০", "₹৩,২০,০০০", "₹৬,৪০,০০০",
-            "₹১২,৫০,০০০", "₹২৫,০০,০০০", "₹৫০,০০,০০০", "₹১ কোটি", "₹২ কোটি", 
-            "₹৩ কোটি", "₹৪ কোটি", "₹৫ কোটি", "₹৬ কোটি", "₹৭ কোটি"
-        ];
-        const safeZones = [4, 9, 14, 19, 24, 29]; // Index basis
-
-        // --- State Variables ---
-        let currentLevel = 0;
-        let shuffledQuestions = [];
-        let canAnswer = false;
-        let lifelines = { fifty: true, audience: true };
-
-        // --- Audio Context (Public URLs) ---
-        const sounds = {
-            theme: new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'), // Placeholder for Theme
-            suspense: new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'), // Placeholder for Suspense
-            lock: new Audio('https://actions.google.com/sounds/v1/science_fiction/glitch_low_power_sweep.ogg'),
-            correct: new Audio('https://actions.google.com/sounds/v1/cartoon/clime.ogg'),
-            wrong: new Audio('https://actions.google.com/sounds/v1/cartoon/boing.ogg')
-        };
-
-        function playSound(name, loop = false) {
-            try {
-                sounds[name].currentTime = 0;
-                sounds[name].loop = loop;
-                sounds[name].play();
-            } catch (e) { console.log("Audio play blocked"); }
-        }
-
-        function stopAllSounds() {
-            Object.values(sounds).forEach(s => { s.pause(); s.currentTime = 0; });
-        }
-
-        // --- Fisher-Yates Shuffle ---
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        // --- Core Functions ---
-        function startGame() {
-            stopAllSounds();
-            document.getElementById('screen-welcome').classList.remove('active-screen');
-            document.getElementById('screen-game').classList.add('active-screen');
-            
-            shuffledQuestions = shuffle([...masterQuestions]);
-            currentLevel = 0;
-            lifelines = { fifty: true, audience: true };
-            
-            updateLadderUI();
-            loadQuestion();
-            playSound('suspense', true);
-        }
-
-        function loadQuestion() {
-            canAnswer = true;
-            const qData = shuffledQuestions[currentLevel];
-            document.getElementById('question-text').innerText = `প্রশ্ন ${currentLevel + 1}: ${qData.q}`;
-            document.getElementById('status-msg').innerText = "";
-            
-            const container = document.getElementById('options-container');
-            container.innerHTML = "";
-            
-            qData.a.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.innerHTML = `<span style="color: var(--gold)">${String.fromCharCode(65 + index)}:</span> ${opt}`;
-                btn.onclick = () => selectOption(index, btn);
-                container.appendChild(btn);
-            });
-
-            updateLadderUI();
-        }
-
-        function selectOption(index, btn) {
-            if (!canAnswer) return;
-            canAnswer = false;
-
-            btn.classList.add('selected');
-            document.getElementById('status-msg').innerText = "কম্পিউটার মশাই, লক করা যাক?";
-            playSound('lock');
-
-            setTimeout(() => {
-                const correctIndex = shuffledQuestions[currentLevel].correct;
-                if (index === correctIndex) {
-                    btn.classList.remove('selected');
-                    btn.classList.add('correct');
-                    playSound('correct');
-                    document.getElementById('status-msg').innerText = "অদ্ভুত! সঠিক জবাব!";
-                    
-                    setTimeout(() => {
-                        if (currentLevel < moneyLadderValues.length - 1) {
-                            currentLevel++;
-                            loadQuestion();
-                        } else {
-                            gameOver(true);
-                        }
-                    }, 2000);
-                } else {
-                    btn.classList.remove('selected');
-                    btn.classList.add('wrong');
-                    document.querySelectorAll('.option-btn')[correctIndex].classList.add('correct');
-                    playSound('wrong');
-                    document.getElementById('status-msg').innerText = "ভুল উত্তর! খেলা এখানেই শেষ।";
-                    
-                    setTimeout(() => gameOver(false), 2000);
-                }
-            }, 2000);
-        }
-
-        function updateLadderUI() {
-            const ladder = document.getElementById('money-ladder');
-            ladder.innerHTML = "";
-            moneyLadderValues.forEach((val, i) => {
-                const div = document.createElement('div');
-                div.className = `money-step ${i === currentLevel ? 'active' : ''} ${safeZones.includes(i) ? 'safe' : ''}`;
-                div.innerText = `${i + 1}. ${val}`;
-                ladder.appendChild(div);
-            });
-            ladder.scrollTop = 0; 
-        }
-
-        function useFiftyFifty() {
-            if (!canAnswer || !lifelines.fifty) return;
-            lifelines.fifty = false;
-            document.getElementById('life-50').classList.add('used');
-            
-            const correctIndex = shuffledQuestions[currentLevel].correct;
-            let removed = 0;
-            const btns = document.querySelectorAll('.option-btn');
-            
-            let indices = [0, 1, 2, 3].filter(i => i !== correctIndex);
-            shuffle(indices);
-            
-            indices.slice(0, 2).forEach(i => {
-                btns[i].style.visibility = 'hidden';
-            });
-        }
-
-        function useAudiencePoll() {
-            if (!canAnswer || !lifelines.audience) return;
-            lifelines.audience = false;
-            document.getElementById('life-audience').classList.add('used');
-            
-            const correctIndex = shuffledQuestions[currentLevel].correct;
-            let poll = [10, 10, 10, 10];
-            poll[correctIndex] = 70; // Bias to correct answer
-            
-            alert(`অডিয়েন্স পোল ফলাফল:\nA: ${poll[0]}%, B: ${poll[1]}%, C: ${poll[2]}%, D: ${poll[3]}%`);
-        }
-
-        function quitGame() {
-            if (confirm("আপনি কি নিশ্চিত যে আপনি খেলা ছেড়ে দিতে চান?")) {
-                gameOver(false, true);
-            }
-        }
-
-        function gameOver(isWin, isQuit = false) {
-            stopAllSounds();
-            document.getElementById('screen-game').classList.remove('active-screen');
-            document.getElementById('screen-end').classList.add('active-screen');
-
-            let prize = "₹০";
-            if (isWin) {
-                prize = "₹৭ কোটি";
-                document.getElementById('end-title').innerText = "অভিনন্দন! আপনি মহাকোটিপতি!";
-            } else if (isQuit) {
-                prize = currentLevel > 0 ? moneyLadderValues[currentLevel - 1] : "₹০";
-                document.getElementById('end-title').innerText = "আপনি খেলা ছেড়ে দিয়েছেন।";
-            } else {
-                // Find last safe zone
-                let lastSafeIndex = -1;
-                for (let sz of safeZones) {
-                    if (currentLevel > sz) lastSafeIndex = sz;
-                }
-                prize = lastSafeIndex >= 0 ? moneyLadderValues[lastSafeIndex] : "₹০";
-                document.getElementById('end-title').innerText = "ইশ! ভুল উত্তর।";
-            }
-
-            document.getElementById('end-message').innerText = `আপনি জিতেছেন মোট: ${prize}`;
-        }
-
-        function resetGame() {
-            document.getElementById('screen-end').classList.remove('active-screen');
-            document.getElementById('screen-welcome').classList.add('active-screen');
-            // Reset lifelines UI
-            document.getElementById('life-50').classList.remove('used');
-            document.getElementById('life-audience').classList.remove('used');
-            playSound('theme', true);
-        }
-
-        // On Page Load
-        window.onload = () => {
-            playSound('theme', true);
-        };
-    </script>
-</body>
-</html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KBC - মহাকোটিপতি</title>
+    <title>KBC Bengali - মহাকোটিপতি</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Hind Siliguri', sans-serif; background-color: #020230; color: white; overflow: hidden; }
-        
         .kbc-gradient { background: radial-gradient(circle, #1a1a7a 0%, #020230 100%); }
-        .option-box { background: rgba(0, 0, 0, 0.6); border: 1px solid #ffffff55; transition: 0.3s; }
-        .option-box:hover:not(:disabled) { border-color: #ffd700; background: #2a004a; }
         
+        /* Options Styling */
+        .option-btn { background: rgba(0, 0, 0, 0.6); border: 1px solid #ffffff55; transition: 0.3s; cursor: pointer; }
+        .option-btn:hover:not(:disabled) { border-color: #ffd700; background: #2a004a; transform: scale(1.02); }
+        .option-btn:disabled { cursor: not-allowed; }
+        .dimmed { opacity: 0.3; }
+
+        /* Animations */
         @keyframes blink { 0%, 100% { background: #3498db; } 50% { background: #ffd700; color: #000; } }
         .blink-animation { animation: blink 0.5s infinite; }
         
-        @keyframes pulse-red { 0%, 100% { transform: scale(1); color: #ff0000; } 50% { transform: scale(1.1); color: #ff6666; } }
+        @keyframes pulse-red { 0%, 100% { transform: scale(1); color: #ff0000; border-color: #ff0000; } 50% { transform: scale(1.1); color: #ff6666; border-color: #ff6666; } }
         .timer-critical { animation: pulse-red 0.5s infinite; }
 
+        /* Scrollbar */
         .ladder-scroll::-webkit-scrollbar { width: 4px; }
         .ladder-scroll::-webkit-scrollbar-thumb { background: #ffd700; border-radius: 10px; }
-
-        .modal-bg { background: rgba(0, 0, 0, 0.9); }
     </style>
 </head>
 <body class="kbc-gradient h-screen flex items-center justify-center">
 
-    <!-- Audio Elements (Placeholders) -->
-    <audio id="snd-theme" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
-    <audio id="snd-tick" src="https://actions.google.com/sounds/v1/alarms/mechanical_clock_ticking.ogg"></audio>
-    <audio id="snd-lock" src="https://actions.google.com/sounds/v1/science_fiction/glitch_low_power_sweep.ogg"></audio>
-    <audio id="snd-correct" src="https://actions.google.com/sounds/v1/cartoon/clime.ogg"></audio>
-    <audio id="snd-wrong" src="https://actions.google.com/sounds/v1/cartoon/boing.ogg"></audio>
-
     <!-- Welcome Screen -->
-    <div id="welcome-screen" class="screen fixed inset-0 flex flex-col items-center justify-center z-50 bg-[#020230]">
-        <h1 class="text-8xl font-bold text-yellow-500 mb-4 tracking-widest drop-shadow-2xl">KBC</h1>
-        <p class="text-2xl text-yellow-200 mb-10">কৌন বনেগা ক্রোড়পতি - বাংলা</p>
-        <button onclick="startGame()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-4 px-12 rounded-full text-xl transition-transform hover:scale-110 shadow-lg">গেম শুরু করুন</button>
+    <div id="welcome-screen" class="fixed inset-0 flex flex-col items-center justify-center z-50 bg-[#020230]">
+        <div class="text-center">
+            <h1 class="text-9xl font-bold text-yellow-500 mb-2 drop-shadow-2xl">KBC</h1>
+            <p class="text-2xl text-yellow-200 mb-12 tracking-widest">কৌন বনেগা ক্রোড়পতি</p>
+            <button id="start-game-btn" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-4 px-16 rounded-full text-2xl transition-all hover:scale-110 shadow-[0_0_20px_rgba(255,215,0,0.5)]">
+                গেম শুরু করুন
+            </button>
+        </div>
     </div>
 
-    <!-- Main Game Screen -->
-    <div id="game-screen" class="hidden w-full h-full max-w-7xl mx-auto flex flex-col lg:flex-row p-4 gap-4">
+    <!-- Gameplay Board -->
+    <div id="game-board" class="hidden w-full h-full max-w-7xl mx-auto flex flex-col lg:flex-row p-6 gap-6">
         
-        <!-- Left Side: Game Area -->
+        <!-- Left Side: Quiz Area -->
         <div class="flex-grow flex flex-col justify-between">
             <!-- Header: Lifelines & Timer -->
-            <div class="flex justify-between items-center bg-black/40 p-4 rounded-xl border border-yellow-500/30">
-                <div class="flex gap-3">
-                    <button id="ll-5050" onclick="use5050()" class="w-16 h-16 rounded-full border-2 border-yellow-500 flex items-center justify-center font-bold hover:bg-yellow-500 hover:text-black transition-all">50:50</button>
-                    <button id="ll-poll" onclick="usePoll()" class="w-16 h-16 rounded-full border-2 border-yellow-500 flex items-center justify-center font-bold hover:bg-yellow-500 hover:text-black transition-all text-xs text-center">Poll</button>
-                    <button id="ll-phone" onclick="usePhone()" class="w-16 h-16 rounded-full border-2 border-yellow-500 flex items-center justify-center font-bold hover:bg-yellow-500 hover:text-black transition-all text-xs text-center">Phone</button>
+            <div class="flex justify-between items-center bg-black/40 p-4 rounded-2xl border border-yellow-500/30 shadow-xl">
+                <div class="flex gap-4">
+                    <button id="lifeline-5050" onclick="use5050()" class="w-14 h-14 rounded-full border-2 border-yellow-500 flex items-center justify-center font-bold hover:bg-yellow-500 hover:text-black transition-all">50:50</button>
+                    <button id="lifeline-poll" onclick="usePoll()" class="w-14 h-14 rounded-full border-2 border-yellow-500 flex items-center justify-center font-bold hover:bg-yellow-500 hover:text-black transition-all text-xs">POLL</button>
+                    <button id="lifeline-phone" onclick="usePhone()" class="w-14 h-14 rounded-full border-2 border-yellow-500 flex items-center justify-center font-bold hover:bg-yellow-500 hover:text-black transition-all text-xs">PHONE</button>
                 </div>
                 
-                <div class="flex flex-col items-center">
-                    <div id="timer-display" class="text-5xl font-mono font-bold border-4 border-white w-24 h-24 rounded-full flex items-center justify-center">30</div>
-                    <button id="btn-start-timer" onclick="startTimer()" class="mt-2 bg-green-600 px-4 py-1 rounded-full text-sm font-bold animate-bounce">সময় শুরু করুন</button>
+                <div class="relative flex flex-col items-center">
+                    <div id="timer-circle" class="text-4xl font-mono font-bold border-4 border-white w-20 h-20 rounded-full flex items-center justify-center bg-black/50">30</div>
+                    <button id="start-timer-btn" onclick="triggerTimer()" class="absolute -bottom-10 whitespace-nowrap bg-green-600 hover:bg-green-500 px-4 py-1 rounded-full text-xs font-bold animate-pulse">সময় শুরু করুন</button>
                 </div>
 
-                <button onclick="quitGame()" class="bg-red-700 px-6 py-2 rounded-lg font-bold text-sm">QUIT</button>
+                <button onclick="quitGame()" class="bg-red-800 hover:bg-red-700 px-6 py-2 rounded-lg font-bold text-sm border border-red-500">QUIT</button>
             </div>
 
-            <!-- Question Area -->
-            <div class="my-8">
-                <div id="question-box" class="bg-gradient-to-r from-blue-900 to-indigo-900 p-8 rounded-3xl border-2 border-white text-center text-2xl mb-8 shadow-2xl">
-                    প্রশ্ন এখানে লোড হবে...
+            <!-- Question Box -->
+            <div class="mt-12">
+                <div id="question-display" class="bg-gradient-to-r from-blue-900 to-indigo-900 p-10 rounded-3xl border-2 border-white/50 text-center text-3xl shadow-2xl leading-relaxed">
+                    লোড হচ্ছে...
                 </div>
                 
-                <div id="options-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Options JS will inject -->
+                <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+                    <!-- Options JS injection -->
                 </div>
             </div>
             
-            <div id="status-msg" class="text-center text-yellow-400 italic text-xl h-8"></div>
+            <div id="game-feedback" class="text-center text-yellow-400 italic text-2xl h-10 mt-4"></div>
         </div>
 
         <!-- Right Side: Money Ladder -->
-        <div class="w-full lg:w-72 bg-black/50 p-4 rounded-xl border-l-2 border-yellow-600 flex flex-col">
-            <h2 class="text-yellow-500 font-bold text-center mb-4 border-b border-yellow-500 pb-2">মানি ল্যাডার</h2>
-            <div id="ladder-container" class="ladder-scroll overflow-y-auto flex-grow flex flex-col-reverse text-sm">
-                <!-- Ladder JS will inject -->
+        <div class="w-full lg:w-80 bg-black/60 p-6 rounded-2xl border-l-4 border-yellow-600 flex flex-col shadow-2xl">
+            <h2 class="text-yellow-500 font-bold text-center text-xl mb-4 border-b border-yellow-500/30 pb-2">মানি ল্যাডার</h2>
+            <div id="money-ladder" class="ladder-scroll overflow-y-auto flex-grow flex flex-col-reverse text-sm font-semibold">
+                <!-- Ladder JS injection -->
             </div>
-        </div>
-    </div>
-
-    <!-- Modals (Lifelines) -->
-    <div id="poll-modal" class="hidden fixed inset-0 modal-bg z-[100] flex items-center justify-center p-6">
-        <div class="bg-indigo-900 p-8 rounded-3xl border-2 border-yellow-500 w-full max-w-md">
-            <h3 class="text-2xl text-center mb-6 font-bold text-yellow-400">অডিয়েন্স পোল ফলাফল</h3>
-            <div id="poll-bars" class="space-y-4"></div>
-            <button onclick="closeModal('poll-modal')" class="mt-8 w-full bg-yellow-500 text-black font-bold py-2 rounded-lg">ঠিক আছে</button>
-        </div>
-    </div>
-
-    <div id="phone-modal" class="hidden fixed inset-0 modal-bg z-[100] flex items-center justify-center p-6">
-        <div class="bg-blue-900 p-8 rounded-3xl border-2 border-white w-full max-w-md text-center">
-            <div class="w-20 h-20 bg-green-500 rounded-full mx-auto mb-4 flex items-center justify-center animate-pulse">
-                <span class="text-3xl">📞</span>
-            </div>
-            <h3 class="text-xl font-bold mb-4">বন্ধুর পরামর্শ...</h3>
-            <p id="friend-msg" class="text-lg italic bg-black/30 p-4 rounded-xl"></p>
-            <button onclick="closeModal('phone-modal')" class="mt-6 w-full bg-green-600 font-bold py-2 rounded-lg">ধন্যবাদ</button>
         </div>
     </div>
 
     <!-- Result Screen -->
-    <div id="result-screen" class="hidden fixed inset-0 z-[200] flex flex-col items-center justify-center p-8 bg-[#020230]">
-        <h2 id="result-title" class="text-6xl font-bold mb-6 text-center"></h2>
-        <p id="result-prize" class="text-4xl text-yellow-400 mb-10"></p>
-        <button onclick="resetGame()" class="bg-white text-black font-bold py-4 px-12 rounded-full text-xl hover:bg-yellow-500">আবার খেলুন</button>
+    <div id="result-screen" class="hidden fixed inset-0 z-[100] flex flex-col items-center justify-center p-10 bg-[#020230] text-center">
+        <h2 id="result-status" class="text-7xl font-bold mb-8 drop-shadow-lg"></h2>
+        <p id="final-prize" class="text-5xl text-yellow-400 mb-12 font-bold"></p>
+        <button onclick="location.reload()" class="bg-white text-black font-bold py-4 px-12 rounded-full text-xl hover:bg-yellow-500 transition-colors">আবার খেলুন</button>
+    </div>
+
+    <!-- Lifeline Modals -->
+    <div id="poll-modal" class="hidden fixed inset-0 bg-black/90 z-[150] flex items-center justify-center p-6">
+        <div class="bg-indigo-950 p-10 rounded-3xl border-2 border-yellow-500 w-full max-w-md">
+            <h3 class="text-2xl text-center mb-8 font-bold text-yellow-400">অডিয়েন্স পোল</h3>
+            <div id="poll-graph" class="space-y-6"></div>
+            <button onclick="closeModal('poll-modal')" class="mt-10 w-full bg-yellow-500 text-black font-bold py-3 rounded-xl">ঠিক আছে</button>
+        </div>
     </div>
 
     <script>
-        // --- Data ---
-        const moneyLadder = [
-            "₹১", "₹২", "₹৫", "₹১০", "₹২০", "₹৪০", "₹৮০", "₹১৬০", "₹৩২০", "₹৬৪০",
-            "₹১,২৫০", "₹২,৫০০", "₹৫,০০০", "₹১০,০০০", "₹২০,০০০", "₹৪০,০০০", "₹৮০,০০০",
-            "₹১,৬০,০০০", "₹৩,২০,০০০", "₹৬,৪০,০০০", "₹১২,৫০,০০০", "₹২৫,০০,০০০",
-            "₹৫০,০০,০০০", "₹১ কোটি", "₹২ কোটি", "₹৩ কোটি", "₹৪ কোটি", "₹৫ কোটি", "₹৬ কোটি", "₹৭ কোটি"
-        ];
-        const safeZones = [4, 9, 14, 19, 24, 29];
-
-        const questionsPool = [
+        // --- Questions (30 Questions Mixed) ---
+        const questions = [
             { q: "ভারতের প্রথম নোবেল পুরস্কার জয়ী কে ছিলেন?", a: ["রবীন্দ্রনাথ ঠাকুর", "সি ভি রমন", "মাদার টেরেসা", "অমর্ত্য সেন"], c: 0 },
-            { q: "পশ্চিমবঙ্গের রাজ্য পশু কোনটি?", a: ["রয়্যাল বেঙ্গল টাইগার", "মেছো বিড়াল", "হাতি", "গন্ডার"], c: 1 },
-            { q: "সত্যজিৎ রায়ের প্রথম চলচ্চিত্র কোনটি?", a: ["অপরাজিত", "অপুর সংসার", "পথের পাঁচালী", "জলসাঘর"], c: 2 },
+            { q: "পশ্চিমবঙ্গের রাজ্য পশুর নাম কি?", a: ["রয়্যাল বেঙ্গল টাইগার", "মেছো বিড়াল", "হাতি", "গন্ডার"], c: 1 },
             { q: "কলকাতা শহর কত সালে ভারতের রাজধানী থেকে সরে যায়?", a: ["১৯০৫", "১৯১১", "১৯৪৭", "১৯৫০"], c: 1 },
-            { q: "কোন গ্রহকে 'লাল গ্রহ' বলা হয়?", a: ["শুক্র", "বৃহস্পতি", "মঙ্গল", "শনি"], c: 2 },
+            { q: "সত্যজিৎ রায়ের প্রথম চলচ্চিত্র কোনটি?", a: ["অপরাজিত", "অপুর সংসার", "পথের পাঁচালী", "জলসাঘর"], c: 2 },
             { q: "সৌরজগতের বৃহত্তম গ্রহ কোনটি?", a: ["শনি", "ইউরেনাস", "বৃহস্পতি", "নেপচুন"], c: 2 },
-            { q: "কোন ভিটামিনের অভাবে স্কার্ভি রোগ হয়?", a: ["ভিটামিন এ", "ভিটামিন বি", "ভিটামিন সি", "ভিটামিন ডি"], c: 2 },
-            { q: "বিখ্যাত 'জয় হিন্দ' স্লোগান কে দিয়েছিলেন?", a: ["ভগত সিং", "সুভাষচন্দ্র বসু", "মহাত্মা গান্ধী", "জওহরলাল নেহরু"], c: 1 },
-            { q: "তাজমহল কোন নদীর তীরে অবস্থিত?", a: ["গঙ্গা", "যমুনা", "সরস্বতী", "নর্মদা"], c: 1 },
-            { q: "দাবা খেলার জন্ম কোন দেশে হয়েছিল?", a: ["ভারত", "চীন", "পারস্য", "মিশর"], c: 0 },
-            { q: "পেনিসিলিন কে আবিষ্কার করেন?", a: ["আলেকজান্ডার ফ্লেমিং", "লুই পাস্তুর", "মেরি কুরি", "আইজাক নিউটন"], c: 0 },
-            { q: "ভারতের দীর্ঘতম নদী কোনটি?", a: ["যমুনা", "ব্রহ্মপুত্র", "গঙ্গা", "গোদাবরী"], c: 2 },
-            { q: "সূর্য থেকে পৃথিবীতে আলো আসতে কত সময় লাগে?", a: ["২ মিনিট", "৫ মিনিট", "৮ মিনিট ২০ সেকেন্ড", "১০ মিনিট"], c: 2 },
-            { q: "মানবদেহের স্বাভাবিক তাপমাত্রা কত?", a: ["৯৬.৪ ফারেনহাইট", "৯৮.৪ ফারেনহাইট", "৯৯.০ ফারেনহাইট", "১০০ ফারেনহাইট"], c: 1 },
             { q: "বিখ্যাত 'পথের পাঁচালী' উপন্যাসের লেখক কে?", a: ["শরৎচন্দ্র চট্টোপাধ্যায়", "বিভূতিভূষণ বন্দ্যোপাধ্যায়", "বঙ্কিমচন্দ্র চট্টোপাধ্যায়", "রবীন্দ্রনাথ ঠাকুর"], c: 1 },
-            { q: "কোন ধাতুকে 'তরল ধাতু' বলা হয়?", a: ["সোডিয়াম", "পারদ", "পটাশিয়াম", "ম্যাগনেসিয়াম"], c: 1 },
-            { q: "পশ্চিমবঙ্গের সবচেয়ে বড় জেলার নাম কী?", a: ["পুরুলিয়া", "দক্ষিণ ২৪ পরগনা", "পশ্চিম মেদিনীপুর", "বর্ধমান"], c: 1 },
+            { q: "কোন গ্রহকে 'লাল গ্রহ' বলা হয়?", a: ["শুক্র", "বৃহস্পতি", "মঙ্গল", "শনি"], c: 2 },
+            { q: "পেনিসিলিন কে আবিষ্কার করেন?", a: ["আলেকজান্ডার ফ্লেমিং", "লুই পাস্তুর", "মেরি কুরি", "আইজাক নিউটন"], c: 0 },
+            { q: "তাজমহল কোন নদীর তীরে অবস্থিত?", a: ["গঙ্গা", "যমুনা", "সরস্বতী", "নর্মদা"], c: 1 },
             { q: "ভারতের সংবিধান দিবস কবে পালিত হয়?", a: ["১৫ই আগস্ট", "২৬ই জানুয়ারি", "২৬ই নভেম্বর", "২রা অক্টোবর"], c: 2 },
+            { q: "কোন ভিটামিনের অভাবে স্কার্ভি রোগ হয়?", a: ["ভিটামিন এ", "ভিটামিন বি", "ভিটামিন সি", "ভিটামিন ডি"], c: 2 },
+            { q: "দাবা খেলার জন্ম কোন দেশে হয়েছিল?", a: ["ভারত", "চীন", "পারস্য", "মিশর"], c: 0 },
+            { q: "বিশ্বের উচ্চতম পর্বতশৃঙ্গ কোনটি?", a: ["কাঞ্চনজঙ্ঘা", "মাউন্ট এভারেস্ট", "কে-টু", "লোৎসে"], c: 1 },
             { q: "শান্তিনিকেতন কোন জেলায় অবস্থিত?", a: ["বাঁকুড়া", "বীরভূম", "পুরুলিয়া", "বর্ধমান"], c: 1 },
-            { q: "কলকাতা হাইকোর্ট কত সালে প্রতিষ্ঠিত হয়?", a: ["১৮৬২", "১৮৭২", "১৮৫২", "১৯১১"], c: 0 },
-            { q: "ভিক্টোরিয়া মেমোরিয়াল কোন ব্রিটিশ রানীর সম্মানে নির্মিত?", a: ["রানী এলিজাবেথ", "রানী ভিক্টোরিয়া", "রানী মেরি", "রানী অ্যান"], c: 1 },
-            { q: "বাংলা সাহিত্যের 'গল্পগুচ্ছ' কার রচনা?", a: ["কাজী নজরুল ইসলাম", "রবীন্দ্রনাথ ঠাকুর", "সুনীল গঙ্গোপাধ্যায়", "হুমায়ূন আহমেদ"], c: 1 },
-            { q: "হাওড়া ব্রিজ কোন নদীর ওপর নির্মিত?", a: ["গঙ্গা", "যমুনা", "সরস্বতী", "হুগলি"], c: 3 },
-            { q: "সুন্দরবনকে ইউনেস্কো ওয়ার্ল্ড হেরিটেজ সাইট কবে ঘোষণা করে?", a: ["১৯৮৭", "১৯৯৭", "২০০৭", "১৯৭৭"], c: 0 },
-            { q: "ভারতের বর্তমান রাষ্ট্রপতির নাম কী?", a: ["নরেন্দ্র মোদী", "দ্রৌপদী মুর্মু", "রামনাথ কোবিন্দ", "জগদীপ ধনখর"], c: 1 },
-            { q: "শুশুনিয়া পাহাড় পশ্চিমবঙ্গের কোন জেলায়?", a: ["বাঁকুড়া", "পুরুলিয়া", "বীরভূম", "ঝাড়গ্রাম"], c: 0 },
-            { q: "ভারতের ম্যানচেস্টার কোন শহরকে বলা হয়?", a: ["মুম্বাই", "আমেদাবাদ", "কানপুর", "কলকাতা"], c: 1 },
-            { q: "জাপানের মুদ্রার নাম কী?", a: ["ইউয়ান", "ইয়েন", "টাকা", "ডলার"], c: 1 },
-            { q: "কোন দেশ প্রথম বিশ্বকাপ ফুটবল জিতেছিল?", a: ["ব্রাজিল", "আর্জেন্টিনা", "উরুগুয়ে", "জার্মানি"], c: 2 },
-            { q: "গীতাঞ্জলি কাব্যগ্রন্থের জন্য রবীন্দ্রনাথ ঠাকুর কবে নোবেল পান?", a: ["১৯১১", "১৯১৩", "১৯১৫", "১৯১৭"], c: 1 },
-            { q: "পশ্চিমবঙ্গের রাজ্য ফুলের নাম কী?", a: ["পদ্ম", "শিউলি", "গোলাপ", "জবা"], c: 1 },
+            { q: "কোন ধাতুকে 'তরল ধাতু' বলা হয়?", a: ["সোডিয়াম", "পারদ", "লিথিয়াম", "ম্যাগনেসিয়াম"], c: 1 },
+            { q: "ভারতের দীর্ঘতম নদী কোনটি?", a: ["যমুনা", "ব্রহ্মপুত্র", "গঙ্গা", "গোদাবরী"], c: 2 },
+            { q: "ভিক্টোরিয়া মেমোরিয়াল কোথায় অবস্থিত?", a: ["দিল্লি", "মুম্বাই", "কলকাতা", "চেন্নাই"], c: 2 },
+            { q: "সৌরশক্তি কিসের মাধ্যমে বিদ্যুৎ উৎপন্ন করে?", a: ["জেনারেটর", "সোলার প্যানেল", "টারবাইন", "ব্যাটারি"], c: 1 },
+            { q: "হাজারদুয়ারি প্যালেস পশ্চিমবঙ্গের কোন জেলায়?", a: ["মুর্শিদাবাদ", "মালদা", "বীরভূম", "নদীয়া"], c: 0 },
+            { q: "ভারতের প্রবেশদ্বার বলা হয় কোন শহরকে?", a: ["কলকাতা", "মুম্বাই", "চেন্নাই", "দিল্লি"], c: 1 },
+            { q: "মানুষের শরীরে হাড়ের সংখ্যা কত?", a: ["২০৬", "২১০", "২৫০", "১৯০"], c: 0 },
+            { q: "শুশুনিয়া পাহাড় কোন জেলায় অবস্থিত?", a: ["বাঁকুড়া", "পুরুলিয়া", "বীরভূম", "ঝাড়গ্রাম"], c: 0 },
+            { q: "জাপানের মুদ্রার নাম কি?", a: ["ইউয়ান", "ইয়েন", "টাকা", "ডলার"], c: 1 },
+            { q: "জাতীয় গান 'বন্দে মাতরম' কার লেখা?", a: ["রবীন্দ্রনাথ ঠাকুর", "বঙ্কিমচন্দ্র চট্টোপাধ্যায়", "শরৎচন্দ্র চট্টোপাধ্যায়", "নজরুল ইসলাম"], c: 1 },
             { q: "কম্পিউটারের জনক কাকে বলা হয়?", a: ["অ্যালান টিউরিং", "চার্লস ব্যাবেজ", "বিল গেটস", "স্টিভ জবস"], c: 1 },
-            { q: "ভারতের প্রবেশদ্বার বলা হয় কোন শহরকে?", a: ["দিল্লি", "কলকাতা", "চেন্নাই", "মুম্বাই"], c: 3 },
-            { q: "কোন দিনটি আন্তর্জাতিক মাতৃভাষা দিবস হিসেবে পালিত হয়?", a: ["২৩শে জানুয়ারি", "২১শে ফেব্রুয়ারি", "১৫ই আগস্ট", "১লা মে"], c: 1 },
-            { q: "পৃথিবীর বৃহত্তম মরুভূমি কোনটি?", a: ["থর", "সাহারা", "গোবি", "আটাকামা"], c: 1 },
-            { q: "হাজারদুয়ারি প্যালেস কোথায় অবস্থিত?", a: ["মালদা", "মুর্শিদাবাদ", "কোচবিহার", "বাঁকুড়া"], c: 1 },
-            { q: "ভারতের সর্বোচ্চ নাগরিক সম্মান কোনটি?", a: ["পদ্মবিভূষণ", "ভারতরত্ন", "পরমবীর চক্র", "পদ্মশ্রী"], c: 1 },
-            { q: "অগ্নিবীণা কাব্যগ্রন্থের লেখক কে?", a: ["রবীন্দ্রনাথ ঠাকুর", "কাজী নজরুল ইসলাম", "সুকান্ত ভট্টাচার্য", "জীবনানন্দ দাশ"], c: 1 },
-            { q: "কোন গ্যাস আগুণ নেভাতে সাহায্য করে?", a: ["অক্সিজেন", "কার্বন ডাই অক্সাইড", "নাইট্রোজেন", "হাইড্রোজেন"], c: 1 },
-            { q: "বাংলার দুঃখ বলা হয় কোন নদীকে?", a: ["তিস্তা", "দামোদর", "রূপনারায়ণ", "অজয়"], c: 1 }
+            { q: "সবচেয়ে হালকা গ্যাস কোনটি?", a: ["অক্সিজেন", "নাইট্রোজেন", "হাইড্রোজেন", "হিলিয়াম"], c: 2 },
+            { q: "নোবেল পুরস্কার কয়টি বিভাগে দেওয়া হয়?", a: ["৫টি", "৬টি", "৪টি", "৭টি"], c: 1 },
+            { q: "আইফেল টাওয়ার কোন শহরে অবস্থিত?", a: ["লন্ডন", "প্যারিস", "নিউ ইয়র্ক", "রোম"], c: 1 },
+            { q: "ভারতের প্রথম প্রধানমন্ত্রী কে ছিলেন?", a: ["সর্দার প্যাটেল", "জওহরলাল নেহরু", "লাল বাহাদুর শাস্ত্রী", "ইন্দিরা গান্ধী"], c: 1 },
+            { q: "চাঁদে প্রথম পা রাখা মানুষের নাম কি?", a: ["ইউরি গ্যাগারিন", "নীল আর্মস্ট্রং", "বাজ অলড্রিন", "রাকেশ শর্মা"], c: 1 }
         ];
 
-        // --- Variables ---
+        const prizeMoney = ["₹১", "₹২", "₹৫", "₹১০", "₹২০", "₹৪০", "₹৮০", "₹১৬০", "₹৩২০", "₹৬৪০", "₹১,২৫০", "₹২,৫০০", "₹৫,০০০", "₹১০,০০০", "₹২০,০০০", "₹৪০,০০০", "₹৮০,০০০", "₹১,৬০,০০০", "₹৩,২০,০০০", "₹৬,৪০,০০০", "₹১২,৫০,০০০", "₹২৫,০০,০০০", "₹৫০,০০,০০০", "₹১ কোটি", "₹২ কোটি", "₹৩ কোটি", "₹৪ কোটি", "₹৫ কোটি", "₹৬ কোটি", "₹৭ কোটি"];
+        const safeLevels = [4, 9, 14, 19, 24, 29];
+
         let currentLevel = 0;
-        let shuffledQuestions = [];
+        let shuffledPool = [];
         let timer = 30;
-        let timerInt = null;
+        let timerId = null;
+        let canClick = false;
         let lifelines = { fifty: true, poll: true, phone: true };
-        let canAnswer = false;
 
-        const sounds = {
-            theme: document.getElementById('snd-theme'),
-            tick: document.getElementById('snd-tick'),
-            lock: document.getElementById('snd-lock'),
-            correct: document.getElementById('snd-correct'),
-            wrong: document.getElementById('snd-wrong')
-        };
+        // Sounds
+        const sndTheme = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+        const sndTick = new Audio('https://actions.google.com/sounds/v1/alarms/mechanical_clock_ticking.ogg');
+        const sndLock = new Audio('https://actions.google.com/sounds/v1/science_fiction/glitch_low_power_sweep.ogg');
+        const sndCorrect = new Audio('https://actions.google.com/sounds/v1/cartoon/clime.ogg');
+        const sndWrong = new Audio('https://actions.google.com/sounds/v1/cartoon/boing.ogg');
 
-        // --- Functions ---
+        // --- Screen Transition Logic (FIXED) ---
+        document.getElementById('start-game-btn').addEventListener('click', function() {
+            // Start Audio (Fix for Browser Policy)
+            sndTheme.loop = true;
+            sndTheme.play().catch(e => console.log("Audio play prevented"));
+
+            // Visual Transition
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('game-board').style.display = 'flex';
+
+            // Init Game
+            initGame();
+        });
+
+        function initGame() {
+            shuffledPool = shuffle([...questions]);
+            currentLevel = 0;
+            lifelines = { fifty: true, poll: true, phone: true };
+            updateLifelineUI();
+            renderLadder();
+            loadQuestion();
+        }
+
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -672,216 +184,194 @@
             return array;
         }
 
-        function startGame() {
-            document.getElementById('welcome-screen').classList.add('hidden');
-            document.getElementById('game-screen').classList.remove('hidden');
-            shuffledQuestions = shuffle([...questionsPool]);
-            currentLevel = 0;
-            lifelines = { fifty: true, poll: true, phone: true };
-            updateLifelineUI();
-            buildLadder();
-            loadQuestion();
-            sounds.theme.play();
-        }
-
-        function buildLadder() {
-            const container = document.getElementById('ladder-container');
+        function renderLadder() {
+            const container = document.getElementById('money-ladder');
             container.innerHTML = "";
-            moneyLadder.forEach((m, i) => {
+            prizeMoney.forEach((m, i) => {
                 const div = document.createElement('div');
                 div.id = `step-${i}`;
-                div.className = `flex justify-between py-1 px-4 border-b border-white/10 ${safeZones.includes(i) ? 'text-white font-bold' : 'text-gray-400'}`;
+                div.className = `flex justify-between py-1 px-4 border-b border-white/10 ${safeLevels.includes(i) ? 'text-white font-bold' : 'text-gray-500'}`;
                 div.innerHTML = `<span>${i + 1}</span><span>${m}</span>`;
                 container.appendChild(div);
             });
         }
 
         function loadQuestion() {
-            canAnswer = false;
+            canClick = false;
             stopTimer();
             timer = 30;
-            const display = document.getElementById('timer-display');
-            display.innerText = timer;
-            display.classList.remove('timer-critical', 'border-red-600');
-            document.getElementById('btn-start-timer').style.display = 'block';
+            updateTimerUI();
+            document.getElementById('start-timer-btn').style.display = 'block';
+            document.getElementById('game-feedback').innerText = "";
 
-            const q = shuffledQuestions[currentLevel];
-            document.getElementById('question-box').innerText = q.q;
-            document.getElementById('status-msg').innerText = "";
-
-            const grid = document.getElementById('options-grid');
-            grid.innerHTML = "";
+            const q = shuffledPool[currentLevel];
+            document.getElementById('question-display').innerText = `প্রশ্ন ${currentLevel + 1}: ${q.q}`;
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = "";
             q.a.forEach((opt, i) => {
                 const btn = document.createElement('button');
-                btn.className = "option-box text-left p-5 rounded-full text-lg flex items-center";
+                btn.className = "option-btn text-left p-6 rounded-full text-xl flex items-center";
                 btn.innerHTML = `<span class="text-yellow-500 font-bold mr-4">${String.fromCharCode(65 + i)}:</span> <span>${opt}</span>`;
-                btn.onclick = () => selectOption(i, btn);
+                btn.onclick = () => selectAnswer(i, btn);
                 btn.disabled = true;
-                grid.appendChild(btn);
+                container.appendChild(btn);
             });
 
-            // Update Ladder Highlight
+            // Highlight Ladder
             document.querySelectorAll('[id^="step-"]').forEach(el => el.classList.remove('bg-yellow-600', 'text-black'));
             const activeStep = document.getElementById(`step-${currentLevel}`);
             activeStep.classList.add('bg-yellow-600', 'text-black');
             activeStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
 
-        function startTimer() {
-            document.getElementById('btn-start-timer').style.display = 'none';
-            document.querySelectorAll('.option-box').forEach(b => b.disabled = false);
-            canAnswer = true;
+        function triggerTimer() {
+            document.getElementById('start-timer-btn').style.display = 'none';
+            document.querySelectorAll('.option-btn').forEach(b => b.disabled = false);
+            canClick = true;
             
-            timerInt = setInterval(() => {
+            timerId = setInterval(() => {
                 timer--;
-                const display = document.getElementById('timer-display');
-                display.innerText = timer;
-                sounds.tick.play();
+                updateTimerUI();
+                sndTick.play();
 
                 if (timer <= 7) {
-                    display.classList.add('timer-critical', 'border-red-600');
-                    sounds.tick.playbackRate = 1.5;
+                    document.getElementById('timer-circle').classList.add('timer-critical');
+                    sndTick.playbackRate = 1.6;
                 }
 
                 if (timer <= 0) {
-                    clearInterval(timerInt);
-                    gameOver("সময় শেষ!", false);
+                    clearInterval(timerId);
+                    endGame("সময় শেষ!", false);
                 }
             }, 1000);
         }
 
-        function stopTimer() {
-            clearInterval(timerInt);
-            sounds.tick.pause();
-            sounds.tick.currentTime = 0;
-            sounds.tick.playbackRate = 1.0;
+        function updateTimerUI() {
+            const circle = document.getElementById('timer-circle');
+            circle.innerText = timer;
+            if (timer > 7) circle.classList.remove('timer-critical');
         }
 
-        function selectOption(index, btn) {
-            if (!canAnswer) return;
-            canAnswer = false;
-            stopTimer();
-            sounds.lock.play();
+        function stopTimer() {
+            clearInterval(timerId);
+            sndTick.pause();
+            sndTick.currentTime = 0;
+            sndTick.playbackRate = 1.0;
+        }
 
-            const correct = shuffledQuestions[currentLevel].c;
-            const allBtns = document.querySelectorAll('.option-box');
+        function selectAnswer(idx, btn) {
+            if (!canClick) return;
+            canClick = false;
+            stopTimer();
+            sndLock.play();
+
+            const correct = shuffledPool[currentLevel].c;
+            const allBtns = document.querySelectorAll('.option-btn');
             
-            allBtns.forEach(b => { if (b !== btn) b.style.opacity = "0.3"; });
+            allBtns.forEach(b => { if (b !== btn) b.classList.add('dimmed'); });
             btn.classList.add('blink-animation');
-            document.getElementById('status-msg').innerText = "কম্পিউটার মশাই, লক করা যাক?";
+            document.getElementById('game-feedback').innerText = "Lock করা যাক?";
 
             setTimeout(() => {
                 btn.classList.remove('blink-animation');
-                if (index === correct) {
+                if (idx === correct) {
                     btn.classList.add('bg-green-600', 'border-green-400');
-                    sounds.correct.play();
-                    document.getElementById('status-msg').innerText = "অপূর্ব! সঠিক জবাব!";
+                    sndCorrect.play();
+                    document.getElementById('game-feedback').innerText = "অদ্ভূত! সঠিক জবাব!";
                     setTimeout(() => {
                         if (currentLevel === 29) {
-                            gameOver("অভিনন্দন! আপনি মহাকোটিপতি!", true);
+                            endGame("অভিনন্দন! আপনি মহাকোটিপতি!", true);
                         } else {
                             currentLevel++;
                             loadQuestion();
                         }
-                    }, 2000);
+                    }, 2500);
                 } else {
                     btn.classList.add('bg-red-600', 'border-red-400');
-                    allBtns[correct].style.opacity = "1";
+                    allBtns[correct].classList.remove('dimmed');
                     allBtns[correct].classList.add('bg-green-600');
-                    sounds.wrong.play();
-                    document.getElementById('status-msg').innerText = "ভুল উত্তর! খেলা এখানেই শেষ।";
-                    setTimeout(() => gameOver("আফসোস! আপনি হেরে গেছেন।", false), 2000);
+                    sndWrong.play();
+                    document.getElementById('game-feedback').innerText = "আফসোস! ভুল উত্তর।";
+                    setTimeout(() => endGame("খেলা শেষ!", false), 2500);
                 }
             }, 3000);
         }
 
         // --- Lifelines ---
         function updateLifelineUI() {
-            document.getElementById('ll-5050').style.opacity = lifelines.fifty ? "1" : "0.3";
-            document.getElementById('ll-poll').style.opacity = lifelines.poll ? "1" : "0.3";
-            document.getElementById('ll-phone').style.opacity = lifelines.phone ? "1" : "0.3";
+            document.getElementById('lifeline-5050').style.opacity = lifelines.fifty ? "1" : "0.3";
+            document.getElementById('lifeline-poll').style.opacity = lifelines.poll ? "1" : "0.3";
+            document.getElementById('lifeline-phone').style.opacity = lifelines.phone ? "1" : "0.3";
         }
 
         function use5050() {
-            if (!lifelines.fifty || !canAnswer) return;
+            if (!lifelines.fifty || !canClick) return;
             lifelines.fifty = false;
             updateLifelineUI();
-            
-            const correct = shuffledQuestions[currentLevel].c;
-            const btns = document.querySelectorAll('.option-box');
-            let hidden = 0;
+            const correct = shuffledPool[currentLevel].c;
+            const btns = document.querySelectorAll('.option-btn');
             let indices = [0, 1, 2, 3].filter(i => i !== correct);
-            shuffle(indices);
-            
-            indices.slice(0, 2).forEach(idx => {
-                btns[idx].style.visibility = 'hidden';
-            });
+            indices = shuffle(indices).slice(0, 2);
+            indices.forEach(i => btns[i].style.visibility = 'hidden');
         }
 
         function usePoll() {
-            if (!lifelines.poll || !canAnswer) return;
+            if (!lifelines.poll || !canClick) return;
             lifelines.poll = false;
             updateLifelineUI();
+            const correct = shuffledPool[currentLevel].c;
+            const pollData = [15, 15, 15, 15];
+            pollData[correct] = 55;
             
-            const correct = shuffledQuestions[currentLevel].c;
-            const pollData = [10, 10, 10, 10];
-            pollData[correct] = 70; // Favor correct answer
-            
-            const pollBars = document.getElementById('poll-bars');
-            pollBars.innerHTML = "";
-            ['A', 'B', 'C', 'D'].forEach((label, i) => {
-                pollBars.innerHTML += `
-                    <div class="flex items-center gap-4">
-                        <span class="w-4 font-bold">${label}</span>
-                        <div class="flex-grow bg-white/20 h-4 rounded-full overflow-hidden">
+            const graph = document.getElementById('poll-graph');
+            graph.innerHTML = "";
+            ['A', 'B', 'C', 'D'].forEach((l, i) => {
+                graph.innerHTML += `
+                    <div class="flex items-center gap-4 text-white">
+                        <span class="w-4 font-bold">${l}</span>
+                        <div class="flex-grow bg-white/10 h-6 rounded-full overflow-hidden">
                             <div class="bg-yellow-500 h-full" style="width: ${pollData[i]}%"></div>
                         </div>
-                        <span class="w-10 text-xs">${pollData[i]}%</span>
-                    </div>
-                `;
+                        <span class="w-10 text-right">${pollData[i]}%</span>
+                    </div>`;
             });
             document.getElementById('poll-modal').classList.remove('hidden');
         }
 
         function usePhone() {
-            if (!lifelines.phone || !canAnswer) return;
+            if (!lifelines.phone || !canClick) return;
             lifelines.phone = false;
             updateLifelineUI();
-            
-            const correctLabel = String.fromCharCode(65 + shuffledQuestions[currentLevel].c);
-            const msgs = [
-                `আমার মনে হয় সঠিক উত্তরটি হলো ${correctLabel}`,
-                `আমি নিশ্চিত নই, তবে ${correctLabel} হওয়ার সম্ভাবনা বেশি।`,
-                `খুব কঠিন প্রশ্ন! তবে আমি ${correctLabel}-এর দিকেই যেতাম।`
-            ];
-            document.getElementById('friend-msg').innerText = msgs[Math.floor(Math.random() * msgs.length)];
-            document.getElementById('phone-modal').classList.remove('hidden');
+            const correctChar = String.fromCharCode(65 + shuffledPool[currentLevel].c);
+            alert(`আপনার বন্ধু বলছে: "আমার মনে হয় সঠিক উত্তর ${correctChar} হবে।"`);
         }
 
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
         function quitGame() {
-            if (confirm("আপনি কি নিশ্চিত যে আপনি খেলা ছেড়ে দিতে চান?")) {
-                gameOver("আপনি খেলা ছেড়ে দিয়েছেন।", false, true);
-            }
+            if (confirm("আপনি কি নিশ্চিত যে আপনি খেলা ছেড়ে দেবেন?")) endGame("আপনি খেলা ছেড়ে দিয়েছেন", false, true);
         }
 
-        function gameOver(title, isWin, isQuit = false) {
+        function endGame(status, isWin, isQuit = false) {
             stopTimer();
-            sounds.theme.pause();
-            document.getElementById('game-screen').classList.add('hidden');
-            const resScreen = document.getElementById('result-screen');
-            resScreen.classList.remove('hidden');
+            sndTheme.pause();
+            document.getElementById('game-board').style.display = 'none';
+            const screen = document.getElementById('result-screen');
+            screen.classList.remove('hidden');
             
             let prize = "₹০";
-            if (isWin) {
-                prize = "₹৭ কোটি";
-            } else if (isQuit) {
-                prize = currentLevel > 0 ? moneyLadder[currentLevel - 1] : "₹০";
-            } else {
-                let lastSafeIndex = -1;
-                for (let sz of safeZones) { if (currentLevel > sz) lastSafeIndex = sz; }
-                prize = lastSafeIndex >= 0 ? moneyLadder[lastSafeIndex] : "₹০";
+            if (isWin) prize = "₹৭ কোটি";
+            else if (isQuit) prize = currentLevel > 0 ? prizeMoney[currentLevel - 1] : "₹০";
+            else {
+                let lastSafe = -1;
+                for (let lv of safeLevels) { if (currentLevel > lv) lastSafe = lv; }
+                prize = lastSafe >= 0 ? prizeMoney[lastSafe] : "₹০";
             }
 
-            document.getElementById('result-tit
+            document.getElementById('result-status').innerText = status;
+            document.getElementById('final-prize').innerText = `জয়ী অর্থ: ${prize}`;
+        }
+    </script>
+</body>
+</html>

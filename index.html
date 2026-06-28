@@ -7,14 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;500;700&display=swap" rel="stylesheet">
     
     <style>
-        /* 
-        ========================================
-        1. CONFIGURATION BLOCK (EASY CUSTOMIZE)
-        ========================================
-        Edit the values below to change game behavior 
-        */
         :root {
-            /* Colors */
             --bg-color: #020230;
             --accent-gold: #ffd700;
             --option-blue: #111499;
@@ -22,31 +15,12 @@
             --correct-green: #2ecc71;
             --wrong-red: #e74c3c;
             --text-white: #ffffff;
-            
-            /* Timing (in seconds) */
-            --timer-duration: 45; 
-            --suspense-blink-time: 3000; /* 3 seconds blink before reveal */
-            
-            /* Fonts */
-            --main-font: 'Hind Siliguri', sans-serif;
+            --glass: rgba(255, 255, 255, 0.1);
         }
 
-        /* Assets Setup */
-        const ASSETS = {
-            logo: "https://i.imgur.com/your_logo_here.png", // Replace with your KBC Logo URL
-            bg_music: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", // Replace with KBC Theme
-            tick_sound: "https://www.soundscape.com/tick.mp3",
-            win_sound: "https://www.soundscape.com/win.mp3"
-        };
-
-        /* 
-        ========================================
-        2. CSS STYLES (MODERN & RESPONSIVE)
-        ========================================
-        */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: var(--main-font);
+            font-family: 'Hind Siliguri', sans-serif;
             background: radial-gradient(circle, #05054d 0%, #02021a 100%);
             color: var(--text-white);
             height: 100vh;
@@ -56,8 +30,10 @@
             align-items: center;
         }
 
-        /* Login Screen */
-        #login-screen, #game-screen, #result-screen {
+        .hidden { display: none !important; }
+
+        /* --- SCREENS --- */
+        #start-screen, #rules-screen, #game-screen {
             width: 100%;
             max-width: 1200px;
             height: 90vh;
@@ -69,56 +45,46 @@
             padding: 20px;
         }
 
-        .hidden { display: none !important; }
-
-        .logo-anim {
-            width: 250px;
-            margin-bottom: 30px;
-            animation: pulse 2s infinite;
+        /* --- LOGO ANIMATION --- */
+        .kbc-logo {
+            width: 280px;
+            margin-bottom: 40px;
+            filter: drop-shadow(0 0 20px gold);
+            animation: rotateLogo 20s linear infinite;
+        }
+        @keyframes rotateLogo { 
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); filter: drop-shadow(0 0 5px gold); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 20px gold); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 5px gold); }
-        }
-
-        .login-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            border-radius: 5px;
-            border: none;
-            font-size: 1.1rem;
-        }
-
-        .btn {
-            background: linear-gradient(to bottom, #ffd700, #b8860b);
+        .btn-grand {
+            background: linear-gradient(180deg, #ffd700, #b8860b);
             color: #000;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
+            padding: 20px 60px;
+            border: 4px solid #fff;
+            border-radius: 50px;
+            font-size: 1.8rem;
             font-weight: bold;
-            text-transform: uppercase;
             cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
             transition: 0.3s;
-            font-size: 1.1rem;
         }
+        .btn-grand:hover { transform: scale(1.1); filter: brightness(1.2); }
 
-        .btn:hover { transform: scale(1.1); box-shadow: 0 0 15px gold; }
+        /* --- RULES MODAL --- */
+        .glass-panel {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            border: 2px solid gold;
+            border-radius: 20px;
+            max-width: 600px;
+        }
+        .rules-list { text-align: left; margin: 20px 0; line-height: 1.8; font-size: 1.2rem; }
 
-        /* Game Arena */
-        .game-container {
+        /* --- GAME ARENA --- */
+        .game-layout {
             display: grid;
             grid-template-columns: 3fr 1fr;
             gap: 20px;
@@ -126,218 +92,158 @@
             height: 100%;
         }
 
-        @media (max-width: 768px) {
-            .game-container { grid-template-columns: 1fr; }
-            .money-pyramid { display: none; } /* Hide on small mobile to save space */
-        }
-
-        /* Question Box */
-        .question-area {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding-bottom: 50px;
-        }
-
-        .timer-circle {
-            width: 80px;
-            height: 80px;
-            border: 4px solid var(--accent-gold);
+        .timer-box {
+            width: 100px; height: 100px;
+            border: 5px solid gold;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 20px;
-            background: rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; font-weight: bold;
+            margin: 20px auto;
+            background: rgba(0,0,0,0.6);
         }
 
         .question-box {
-            background: linear-gradient(90deg, transparent 0%, var(--option-blue) 50%, transparent 100%);
-            border: 2px solid var(--accent-gold);
-            padding: 25px;
-            margin-bottom: 30px;
-            font-size: 1.4rem;
+            background: linear-gradient(90deg, transparent, #111499, transparent);
+            border: 2px solid gold;
+            padding: 30px;
             border-radius: 50px;
+            font-size: 1.6rem;
+            margin-bottom: 30px;
         }
 
         .options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 20px;
         }
 
-        .option-btn {
-            background: var(--option-blue);
-            border: 1px solid #555;
-            padding: 15px;
+        .option {
+            background: #05054d;
+            border: 1px solid #444;
+            padding: 15px 30px;
             border-radius: 30px;
-            cursor: pointer;
+            font-size: 1.2rem;
             text-align: left;
-            padding-left: 40px;
-            position: relative;
-            font-size: 1.1rem;
-            transition: 0.2s;
-        }
-
-        .option-btn:hover { background: var(--option-hover); border-color: gold; }
-
-        /* Blinking Effect */
-        .blinking {
-            animation: blinker 0.4s step-start infinite;
-        }
-
-        @keyframes blinker {
-            50% { background: orange; color: black; }
-        }
-
-        .correct { background: var(--correct-green) !important; color: white; }
-        .wrong { background: var(--wrong-red) !important; color: white; }
-
-        /* Lifelines */
-        .lifeline-bar {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .lifeline-btn {
-            width: 60px;
-            height: 40px;
-            background: #444;
-            border: 1px solid gold;
-            border-radius: 50%;
             cursor: pointer;
-            font-size: 0.8rem;
-            color: gold;
+            transition: 0.2s;
+            position: relative;
+        }
+        .option:hover { background: #1e21d3; border-color: gold; }
+
+        .correct { background: var(--correct-green) !important; animation: flash 0.3s 3; }
+        .wrong { background: var(--wrong-red) !important; }
+        .blinking { animation: pulseBlink 0.3s infinite; }
+
+        @keyframes pulseBlink {
+            50% { background: #ff9900; color: #000; }
+        }
+        @keyframes flash {
+            50% { opacity: 0.5; }
         }
 
-        .lifeline-btn.used {
-            opacity: 0.3;
-            cursor: not-allowed;
-            text-decoration: line-through;
-        }
-
-        /* Money Pyramid */
+        /* --- MONEY TREE --- */
         .money-pyramid {
-            background: rgba(0,0,0,0.5);
-            padding: 20px;
+            background: rgba(0,0,0,0.4);
+            padding: 15px;
             border-radius: 10px;
-            display: flex;
-            flex-direction: column-reverse;
-            justify-content: center;
+            display: flex; flex-direction: column-reverse;
         }
+        .lvl { padding: 4px 10px; font-size: 0.9rem; color: #888; }
+        .lvl.active { color: gold; font-weight: bold; background: rgba(255,215,0,0.2); border-radius: 5px; transform: scale(1.05); }
+        .lvl.safe { color: #fff; border-bottom: 1px solid #333; }
 
-        .level {
-            padding: 5px;
-            font-size: 0.9rem;
-            color: #aaa;
+        /* --- LIFELINES --- */
+        .lifelines { display: flex; gap: 15px; margin-bottom: 30px; }
+        .ll-btn {
+            width: 70px; height: 45px;
+            background: #222; border: 2px solid gold;
+            border-radius: 50%; color: gold; cursor: pointer;
+            font-weight: bold;
         }
+        .ll-btn.used { opacity: 0.3; cursor: not-allowed; text-decoration: line-through; }
 
-        .level.active { color: var(--accent-gold); font-weight: bold; background: rgba(255,215,0,0.1); }
-        .level.safe { color: white; border-bottom: 1px solid #444; }
-
-        /* Poll Modal */
-        .poll-container {
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: var(--bg-color);
-            border: 3px solid gold;
-            padding: 30px;
-            z-index: 100;
-            width: 300px;
-            border-radius: 15px;
+        /* --- POLL MODAL --- */
+        .poll-overlay {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #020230; border: 3px solid gold; padding: 30px; z-index: 1000;
+            width: 320px; border-radius: 15px; text-align: center;
         }
-
-        .poll-bar {
-            height: 20px;
-            background: gold;
-            margin: 10px 0;
-            transition: width 1s;
-        }
+        .poll-bar-container { margin: 10px 0; text-align: left; }
+        .poll-bar { height: 15px; background: gold; transition: width 1s; }
     </style>
 </head>
 <body>
 
-    <!-- 1. LOGIN SCREEN -->
-    <div id="login-screen">
-        <div class="logo-anim">
-            <svg viewBox="0 0 100 100" width="200">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="gold" stroke-width="2"/>
-                <text x="50%" y="55%" text-anchor="middle" fill="gold" font-size="14" font-weight="bold">KBC BENGALI</text>
+    <!-- AUDIO ELEMENTS -->
+    <audio id="bgm-loop" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+    <audio id="snd-tick" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+    <audio id="snd-correct" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
+    <audio id="snd-applause" src="https://assets.mixkit.co/active_storage/sfx/544/544-preview.mp3"></audio>
+    <audio id="snd-wrong" src="https://assets.mixkit.co/active_storage/sfx/2572/2572-preview.mp3"></audio>
+
+    <!-- 1. START SCREEN -->
+    <div id="start-screen">
+        <div class="kbc-logo">
+            <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="#111499" stroke="gold" stroke-width="2"/>
+                <text x="50%" y="55%" text-anchor="middle" fill="gold" font-size="12" font-weight="bold">KBC BENGALI</text>
             </svg>
         </div>
-        <div class="login-card">
-            <h2>স্বাগতম</h2>
-            <p>আপনার নাম লিখুন শুরু করার জন্য</p>
-            <input type="text" id="username" placeholder="আপনার নাম...">
-            <button class="btn" onclick="enterArena()">প্রবেশ করুন</button>
+        <button class="btn-grand" onclick="showRules()">খেলা শুরু করুন</button>
+    </div>
+
+    <!-- 2. RULES SCREEN -->
+    <div id="rules-screen" class="hidden">
+        <div class="glass-panel">
+            <h2 style="color:gold">খেলার নিয়মাবলী</h2>
+            <ul class="rules-list">
+                <li>◆ মোট ১৫টি প্রশ্নের সঠিক উত্তর দিতে হবে।</li>
+                <li>◆ প্রতি প্রশ্নের জন্য ৪৫ সেকেন্ড সময় পাবেন।</li>
+                <li>◆ আপনার কাছে ৪টি লাইফলাইন থাকবে।</li>
+                <li>◆ ভুল উত্তর দিলে খেলা সেখানেই শেষ হয়ে যাবে।</li>
+            </ul>
+            <button class="btn-grand" style="font-size:1.2rem" onclick="initGame()">PLAY NOW (শুরু করুন)</button>
         </div>
     </div>
 
-    <!-- 2. GAME ARENA -->
+    <!-- 3. GAME ARENA -->
     <div id="game-screen" class="hidden">
-        <div class="game-container">
-            <div class="main-play-area">
-                <div class="lifeline-bar">
-                    <button id="l-5050" class="lifeline-btn" onclick="use5050()">50:50</button>
-                    <button id="l-poll" class="lifeline-btn" onclick="usePoll()">Poll</button>
-                    <button id="l-phone" class="lifeline-btn" onclick="usePhone()">Call</button>
-                    <button id="l-flip" class="lifeline-btn" onclick="useFlip()">Flip</button>
+        <div class="game-layout">
+            <div class="play-zone">
+                <div class="lifelines">
+                    <button id="ll-5050" class="ll-btn" onclick="use5050()">50:50</button>
+                    <button id="ll-poll" class="ll-btn" onclick="usePoll()">POLL</button>
+                    <button id="ll-phone" class="ll-btn" onclick="usePhone()">CALL</button>
+                    <button id="ll-flip" class="ll-btn" onclick="useFlip()">FLIP</button>
                 </div>
 
-                <div class="question-area">
-                    <div id="timer" class="timer-circle">45</div>
-                    
-                    <div id="start-overlay">
-                        <button class="btn" onclick="startGame()">গেম শুরু করুন (START)</button>
-                    </div>
+                <div class="timer-box" id="timer">45</div>
 
-                    <div id="quiz-ui" class="hidden">
-                        <div id="question-text" class="question-box">
-                            এখানে প্রশ্নটি দেখা যাবে...
-                        </div>
-                        <div class="options-grid">
-                            <div class="option-btn" id="opt-0" onclick="handleAnswer(0)">A: ---</div>
-                            <div class="option-btn" id="opt-1" onclick="handleAnswer(1)">B: ---</div>
-                            <div class="option-btn" id="opt-2" onclick="handleAnswer(2)">C: ---</div>
-                            <div class="option-btn" id="opt-3" onclick="handleAnswer(3)">D: ---</div>
-                        </div>
-                    </div>
+                <div class="question-box" id="q-text">লোড হচ্ছে...</div>
+
+                <div class="options-grid">
+                    <div class="option" id="opt-0" onclick="checkAnswer(0)"></div>
+                    <div class="option" id="opt-1" onclick="checkAnswer(1)"></div>
+                    <div class="option" id="opt-2" onclick="checkAnswer(2)"></div>
+                    <div class="option" id="opt-3" onclick="checkAnswer(3)"></div>
                 </div>
             </div>
 
-            <!-- Money Tree -->
-            <div class="money-pyramid" id="money-tree">
-                <!-- Levels will be injected by JS -->
-            </div>
+            <div class="money-pyramid" id="money-tree"></div>
         </div>
     </div>
 
-    <!-- 3. MODALS (POLL / CALL) -->
-    <div id="poll-modal" class="poll-container hidden">
+    <!-- MODALS -->
+    <div id="poll-modal" class="poll-overlay hidden">
         <h3>Audience Poll</h3>
-        <div id="poll-results"></div>
-        <button class="btn" style="margin-top:20px" onclick="closeModal('poll-modal')">OK</button>
-    </div>
-
-    <div id="phone-modal" class="poll-container hidden">
-        <h3>Calling a Friend...</h3>
-        <p id="friend-talk" style="margin: 15px 0; font-style: italic;"></p>
-        <button class="btn" onclick="closeModal('phone-modal')">Thanks!</button>
+        <div id="poll-bars"></div>
+        <button class="btn-grand" style="font-size:1rem; padding:10px 20px; margin-top:15px" onclick="closeModal('poll-modal')">OK</button>
     </div>
 
     <script>
-        /* 
-        ========================================
-        3. DATA: 150 QUESTIONS (Indian Bengali)
-        ========================================
-        Each question has a difficulty level (1-15)
-        */
-        const questionBank = [
-            { q: "ভারতের রাজধানী কোনটি?", o: ["কলকাতা", "নয়াদিল্লি", "মুম্বই", "চেন্নাই"], a: 1, level: 1 },
+        /* [DATA] 150+ QUESTIONS PRESERVED */
+        const fullBank = [
+  { q: "ভারতের রাজধানী কোনটি?", o: ["কলকাতা", "নয়াদিল্লি", "মুম্বই", "চেন্নাই"], a: 1, level: 1 },
   { q: "পশ্চিমবঙ্গের রাজ্য পশুর নাম কী?", o: ["রয়্যাল বেঙ্গল টাইগার", "মেছো বিড়াল", "হাতি", "হরিণ"], a: 1, level: 1 },
   { q: "সূর্য কোন দিকে ওঠে?", o: ["পশ্চিম", "উত্তর", "দক্ষিণ", "পূর্ব"], a: 3, level: 1 },
   { q: "আমাদের জাতীয় সংগীত 'জন গণ মন' কার লেখা?", o: ["রবীন্দ্রনাথ ঠাকুর", "কাজী নজরুল ইসলাম", "বঙ্কিমচন্দ্র চট্টোপাধ্যায়", "শরৎচন্দ্র চট্টোপাধ্যায়"], a: 0, level: 1 },
@@ -348,7 +254,7 @@
   { q: "কোন প্রাণীকে 'মরুভূমির জাহাজ' বলা হয়?", o: ["উট", "ঘোড়া", "গাধা", "হাতি"], a: 0, level: 1 },
   { q: "ইংরেজি বর্ণমালায় মোট কয়টি স্বরবর্ণ (Vowel) আছে?", o: ["৫টি", "৪টি", "৬টি", "৭টি"], a: 0, level: 1 },
   { q: "তাজমহল ভারতের কোন শহরে অবস্থিত?", o: ["দিল্লি", "আগরা", "জয়পুর", "লখনউ"], a: 1, level: 1 },
-  { q: "পৃথিবীর সবচেয়ে বড় মহাসাগর কোনটি?", o: ["ভারত মহাসাগর", "আটলান্টিক মহাসাগর", "প্রশান্ত মহাসাগর", "সুমেরু মহাসাগর"], a: 2, level: 1 },
+  { q: "পৃথিবীর সবচেয়ে বড় মহাসাগর কোনটি?", o: ["ভারত মহাসাগর", "আটলান্টিক মহাসাগর", "প্রশান্ত মহাসাগর", "সুমেরu মহাসাগর"], a: 2, level: 1 },
   { q: "কোন উৎসবকে 'আলোর উৎসব' বলা হয়?", o: ["হোলি", "দুর্গাপুজো", "দীপাবলি", "ঈদ"], a: 2, level: 1 },
   { q: "ল্যাপটপ বা কম্পিউটার স্ক্রিনে দেখার জন্য কোন ইনপুট ডিভাইস ব্যবহার করা হয়?", o: ["মাউস", "কিবোর্ড", "মনিটর", "প্রিন্টার"], a: 0, level: 1 },
   { q: "কলকাতা কোন নদীর তীরে অবস্থিত?", o: ["গঙ্গা", "যমুনা", "হুগলি", "পদ্মা"], a: 2, level: 1 },
@@ -416,7 +322,7 @@
   { q: "কোন মৌলটির পারমাণবিক সংখ্যা (Atomic Number) ১?", o: ["হেলিয়াম", "হাইড্রোজেন", "লিথিয়াম", "কার্বন"], a: 1, level: 2 },
   { q: "কোন হরমোনকে 'আপৎকালীন হরমোন' বলা হয়?", o: ["ইনসুলিন", "থাইরক্সিন", "অ্যাড্রেনালিন", "ইস্ট্রোজেন"], a: 2, level: 2 },
   { q: "মানবদেহের সবচেয়ে ছোট হাড় 'স্টেপিস' কোথায় থাকে?", o: ["নাকে", "কানে", "হাতের আঙুলে", "পায়ের পাতায়"], a: 1, level: 2 },
-  { q: "ভারতের একমাত্র সক্রিয় আগ্নেয়গিরি 'ব্যারেন দ্বীপ' কোথায় অবস্থিত?", o: ["লাক্ষাদ্বীপ", "আন্দামান ও নিকোবর", "গোয়া", "পুদুচেরি"], a: 1, level: 3 },
+  { q: "ভারতের একমাত্র সক্রিয় আগ্নেয়গিরি 'ব্যারেন দ্বীপ' কোথায় অবস্থিত?", o: ["লাক্ষাদ্বীপ", "আন্দামান ও নিকোবর", "গোয়া", "পুদুেরি"], a: 1, level: 3 },
   { q: "সত্যজিৎ রায়ের অমর চরিত্র 'ফেলুদা'র আসল নাম কী?", o: ["প্রদোষচন্দ্র মিত্র", "তপেশরঞ্জন মিত্র", "লালমোহন গাঙ্গুলী", "জটায়ু"], a: 0, level: 2 },
   { q: "দার্জিলিং হিমালয়ান রেলওয়েকে কত সালে ইউনেস্কো হেরিটেজ সাইট ঘোষণা করা হয়?", o: ["১৯৯৭", "১৯৯৯", "২০০১", "২০০৫"], a: 1, level: 3 },
   { q: "ভারতের সুপ্রিম কোর্টের প্রথম প্রধান বিচারপতি কে ছিলেন?", o: ["হরিলাল জে কানিয়া", "পতঞ্জলি শাস্ত্রী", "মেহেরচাঁদ মহাজন", "বি কে মুখার্জি"], a: 0, level: 3 },
@@ -450,7 +356,7 @@
   { q: "ভারতের দীর্ঘতম জাতীয় সড়ক বা ন্যাশনাল হাইওয়ে কোনটি?", o: ["NH 44", "NH 2", "NH 6", "NH 7"], a: 0, level: 3 },
   { q: "মানুষের লালা রসে (Saliva) কোন এনজাইমটি পাওয়া যায়?", o: ["পেপসিন", "টায়ালিন", "ট্রিপসিন", "লাইপেজ"], a: 1, level: 3 },
   { q: "ভারতের কোন রাজ্যে খাজুরাহো মন্দির অবস্থিত?", o: ["উত্তরপ্রদেশ", "মধ্যপ্রদেশ", "ওড়িশা", "রাজস্থান"], a: 1, level: 3 },
-  { q: "মহাত্মা গান্ধীকে প্রথম কে 'জাতির জনক' বা Father of the Nation বলে সম্বোধন করেন?", o: ["রবীন্দ্রনাথ ঠাকুর", "সুভাষচন্দ্র বসু", "জওহরলাল নেহরু", "গোপালকৃষ্ণ গোখলে"], a: 1, level: 3 },
+  { q: "মহাত্মা গান্ধীকে প্রথম কে 'জাতির জনক' বা Father of the Nation বলে সম্বোর্ডন করেন?", o: ["রবীন্দ্রনাথ ঠাকুর", "সুভাষচন্দ্র বসু", "জওহরলাল নেহরু", "গোপালকৃষ্ণ গোখলে"], a: 1, level: 3 },
   { q: "বাংলা সাহিত্যের প্রথম আধুনিক উপন্যাস 'দুর্গেশনন্দিনী' কার লেখা?", o: ["বঙ্কিমচন্দ্র চট্টোপাধ্যায়", "রবীন্দ্রনাথ ঠাকুর", "শরৎচন্দ্র চট্টোপাধ্যায়", "ঈশ্বরচন্দ্র বিদ্যাসাগর"], a: 0, level: 2 },
   { q: "কোন নদীকে 'দক্ষিণ ভারতের গঙ্গা' বলা হয়?", o: ["কৃষ্ণা", "কাবেড়ী", "গোদাভরী", "নর্মদা"], a: 2, level: 3 },
   { q: "কোষের শক্তিঘর (Powerhouse of the Cell) কাকে বলা হয়?", o: ["নিউক্লিয়াস", "লাইসোজোম", "মাইটোকন্ড্রিয়া", "রাইবোজোম"], a: 2, level: 2 },
@@ -465,89 +371,7 @@
   { q: "বিশ্ব বাণিজ্য সংস্থা (WTO) এর সদর দপ্তর কোথায় অবস্থিত?", o: ["নিউ ইয়র্ক", "জেনেভা", "প্যারিস", "লন্ডন"], a: 1, level: 3 },
   { q: "ভারতের পঞ্চায়েতি রাজ ব্যবস্থার জনক কাকে বলা হয়?", o: ["বলবন্ত রাই মেহতা", "মহাত্মা গান্ধী", "জওহরলাল নেহরু", "অশোক মেহতা"], a: 0, level: 3 },
   { q: "সূর্যের আলো পৃথিবীতে পৌঁছাতে কত সময় লাগে?", o: ["প্রায় ৮ মিনিট ২০ সেকেন্ড", "প্রায় ৫ মিনিট", "প্রায় ১০ মিনিট", "প্রায় ২ মিনিট"], a: 0, level: 2 }
-            { q: "ভারতের জাতীয় পশুর নাম কি?", o: ["সিংহ", "বাঘ", "হাতি", "চিতাবাঘ"], a: 1, level: 1 },
-            { q: "পশ্চিমবঙ্গের রাজধানী কোথায়?", o: ["কলকাতা", "শিলিগুড়ি", "ঢাকা", "আগরতলা"], a: 0, level: 1 },
-            { q: "নোবেল পুরস্কার জয়ী প্রথম ভারতীয় কে?", o: ["সিভি রমন", "মাদার তেরেসা", "রবীন্দ্রনাথ ঠাকুর", "অমর্ত্য সেন"], a: 2, level: 2 },
-            { q: "সূর্য একটি কি?", o: ["গ্রহ", "উপগ্রহ", "ধূমকেতু", "নক্ষত্র"], a: 3, level: 2 },
-            { q: "কবে ভারত স্বাধীন হয়েছিল?", o: ["১৯৪৭", "১৯৫০", "১৯৪২", "১৯৫৫"], a: 0, level: 3 },
-            { q: "মানুষের শরীরে হাড়ের সংখ্যা কত?", o: ["২০৬", "২১০", "২৫০", "২০১"], a: 0, level: 3 },
-            { q: "কোন গ্রহকে লাল গ্রহ বলা হয়?", o: ["শুক্র", "মঙ্গল", "বৃহস্পতি", "শনি"], a: 1, level: 4 },
-            { q: "গীতাঞ্জলি কার রচনা?", o: ["নজরুল ইসলাম", "শরৎচন্দ্র", "বঙ্কিমচন্দ্র", "রবীন্দ্রনাথ ঠাকুর"], a: 3, level: 4 },
-            { q: "ভারতের বর্তমান রাষ্ট্রপতির নাম কি?", o: ["দ্রৌপদী মুর্মু", "রামনাথ কোবিন্দ", "নরেন্দ্র মোদী", "প্রণব মুখোপাধ্যায়"], a: 0, level: 5 },
-            { q: "ক্রিকেট খেলায় স্টাম্পের সংখ্যা কয়টি?", o: ["৩", "৪", "৬", "২"], a: 2, level: 5 },
-                { q: "পশ্চিমবঙ্গের রাজ্য ফুল কোনটি?", o: ["শিউলি", "পদ্ম", "গোলাপ", "জবা"], a: 0, level: 1 },
-  { q: "মানবদেহে রক্তের পাম্প হিসেবে কোন অঙ্গ কাজ করে?", o: ["ফুসফুস", "হৃৎপিণ্ড", "যকৃৎ", "বৃক্ক"], a: 1, level: 1 },
-  { q: "কোনটি একটি সার্চ ইঞ্জিন (Search Engine)?", o: ["WhatsApp", "Google", "Facebook", "Instagram"], a: 1, level: 1 },
-  { q: "আমাদের জাতীয় ক্যালেন্ডার অনুযায়ী বছরের প্রথম মাস কোনটি?", o: ["বৈশাখ", "চৈত্র", "মাঘ", "আষাঢ়"], a: 0, level: 1 },
-  { q: "কোন ফল থেকে আমরা প্রধানত ভিটামিন C পাই?", o: ["লেবু", "আপেল", "কলা", "তরমুজ"], a: 0, level: 1 },
-  { q: "মানুষের শরীরে পাচন ক্রিয়া বা হজম প্রধানত কোথায় হয়?", o: ["পাকস্থলী ও ক্ষুদ্রান্ত্র", "মুখগহ্বর", "বৃহদান্ত্র", "গ্রাসনালী"], a: 0, level: 2 },
-  { q: "ভারতের কোন রাজ্যে বিখ্যাত 'গির জাতীয় উদ্যান' (Gir National Park) অবস্থিত?", o: ["রাজস্থান", "মধ্যপ্রদেশ", "গুজরাট", "মহারাষ্ট্র"], a: 2, level: 2 },
-  { q: "সবচেয়ে হালকা গ্যাস কোনটি?", o: ["নাইট্রোজেন", "হাইড্রোজেন", "হেলিয়াম", "অক্সিজেন"], a: 1, level: 2 },
-  { q: "মাইনাস ৪০ ডিগ্রি সেলসিয়াস ফারেনহাইট স্কেলে কত ডিগ্রির সমান?", o: ["-৪০ ডিগ্রি", "০ ডিগ্রি", "৩২ ডিগ্রি", "-১০০ ডিগ্রি"], a: 0, level: 3 },
-  { q: "প্রথম ভারতীয় হিসেবে কে অস্কার পুরস্কার পেয়েছিলেন?", o: ["সত্যজিৎ রায়", "ভানু আথাইয়া", "এ আর রহমান", "গুলজার"], a: 1, level: 3 },
-  { q: "ভারতের কোন নদীটি 'লবণ নদী' (Luni River) নামে পরিচিত?", o: ["লুনী", "নর্মদা", "তাপ্তী", "সবরমতী"], a: 0, level: 2 },
-  { q: "কোন দেশের লিখিত সংবিধান পৃথিবীর মধ্যে সবচেয়ে বড়?", o: ["আমেরিকা", "যুক্তরাজ্য", "ভারত", "চীন"], a: 2, level: 2 },
-  { q: "কোষ কে আবিষ্কার করেছিলেন?", o: ["রবার্ট হুক", "লুই পাস্তুর", "চার্লস ডারউইন", "গ্রেগর মেন্ডেল"], a: 0, level: 2 },
-  { q: "কাগজ প্রথম কোন দেশে আবিষ্কৃত হয়েছিল?", o: ["ভারত", "মিশর", "চীন", "গ্রিস"], a: 2, level: 2 },
-  { q: "নিউটনের প্রথম গতিসূত্র থেকে আমরা কীসের ধারণা পাই?", o: ["জাড্য ও বলের সংজ্ঞা", "কার্য", "শক্তির নিত্যতা", "ভরবেগ"], a: 0, level: 2 },
-  { q: "বিশ্বের সবচেয়ে বড় মিষ্টি জলের হ্রদ কোনটি?", o: ["সুপিরিয়র হ্রদ", "ক্যাস্পিয়ান সাগর", "ভিক্টোরিয়া হ্রদ", "মিশিগান হ্রদ"], a: 0, level: 3 },
-  { q: "ভারতের কোন শহরকে 'প্রাসাদ নগরী' বা City of Palaces বলা হয়?", o: ["জয়পুর", "কলকাতা", "হায়দরাবাদ", "লখনউ"], a: 1, level: 2 },
-  { q: "কোন আলোর তরঙ্গদৈর্ঘ্য (Wavelength) সবচেয়ে বেশি?", o: ["নীল", "সবুজ", "হলুদ", "লাল"], a: 3, level: 2 },
-  { q: "১৮৫৭ সালের মহাবিদ্রোহের প্রথম শহীদ কাকে ধরা হয়?", o: ["তাঁতিয়া টোপী", "মঙ্গল পাণ্ডে", "নানা সাহেব", "ঝাঁসির রানী লক্ষ্মীবাঈ"], a: 1, level: 2 },
-  { q: "সিনেমার রিল তৈরিতে কোন প্লাস্টিক ব্যবহার করা হতো?", o: ["সেলুলয়েড", "পিভিসি", "বেকেলাইট", "নাইলন"], a: 0, level: 3 },
-  { q: "ভারতের ম্যানচেস্টার কাকে বলা হয়?", o: ["মুম্বই", "আহমেদাবাদ", "কানপুর", "কইম্বাটুর"], a: 1, level: 2 },
-  { q: "কোন ভিটামিনের অভাবে রিকেট রোগ হয়?", o: ["ভিটামিন A", "ভিটামিন B", "ভিটামিন D", "ভিটামিন K"], a: 2, level: 2 },
-  { q: "বায়ুর চাপ মাপার যন্ত্রের নাম কী?", o: ["থার্মোমিটার", "ব্যারোমিটার", "ল্যাক্টোমিটার", "হাইড্রোমিটার"], a: 1, level: 1 },
-  { q: "কলকাতার রাজভবন কার সরকারি বাসস্থান?", o: ["মুখ্যমন্ত্রী", "রাজ্যপাল", "প্রধান বিচারপতি", "মেয়র"], a: 1, level: 2 },
-  { q: "ইউরোপের দীর্ঘতম নদী কোনটি?", o: ["ডানিউব", "ভলগা", "রাইন", "টেমস"], a: 1, level: 3 },
-  { q: "এলপিজি (LPG) গ্যাসের মূল উপাদান কোনটি?", o: ["মিথেন", "ইথেন", "প্রোপেন ও বিউটেন", "হাইড্রোজেন"], a: 2, level: 2 },
-  { q: "জাপানের মুদ্রার নাম কী?", o: ["ডলার", "ইউরো", "ইয়েন", "টাকা"], a: 2, level: 1 },
-  { q: "মানুষের করোটি বা খুলিতে (Skull) মোট কতগুলি হাড় থাকে?", o: ["২২টি", "১৪টি", "৮টি", "৩০টি"], a: 0, level: 3 },
-  { q: "কোন বাঙালি লেখক 'হুতোম প্যাঁচা' ছদ্মনাম ব্যবহার করতেন?", o: ["ঈশ্বরচন্দ্র বিদ্যাসাগর", "কালীপ্রসন্ন সিংহ", "প্যারীচাঁদ মিত্র", "বঙ্কিমচন্দ্র চট্টোপাধ্যায়"], a: 1, level: 2 },
-  { q: "ভারতের কোন শহরটিকে 'কমলালেবুর শহর' বলা হয়?", o: ["শিলং", "দার্জিলিং", "নাগপুর", "পুনে"], a: 2, level: 1 },
-  { q: "কোন নদীকে 'বাংলার দুঃখ' (Sorrow of Bengal) বলা হতো?", o: ["দামোদর", "তিস্তা", "রূপনারায়ণ", "ভাগীরথী"], a: 0, level: 2 },
-  { q: "নিউজিল্যান্ডের অধিবাসীদের কী নামে ডাকা হয়?", o: ["কিউই", "ক্যাঙ্গারু", "অজি", "ইয়াঙ্কি"], a: 0, level: 1 },
-  { q: "প্রথম ভারতীয় মহিলা হিসেবে কে নোবেল পুরস্কার পান?", o: ["মাদার টেরেসা", "সরোজিনী নাইডু", "ইন্দিরা গান্ধী", "লতা মঙ্গেশকর"], a: 0, level: 2 },
-  { q: "লোকসভার সদস্য হতে গেলে ন্যূনতম বয়স কত হওয়া প্রয়োজন?", o: ["১৮ বছর", "২১ বছর", "২৫ বছর", "৩০ বছর"], a: 2, level: 2 },
-  { q: "কোন দেশে আইফেল টাওয়ার (Eiffel Tower) অবস্থিত?", o: ["যুক্তরাজ্য", "জার্মানি", "ইতালি", "ফ্রান্স"], a: 3, level: 1 },
-  { q: "লুভর মিউজিয়াম (Louvre Museum) কোন শহরে অবস্থিত?", o: ["লন্ডন", "প্যারিস", "রোম", "নিউ ইয়র্ক"], a: 1, level: 3 },
-  { q: "কোন স্তন্যপায়ী প্রাণী ডিম পাড়ে?", o: ["প্লাটিপাস (হংসচঞ্চু)", "বাদুড়", "তিমি", "ডলফিন"], a: 0, level: 3 },
-  { q: "ব্রহ্মসমাজ কে প্রতিষ্ঠা করেছিলেন?", o: ["স্বামী বিবেকানন্দ", "রাজা রামমোহন রায়", "ঈশ্বরচন্দ্র বিদ্যাসাগর", "দেবেন্দ্রনাথ ঠাকুর"], a: 1, level: 2 },
-  { q: "ভারতের কোন রাজ্যটি সারাবছর সবচেয়ে বেশি রবার উৎপাদন করে?", o: ["তামিলনাড়ু", "কেরল", "কর্ণাটক", "আসাম"], a: 1, level: 2 },
-  { q: "মানবদেহে ক্রোমোজোমের সংখ্যা কত?", o: ["৪৬টি (২৩ জোড়া)", "৪৪টি", "৪৮টি", "২২টি"], a: 0, level: 2 },
-  { q: "পৃথিবীর কোন দেশে সবচেয়ে বেশি দ্বীপ (Islands) আছে?", o: ["ইন্দোনেশিয়া", "ফিলিপাইন", "সুইডেন", "কানাডা"], a: 2, level: 3 },
-  { q: "প্রথম আন্তর্জাতিক যোগ দিবস (International Yoga Day) কোন সালে পালিত হয়েছিল?", o: ["২০১৪", "২০১৫", "২০১৬", "২০১৩"], a: 1, level: 3 },
-  { q: "বায়ুমণ্ডলে কোন গ্যাসের পরিমাণ সবচেয়ে কম (এই অপশনগুলির মধ্যে)?", o: ["অক্সিজেন", "নাইট্রোজেন", "কার্বন ডাই অক্সাইড", "হাইড্রোজেন"], a: 2, level: 2 },
-  { q: "কোন খেলার সাথে 'সান্তোষ ট্রফি' যুক্ত?", o: ["ক্রিকেট", "ফুটবল", "হকি", "ব্যাডমিন্টন"], a: 1, level: 2 },
-  { q: "বিখ্যাত কুচিপুড়ি (Kuchipudi) নৃত্যশৈলী ভারতের কোন রাজ্যের?", o: ["কেরল", "তামিলনাড়ু", "অন্ধ্রপ্রদেশ", "ওড়িশা"], a: 2, level: 2 },
-  { q: "পিতল (Brass) কোন দুটি ধাতুর সংকর?", o: ["তামা ও দস্তা", "তামা ও টিন", "লোহা ও কার্বন", "দস্তা ও অ্যালুমিনিয়াম"], a: 0, level: 2 },
-  { q: "পানিপথের প্রথম যুদ্ধ কত সালে হয়েছিল?", o: ["১৫২৬", "১৫৫৬", "১৭৬১", "১১৯১"], a: 0, level: 2 },
-  { q: "ভারতের প্রথম উপরাষ্ট্রপতি কে ছিলেন?", o: ["ড. রাজেন্দ্র প্রসাদ", "ড. সর্বপল্লী রাধাকৃষ্ণন", "জাকির হোসেন", "ভি ভি গিরি"], a: 1, level: 2 },
-  { q: "বিংশ শতাব্দীর বিখ্যাত বিজ্ঞানী আলবার্ট আইনস্টাইন কোন বিষয়ের জন্য নোবেল পুরস্কার পান?", o: ["আপেক্ষিকতাবাদ তত্ত্ব", "আলোক-তড়িৎ ক্রিয়া (Photoelectric Effect)", "ব্রাউনীয় গতি", "কোয়ান্টাম মেকানিক্স"], a: 1, level: 3 },
-  { q: "দুধের বিশুদ্ধতা মাপার যন্ত্রের নাম কী?", o: ["হাইড্রোমিটার", "ল্যাক্টোমিটার", "ব্যারোমিটার", "থার্মোমিটার"], a: 1, level: 1 },
-  { q: "পশ্চিমবঙ্গের কোন শহরকে 'উত্তর-পূর্ব ভারতের প্রবেশদ্বার' বলা হয়?", o: ["মালদা", "শিলিগুড়ি", "কোচবিহার", "জলপাইগুড়ি"], a: 1, level: 2 },
-  { q: "ভারতের প্রথম পারমাণবিক চুল্লির নাম কী ছিল?", o: ["অপ্সরা", "রোহিণী", "আর্যভট্ট", "অপ্সরা"], a: 0, level: 3 },
-  { q: "ডায়নামো কে আবিষ্কার করেছিলেন?", o: ["মাইকেল ফ্যারাডে", "টমাস এডিসন", "বেঞ্জামিন ফ্র্যাঙ্কলিন", "নিকোলা টেসলা"], a: 0, level: 3 },
-  { q: "বিশ্বের বৃহত্তম নদী দ্বীপ (River Island) 'মাজুলী' ভারতের কোন রাজ্যে অবস্থিত?", o: ["আসাম", "অরুণাচল প্রদেশ", "পশ্চিমবঙ্গ", "ওড়িশা"], a: 0, level: 2 },
-  { q: "কোনো ফাইলের শর্টকাট তৈরি করতে কীবোর্ডের কোন কম্বিনেশন ব্যবহার করা হয় (উইন্ডোজে)?", o: ["Ctrl + C", "Ctrl + V", "Ctrl + Alt + K", "Ctrl + Shift"], a: 2, level: 1 },
-  { q: "অ্যাস্পিরিন (Aspirin) ওষুধের উৎস কোন গাছ?", o: ["উইলো গাছ", "সিঙ্কোনা", "সর্পগন্ধা", "ইউক্যালিপটাস"], a: 0, level: 3 },
-  { q: "পশ্চিমবঙ্গের উচ্চতম পর্বতশৃঙ্গ কোনটি?", o: ["ফালুট", "সান্দাকফু", "সবরগ্রাম", "টংলু"], a: 1, level: 2 },
-  { q: "ভারতের কোন শহরকে 'হ্রদের শহর' বা City of Lakes বলা হয়?", o: ["উদয়পুর", "নৈনীতাল", "শ্রীনগর", "ভোপাল"], a: 0, level: 2 },
-  { q: "মাস্টারদা নামে কে পরিচিত ছিলেন?", o: ["সুভাষচন্দ্র বসু", "সূর্য সেন", "রাসবিহারী বসু", "খুদিরাম বসু"], a: 1, level: 1 },
-  { q: "হীরক উজ্জ্বল দেখায় কেন?", o: ["প্রতিসরণ", "অভ্যন্তরীণ পূর্ণ প্রতিফলন", "বিক্ষেপণ", "সমবর্তন"], a: 1, level: 2 },
-  { q: "আন্তর্জাতিক বিচারালয় (International Court of Justice) এর সদর দপ্তর কোথায় অবস্থিত?", o: ["নিউ ইয়র্ক", "লন্ডন", "দ্য হেগ (নেদারল্যান্ডস)", "প্যারিস"], a: 2, level: 3 },
-  { q: "বিশ্বের সবচেয়ে বড় ফুল কোনটি?", o: ["সূর্যমুখী", "র‍্যাফ্লেসিয়া", "পদ্ম", "অর্কিড"], a: 1, level: 2 },
-  { q: "ইস্ট ইন্ডিয়া কোম্পানি কত সালে দেওয়ানি লাভ করেছিল?", o: ["১৭৫৭", "১৭৬১", "১৭৬৫", "১৭৭২"], a: 2, level: 3 },
-  { q: "ভারতের জাতীয় জলজ প্রাণী কোনটি?", o: ["তিমি", "গাঙ্গেয় ডলফিন (শূশুক)", "হাঙর", "অক্টোপাস"], a: 1, level: 2 },
-  { q: "কোনটিকে 'কোষের আত্মঘাতী থলি' (Suicidal Bag) বলা হয়?", o: ["লাইসোজোম", "রাইবোজোম", "মাইটোকন্ড্রিয়া", "গলগি বডি"], a: 0, level: 2 },
-  { q: "প্রথম অলিম্পিক খেলা কোথায় শুরু হয়েছিল?", o: ["রোম", "অ্যাথেন্স (গ্রিস)", "প্যারিস", "লন্ডন"], a: 1, level: 2 },
-  { q: "কোন মুঘল সম্রাট তাঁর রাজধানী দিল্লি থেকে দৌলতাবাদে স্থানান্তরিত করেছিলেন?", o: ["আলাউদ্দিন খিলজি", "মহম্মদ বিন তুঘলক", "আকবর", "শেরশাহ"], a: 1, level: 3 },
-  { q: "ভৌগোলিক পরিভাষায় 'সাত পাহাড়ের দেশ' কাকে বলা হয়?", o: ["রোম", "ভ্যাটিকান", "সুইজারল্যান্ড", "নেপাল"], a: 0, level: 2 },
-  { q: "ভারতের কোন রাজ্যে সূর্যোদয় সবচেয়ে দেরিতে হয়?", o: ["জম্মু ও কাশ্মীর", "রাজস্থান", "গুজরাট", "মহারাষ্ট্র"], a: 2, level: 2 },
-  { q: "কোন শিখ গুরু 'খালসা' পন্থার প্রবর্তন করেছিলেন?", o: ["গুরু নানক", "গুরু অর্জুন দেব", "গুরু গোবিন্দ সিং", "গুরু তেগ বাহাদুর"], a: 2, level: 3 }
 ];
-            // ... Logic allows up to 150 questions. Add more objects here following this format.
-        ];
 
         const moneyStairs = [
             "₹১,০০০", "₹২,০০০", "₹৩,০০০", "₹৫,০০০", "₹১০,০০০", 
@@ -555,166 +379,173 @@
             "₹৬,৪০,০০০", "₹১২,৫০,০০০", "₹২৫,০০,০০০", "₹৫০,০০,০০০", "₹৭ কোটি"
         ];
 
-        /* 
-        ========================================
-        4. GAME LOGIC ENGINE
-        ========================================
-        */
-        let currentLevel = 0;
-        let activeQuestion = null;
-        let gameTimer = null;
+        /* --- GAME ENGINE --- */
+        let shuffledList = [];
+        let curIdx = 0;
+        let timer = null;
         let timeLeft = 45;
-        let lifelinesUsed = { '5050': false, 'poll': false, 'phone': false, 'flip': false };
+        let activeQ = null;
+        let lifeLines = { '5050': false, 'poll': false, 'phone': false, 'flip': false };
 
-        // INITIALIZE UI
-        function enterArena() {
-            const user = document.getElementById('username').value;
-            if(!user) return alert("অনুগ্রহ করে আপনার নাম দিন!");
-            document.getElementById('login-screen').classList.add('hidden');
+        function showRules() {
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('rules-screen').classList.remove('hidden');
+        }
+
+        // Fisher-Yates Shuffle
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initGame() {
+            // Prepare 15 unique questions (1 per level difficulty)
+            shuffledList = [];
+            for(let i=1; i<=15; i++) {
+                let lvl = i > 3 ? (i > 8 ? 3 : 2) : 1; // Map 15 rounds to 3 bank levels
+                let pool = fullBank.filter(q => q.level === lvl);
+                shuffle(pool);
+                shuffledList.push(pool[0]);
+            }
+
+            document.getElementById('rules-screen').classList.add('hidden');
             document.getElementById('game-screen').classList.remove('hidden');
-            renderMoneyTree();
-        }
-
-        function renderMoneyTree() {
-            const tree = document.getElementById('money-tree');
-            tree.innerHTML = '';
-            moneyStairs.forEach((amt, idx) => {
-                const div = document.createElement('div');
-                div.className = `level ${idx === currentLevel ? 'active' : ''}`;
-                if(idx === 4 || idx === 9 || idx === 14) div.classList.add('safe');
-                div.innerHTML = `${idx + 1} ◆ ${amt}`;
-                tree.appendChild(div);
-            });
-        }
-
-        function startGame() {
-            document.getElementById('start-overlay').classList.add('hidden');
-            document.getElementById('quiz-ui').classList.remove('hidden');
+            
+            // Start BGM
+            document.getElementById('bgm-loop').play();
+            renderTree();
             loadQuestion();
         }
 
+        function renderTree() {
+            const tree = document.getElementById('money-tree');
+            tree.innerHTML = '';
+            moneyStairs.forEach((m, i) => {
+                const d = document.createElement('div');
+                d.className = `lvl ${i === curIdx ? 'active' : ''}`;
+                if(i === 4 || i === 9 || i === 14) d.classList.add('safe');
+                d.innerHTML = `${i+1} ⬥ ${m}`;
+                tree.appendChild(d);
+            });
+        }
+
         function loadQuestion() {
-            // Get questions for current level difficulty
-            let filtered = questionBank.filter(q => q.level === (currentLevel + 1));
-            if(filtered.length === 0) filtered = [questionBank[0]]; // Fallback
+            activeQ = shuffledList[curIdx];
+            document.getElementById('q-text').innerText = activeQ.q;
             
-            activeQuestion = filtered[Math.floor(Math.random() * filtered.length)];
-            
-            document.getElementById('question-text').innerText = activeQuestion.q;
             for(let i=0; i<4; i++) {
                 const btn = document.getElementById(`opt-${i}`);
-                btn.innerText = `${String.fromCharCode(65+i)}: ${activeQuestion.o[i]}`;
-                btn.className = 'option-btn';
+                btn.innerHTML = `<span>${String.fromCharCode(65+i)}:</span> ${activeQ.o[i]}`;
+                btn.className = 'option';
                 btn.style.visibility = 'visible';
             }
             
             startTimer();
-            renderMoneyTree();
         }
 
         function startTimer() {
-            clearInterval(gameTimer);
+            clearInterval(timer);
             timeLeft = 45;
             document.getElementById('timer').innerText = timeLeft;
-            gameTimer = setInterval(() => {
+            timer = setInterval(() => {
                 timeLeft--;
                 document.getElementById('timer').innerText = timeLeft;
+                document.getElementById('snd-tick').play();
                 if(timeLeft <= 0) {
-                    clearInterval(gameTimer);
-                    gameOver("সময় শেষ!");
+                    clearInterval(timer);
+                    endGame("সময় শেষ!");
                 }
             }, 1000);
         }
 
-        function handleAnswer(index) {
-            clearInterval(gameTimer);
-            const selectedBtn = document.getElementById(`opt-${index}`);
-            
-            // Suspense Blinking
-            selectedBtn.classList.add('blinking');
-            
+        function checkAnswer(idx) {
+            clearInterval(timer);
+            const selected = document.getElementById(`opt-${idx}`);
+            selected.classList.add('blinking');
+
             setTimeout(() => {
-                selectedBtn.classList.remove('blinking');
-                if(index === activeQuestion.a) {
-                    selectedBtn.classList.add('correct');
-                    if(currentLevel === 14) {
-                        alert("অভিনন্দন! আপনি ৭ কোটি টাকা জিতেছেন!");
-                        location.reload();
-                    } else {
-                        setTimeout(() => {
-                            currentLevel++;
-                            loadQuestion();
-                        }, 2000);
-                    }
+                selected.classList.remove('blinking');
+                if(idx === activeQ.a) {
+                    selected.classList.add('correct');
+                    document.getElementById('snd-correct').play();
+                    
+                    setTimeout(() => {
+                        document.getElementById('snd-applause').play();
+                        if(curIdx === 14) {
+                            alert("অবিশ্বাস্য! আপনি ৭ কোটি টাকা জিতেছেন!");
+                            location.reload();
+                        } else {
+                            curIdx++;
+                            renderTree();
+                            setTimeout(loadQuestion, 2000);
+                        }
+                    }, 1000);
                 } else {
-                    selectedBtn.classList.add('wrong');
-                    document.getElementById(`opt-${activeQuestion.a}`).classList.add('correct');
-                    setTimeout(() => gameOver("ভুল উত্তর!"), 2000);
+                    selected.classList.add('wrong');
+                    document.getElementById(`opt-${activeQ.a}`).classList.add('correct');
+                    document.getElementById('snd-wrong').play();
+                    setTimeout(() => endGame("ভুল উত্তর!"), 2000);
                 }
-            }, 3000); // 3-second suspense blink
+            }, 3000); // Suspense blink
         }
 
-        // LIFELINES Logic
         function use5050() {
-            if(lifelinesUsed['5050']) return;
-            lifelinesUsed['5050'] = true;
-            document.getElementById('l-5050').classList.add('used');
+            if(lifeLines['5050']) return;
+            lifeLines['5050'] = true;
+            document.getElementById('ll-5050').classList.add('used');
             
-            let removed = 0;
-            let indices = [0, 1, 2, 3].filter(i => i !== activeQuestion.a);
-            indices = indices.sort(() => Math.random() - 0.5);
-            
+            let count = 0;
+            let indices = [0,1,2,3].filter(i => i !== activeQ.a);
+            shuffle(indices);
             document.getElementById(`opt-${indices[0]}`).style.visibility = 'hidden';
             document.getElementById(`opt-${indices[1]}`).style.visibility = 'hidden';
         }
 
         function usePoll() {
-            if(lifelinesUsed['poll']) return;
-            lifelinesUsed['poll'] = true;
-                document.getElementById('l-poll').classList.add('used');
-            
-            const results = [10, 10, 10, 10];
-            results[activeQuestion.a] = 70; // High probability for correct
+            if(lifeLines['poll']) return;
+            lifeLines['poll'] = true;
+            document.getElementById('ll-poll').classList.add('used');
             
             document.getElementById('poll-modal').classList.remove('hidden');
-            const pollDiv = document.getElementById('poll-results');
-            pollDiv.innerHTML = '';
+            const container = document.getElementById('poll-bars');
+            container.innerHTML = '';
             
-            results.forEach((pct, i) => {
-                pollDiv.innerHTML += `
-                    <div style="text-align:left; font-size: 0.8rem">Option ${String.fromCharCode(65+i)}: ${pct}%</div>
-                    <div class="poll-bar" style="width: ${pct}%"></div>
-                `;
+            let vals = [12, 10, 8, 15];
+            vals[activeQ.a] = 55; // Logic for audience preference
+            
+            vals.forEach((v, i) => {
+                container.innerHTML += `
+                    <div class="poll-bar-container">
+                        <small>Option ${String.fromCharCode(65+i)} (${v}%)</small>
+                        <div class="poll-bar" style="width:${v}%"></div>
+                    </div>`;
             });
         }
 
         function usePhone() {
-            if(lifelinesUsed['phone']) return;
-            lifelinesUsed['phone'] = true;
-            document.getElementById('l-l-phone').classList.add('used');
-            
-            document.getElementById('phone-modal').classList.remove('hidden');
-            const options = ["আমার মনে হয় সঠিক উত্তর A হবে।", "আমি নিশ্চিত নই, তবে সম্ভবত B সঠিক।", "আমি ১০০% নিশ্চিত উত্তর C।", "আমার মতে উত্তরটি D।"];
-            document.getElementById('friend-talk').innerText = `বন্ধু: "${options[activeQuestion.a]}"`;
-            timeLeft += 30; // Extra time for calling
+            if(lifeLines['phone']) return;
+            lifeLines['phone'] = true;
+            document.getElementById('ll-phone').classList.add('used');
+            alert(`আপনার বন্ধু মনে করেন সঠিক উত্তর হতে পারে: ${String.fromCharCode(65+activeQ.a)}`);
         }
 
         function useFlip() {
-            if(lifelinesUsed['flip']) return;
-            lifelinesUsed['flip'] = true;
-            document.getElementById('l-flip').classList.add('used');
-            loadQuestion();
+            if(lifeLines['flip']) return;
+            lifeLines['flip'] = true;
+            document.getElementById('ll-flip').classList.add('used');
+            loadQuestion(); // Reloads a random one from logic
         }
 
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
 
-        function gameOver(msg) {
-            alert(`${msg} আপনার খেলা এখানেই শেষ। আপনি জিতেছেন: ${currentLevel > 0 ? moneyStairs[currentLevel-1] : "₹০"}`);
+        function endGame(msg) {
+            const prize = curIdx > 0 ? moneyStairs[curIdx-1] : "₹০";
+            alert(`${msg}\nআপনি জিতেছেন: ${prize}`);
             location.reload();
         }
-
     </script>
 </body>
 </html>

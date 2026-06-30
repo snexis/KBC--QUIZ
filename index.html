@@ -26,14 +26,14 @@
         .btn { background: linear-gradient(135deg, var(--purple), #4a154b); color: var(--gold); border: 2px solid var(--gold); padding: 12px 30px; border-radius: 30px; font-size: 1.1rem; font-weight: bold; cursor: pointer; transition: 0.3s; margin: 10px; }
         .btn:hover { background: var(--gold); color: black; box-shadow: 0 0 15px var(--gold); }
         .timer-circle { width: 70px; height: 70px; border: 4px solid var(--gold); border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: bold; background: rgba(0,0,0,0.4); }
-        .question-box { background: linear-gradient(90deg, transparent, rgba(0,210,255,0.15), transparent); border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); padding: 20px; font-size: 1.3rem; margin-bottom: 20px; }
+        .question-box { background: linear-gradient(90deg, transparent, rgba(0,210,255,0.15), transparent); border-top: 2px solid var(--accent); border-bottom: 2px solid var(--accent); padding: 20px; font-size: 1.3rem; margin-bottom: 20px; min-height: 80px; display: flex; align-items: center; justify-content: center; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .option { background: rgba(0,0,0,0.5); border: 1.5px solid var(--accent); padding: 12px 15px; border-radius: 40px; cursor: pointer; font-size: 1rem; text-align: left; }
+        .option { background: rgba(0,0,0,0.5); border: 1.5px solid var(--accent); padding: 12px 15px; border-radius: 40px; cursor: pointer; font-size: 1rem; text-align: left; transition: 0.2s; }
         .option:hover { background: var(--accent); color: black; }
-        .option.correct { background: var(--correct) !important; color: white; }
-        .option.wrong { background: var(--wrong) !important; color: white; }
+        .option.correct { background: var(--correct) !important; color: white; border-color: white; }
+        .option.wrong { background: var(--wrong) !important; color: white; border-color: white; }
         .stats { display: flex; justify-content: space-between; color: var(--gold); font-weight: bold; margin-bottom: 10px; }
-        @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { .options-grid { grid-template-columns: 1fr; } h1 { font-size: 1.6rem; } }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -81,8 +81,6 @@
     <audio id="snd-wr" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
 
     <script>
-        // --- COMPLETE 200 BILINGUAL QUESTIONS DATABASE ---
-        // Compact notation: qb=question_bn, qe=question_en, ab=options_bn, ae=options_en, ans=index
         const bank = [
             {qb:"ভারতের রাজধানী কোনটি?", qe:"What is the capital of India?", ab:["দিল্লি","কলকাতা","মুম্বাই","চেন্নাই"], ae:["Delhi","Kolkata","Mumbai","Chennai"], ans:0},
             {qb:"জলের রাসায়নিক সংকেত কী?", qe:"Chemical formula of water?", ab:["CO2","H2O","O2","NaCl"], ae:["CO2","H2O","O2","NaCl"], ans:1},
@@ -113,189 +111,189 @@
             {qb:"পৃথিবীর ছাদ কোনটি?", qe:"Roof of the world?", ab:["হিমালয়","পামির মালভূমি","আন্দিজ","রকি"], ae:["Himalayas","Pamir Plateau","Andes","Rockies"], ans:1},
             {qb:"ডুরান্ড কাপ কোন খেলায়?", qe:"Durand Cup is for?", ab:["ক্রিকেট","ফুটবল","হকি","টেনিস"], ae:["Cricket","Football","Hockey","Tennis"], ans:1},
             {qb:"মহাসাগর কয়টি?", qe:"How many oceans?", ab:["৩","৪","৫","৬"], ae:["3","4","5","6"], ans:2},
-            {qb:"ভারতের প্রবেশদ্বার কোনটি?", qe:"Gateway of India?", ab:["দিল্লি","মুম্বাই","কলকাতা","চেন্নাই"], ae:["Delhi","Mumbai","Kolkata","Chenn
-{qb:"ভারতের জাতীয় সংগীত কে লিখেছেন?", qe:"Who wrote the National Anthem of India?", ab:["নজরুল ইসলাম","রবীন্দ্রনাথ ঠাকুর","বঙ্কিমচন্দ্র","শরৎচন্দ্র"], ae:["Nazrul Islam","Rabindranath Tagore","Bankim Chandra","Saratchandra"], ans:1},
-{qb:"পৃথিবীর দীর্ঘতম নদী কোনটি?", qe:"Which is the longest river in the world?", ab:["গঙ্গা","নীল নদ","আমাজন","মিসিসিপি"], ae:["Ganga","Nile","Amazon","Mississippi"], ans:1},
-{qb:"কোন ভিটামিনের অভাবে রাতকানা রোগ হয়?", qe:"Deficiency of which vitamin causes night blindness?", ab:["ভিটামিন A","ভিটামিন B","ভিটামিন C","ভিটামিন D"], ae:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"], ans:0},
-{qb:"পেন্সিলের ভেতরে থাকা কালো অংশটি কী?", qe:"What is the black lead inside a pencil?", ab:["কয়লা","গ্রাফাইট","লোহা","সিসা"], ae:["Coal","Graphite","Iron","Lead"], ans:1},
-{qb:"মানবদেহের বৃহত্তম হাড় কোনটি?", qe:"Which is the largest bone in the human body?", ab:["ফিমার","টিবিয়া","স্কাল","রিবস"], ae:["Femur","Tibia","Skull","Ribs"], ans:0},
-{qb:"বাতাসের গতিবেগ মাপা হয় কোন যন্ত্রে?", qe:"Which instrument measures wind speed?", ab:["ব্যারোমিটার","অ্যানিমোমিটার","থার্মোমিটার","হাইড্রোমিটার"], ae:["Barometer","Anemometer","Thermometer","Hydrometer"], ans:1},
-{qb:"আয়তনের দিক থেকে পৃথিবীর বৃহত্তম দেশ কোনটি?", qe:"Which is the largest country by area?", ab:["চীন","ভারত","রাশিয়া","কানাডা"], ae:["China","India","Russia","Canada"], ans:2},
-{qb:"মানুষের স্বাভাবিক রক্তচাপ কত?", qe:"What is normal human blood pressure?", ab:["১০০/৬০","১২০/৮০","১৪০/৯০","৮০/১২০"], ae:["100/60","120/80","140/90","80/120"], ans:1},
-{qb:"চাঁদে পা রাখা প্রথম ব্যক্তি কে?", qe:"Who was the first person to step on the moon?", ab:["ইউরি গ্যাগারিন","নীল আর্মস্ট্রং","রাকেশ শর্মা","এডুইন অলড্রিন"], ae:["Yuri Gagarin","Neil Armstrong","Rakesh Sharma","Edwin Aldrin"], ans:1},
-{qb:"কত সালে টাইটানিক ডুবেছিল?", qe:"In which year did the Titanic sink?", ab:["১৯১০","১৯১২","১৯১৪","১৯২০"], ae:["1910","1912","1914","1920"], ans:1},
-{qb:"সবচেয়ে হালকা ধাতু কোনটি?", qe:"Which is the lightest metal?", ab:["সোনা","পারদ","লিথিয়াম","তামা"], ae:["Gold","Mercury","Lithium","Copper"], ans:2},
-{qb:"বিদ্যুতের বাল্ব কে আবিষ্কার করেন?", qe:"Who invented the light bulb?", ab:["নিউটন","এডিসন","পাসকাল","ফ্যারাডে"], ae:["Newton","Edison","Pascal","Faraday"], ans:1},
-{qb:"জাপানের রাজধানী কোথায়?", qe:"What is the capital of Japan?", ab:["সিউল","বেজিং","টোকিও","ব্যাংকক"], ae:["Seoul","Beijing","Tokyo","Bangkok"], ans:2},
-{qb:"ভারতের জাতীয় ফুল কোনটি?", qe:"What is the national flower of India?", ab:["গোলাপ","শাপলা","পদ্ম","সূর্যমুখী"], ae:["Rose","Water Lily","Lotus","Sunflower"], ans:2},
-{qb:"পৃথিবীর কক্ষপথের আকৃতি কেমন?", qe:"What is the shape of Earth's orbit?", ab:["গোল","লম্বা","উপবৃত্তাকার","বর্গাকার"], ae:["Circular","Linear","Elliptical","Square"], ans:2},
-{qb:"কোন প্রাণীকে মরুভূমির জাহাজ বলা হয়?", qe:"Which animal is called the ship of the desert?", ab:["ঘোড়া","উট","গাধা","হাতি"], ae:["Horse","Camel","Donkey","Elephant"], ans:1},
-{qb:"ভারতের লোহার মানব কাকে বলা হয়?", qe:"Who is known as the Iron Man of India?", ab:["গান্ধীজি","নেহরু","প্যাটেল","ভগত সিং"], ae:["Gandhiji","Nehru","Patel","Bhagat Singh"], ans:2},
-{qb:"কোন গ্যাস বেলুন ওড়াতে সাহায্য করে?", qe:"Which gas helps a balloon fly?", ab:["অক্সিজেন","নাইট্রোজেন","হিলিয়াম","মিথেন"], ae:["Oxygen","Nitrogen","Helium","Methane"], ans:2},
-{qb:"অলিম্পিক গেম কত বছর অন্তর হয়?", qe:"How often are Olympic games held?", ab:["২ বছর","৩ বছর","৪ বছর","৫ বছর"], ae:["2 years","3 years","4 years","5 years"], ans:2},
-{qb:"পৃথিবীর উচ্চতম শৃঙ্গ কোনটি?", qe:"Which is the highest peak in the world?", ab:["K2","কাঞ্চনজঙ্ঘা","মাউন্ট এভারেস্ট","লোৎসে"], ae:["K2","Kanchenjunga","Mt. Everest","Lhotse"], ans:2},
-{qb:"মানুষের শরীরের সাধারণ তাপমাত্রা কত (ফারেনহাইট)?", qe:"Normal human body temperature in Fahrenheit?", ab:["৯৬.৪","৯৮.৪","৯৯.৪","১০২.৪"], ae:["96.4","98.4","99.4","102.4"], ans:1},
-{qb:"সবচেয়ে ছোট পাখি কোনটি?", qe:"Which is the smallest bird?", ab:["চড়ুই","হামিংবার্ড","টিয়ে","পাবদা"], ae:["Sparrow","Hummingbird","Parrot","Swift"], ans:1},
-{qb:"পেনিসিলিন কে আবিষ্কার করেন?", qe:"Who discovered Penicillin?", ab:["ফ্লেমিং","পাস্তুর","জেনার","রোজেন"], ae:["Fleming","Pasteur","Jenner","Rosen"], ans:0},
-{qb:"কোন গ্রহে দিন বড় এবং বছর ছোট?", qe:"Which planet has longer days than years?", ab:["বুধ","শুক্র","মঙ্গল","শনি"], ae:["Mercury","Venus","Mars","Saturn"], ans:1},
-{qb:"সবুজ বিপ্লব কিসের সাথে যুক্ত?", qe:"Green Revolution is associated with?", ab:["দুগ্ধ","মাছ","কৃষি","তেল"], ae:["Milk","Fish","Agriculture","Oil"], ans:2},
-{qb:"ভারতের সংবিধানের জনক কে?", qe:"Who is the father of Indian Constitution?", ab:["গান্ধীজি","নেহরু","আম্বেদকর","রাজেন্দ্র প্রসাদ"], ae:["Gandhiji","Nehru","Ambedkar","Rajendra Prasad"], ans:2},
-{qb:"অগ্নিবীণা কাব্যগ্রন্থটি কার লেখা?", qe:"Who wrote the book Agnibina?", ab:["রবীন্দ্রনাথ","নজরুল ইসলাম","জীবনানন্দ","বঙ্কিমচন্দ্র"], ae:["Tagore","Nazrul Islam","Jibanananda","Bankim Chandra"], ans:1},
-{qb:"সবচেয়ে বড় মহাসাগর কোনটি?", qe:"Which is the largest ocean?", ab:["ভারত","আটলান্টিক","প্রশান্ত","কুমেরু"], ae:["Indian","Atlantic","Pacific","Antarctic"], ans:2},
-{qb:"রক্ত জমাট বাঁধতে সাহায্য করে কোনটি?", qe:"Which helps in blood clotting?", ab:["WBC","RBC","অণুচক্রিকা","প্লাজমা"], ae:["WBC","RBC","Platelets","Plasma"], ans:2},
-{qb:"ইন্টারনেটের জনক কে?", qe:"Who is the father of the Internet?", ab:["বিল গেটস","স্টিভ জবস","ভিন্ট সার্ফ","মার্ক জুকারবার্গ"], ae:["Bill Gates","Steve Jobs","Vint Cerf","Mark Zuckerberg"], ans:2},
-{qb:"প্রথম বিশ্বযুদ্ধ শুরু হয় কত সালে?", qe:"In which year did WW1 start?", ab:["১৯১৪","১৯৩৯","১৯৪৫","১৯১৮"], ae:["1914","1939","1945","1918"], ans:0},
-{qb:"মোনালিসা চিত্রটি কার আঁকা?", qe:"Who painted the Mona Lisa?", ab:["পিকাসো","মাইকেল এঞ্জেলো","লিওনার্দো দা ভিঞ্চি","রাফায়েল"], ae:["Picasso","Michelangelo","Leonardo da Vinci","Raphael"], ans:2},
-{qb:"ভারতের মিসাইল ম্যান কে?", qe:"Who is the Missile Man of India?", ab:["হোমি ভাবা","সি ভি রমন","এ পি জে আব্দুল কালাম","বিক্রম সারাভাই"], ae:["Homi Bhabha","C.V. Raman","A.P.J. Abdul Kalam","Vikram Sarabhai"], ans:2},
-{qb:"কোন ভিটামিন পানিতে দ্রবণীয়?", qe:"Which vitamin is water soluble?", ab:["A","D","C","K"], ae:["A","D","C","K"], ans:2},
-{qb:"ভারতের গোলাপি শহর কোনটি?", qe:"Which is the Pink City of India?", ab:["যোধপুর","জয়পুর","উদয়পুর","আজমির"], ae:["Jodhpur","Jaipur","Udaipur","Ajmer"], ans:1},
-{qb:"কম্পিউটার কে আবিষ্কার করেন?", qe:"Who invented the computer?", ab:["নিউটন","টুরিং","চার্লস ব্যাবেজ","পাসকাল"], ae:["Newton","Turing","Charles Babbage","Pascal"], ans:2},
-{qb:"সবচেয়ে বড় স্তন্যপায়ী প্রাণী কোনটি?", qe:"Which is the largest mammal?", ab:["হাতি","জিরাফ","নীল তিমি","শার্ক"], ae:["Elephant","Giraffe","Blue Whale","Shark"], ans:2},
-{qb:"লোহিত রক্তকণিকার আয়ু কত দিন?", qe:"Life span of RBC?", ab:["৬০ দিন","৯০ দিন","১২০ দিন","১৫০ দিন"], ae:["60 days","90 days","120 days","150 days"], ans:2},
-{qb:"কোন শহরকে 'পোপের শহর' বলা হয়?", qe:"Which city is called City of Pope?", ab:["প্যারিস","লন্ডন","রোম","ভেনিস"], ae:["Paris","London","Rome","Venice"], ans:2},
-{qb:"প্রথম রোবট নাগরিকের নাম কী?", qe:"What is the name of the first robot citizen?", ab:["সিরি","অ্যালেক্সা","সোফিয়া","কর্টানা"], ae:["Siri","Alexa","Sophia","Cortana"], ans:2},
-{qb:"গাছের প্রাণ আছে কে প্রমাণ করেন?", qe:"Who proved plants have life?", ab:["জগদীশ চন্দ্র বসু","প্রফুল্ল চন্দ্র রায়","সি ভি রমন","হরগোবিন্দ খোরানা"], ae:["Jagadish Chandra Bose","P.C. Ray","C.V. Raman","H. Khorana"], ans:0},
-{qb:"ভারতের সর্বোচ্চ নাগরিক সম্মান কোনটি?", qe:"Which is the highest civilian award in India?", ab:["পদ্মভূষণ","ভারতরত্ন","পদ্মবিভূষণ","জ্ঞানপীঠ"], ae:["Padma Bhushan","Bharat Ratna","Padma Vibhushan","Jnanpith"], ans:1},
-{qb:"সবচেয়ে তেজস্ক্রিয় ধাতু কোনটি?", qe:"Which is the most radioactive metal?", ab:["ইউরেনিয়াম","থোরিয়াম","রেডিয়াম","প্লুটোনিয়াম"], ae:["Uranium","Thorium","Radium","Plutonium"], ans:2},
-{qb:"পৃথিবীর জমজ গ্রহ কাকে বলা হয়?", qe:"Which is called Earth's twin planet?", ab:["মঙ্গল","শুক্র","বুধ","শনি"], ae:["Mars","Venus","Mercury","Saturn"], ans:1},
-{qb:"সৌরজগতের উষ্ণতম গ্রহ কোনটি?", qe:"Which is the hottest planet?", ab:["বুধ","শুক্র","মঙ্গল","বৃহস্পতি"], ae:["Mercury","Venus","Mars","Jupiter"], ans:1},
-{qb:"বিখ্যাত ডায়মন্ড হারবার কোথায়?", qe:"Where is famous Diamond Harbour?", ab:["মুম্বাই","কলকাতা","চেন্নাই","সুরাট"], ae:["Mumbai","Kolkata","Chennai","Surat"], ans:1},
-{qb:"লাফিং গ্যাস কোনটি?", qe:"Which is Laughing Gas?", ab:["নাইট্রোজেন","নাইট্রাস অক্সাইড","কার্বন","মিথেন"], ae:["Nitrogen","Nitrous Oxide","Carbon","Methane"], ans:1},
-{qb:"কত বছরে এক যুগ?", qe:"How many years make an era (Yuga)?", ab:["১০","১২","৫০","১০০"], ae:["10","12","50","100"], ans:1},
-{qb:"গুগলের সদর দপ্তর কোথায়?", qe:"Where is Google HQ?", ab:["ক্যালিফোর্নিয়া","নিউ ইয়র্ক","টেক্সাস","লন্ডন"], ae:["California","New York","Texas","London"], ans:0},
-{qb:"ভারতের জাতীয় বৃক্ষ কোনটি?", qe:"What is the national tree of India?", ab:["নিম","অশ্বত্থ","বট","আম"], ae:["Neem","Peepal","Banyan","Mango"], ans:2},
-{qb:"বক্সাইড কিসের আকরিক?", qe:"Bauxite is an ore of?", ab:["লোহা","তামা","অ্যালুমিনিয়াম","দস্তা"], ae:["Iron","Copper","Aluminum","Zinc"], ans:2},
-{qb:"মানুষের হৃদপিণ্ডে কয়টি কক্ষ থাকে?", qe:"How many chambers in human heart?", ab:["২","৩","৪","৫"], ae:["2","3","4","5"], ans:2},
-{qb:"ভারতের দীর্ঘতম বাঁধ কোনটি?", qe:"Longest dam in India?", ab:["ভাকরা নাঙ্গাল","হীরাকুঁদ","তেহরি","ফারাক্কা"], ae:["Bhakra Nangal","Hirakud","Tehri","Farakka"], ans:1},
-{qb:"সবচেয়ে বড় ফুল কোনটি?", qe:"Which is the largest flower?", ab:["সূর্যমুখী","পদ্ম","র‍্যাফ্লেসিয়া","গোলাপ"], ae:["Sunflower","Lotus","Rafflesia","Rose"], ans:2},
-{qb:"কত গজে এক মাইল?", qe:"How many yards make a mile?", ab:["১০০০","১৫৬০","১৭৬০","২০০০"], ae:["1000","1560","1760","2000"], ans:2},
-{qb:"প্রথম ভারতীয় মহাকাশচারী কে?", qe:"First Indian astronaut?", ab:["কল্পনা চাওলা","সুনিতা উইলিয়ামস","রাকেশ শর্মা","রাভি মালহোত্রা"], ae:["Kalpana Chawla","Sunita Williams","Rakesh Sharma","Ravi Malhotra"], ans:2},
-{qb:"রক্তের পিএইচ (pH) মান কত?", qe:"What is the pH value of blood?", ab:["৬.৪","৭.৪","৮.৪","৫.৪"], ae:["6.4","7.4","8.4","5.4"], ans:1},
-{qb:"পৃথিবীর ফুসফুস বলা হয় কাকে?", qe:"Which is called Lungs of Earth?", ab:["সুন্দরবন","আমাজন জঙ্গল","সাহারা","হিমালয়"], ae:["Sundarbans","Amazon Rainforest","Sahara","Himalayas"], ans:1},
-{qb:"ভারতের লোকসভার সদস্য সংখ্যা কত?", qe:"Strength of Lok Sabha members?", ab:["৫২০","৫৪৩","৫৫২","৫০০"], ae:["520","543","552","500"], ans:1},
-{qb:"হিমোগ্লোবিনের কাজ কী?", qe:"Function of Hemoglobin?", ab:["খাদ্য বহন","অক্সিজেন বহন","জল বহন","বর্জ্য বহন"], ae:["Food transport","Oxygen transport","Water transport","Waste transport"], ans:1},
-{qb:"আইফেল টাওয়ার কোথায় অবস্থিত?", qe:"Where is the Eiffel Tower?", ab:["লন্ডন","বার্লিন","প্যারিস","নিউ ইয়র্ক"], ae:["London","Berlin","Paris","New York"], ans:2},
-{qb:"সবচেয়ে হালকা গ্যাস কোনটি?", qe:"Which is the lightest gas?", ab:["অক্সিজেন","হিলিয়াম","হাইড্রোজেন","নাইট্রোজেন"], ae:["Oxygen","Helium","Hydrogen","Nitrogen"], ans:2},
-{qb:"ভারতের ম্যানচেস্টার কোনটি?", qe:"Manchester of India?", ab:["কানপুর","মুম্বাই","আহমেদাবাদ","সুরাট"], ae:["Kanpur","Mumbai","Ahmedabad","Surat"], ans:2},
-{qb:"দাবদাহ বা হিট ওয়েভ কোন ঋতুতে হয়?", qe:"Heat wave occurs in which season?", ab:["শীত","গ্রীষ্ম","বর্ষা","শরৎ"], ae:["Winter","Summer","Monsoon","Autumn"], ans:1},
-{qb:"চাঁদ পৃথিবীর চারদিকে একবার ঘুরতে কত সময় নেয়?", qe:"How long moon takes to orbit Earth?", ab:["২৪ দিন","২৭.৩ দিন","৩০ দিন","১৫ দিন"], ae:["24 days","27.3 days","30 days","15 days"], ans:1},
-{qb:"অগ্নি ৫ (Agni-V) কী?", qe:"What is Agni-V?", ab:["জাহাজ","ট্যাঙ্ক","মিসাইল","প্লেন"], ae:["Ship","Tank","Missile","Plane"], ans:2},
-{qb:"মানুষের কানে কয়টি হাড় থাকে?", qe:"How many bones in human ear?", ab:["২","৩","৪","৬"], ae:["2","3","4","6"], ans:1},
-{qb:"ভারতের প্রথম গভর্নর জেনারেল কে?", qe:"First Governor General of India?", ab:["লর্ড ক্যানিং","উইলিয়াম বেন্টিঙ্ক","ওয়ারেন হেস্টিংস","ডালহৌসি"], ae:["Canning","Bentinck","Hastings","Dalhousie"], ans:1},
-{qb:"বিশ্বের বৃহত্তম ম্যানগ্রোভ অরণ্য কোনটি?", qe:"Largest mangrove forest?", ab:["আমাজন","সুন্দরবন","ভিতরকণিকা","পিচাভরম"], ae:["Amazon","Sundarbans","Bhitarkanika","Pichavaram"], ans:1},
-{qb:"ম্যালেরিয়া রোগের বাহক কে?", qe:"Carrier of Malaria?", ab:["স্ত্রী এনোফিলিস মশা","এডিস মশা","মাছি","কুলেক্স মশা"], ae:["Female Anopheles","Aedes","Housefly","Culex"], ans:0},
-{qb:"ভারতের জাতীয় নদী কোনটি?", qe:"National river of India?", ab:["যমুনা","ব্রহ্মপুত্র","গঙ্গা","গোদাবরী"], ae:["Yamuna","Brahmaputra","Ganga","Godavari"], ans:2},
-{qb:"সবচেয়ে দ্রুতগামী প্রাণী কোনটি?", qe:"Fastest land animal?", ab:["বাঘ","চিতাবাঘ","ঘোড়া","হরিণ"], ae:["Tiger","Cheetah","Horse","Deer"], ans:1},
-{qb:"কোন শহরকে 'ভারতের উদ্যান শহর' বলা হয়?", qe:"Which city is Garden City of India?", ab:["চেন্নাই","বেঙ্গালুরু","মাইসোর","শিমলা"], ae:["Chennai","Bengaluru","Mysore","Shimla"], ans:1},
-{qb:"টুইটারের (X) মালিক কে?", qe:"Who is the owner of Twitter (X)?", ab:["মার্ক জুকারবার্গ","ইলন মাস্ক","জেফ বেজোস","বিল গেটস"], ae:["Zuckerberg","Elon Musk","Jeff Bezos","Bill Gates"], ans:1},
-{qb:"ভারতের প্রথম সূর্যোদয় হয় কোন রাজ্যে?", qe:"Sun rises first in which Indian state?", ab:["অসম","অরুণাচল প্রদেশ","মণিপুর","নাগাল্যান্ড"], ae:["Assam","Arunachal Pradesh","Manipur","Nagaland"], ans:1},
-{qb:"রক্তের গ্রুপ কে আবিষ্কার করেন?", qe:"Who discovered blood groups?", ab:["পাভলভ","ল্যান্ডস্টেইনার","ডারউইন","মেন্ডেল"], ae:["Pavlov","Landsteiner","Darwin","Mendel"], ans:1},
-{qb:"বিখ্যাত সূর্য মন্দির কোথায়?", qe:"Where is famous Sun Temple?", ab:["পুরী","কোনারক","মথুরা","হরিদ্বার"], ae:["Puri","Konark","Mathura","Haridwar"], ans:1},
-{qb:"কোন ভিটামিন সূর্যের আলোতে পাওয়া যায়?", qe:"Which vitamin is found in sunlight?", ab:["A","B","C","D"], ae:["A","B","C","D"], ans:3},
-{qb:"মানুষের খুলিতে কয়টি হাড় থাকে?", qe:"How many bones in human skull?", ab:["২২","২৪","২৬","২৮"], ae:["22","24","26","28"], ans:0},
-{qb:"ভারতের প্রবেশদ্বার কাকে বলা হয়?", qe:"Gateway of India is in?", ab:["দিল্লি","কলকাতা","মুম্বাই","চেন্নাই"], ae:["Delhi","Kolkata","Mumbai","Chennai"], ans:2},
-{qb:"সবচেয়ে মিষ্টি ফল কোনটি?", qe:"Which is the sweetest fruit?", ab:["আম","কলা","খেজুর","লিচু"], ae:["Mango","Banana","Dates","Lychee"], ans:2},
-{qb:"ভারতের জাতীয় সংগীত গাইতে কত সময় লাগে?", qe:"Time to sing National Anthem?", ab:["৫২ সেকেন্ড","৬০ সেকেন্ড","৪৫ সেকেন্ড","৫০ সেকেন্ড"], ae:["52 sec","60 sec","45 sec","50 sec"], ans:0},
-{qb:"পিরামিড কোন দেশে অবস্থিত?", qe:"Pyramids are located in?", ab:["ইরাক","মিশর","ইরান","জর্ডান"], ae:["Iraq","Egypt","Iran","Jordan"], ans:1},
-{qb:"কোন দেশে সূর্য মাঝরাতে দেখা যায়?", qe:"In which country sun is seen at midnight?", ab:["জাপান","নরওয়ে","কানাডা","আইসল্যান্ড"], ae:["Japan","Norway","Canada","Iceland"], ans:1},
-{qb:"জলের গভীরে শ্বাস নেওয়ার জন্য ডুবুরিরা কোন গ্যাস ব্যবহার করে?", qe:"Gas used by divers for breathing?", ab:["অক্সিজেন","নাইট্রোজেন","হিলিয়াম ও অক্সিজেন","হাইড্রোজেন"], ae:["Oxygen","Nitrogen","Helium & Oxygen","Hydrogen"], ans:2},
-{qb:"ভারতের জাতীয় লজ্জা কোনটি?", qe:"National shame of India?", ab:["দারিদ্র্য","অশিক্ষা","অস্পৃশ্যতা","বেকারত্ব"], ae:["Poverty","Illiteracy","Untouchability","Unemployment"], ans:2},
-{qb:"সৌরজগতের বৃহত্তম উপগ্রহ কোনটি?", qe:"Largest moon in solar system?", ab:["টাইটান","গ্যানিমিড","চাঁদ","ইউরোপা"], ae:["Titan","Ganymede","Moon","Europa"], ans:1},
-{qb:"বন্দে মাতরম গানটি কে লিখেছেন?", qe:"Who wrote Vande Mataram?", ab:["রবীন্দ্রনাথ","বঙ্কিমচন্দ্র চট্টোপাধ্যায়","নজরুল ইসলাম","শরৎচন্দ্র"], ae:["Tagore","Bankim Chandra","Nazrul","Saratchandra"], ans:1},
-{qb:"পৃথিবীর মানচিত্র প্রথম কারা তৈরি করেন?", qe:"Who made the first world map?", ab:["গ্রীকরা","ভারতীয়রা","চীনারা","আরবরা"], ae:["Greeks","Indians","Chinese","Arabs"], ans:0},
-{qb:"সবচেয়ে পুরনো ভাষা কোনটি?", qe:"Which is the oldest language?", ab:["বাংলা","হিন্দি","সংস্কৃত","তামিল"], ae:["Bengali","Hindi","Sanskrit","Tamil"], ans:2},
-{qb:"মানুষের চোখের মেগাপিক্সেল কত?", qe:"Megapixel of human eye?", ab:["৫৭৬","৪৮০","১০৮০","৭২০"], ae:["576","480","1080","720"], ans:0},
-{qb:"ইউটিউবের সদর দপ্তর কোথায়?", qe:"Where is YouTube HQ?", ab:["সান ব্রুনো","নিউ ইয়র্ক","লন্ডন","টোকিও"], ae:["San Bruno","New York","London","Tokyo"], ans:0},
-{qb:"ভারতের সংবিধান কার্যকর হয় কত সালে?", qe:"Indian Constitution came into force in?", ab:["১৯৪৭","১৯৪৮","১৯৪৯","১৯৫০"], ae:["1947","1948","1949","1950"], ans:3},
-{qb:"বিশ্বের বৃহত্তম মহাদেশ কোনটি?", qe:"Largest continent?", ab:["আফ্রিকা","ইউরোপ","এশিয়া","অস্ট্রেলিয়া"], ae:["Africa","Europe","Asia","Australia"], ans:2},
-{qb:"সবচেয়ে ছোট মহাদেশ কোনটি?", qe:"Smallest continent?", ab:["এশিয়া","অস্ট্রেলিয়া","ইউরোপ","আফ্রিকা"], ae:["Asia","Australia","Europe","Africa"], ans:1},
-{qb:"ভারতের জাতীয় মাছ কোনটি?", qe:"National fish of India?", ab:["ইলিশ","রুই","গঙ্গা ডলফিন","শার্ক"], ae:["Hilsa","Rohu","Ganges Dolphin","Shark"], ans:2},
-{qb:"মাকড়সার কয়টি পা থাকে?", qe:"How many legs does a spider have?", ab:["৪","৬","৮","১০"], ae:["4","6","8","10"], ans:2},
-{qb:"বায়ুমণ্ডলে অক্সিজেনের পরিমাণ কত?", qe:"Percentage of oxygen in atmosphere?", ab:["২১%","৭৮%","০.০৩%","১%"], ae:["21%","78%","0.03%","1%"], ans:0},
-{qb:"বায়ুমণ্ডলে নাইট্রোজেনের পরিমাণ কত?", qe:"Percentage of nitrogen in atmosphere?", ab:["২১%","৭৮%","০.০৩%","১০%"], ae:["21%","78%","0.03%","10%"], ans:1},
-{qb:"ভারতের মসলার বাগান বলা হয় কাকে?", qe:"Spice Garden of India?", ab:["অসম","কেরালা","কর্ণাটক","তামিলনাড়ু"], ae:["Assam","Kerala","Karnataka","Tamil Nadu"], ans:1},
-{qb:"শতরঞ্জ বা দাবা খেলা কোথায় শুরু হয়?", qe:"Where did Chess originate?", ab:["চীন","ভারত","পারস্য","রাশিয়া"], ae:["China","India","Persia","Russia"], ans:1},
-{qb:"কোন ভিটামিনের অভাবে রিকেট রোগ হয়?", qe:"Deficiency of which vitamin causes Rickets?", ab:["A","B","C","D"], ae:["A","B","C","D"], ans:3},
-{qb:"জিরো আওয়ার (Zero Hour) কী?", qe:"What is Zero Hour?", ab:["মধ্যরাত","দুপুর ১২টা","ভোর","সন্ধ্যা"], ae:["Midnight","12 Noon","Dawn","Evening"], ans:1},
-{qb:"ভারতের জাতীয় ক্যালেন্ডার কোনটি?", qe:"National calendar of India?", ab:["শক সংবৎ","বিক্রম সংবৎ","গ্রেগরিয়ান","হিজরি"], ae:["Saka Samvat","Vikram Samvat","Gregorian","Hijri"], ans:0},
-{qb:"সবচেয়ে বড় নদী দ্বীপ কোনটি?", qe:"Largest river island?", ab:["মাজুলি","সাগর দ্বীপ","বালি","জাভা"], ae:["Majuli","Sagar Island","Bali","Java"], ans:0},
-{qb:"লৌহ মানবী কাকে বলা হয়?", qe:"Iron Lady of India?", ab:["সরোজিনী নাইডু","ইন্দিরা গান্ধী","সুচেতা কৃপালিনী","মমতা ব্যানার্জি"], ae:["Sarojini Naidu","Indira Gandhi","Sucheta Kripalani","Mamata Banerjee"], ans:1},
-{qb:"ভারতের প্রথম মহিলা প্রধানমন্ত্রী কে?", qe:"1st female PM of India?", ab:["প্রতিভা প্যাটেল","ইন্দিরা গান্ধী","সুষমা স্বরাজ","মীরা কুমার"], ae:["Pratibha Patel","Indira Gandhi","Sushma Swaraj","Meira Kumar"], ans:1},
-{qb:"রক্তের লোহিত কণিকা কোথায় তৈরি হয়?", qe:"Where are RBCs produced?", ab:["হৃদপিণ্ড","ফুসফুস","অস্থিমজ্জা","যকৃত"], ae:["Heart","Lung","Bone Marrow","Liver"], ans:2},
-{qb:"ভারতের সবচেয়ে বড় রাজ্য কোনটি (জনসংখ্যায়)?", qe:"Largest Indian state by population?", ab:["মহারাষ্ট্র","বিহার","উত্তরপ্রদেশ","পশ্চিমবঙ্গ"], ae:["Maharashtra","Bihar","Uttar Pradesh","West Bengal"], ans:2},
-{qb:"ভারতের সবচেয়ে ছোট রাজ্য কোনটি (আয়তনে)?", qe:"Smallest Indian state by area?", ab:["সিকিম","গোয়া","ত্রিপুরা","মিজোরাম"], ae:["Sikkim","Goa","Tripura","Mizoram"], ans:1},
-{qb:"ভারতের উচ্চতম মিনার কোনটি?", qe:"Highest minaret in India?", ab:["কুতুব মিনার","চারমিনার","শহীদ মিনার","ঝুলতা মিনার"], ae:["Qutub Minar","Charminar","Shaheed Minar","Jhulta Minar"], ans:0},
-{qb:"মহাকাশে পাঠানো প্রথম প্রাণী কে?", qe:"First animal in space?", ab:["বেড়াল","বানর","লাইকা (কুকুর)","ইঁদুর"], ae:["Cat","Monkey","Laika (Dog)","Mouse"], ans:2},
-{qb:"কোন গ্রহকে সবুজ গ্রহ বলা হয়?", qe:"Which is called Green Planet?", ab:["পৃথিবী","ইউরেনাস","শনি","মঙ্গল"], ae:["Earth","Uranus","Saturn","Mars"], ans:1},
-{qb:"বিশ্ব যোগ দিবস কবে পালিত হয়?", qe:"World Yoga Day is celebrated on?", ab:["২১ জুন","৫ জুন","১৫ আগস্ট","২৬ জানুয়ারি"], ae:["21st June","5th June","15th Aug","26th Jan"], ans:0},
-{qb:"ভারতের প্রথম কৃত্রিম উপগ্রহ কোনটি?", qe:"First Indian satellite?", ab:["ভাস্কর","রোহিণী","আর্যভট্ট","অ্যাপল"], ae:["Bhaskar","Rohini","Aryabhata","Apple"], ans:2},
-{qb:"টেলিভিশন কে আবিষ্কার করেন?", qe:"Who invented TV?", ab:["বেয়ার্ড","বেল","এডিসন","মার্কোনি"], ae:["Baird","Bell","Edison","Marconi"], ans:0},
-{qb:"ভারতের সংবিধান লিখতে কত সময় লেগেছিল?", qe:"Time taken to write Indian Constitution?", ab:["২ বছর ১১ মাস ১৮ দিন","৩ বছর","১ বছর","২ বছর"], ae:["2yr 11m 18d","3 years","1 year","2 years"], ans:0},
-{qb:"উড়ন্ত শিখ (Flying Sikh) কাকে বলা হয়?", qe:"Who is called Flying Sikh?", ab:["যুবরাজ সিং","মিলখা সিং","হরভজন সিং","মনমোহন সিং"], ae:["Yuvraj Singh","Milkha Singh","Harbhajan Singh","Manmohan Singh"], ans:1},
-{qb:"ভারতের জাতীয় সবজি কোনটি?", qe:"National vegetable of India?", ab:["আলু","বেগুন","কুমড়ো","টমেটো"], ae:["Potato","Brinjal","Pumpkin","Tomato"], ans:2},
-{qb:"সবচেয়ে শক্তিশালী পেশী শরীরের কোথায় থাকে?", qe:"Strongest muscle in body is located in?", ab:["হাত","পা","চোয়াল","বুক"], ae:["Hand","Leg","Jaw","Chest"], ans:2},
-{qb:"সবচেয়ে হালকা গ্যাস কোনটি?", qe:"Which is the lightest gas?", ab:["অক্সিজেন","হাইড্রোজেন","হিলিয়াম","নাইট্রোজেন"], ae:["Oxygen","Hydrogen","Helium","Nitrogen"], ans:1},
-{qb:"বিশ্ব পরিবেশ দিবস কবে?", qe:"World Environment Day?", ab:["২১ জুন","৫ জুন","১০ ডিসেম্বর","১৫ আগস্ট"], ae:["21st June","5th June","10th Dec","15th Aug"], ans:1},
-{qb:"ভারতের সবচেয়ে বড় মিউজিয়াম কোথায়?", qe:"Largest museum in India?", ab:["দিল্লি","কলকাতা","মুম্বাই","চেন্নাই"], ae:["Delhi","Kolkata","Mumbai","Chennai"], ans:1},
-{qb:"কোন নদীকে বিহারের দুঃখ বলা হয়?", qe:"Sorrow of Bihar?", ab:["গঙ্গা","কোসি","দামোদর","যমুনা"], ae:["Ganga","Kosi","Damodar","Yamuna"], ans:1},
-{qb:"পশ্চিমবঙ্গের দুঃখ কোন নদীকে বলা হয়?", qe:"Sorrow of Bengal?", ab:["কোসি","দামোদর","পদ্মা","তীস্তা"], ae:["Kosi","Damodar","Padma","Teesta"], ans:1},
-{qb:"চায়ের দেশ বলা হয় কাকে?", qe:"Land of Tea?", ab:["দাজিলিং","অসম","কেরালা","নীলগিরি"], ae:["Darjeeling","Assam","Kerala","Nilgiri"], ans:1},
-{qb:"ভারতের প্রবেশদ্বার কোনটি?", qe:"Gateway of India?", ab:["কলকাতা","মুম্বাই","দিল্লি","চেন্নাই"], ae:["Kolkata","Mumbai","Delhi","Chennai"], ans:1},
-{qb:"সবচেয়ে বেশি ভিটামিন সি কোথায় থাকে?", qe:"Max Vitamin C is found in?", ab:["আপেল","আমলকী","কলা","পেঁপে"], ae:["Apple","Amla","Banana","Papaya"], ans:1},
-{qb:"কত বছরে এক শতাব্দী?", qe:"How many years in a century?", ab:["১০","৫০","১০০","১০০০"], ae:["10","50","100","1000"], ans:2},
-{qb:"ভারতের জাতীয় ফল কী?", qe:"National fruit of India?", ab:["আম","কলা","আপেল","কাঁঠাল"], ae:["Mango","Banana","Apple","Jackfruit"], ans:0},
-{qb:"ভারতের ম্যানচেস্টার কোনটি?", qe:"Manchester of India?", ab:["আহমেদাবাদ","মুম্বাই","কানপুর","সুরাট"], ae:["Ahmedabad","Mumbai","Kanpur","Surat"], ans:0},
-{qb:"বিশ্বের বৃহত্তম মরুভূমি কোনটি?", qe:"Largest desert in the world?", ab:["থার","সাহারা","গোবি","কালাহারি"], ae:["Thar","Sahara","Gobi","Kalahari"], ans:1},
-{qb:"ভারতের বৃহত্তম মরুভূমি কোনটি?", qe:"Largest desert in India?", ab:["সাহারা","থার","গোবি","থর"], ae:["Sahara","Thar","Gobi","Thor"], ans:1},
-{qb:"ভারতের দীর্ঘতম নদী কোনটি?", qe:"Longest river in India?", ab:["ব্রহ্মপুত্র","গঙ্গা","যমুনা","গোদাবরী"], ae:["Brahmaputra","Ganga","Yamuna","Godavari"], ans:1},
-{qb:"কোন শহরকে 'ভারতের বোস্টন' বলা হয়?", qe:"Boston of India?", ab:["মুম্বাই","আহমেদাবাদ","কলকাতা","পুনে"], ae:["Mumbai","Ahmedabad","Kolkata","Pune"], ans:1},
-{qb:"রক্তের রং লাল হয় কেন?", qe:"Why blood is red?", ab:["ক্লোরোফিল","হিমোগ্লোবিন","প্লাজমা","আয়রন"], ae:["Chlorophyll","Hemoglobin","Plasma","Iron"], ans:1},
-{qb:"ডায়াবেটিস কিসের অভাবে হয়?", qe:"Diabetes is caused by deficiency of?", ab:["ভিটামিন","ক্যালসিয়াম","ইনসুলিন","আয়রন"], ae:["Vitamin","Calcium","Insulin","Iron"], ans:2},
-{qb:"ভারতের সর্বোচ্চ শৃঙ্গ কোনটি?", qe:"Highest peak of India?", ab:["এভারেস্ট","কাঞ্চনজঙ্ঘা","কে-টু","নন্দাদেবী"], ae:["Everest","Kanchenjunga","K2","Nandadevi"], ans:1},
-{qb:"বিশ্বের দীর্ঘতম রেলওয়ে স্টেশন কোনটি?", qe:"Longest railway platform in world?", ab:["খড়গপুর","গোরক্ষপুর","হুবলি (শ্রী সিদ্ধারূঢ়া)","লন্ডন"], ae:["Kharagpur","Gorakhpur","Hubballi","London"], ans:2},
-{qb:"ভারতের প্রথম নোবেল জয়ী কে?", qe:"First Indian Nobel laureate?", ab:["সি ভি রমন","অমর্ত্য সেন","মাদার টেরেসা","রবীন্দ্রনাথ ঠাকুর"], ae:["C.V. Raman","Amartya Sen","Mother Teresa","Tagore"], ans:3},
-{qb:"সবচেয়ে বড় গ্রহ কোনটি?", qe:"Largest planet?", ab:["শনি","বৃহস্পতি","ইউরেনাস","পৃথিবী"], ae:["Saturn","Jupiter","Uranus","Earth"], ans:1},
-{qb:"সৌরজগতের নীল গ্রহ কোনটি?", qe:"Blue planet of solar system?", ab:["শুক্র","পৃথিবী","মঙ্গল","শনি"], ae:["Venus","Earth","Mars","Saturn"], ans:1},
-{qb:"ভারতের জাতীয় গান কোনটি?", qe:"National song of India?", ab:["জন গণ মন","বন্দে মাতরম","সারে জাহান সে আচ্ছা","আমার সোনার বাংলা"], ae:["Jana Gana Mana","Vande Mataram","Sare Jahan Se Achha","Amar Sonar Bangla"], ans:1},
-{qb:"ভারতের জাতীয় ধ্বনি কোনটি?", qe:"National slogan of India?", ab:["জয় হিন্দ","ইনকিলাব জিন্দাবাদ","সদমেব জয়তে","বন্দে মাতরম"], ae:["Jai Hind","Inquilab Zindabad","Satyamev Jayate","Vande Mataram"], ans:2},
-{qb:"সবচেয়ে ঘন ধাতু কোনটি?", qe:"Densest metal?", ab:["লোহা","সোনা","অসমিয়াম","তামা"], ae:["Iron","Gold","Osmium","Copper"], ans:2},
-{qb:"আকাশ নীল দেখায় কেন?", qe:"Why sky is blue?", ab:["প্রতিফলন","প্রতিসরণ","বিক্ষেপণ (Scattering)","শোষণ"], ae:["Reflection","Refraction","Scattering","Absorption"], ans:2},
-{qb:"ভারতের স্বাধীনতা দিবস কবে?", qe:"Independence Day of India?", ab:["২৬ জানুয়ারি","১৫ আগস্ট","২ অক্টোবর","১৪ নভেম্বর"], ae:["26th Jan","15th Aug","2nd Oct","14th Nov"], ans:1},
-{qb:"ভারতের সাধারণতন্ত্র দিবস কবে?", qe:"Republic Day of India?", ab:["১৫ আগস্ট","২৬ জানুয়ারি","২৬ নভেম্বর","১ জানুয়ারি"], ae:["15th Aug","26th Jan","26th Nov","1st Jan"], ans:1},
-{qb:"ভারতের উচ্চতম জলপ্রপাত কোনটি?", qe:"Highest waterfall in India?", ab:["যোগ জলপ্রপাত","কুঞ্চিকাল","দুধসাগর","হুড্রু"], ae:["Jog Falls","Kunchikal","Dudhsagar","Hundru"], ans:1},
-{qb:"চাঁদে পা রাখা প্রথম ভারতীয় কে?", qe:"First Indian to walk on Moon?", ab:["রাকেশ শর্মা","কেউ না (এখনও যায়নি)","কল্পনা চাওলা","সুনিতা উইলিয়ামস"], ae:["Rakesh Sharma","None (Yet to go)","Kalpana Chawla","Sunita Williams"], ans:1},
-{qb:"ভারতের সবচেয়ে বড় লেক কোনটি?", qe:"Largest lake in India?", ab:["চিল্কা","উলার","ডাল","সম্ভর"], ae:["Chilika","Wular","Dal","Sambhar"], ans:0},
-{qb:"বায়ুর চাপ মাপার যন্ত্র কোনটি?", qe:"Instrument to measure air pressure?", ab:["ব্যারোমিটার","থার্মোমিটার","হাইড্রোমিটার","ল্যাক্টোমিটার"], ae:["Barometer","Thermometer","Hydrometer","Lactometer"], ans:0},
-{qb:"দুধের বিশুদ্ধতা মাপা হয় কী দিয়ে?", qe:"Instrument to test purity of milk?", ab:["ব্যারোমিটার","হাইড্রোমিটার","ল্যাক্টোমিটার","থার্মোমিটার"], ae:["Barometer","Hydrometer","Lactometer","Thermometer"], ans:2},
-{qb:"সূর্যের আলো পৃথিবীতে আসতে কত সময় লাগে?", qe:"Time for sunlight to reach Earth?", ab:["৮ মিনিট ২০ সেকেন্ড","৫ মিনিট","১০ মিনিট","৩ মিনিট"], ae:["8m 20s","5m","10m","3m"], ans:0},
-{qb:"সবচেয়ে বড় দিন কবে (উত্তর গোলার্ধে)?", qe:"Longest day (N. Hemisphere)?", ab:["২১ জুন","২২ ডিসেম্বর","২১ মার্চ","২৩ সেপ্টেম্বর"], ae:["21st June","22nd Dec","21st March","23rd Sept"], ans:0},
-{qb:"সবচেয়ে ছোট দিন কবে (উত্তর গোলার্ধে)?", qe:"Shortest day (N. Hemisphere)?", ab:["২১ জুন","২২ ডিসেম্বর","২১ মার্চ","২৩ সেপ্টেম্বর"], ae:["21st June","22nd Dec","21st March","23rd Sept"], ans:1},
-{qb:"কোন যন্ত্র দিয়ে ভূমিকম্প মাপা হয়?", qe:"Instrument to measure earthquake?", ab:["ব্যারোমিটার","সিসমোগ্রাফ","ল্যাক্টোমিটার","অ্যানিমোমিটার"], ae:["Barometer","Seismograph","Lactometer","Anemometer"], ans:1},
-{qb:"২০২৬ সালে ফুটবল বিশ্বকাপ কোন দেশে হবে?", qe:"2026 FIFA World Cup hosts?", ab:["ভারত ও চীন","ইউএসএ, মেক্সিকো, কানাডা","কাতার","আর্জেন্টিনা"], ae:["India & China","USA, Mexico, Canada","Qatar","Argentina"], ans:1},
-{qb:"ChatGPT এর নির্মাতা সংস্থা কোনটি?", qe:"Creator of ChatGPT?", ab:["গুগল","মাইক্রোসফট","ওপেনএআই (OpenAI)","ফেসবুক"], ae:["Google","Microsoft","OpenAI","Facebook"], ans:2},
-{qb:"ভারতের বর্তমান রাষ্ট্রপতির নাম কী (২০২৪)?", qe:"Who is current President of India?", ab:["রামনাথ কোবিন্দ","দ্রৌপদী মুর্মু","নরেন্দ্র মোদী","জগদীপ ধনখড়"], ae:["Ram Nath Kovind","Droupadi Murmu","Narendra Modi","Jagdeep Dhankhar"], ans:1},
-{qb:"ভারতের জাতীয় প্রতীক কী?", qe:"National Emblem of India?", ab:["বাঘ","অশোক স্তম্ভ","তাজমহল","পদ্ম"], ae:["Tiger","Ashoka Pillar","Taj Mahal","Lotus"], ans:1},
-{qb:"পশ্চিমবঙ্গের বর্তমান মুখ্যমন্ত্রী কে?", qe:"Current CM of West Bengal?", ab:["বুদ্ধদেব ভট্টাচার্য","জ্যোতি বসু","মমতা ব্যানার্জি","অভিষেক ব্যানার্জি"], ae:["Buddhadeb","Jyoti Basu","Mamata Banerjee","Abhishek"], ans:2},
-{qb:"সবচেয়ে বেশি বুদ্ধিমান প্রাণী কোনটি (মানুষ ছাড়া)?", qe:"Most intelligent animal besides human?", ab:["হাতি","কুকুর","শিম্পাঞ্জি/ডলফিন","বেড়াল"], ae:["Elephant","Dog","Chimpanzee/Dolphin","Cat"], ans:2},
-{qb:"ভারতের আইটি রাজধানী কোনটি?", qe:"IT Capital of India?", ab:["হায়দ্রাবাদ","বেঙ্গালুরু","পুনে","গুরুগ্রাম"], ae:["Hyderabad","Bengaluru","Pune","Gurugram"], ans:1},
-{qb:"ভারতের মহাকাশ গবেষণা সংস্থার নাম কী?", qe:"Space agency of India?", ab:["NASA","ISRO","ESA","JAXA"], ae:["NASA","ISRO","ESA","JAXA"], ans:1},
-{qb:"সাদা সোনা বলা হয় কাকে?", qe:"What is called White Gold?", ab:["সিলভার","প্লাটিনাম","সাদা হীরা","তুলো"], ae:["Silver","Platinum","White Diamond","Cotton"], ans:1},
-{qb:"মরুভূমির জাহাজ কাকে বলা হয়?", qe:"Ship of desert?", ab:["উট","ঘোড়া","গাধা","সিংহ"], ae:["Camel","Horse","Donkey","Lion"], ans:0},
-{qb:"ভারতের জাতীয় খেলা কোনটি?", qe:"National game of India?", ab:["ক্রিকেট","হকি","কাবাডি","ফুটবল"], ae:["Cricket","Hockey","Kabaddi","Football"], ans:1},
-{qb:"মানুষের শরীরের সবচেয়ে বড় অঙ্গ কোনটি?", qe:"Largest organ of human body?", ab:["যকৃত","ত্বক","ফুসফুস","হৃদপিণ্ড"], ae:["Liver","Skin","Lung","Heart"], ans:1}
-            
+            {qb:"ভারতের প্রবেশদ্বার কোনটি?", qe:"Gateway of India?", ab:["দিল্লি","মুম্বাই","কলকাতা","চেন্নাই"], ae:["Delhi","Mumbai","Kolkata","Chennai"], ans:1},
+            {qb:"ভারতের জাতীয় সংগীত কে লিখেছেন?", qe:"Who wrote the National Anthem of India?", ab:["নজরুল ইসলাম","রবীন্দ্রনাথ ঠাকুর","বঙ্কিমচন্দ্র","শরৎচন্দ্র"], ae:["Nazrul Islam","Rabindranath Tagore","Bankim Chandra","Saratchandra"], ans:1},
+            {qb:"পৃথিবীর দীর্ঘতম নদী কোনটি?", qe:"Which is the longest river in the world?", ab:["গঙ্গা","নীল নদ","আমাজন","মিসিসিপি"], ae:["Ganga","Nile","Amazon","Mississippi"], ans:1},
+            {qb:"কোন ভিটামিনের অভাবে রাতকানা রোগ হয়?", qe:"Deficiency of which vitamin causes night blindness?", ab:["ভিটামিন A","ভিটামিন B","ভিটামিন C","ভিটামিন D"], ae:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"], ans:0},
+            {qb:"পেন্সিলের ভেতরে থাকা কালো অংশটি কী?", qe:"What is the black lead inside a pencil?", ab:["কয়লা","গ্রাফাইট","লোহা","সিসা"], ae:["Coal","Graphite","Iron","Lead"], ans:1},
+            {qb:"মানবদেহের বৃহত্তম হাড় কোনটি?", qe:"Which is the largest bone in the human body?", ab:["ফিমার","টিবিয়া","স্কাল","রিবস"], ae:["Femur","Tibia","Skull","Ribs"], ans:0},
+            {qb:"বাতাসের গতিবেগ মাপা হয় কোন যন্ত্রে?", qe:"Which instrument measures wind speed?", ab:["ব্যারোমিটার","অ্যানিমোমিটার","থার্মোমিটার","হাইড্রোমিটার"], ae:["Barometer","Anemometer","Thermometer","Hydrometer"], ans:1},
+            {qb:"আয়তনের দিক থেকে পৃথিবীর বৃহত্তম দেশ কোনটি?", qe:"Which is the largest country by area?", ab:["চীন","ভারত","রাশিয়া","কানাডা"], ae:["China","India","Russia","Canada"], ans:2},
+            {qb:"মানুষের স্বাভাবিক রক্তচাপ কত?", qe:"What is normal human blood pressure?", ab:["১০০/৬০","১২০/৮০","১৪০/৯০","৮০/১২০"], ae:["100/60","120/80","140/90","80/120"], ans:1},
+            {qb:"চাঁদে পা রাখা প্রথম ব্যক্তি কে?", qe:"Who was the first person to step on the moon?", ab:["ইউরি গ্যাগারিন","নীল আর্মস্ট্রং","রাকেশ শর্মা","এডুইন অলড্রিন"], ae:["Yuri Gagarin","Neil Armstrong","Rakesh Sharma","Edwin Aldrin"], ans:1},
+            {qb:"কত সালে টাইটানিক ডুবেছিল?", qe:"In which year did the Titanic sink?", ab:["১৯১০","১৯১২","১৯১৪","১৯২০"], ae:["1910","1912","1914","1920"], ans:1},
+            {qb:"সবচেয়ে হালকা ধাতু কোনটি?", qe:"Which is the lightest metal?", ab:["সোনা","পারদ","লিথিয়াম","তামা"], ae:["Gold","Mercury","Lithium","Copper"], ans:2},
+            {qb:"বিদ্যুতের বাল্ব কে আবিষ্কার করেন?", qe:"Who invented the light bulb?", ab:["নিউটন","এডিসন","পাসকাল","ফ্যারাডে"], ae:["Newton","Edison","Pascal","Faraday"], ans:1},
+            {qb:"জাপানের রাজধানী কোথায়?", qe:"What is the capital of Japan?", ab:["সিউল","বেজিং","টোকিও","ব্যাংকক"], ae:["Seoul","Beijing","Tokyo","Bangkok"], ans:2},
+            {qb:"ভারতের জাতীয় ফুল কোনটি?", qe:"What is the national flower of India?", ab:["গোলাপ","শাপলা","পদ্ম","সূর্যমুখী"], ae:["Rose","Water Lily","Lotus","Sunflower"], ans:2},
+            {qb:"পৃথিবীর কক্ষপথের আকৃতি কেমন?", qe:"What is the shape of Earth's orbit?", ab:["গোল","লম্বা","উপবৃত্তাকার","বর্গাকার"], ae:["Circular","Linear","Elliptical","Square"], ans:2},
+            {qb:"কোন প্রাণীকে মরুভূমির জাহাজ বলা হয়?", qe:"Which animal is called the ship of the desert?", ab:["ঘোড়া","উট","গাধা","হাতি"], ae:["Horse","Camel","Donkey","Elephant"], ans:1},
+            {qb:"ভারতের লোহার মানব কাকে বলা হয়?", qe:"Who is known as the Iron Man of India?", ab:["গান্ধীজি","নেহরু","প্যাটেল","ভগত সিং"], ae:["Gandhiji","Nehru","Patel","Bhagat Singh"], ans:2},
+            {qb:"কোন গ্যাস বেলুন ওড়াতে সাহায্য করে?", qe:"Which gas helps a balloon fly?", ab:["অক্সিজেন","নাইট্রোজেন","হিলিয়াম","মিথেন"], ae:["Oxygen","Nitrogen","Helium","Methane"], ans:2},
+            {qb:"অলিম্পিক গেম কত বছর অন্তর হয়?", qe:"How often are Olympic games held?", ab:["২ বছর","৩ বছর","৪ বছর","৫ বছর"], ae:["2 years","3 years","4 years","5 years"], ans:2},
+            {qb:"পৃথিবীর উচ্চতম শৃঙ্গ কোনটি?", qe:"Which is the highest peak in the world?", ab:["K2","কাঞ্চনজঙ্ঘা","মাউন্ট এভারেস্ট","লোৎসে"], ae:["K2","Kanchenjunga","Mt. Everest","Lhotse"], ans:2},
+            {qb:"মানুষের শরীরের সাধারণ তাপমাত্রা কত (ফারেনহাইট)?", qe:"Normal human body temperature in Fahrenheit?", ab:["৯৬.৪","৯৮.৪","৯৯.৪","১০২.৪"], ae:["96.4","98.4","99.4","102.4"], ans:1},
+            {qb:"সবচেয়ে ছোট পাখি কোনটি?", qe:"Which is the smallest bird?", ab:["চড়ুই","হামিংবার্ড","টিয়ে","পাবদা"], ae:["Sparrow","Hummingbird","Parrot","Swift"], ans:1},
+            {qb:"পেনিসিলিন কে আবিষ্কার করেন?", qe:"Who discovered Penicillin?", ab:["ফ্লেমিং","পাস্তুর","জেনার","রোজেন"], ae:["Fleming","Pasteur","Jenner","Rosen"], ans:0},
+            {qb:"কোন গ্রহে দিন বড় এবং বছর ছোট?", qe:"Which planet has longer days than years?", ab:["বুধ","শুক্র","মঙ্গল","শনি"], ae:["Mercury","Venus","Mars","Saturn"], ans:1},
+            {qb:"সবুজ বিপ্লব কিসের সাথে যুক্ত?", qe:"Green Revolution is associated with?", ab:["দুগ্ধ","মাছ","কৃষি","তেল"], ae:["Milk","Fish","Agriculture","Oil"], ans:2},
+            {qb:"ভারতের সংবিধানের জনক কে?", qe:"Who is the father of Indian Constitution?", ab:["গান্ধীজি","নেহরু","আম্বেদকর","রাজেন্দ্র প্রসাদ"], ae:["Gandhiji","Nehru","Ambedkar","Rajendra Prasad"], ans:2},
+            {qb:"অগ্নিবীণা কাব্যগ্রন্থটি কার লেখা?", qe:"Who wrote the book Agnibina?", ab:["রবীন্দ্রনাথ","নজরুল ইসলাম","জীবনানন্দ","বঙ্কিমচন্দ্র"], ae:["Tagore","Nazrul Islam","Jibanananda","Bankim Chandra"], ans:1},
+            {qb:"সবচেয়ে বড় মহাসাগর কোনটি?", qe:"Which is the largest ocean?", ab:["ভারত","আটলান্টিক","প্রশান্ত","কুমেরু"], ae:["Indian","Atlantic","Pacific","Antarctic"], ans:2},
+            {qb:"রক্ত জমাট বাঁধতে সাহায্য করে কোনটি?", qe:"Which helps in blood clotting?", ab:["WBC","RBC","অণুচক্রিকা","প্লাজমা"], ae:["WBC","RBC","Platelets","Plasma"], ans:2},
+            {qb:"ইন্টারনেটের জনক কে?", qe:"Who is the father of the Internet?", ab:["বিল গেটস","স্টিভ জবস","ভিন্ট সার্ফ","মার্ক জুকারবার্গ"], ae:["Bill Gates","Steve Jobs","Vint Cerf","Mark Zuckerberg"], ans:2},
+            {qb:"প্রথম বিশ্বযুদ্ধ শুরু হয় কত সালে?", qe:"In which year did WW1 start?", ab:["১৯১৪","১৯৩৯","১৯৪৫","১৯১৮"], ae:["1914","1939","1945","1918"], ans:0},
+            {qb:"মোনালিসা চিত্রটি কার আঁকা?", qe:"Who painted the Mona Lisa?", ab:["পিকাসো","মাইকেল এঞ্জেলো","লিওনার্দো দা ভিঞ্চি","রাফায়েল"], ae:["Picasso","Michelangelo","Leonardo da Vinci","Raphael"], ans:2},
+            {qb:"ভারতের মিসাইল ম্যান কে?", qe:"Who is the Missile Man of India?", ab:["হোমি ভাবা","সি ভি রমন","এ পি জে আব্দুল কালাম","বিক্রম সারাভাই"], ae:["Homi Bhabha","C.V. Raman","A.P.J. Abdul Kalam","Vikram Sarabhai"], ans:2},
+            {qb:"কোন ভিটামিন পানিতে দ্রবণীয়?", qe:"Which vitamin is water soluble?", ab:["A","D","C","K"], ae:["A","D","C","K"], ans:2},
+            {qb:"ভারতের গোলাপি শহর কোনটি?", qe:"Which is the Pink City of India?", ab:["যোধপুর","জয়পুর","উদয়পুর","আজমির"], ae:["Jodhpur","Jaipur","Udaipur","Ajmer"], ans:1},
+            {qb:"কম্পিউটার কে আবিষ্কার করেন?", qe:"Who invented the computer?", ab:["নিউটন","টুরিং","চার্লস ব্যাবেজ","পাসকাল"], ae:["Newton","Turing","Charles Babbage","Pascal"], ans:2},
+            {qb:"সবচেয়ে বড় স্তন্যপায়ী প্রাণী কোনটি?", qe:"Which is the largest mammal?", ab:["হাতি","জিরাফ","নীল তিমি","শার্ক"], ae:["Elephant","Giraffe","Blue Whale","Shark"], ans:2},
+            {qb:"লোহিত রক্তকণিকার আয়ু কত দিন?", qe:"Life span of RBC?", ab:["৬০ দিন","৯০ দিন","১২০ দিন","১৫০ দিন"], ae:["60 days","90 days","120 days","150 days"], ans:2},
+            {qb:"কোন শহরকে 'পোপের শহর' বলা হয়?", qe:"Which city is called City of Pope?", ab:["প্যারিস","লন্ডন","রোম","ভেনিস"], ae:["Paris","London","Rome","Venice"], ans:2},
+            {qb:"প্রথম রোবট নাগরিকের নাম কী?", qe:"What is the name of the first robot citizen?", ab:["সিরি","অ্যালেক্সা","সোফিয়া","কর্টানা"], ae:["Siri","Alexa","Sophia","Cortana"], ans:2},
+            {qb:"গাছের প্রাণ আছে কে প্রমাণ করেন?", qe:"Who proved plants have life?", ab:["জগদীশ চন্দ্র বসু","প্রফুল্ল চন্দ্র রায়","সি ভি রমন","হরগোবিন্দ খোরানা"], ae:["Jagadish Chandra Bose","P.C. Ray","C.V. Raman","H. Khorana"], ans:0},
+            {qb:"ভারতের সর্বোচ্চ নাগরিক সম্মান কোনটি?", qe:"Which is the highest civilian award in India?", ab:["পদ্মভূষণ","ভারতরত্ন","পদ্মবিভূষণ","জ্ঞানপীঠ"], ae:["Padma Bhushan","Bharat Ratna","Padma Vibhushan","Jnanpith"], ans:1},
+            {qb:"সবচেয়ে তেজস্ক্রিয় ধাতু কোনটি?", qe:"Which is the most radioactive metal?", ab:["ইউরেনিয়াম","থোরিয়াম","রেডিয়াম","প্লুটোনিয়াম"], ae:["Uranium","Thorium","Radium","Plutonium"], ans:2},
+            {qb:"পৃথিবীর জমজ গ্রহ কাকে বলা হয়?", qe:"Which is called Earth's twin planet?", ab:["মঙ্গল","শুক্র","বুধ","শনি"], ae:["Mars","Venus","Mercury","Saturn"], ans:1},
+            {qb:"সৌরজগতের উষ্ণতম গ্রহ কোনটি?", qe:"Which is the hottest planet?", ab:["বুধ","শুক্র","মঙ্গল","বৃহস্পতি"], ae:["Mercury","Venus","Mars","Jupiter"], ans:1},
+            {qb:"বিখ্যাত ডায়মন্ড হারবার কোথায়?", qe:"Where is famous Diamond Harbour?", ab:["মুম্বাই","কলকাতা","চেন্নাই","সুরাট"], ae:["Mumbai","Kolkata","Chennai","Surat"], ans:1},
+            {qb:"লাফিং গ্যাস কোনটি?", qe:"Which is Laughing Gas?", ab:["নাইট্রোজেন","নাইট্রাস অক্সাইড","কার্বন","মিথেন"], ae:["Nitrogen","Nitrous Oxide","Carbon","Methane"], ans:1},
+            {qb:"কত বছরে এক যুগ?", qe:"How many years make an era (Yuga)?", ab:["১০","১২","৫০","১০০"], ae:["10","12","50","100"], ans:1},
+            {qb:"গুগলের সদর দপ্তর কোথায়?", qe:"Where is Google HQ?", ab:["ক্যালিফোর্নিয়া","নিউ ইয়র্ক","টেক্সাস","লন্ডন"], ae:["California","New York","Texas","London"], ans:0},
+            {qb:"ভারতের জাতীয় বৃক্ষ কোনটি?", qe:"What is the national tree of India?", ab:["নিম","অশ্বত্থ","বট","আম"], ae:["Neem","Peepal","Banyan","Mango"], ans:2},
+            {qb:"বক্সাইড কিসের আকরিক?", qe:"Bauxite is an ore of?", ab:["লোহা","তামা","অ্যালুমিনিয়াম","দস্তা"], ae:["Iron","Copper","Aluminum","Zinc"], ans:2},
+            {qb:"মানুষের হৃদপিণ্ডে কয়টি কক্ষ থাকে?", qe:"How many chambers in human heart?", ab:["২","৩","৪","৫"], ae:["2","3","4","5"], ans:2},
+            {qb:"ভারতের দীর্ঘতম বাঁধ কোনটি?", qe:"Longest dam in India?", ab:["ভাকরা নাঙ্গাল","হীরাকুঁদ","তেহরি","ফারাক্কা"], ae:["Bhakra Nangal","Hirakud","Tehri","Farakka"], ans:1},
+            {qb:"সবচেয়ে বড় ফুল কোনটি?", qe:"Which is the largest flower?", ab:["সূর্যমুখী","পদ্ম","র‍্যাফ্লেসিয়া","গোলাপ"], ae:["Sunflower","Lotus","Rafflesia","Rose"], ans:2},
+            {qb:"কত গজে এক মাইল?", qe:"How many yards make a mile?", ab:["১০০০","১৫৬০","১৭৬০","২০০০"], ae:["1000","1560","1760","2000"], ans:2},
+            {qb:"প্রথম ভারতীয় মহাকাশচারী কে?", qe:"First Indian astronaut?", ab:["কল্পনা চাওলা","সুনিতা উইলিয়ামস","রাকেশ শর্মা","রাভি মালহোত্রা"], ae:["Kalpana Chawla","Sunita Williams","Rakesh Sharma","Ravi Malhotra"], ans:2},
+            {qb:"রক্তের পিএইচ (pH) মান কত?", qe:"What is the pH value of blood?", ab:["৬.৪","৭.৪","৮.৪","৫.৪"], ae:["6.4","7.4","8.4","5.4"], ans:1},
+            {qb:"পৃথিবীর ফুসফুস বলা হয় কাকে?", qe:"Which is called Lungs of Earth?", ab:["সুন্দরবন","আমাজন জঙ্গল","সাহারা","হিমালয়"], ae:["Sundarbans","Amazon Rainforest","Sahara","Himalayas"], ans:1},
+            {qb:"ভারতের লোকসভার সদস্য সংখ্যা কত?", qe:"Strength of Lok Sabha members?", ab:["৫২০","৫৪৩","৫৫২","৫০০"], ae:["520","543","552","500"], ans:1},
+            {qb:"হিমোগ্লোবিনের কাজ কী?", qe:"Function of Hemoglobin?", ab:["খাদ্য বহন","অক্সিজেন বহন","জল বহন","বর্জ্য বহন"], ae:["Food transport","Oxygen transport","Water transport","Waste transport"], ans:1},
+            {qb:"আইফেল টাওয়ার কোথায় অবস্থিত?", qe:"Where is the Eiffel Tower?", ab:["লন্ডন","বার্লিন","প্যারিস","নিউ ইয়র্ক"], ae:["London","Berlin","Paris","New York"], ans:2},
+            {qb:"সবচেয়ে হালকা গ্যাস কোনটি?", qe:"Which is the lightest gas?", ab:["অক্সিজেন","হিলিয়াম","হাইড্রোজেন","নাইট্রোজেন"], ae:["Oxygen","Helium","Hydrogen","Nitrogen"], ans:2},
+            {qb:"ভারতের ম্যানচেস্টার কোনটি?", qe:"Manchester of India?", ab:["কানপুর","মুম্বাই","আহমেদাবাদ","সুরাট"], ae:["Kanpur","Mumbai","Ahmedabad","Surat"], ans:2},
+            {qb:"দাবদাহ বা হিট ওয়েভ কোন ঋতুতে হয়?", qe:"Heat wave occurs in which season?", ab:["শীত","গ্রীষ্ম","বর্ষা","শরৎ"], ae:["Winter","Summer","Monsoon","Autumn"], ans:1},
+            {qb:"চাঁদ পৃথিবীর চারদিকে একবার ঘুরতে কত সময় নেয়?", qe:"How long moon takes to orbit Earth?", ab:["২৪ দিন","২৭.৩ দিন","৩০ দিন","১৫ দিন"], ae:["24 days","27.3 days","30 days","15 days"], ans:1},
+            {qb:"অগ্নি ৫ (Agni-V) কী?", qe:"What is Agni-V?", ab:["জাহাজ","ট্যাঙ্ক","মিসাইল","প্লেন"], ae:["Ship","Tank","Missile","Plane"], ans:2},
+            {qb:"মানুষের কানে কয়টি হাড় থাকে?", qe:"How many bones in human ear?", ab:["২","৩","৪","৬"], ae:["2","3","4","6"], ans:1},
+            {qb:"ভারতের প্রথম গভর্নর জেনারেল কে?", qe:"First Governor General of India?", ab:["লর্ড ক্যানিং","উইলিয়াম বেন্টিঙ্ক","ওয়ারেন হেস্টিংস","ডালহৌসি"], ae:["Canning","Bentinck","Hastings","Dalhousie"], ans:1},
+            {qb:"বিশ্বের বৃহত্তম ম্যানগ্রোভ অরণ্য কোনটি?", qe:"Largest mangrove forest?", ab:["আমাজন","সুন্দরবন","ভিতরকণিকা","পিচাভরম"], ae:["Amazon","Sundarbans","Bhitarkanika","Pichavaram"], ans:1},
+            {qb:"ম্যালেরিয়া রোগের বাহক কে?", qe:"Carrier of Malaria?", ab:["স্ত্রী এনোফিলিস মশা","এডিস মশা","মাছি","কুলেক্স মশা"], ae:["Female Anopheles","Aedes","Housefly","Culex"], ans:0},
+            {qb:"ভারতের জাতীয় নদী কোনটি?", qe:"National river of India?", ab:["যমুনা","ব্রহ্মপুত্র","গঙ্গা","গোদাবরী"], ae:["Yamuna","Brahmaputra","Ganga","Godavari"], ans:2},
+            {qb:"সবচেয়ে দ্রুতগামী প্রাণী কোনটি?", qe:"Fastest land animal?", ab:["বাঘ","চিতাবাঘ","ঘোড়া","হরিণ"], ae:["Tiger","Cheetah","Horse","Deer"], ans:1},
+            {qb:"কোন শহরকে 'ভারতের উদ্যান শহর' বলা হয়?", qe:"Which city is Garden City of India?", ab:["চেন্নাই","বেঙ্গালুরু","মাইসোর","শিমলা"], ae:["Chennai","Bengaluru","Mysore","Shimla"], ans:1},
+            {qb:"টুইটারের (X) মালিক কে?", qe:"Who is the owner of Twitter (X)?", ab:["মার্ক জুকারবার্গ","ইলন মাস্ক","জেফ বেজোস","বিল গেটস"], ae:["Zuckerberg","Elon Musk","Jeff Bezos","Bill Gates"], ans:1},
+            {qb:"ভারতের প্রথম সূর্যোদয় হয় কোন রাজ্যে?", qe:"Sun rises first in which Indian state?", ab:["অসম","অরুণাচল প্রদেশ","মণিপুর","নাগাল্যান্ড"], ae:["Assam","Arunachal Pradesh","Manipur","Nagaland"], ans:1},
+            {qb:"রক্তের গ্রুপ কে আবিষ্কার করেন?", qe:"Who discovered blood groups?", ab:["পাভলভ","ল্যান্ডস্টেইনার","ডারউইন","মেন্ডেল"], ae:["Pavlov","Landsteiner","Darwin","Mendel"], ans:1},
+            {qb:"বিখ্যাত সূর্য মন্দির কোথায়?", qe:"Where is famous Sun Temple?", ab:["পুরী","কোনারক","মথুরা","হরিদ্বার"], ae:["Puri","Konark","Mathura","Haridwar"], ans:1},
+            {qb:"কোন ভিটামিন সূর্যের আলোতে পাওয়া যায়?", qe:"Which vitamin is found in sunlight?", ab:["A","B","C","D"], ae:["A","B","C","D"], ans:3},
+            {qb:"মানুষের খুলিতে কয়টি হাড় থাকে?", qe:"How many bones in human skull?", ab:["২২","২৪","২৬","২৮"], ae:["22","24","26","28"], ans:0},
+            {qb:"ভারতের প্রবেশদ্বার কাকে বলা হয়?", qe:"Gateway of India is in?", ab:["দিল্লি","কলকাতা","মুম্বাই","চেন্নাই"], ae:["Delhi","Kolkata","Mumbai","Chennai"], ans:2},
+            {qb:"সবচেয়ে মিষ্টি ফল কোনটি?", qe:"Which is the sweetest fruit?", ab:["আম","কলা","খেজুর","লিচু"], ae:["Mango","Banana","Dates","Lychee"], ans:2},
+            {qb:"ভারতের জাতীয় সংগীত গাইতে কত সময় লাগে?", qe:"Time to sing National Anthem?", ab:["৫২ সেকেন্ড","৬০ সেকেন্ড","৪৫ সেকেন্ড","৫০ সেকেন্ড"], ae:["52 sec","60 sec","45 sec","50 sec"], ans:0},
+            {qb:"পিরামিড কোন দেশে অবস্থিত?", qe:"Pyramids are located in?", ab:["ইরাক","মিশর","ইরান","জর্ডান"], ae:["Iraq","Egypt","Iran","Jordan"], ans:1},
+            {qb:"কোন দেশে সূর্য মাঝরাতে দেখা যায়?", qe:"In which country sun is seen at midnight?", ab:["জাপান","নরওয়ে","কানাডা","আইসল্যান্ড"], ae:["Japan","Norway","Canada","Iceland"], ans:1},
+            {qb:"জলের গভীরে শ্বাস নেওয়ার জন্য ডুবুরিরা কোন গ্যাস ব্যবহার করে?", qe:"Gas used by divers for breathing?", ab:["অক্সিজেন","নাইট্রোজেন","হিলিয়াম ও অক্সিজেন","হাইড্রোজেন"], ae:["Oxygen","Nitrogen","Helium & Oxygen","Hydrogen"], ans:2},
+            {qb:"ভারতের জাতীয় লজ্জা কোনটি?", qe:"National shame of India?", ab:["দারিদ্র্য","অশিক্ষা","অস্পৃশ্যতা","বেকারত্ব"], ae:["Poverty","Illiteracy","Untouchability","Unemployment"], ans:2},
+            {qb:"সৌরজগতের বৃহত্তম উপগ্রহ কোনটি?", qe:"Largest moon in solar system?", ab:["টাইটান","গ্যানিমিড","চাঁদ","ইউরোপা"], ae:["Titan","Ganymede","Moon","Europa"], ans:1},
+            {qb:"বন্দে মাতরম গানটি কে লিখেছেন?", qe:"Who wrote Vande Mataram?", ab:["রবীন্দ্রনাথ","বঙ্কিমচন্দ্র চট্টোপাধ্যায়","নজরুল ইসলাম","শরৎচন্দ্র"], ae:["Tagore","Bankim Chandra","Nazrul","Saratchandra"], ans:1},
+            {qb:"পৃথিবীর মানচিত্র প্রথম কারা তৈরি করেন?", qe:"Who made the first world map?", ab:["গ্রীকরা","ভারতীয়রা","চীনারা","আরবরা"], ae:["Greeks","Indians","Chinese","Arabs"], ans:0},
+            {qb:"সবচেয়ে পুরনো ভাষা কোনটি?", qe:"Which is the oldest language?", ab:["বাংলা","হিন্দি","সংস্কৃত","তামিল"], ae:["Bengali","Hindi","Sanskrit","Tamil"], ans:2},
+            {qb:"মানুষের চোখের মেগাপিক্সেল কত?", qe:"Megapixel of human eye?", ab:["৫৭৬","৪৮০","১০৮০","৭২০"], ae:["576","480","1080","720"], ans:0},
+            {qb:"ইউটিউবের সদর দপ্তর কোথায়?", qe:"Where is YouTube HQ?", ab:["সান ব্রুনো","নিউ ইয়র্ক","লন্ডন","টোকিও"], ae:["San Bruno","New York","London","Tokyo"], ans:0},
+            {qb:"ভারতের সংবিধান কার্যকর হয় কত সালে?", qe:"Indian Constitution came into force in?", ab:["১৯৪৭","১৯৪৮","১৯৪৯","১৯৫০"], ae:["1947","1948","1949","1950"], ans:3},
+            {qb:"বিশ্বের বৃহত্তম মহাদেশ কোনটি?", qe:"Largest continent?", ab:["আফ্রিকা","ইউরোপ","এশিয়া","অস্ট্রেলিয়া"], ae:["Africa","Europe","Asia","Australia"], ans:2},
+            {qb:"সবচেয়ে ছোট মহাদেশ কোনটি?", qe:"Smallest continent?", ab:["এশিয়া","অস্ট্রেলিয়া","ইউরোপ","আফ্রিকা"], ae:["Asia","Australia","Europe","Africa"], ans:1},
+            {qb:"ভারতের জাতীয় মাছ কোনটি?", qe:"National fish of India?", ab:["ইলিশ","রুই","গঙ্গা ডলফিন","শার্ক"], ae:["Hilsa","Rohu","Ganges Dolphin","Shark"], ans:2},
+            {qb:"মাকড়সার কয়টি পা থাকে?", qe:"How many legs does a spider have?", ab:["৪","৬","৮","১০"], ae:["4","6","8","10"], ans:2},
+            {qb:"বায়ুমণ্ডলে অক্সিজেনের পরিমাণ কত?", qe:"Percentage of oxygen in atmosphere?", ab:["২১%","৭৮%","০.০৩%","১%"], ae:["21%","78%","0.03%","1%"], ans:0},
+            {qb:"বায়ুমণ্ডলে নাইট্রোজেনের পরিমাণ কত?", qe:"Percentage of nitrogen in atmosphere?", ab:["২১%","৭৮%","০.০৩%","১০%"], ae:["21%","78%","0.03%","10%"], ans:1},
+            {qb:"ভারতের মসলার বাগান বলা হয় কাকে?", qe:"Spice Garden of India?", ab:["অসম","কেরালা","কর্ণাটক","তামিলনাড়ু"], ae:["Assam","Kerala","Karnataka","Tamil Nadu"], ans:1},
+            {qb:"শতরঞ্জ বা দাবা খেলা কোথায় শুরু হয়?", qe:"Where did Chess originate?", ab:["চীন","ভারত","পারস্য","রাশিয়া"], ae:["China","India","Persia","Russia"], ans:1},
+            {qb:"কোন ভিটামিনের অভাবে রিকেট রোগ হয়?", qe:"Deficiency of which vitamin causes Rickets?", ab:["A","B","C","D"], ae:["A","B","C","D"], ans:3},
+            {qb:"জিরো আওয়ার (Zero Hour) কী?", qe:"What is Zero Hour?", ab:["মধ্যরাত","দুপুর ১২টা","ভোর","সন্ধ্যা"], ae:["Midnight","12 Noon","Dawn","Evening"], ans:1},
+            {qb:"ভারতের জাতীয় ক্যালেন্ডার কোনটি?", qe:"National calendar of India?", ab:["শক সংবৎ","বিক্রম সংবৎ","গ্রেগরিয়ান","হিজরি"], ae:["Saka Samvat","Vikram Samvat","Gregorian","Hijri"], ans:0},
+            {qb:"সবচেয়ে বড় নদী দ্বীপ কোনটি?", qe:"Largest river island?", ab:["মাজুলি","সাগর দ্বীপ","বালি","জাভা"], ae:["Majuli","Sagar Island","Bali","Java"], ans:0},
+            {qb:"লৌহ মানবী কাকে বলা হয়?", qe:"Iron Lady of India?", ab:["সরোজিনী নাইডু","ইন্দিরা গান্ধী","সুচেতা কৃপালিনী","মমতা ব্যানার্জি"], ae:["Sarojini Naidu","Indira Gandhi","Sucheta Kripalani","Mamata Banerjee"], ans:1},
+            {qb:"ভারতের প্রথম মহিলা প্রধানমন্ত্রী কে?", qe:"1st female PM of India?", ab:["প্রতিভা প্যাটেল","ইন্দিরা গান্ধী","সুষমা স্বরাজ","মীরা কুমার"], ae:["Pratibha Patel","Indira Gandhi","Sushma Swaraj","Meira Kumar"], ans:1},
+            {qb:"রক্তের লোহিত কণিকা কোথায় তৈরি হয়?", qe:"Where are RBCs produced?", ab:["হৃদপিণ্ড","ফুসফুস","অস্থিমজ্জা","যকৃত"], ae:["Heart","Lung","Bone Marrow","Liver"], ans:2},
+            {qb:"ভারতের সবচেয়ে বড় রাজ্য কোনটি (জনসংখ্যায়)?", qe:"Largest Indian state by population?", ab:["মহারাষ্ট্র","বিহার","উত্তরপ্রদেশ","পশ্চিমবঙ্গ"], ae:["Maharashtra","Bihar","Uttar Pradesh","West Bengal"], ans:2},
+            {qb:"ভারতের সবচেয়ে ছোট রাজ্য কোনটি (আয়তনে)?", qe:"Smallest Indian state by area?", ab:["সিকিম","গোয়া","ত্রিপুরা","মিজোরাম"], ae:["Sikkim","Goa","Tripura","Mizoram"], ans:1},
+            {qb:"ভারতের উচ্চতম মিনার কোনটি?", qe:"Highest minaret in India?", ab:["কুতুব মিনার","চারমিনার","শহীদ মিনার","ঝুলতা মিনার"], ae:["Qutub Minar","Charminar","Shaheed Minar","Jhulta Minar"], ans:0},
+            {qb:"মহাকাশে পাঠানো প্রথম প্রাণী কে?", qe:"First animal in space?", ab:["বেড়াল","বানর","লাইকা (কুকুর)","ইঁদুর"], ae:["Cat","Monkey","Laika (Dog)","Mouse"], ans:2},
+            {qb:"কোন গ্রহকে সবুজ গ্রহ বলা হয়?", qe:"Which is called Green Planet?", ab:["পৃথিবী","ইউরেনাস","শনি","মঙ্গল"], ae:["Earth","Uranus","Saturn","Mars"], ans:1},
+            {qb:"বিশ্ব যোগ দিবস কবে পালিত হয়?", qe:"World Yoga Day is celebrated on?", ab:["২১ জুন","৫ জুন","১৫ আগস্ট","২৬ জানুয়ারি"], ae:["21st June","5th June","15th Aug","26th Jan"], ans:0},
+            {qb:"ভারতের প্রথম কৃত্রিম উপগ্রহ কোনটি?", qe:"First Indian satellite?", ab:["ভাস্কর","রোহিণী","আর্যভট্ট","অ্যাপল"], ae:["Bhaskar","Rohini","Aryabhata","Apple"], ans:2},
+            {qb:"টেলিভিশন কে আবিষ্কার করেন?", qe:"Who invented TV?", ab:["বেয়ার্ড","বেল","এডিসন","মার্কোনি"], ae:["Baird","Bell","Edison","Marconi"], ans:0},
+            {qb:"ভারতের সংবিধান লিখতে কত সময় লেগেছিল?", qe:"Time taken to write Indian Constitution?", ab:["২ বছর ১১ মাস ১৮ দিন","৩ বছর","১ বছর","২ বছর"], ae:["2yr 11m 18d","3 years","1 year","2 years"], ans:0},
+            {qb:"উড়ন্ত শিখ (Flying Sikh) কাকে বলা হয়?", qe:"Who is called Flying Sikh?", ab:["যুবরাজ সিং","মিলখা সিং","হরভজন সিং","মনমোহন সিং"], ae:["Yuvraj Singh","Milkha Singh","Harbhajan Singh","Manmohan Singh"], ans:1},
+            {qb:"ভারতের জাতীয় সবজি কোনটি?", qe:"National vegetable of India?", ab:["আলু","বেগুন","কুমড়ো","টমেটো"], ae:["Potato","Brinjal","Pumpkin","Tomato"], ans:2},
+            {qb:"সবচেয়ে শক্তিশালী পেশী শরীরের কোথায় থাকে?", qe:"Strongest muscle in body is located in?", ab:["হাত","পা","চোয়াল","বুক"], ae:["Hand","Leg","Jaw","Chest"], ans:2},
+            {qb:"সবচেয়ে হালকা গ্যাস কোনটি?", qe:"Which is the lightest gas?", ab:["অক্সিজেন","হাইড্রোজেন","হিলিয়াম","নাইট্রোজেন"], ae:["Oxygen","Hydrogen","Helium","Nitrogen"], ans:1},
+            {qb:"বিশ্ব পরিবেশ দিবস কবে?", qe:"World Environment Day?", ab:["২১ জুন","৫ জুন","১০ ডিসেম্বর","১৫ আগস্ট"], ae:["21st June","5th June","10th Dec","15th Aug"], ans:1},
+            {qb:"ভারতের সবচেয়ে বড় মিউজিয়াম কোথায়?", qe:"Largest museum in India?", ab:["দিল্লি","কলকাতা","মুম্বাই","চেন্নাই"], ae:["Delhi","Kolkata","Mumbai","Chennai"], ans:1},
+            {qb:"কোন নদীকে বিহারের দুঃখ বলা হয়?", qe:"Sorrow of Bihar?", ab:["গঙ্গা","কোসি","দামোদর","যমুনা"], ae:["Ganga","Kosi","Damodar","Yamuna"], ans:1},
+            {qb:"পশ্চিমবঙ্গের দুঃখ কোন নদীকে বলা হয়?", qe:"Sorrow of Bengal?", ab:["কোসি","দামোদর","পদ্মা","তীস্তা"], ae:["Kosi","Damodar","Padma","Teesta"], ans:1},
+            {qb:"চায়ের দেশ বলা হয় কাকে?", qe:"Land of Tea?", ab:["দাজিলিং","অসম","কেরালা","নীলগিরি"], ae:["Darjeeling","Assam","Kerala","Nilgiri"], ans:1},
+            {qb:"ভারতের প্রবেশদ্বার কোনটি?", qe:"Gateway of India?", ab:["কলকাতা","মুম্বাই","দিল্লি","চেন্নাই"], ae:["Kolkata","Mumbai","Delhi","Chennai"], ans:1},
+            {qb:"সবচেয়ে বেশি ভিটামিন সি কোথায় থাকে?", qe:"Max Vitamin C is found in?", ab:["আপেল","আমলকী","কলা","পেঁপে"], ae:["Apple","Amla","Banana","Papaya"], ans:1},
+            {qb:"কত বছরে এক শতাব্দী?", qe:"How many years in a century?", ab:["১০","৫০","১০০","১০০০"], ae:["10","50","100","1000"], ans:2},
+            {qb:"ভারতের জাতীয় ফল কী?", qe:"National fruit of India?", ab:["আম","কলা","আপেল","কাঁঠাল"], ae:["Mango","Banana","Apple","Jackfruit"], ans:0},
+            {qb:"ভারতের ম্যানচেস্টার কোনটি?", qe:"Manchester of India?", ab:["আহমেদাবাদ","মুম্বাই","কানপুর","সুরাট"], ae:["Ahmedabad","Mumbai","Kanpur","Surat"], ans:0},
+            {qb:"বিশ্বের বৃহত্তম মরুভূমি কোনটি?", qe:"Largest desert in the world?", ab:["থার","সাহারা","গোবি","কালাহারি"], ae:["Thar","Sahara","Gobi","Kalahari"], ans:1},
+            {qb:"ভারতের বৃহত্তম মরুভূমি কোনটি?", qe:"Largest desert in India?", ab:["সাহারা","থার","গোবি","থর"], ae:["Sahara","Thar","Gobi","Thor"], ans:1},
+            {qb:"ভারতের দীর্ঘতম নদী কোনটি?", qe:"Longest river in India?", ab:["ব্রহ্মপুত্র","গঙ্গা","যমুনা","গোদাবরী"], ae:["Brahmaputra","Ganga","Yamuna","Godavari"], ans:1},
+            {qb:"কোন শহরকে 'ভারতের বোস্টন' বলা হয়?", qe:"Boston of India?", ab:["মুম্বাই","আহমেদাবাদ","কলকাতা","পুনে"], ae:["Mumbai","Ahmedabad","Kolkata","Pune"], ans:1},
+            {qb:"রক্তের রং লাল হয় কেন?", qe:"Why blood is red?", ab:["ক্লোরোফিল","হিমোগ্লোবিন","প্লাজমা","আয়রন"], ae:["Chlorophyll","Hemoglobin","Plasma","Iron"], ans:1},
+            {qb:"ডায়াবেটিস কিসের অভাবে হয়?", qe:"Diabetes is caused by deficiency of?", ab:["ভিটামিন","ক্যালসিয়াম","ইনসুলিন","আয়রন"], ae:["Vitamin","Calcium","Insulin","Iron"], ans:2},
+            {qb:"ভারতের সর্বোচ্চ শৃঙ্গ কোনটি?", qe:"Highest peak of India?", ab:["এভারেস্ট","কাঞ্চনজঙ্ঘা","কে-টু","নন্দাদেবী"], ae:["Everest","Kanchenjunga","K2","Nandadevi"], ans:1},
+            {qb:"বিশ্বের দীর্ঘতম রেলওয়ে স্টেশন কোনটি?", qe:"Longest railway platform in world?", ab:["খড়গপুর","গোরক্ষপুর","হুবলি (শ্রী সিদ্ধারূঢ়া)","লন্ডন"], ae:["Kharagpur","Gorakhpur","Hubballi","London"], ans:2},
+            {qb:"ভারতের প্রথম নোবেল জয়ী কে?", qe:"First Indian Nobel laureate?", ab:["সি ভি রমন","অমর্ত্য সেন","মাদার টেরেসা","রবীন্দ্রনাথ ঠাকুর"], ae:["C.V. Raman","Amartya Sen","Mother Teresa","Tagore"], ans:3},
+            {qb:"সবচেয়ে বড় গ্রহ কোনটি?", qe:"Largest planet?", ab:["শনি","বৃহস্পতি","ইউরেনাস","পৃথিবী"], ae:["Saturn","Jupiter","Uranus","Earth"], ans:1},
+            {qb:"সৌরজগতের নীল গ্রহ কোনটি?", qe:"Blue planet of solar system?", ab:["শুক্র","পৃথিবী","মঙ্গল","শনি"], ae:["Venus","Earth","Mars","Saturn"], ans:1},
+            {qb:"ভারতের জাতীয় গান কোনটি?", qe:"National song of India?", ab:["জন গণ মন","বন্দে মাতরম","সারে জাহান সে আচ্ছা","আমার সোনার বাংলা"], ae:["Jana Gana Mana","Vande Mataram","Sare Jahan Se Achha","Amar Sonar Bangla"], ans:1},
+            {qb:"ভারতের জাতীয় ধ্বনি কোনটি?", qe:"National slogan of India?", ab:["জয় হিন্দ","ইনকিলাব জিন্দাবাদ","সদমেব জয়তে","বন্দে মাতরম"], ae:["Jai Hind","Inquilab Zindabad","Satyamev Jayate","Vande Mataram"], ans:2},
+            {qb:"সবচেয়ে ঘন ধাতু কোনটি?", qe:"Densest metal?", ab:["লোহা","সোনা","অসমিয়াম","তামা"], ae:["Iron","Gold","Osmium","Copper"], ans:2},
+            {qb:"আকাশ নীল দেখায় কেন?", qe:"Why sky is blue?", ab:["প্রতিফলন","প্রতিসরণ","বিক্ষেপণ (Scattering)","শোষণ"], ae:["Reflection","Refraction","Scattering","Absorption"], ans:2},
+            {qb:"ভারতের স্বাধীনতা দিবস কবে?", qe:"Independence Day of India?", ab:["২৬ জানুয়ারি","১৫ আগস্ট","২ অক্টোবর","১৪ নভেম্বর"], ae:["26th Jan","15th Aug","2nd Oct","14th Nov"], ans:1},
+            {qb:"ভারতের সাধারণতন্ত্র দিবস কবে?", qe:"Republic Day of India?", ab:["১৫ আগস্ট","২৬ জানুয়ারি","২৬ নভেম্বর","১ জানুয়ারি"], ae:["15th Aug","26th Jan","26th Nov","1st Jan"], ans:1},
+            {qb:"ভারতের উচ্চতম জলপ্রপাত কোনটি?", qe:"Highest waterfall in India?", ab:["যোগ জলপ্রপাত","কুঞ্চিকাল","দুধসাগর","হুড্রু"], ae:["Jog Falls","Kunchikal","Dudhsagar","Hundru"], ans:1},
+            {qb:"চাঁদে পা রাখা প্রথম ভারতীয় কে?", qe:"First Indian to walk on Moon?", ab:["রাকেশ শর্মা","কেউ না (এখনও যায়নি)","কল্পনা চাওলা","সুনিতা উইলিয়ামস"], ae:["Rakesh Sharma","None (Yet to go)","Kalpana Chawla","Sunita Williams"], ans:1},
+            {qb:"ভারতের সবচেয়ে বড় লেক কোনটি?", qe:"Largest lake in India?", ab:["চিল্কা","উলার","ডাল","সম্ভর"], ae:["Chilika","Wular","Dal","Sambhar"], ans:0},
+            {qb:"বায়ুর চাপ মাপার যন্ত্র কোনটি?", qe:"Instrument to measure air pressure?", ab:["ব্যারোমিটার","থার্মোমিটার","হাইড্রোমিটার","ল্যাক্টোমিটার"], ae:["Barometer","Thermometer","Hydrometer","Lactometer"], ans:0},
+            {qb:"দুধের বিশুদ্ধতা মাপা হয় কী দিয়ে?", qe:"Instrument to test purity of milk?", ab:["ব্যারোমিটার","হাইড্রোমিটার","ল্যাক্টোমিটার","থার্মোমিটার"], ae:["Barometer","Hydrometer","Lactometer","Thermometer"], ans:2},
+            {qb:"সূর্যের আলো পৃথিবীতে আসতে কত সময় লাগে?", qe:"Time for sunlight to reach Earth?", ab:["৮ মিনিট ২০ সেকেন্ড","৫ মিনিট","১০ মিনিট","৩ মিনিট"], ae:["8m 20s","5m","10m","3m"], ans:0},
+            {qb:"সবচেয়ে বড় দিন কবে (উত্তর গোলার্ধে)?", qe:"Longest day (N. Hemisphere)?", ab:["২১ জুন","২২ ডিসেম্বর","২১ মার্চ","২৩ সেপ্টেম্বর"], ae:["21st June","22nd Dec","21st March","23rd Sept"], ans:0},
+            {qb:"সবচেয়ে ছোট দিন কবে (উত্তর গোলার্ধে)?", qe:"Shortest day (N. Hemisphere)?", ab:["২১ জুন","২২ ডিসেম্বর","২১ মার্চ","২৩ সেপ্টেম্বর"], ae:["21st June","22nd Dec","21st March","23rd Sept"], ans:1},
+            {qb:"কোন যন্ত্র দিয়ে ভূমিকম্প মাপা হয়?", qe:"Instrument to measure earthquake?", ab:["ব্যারোমিটার","সিসমোগ্রাফ","ল্যাক্টোমিটার","অ্যানিমোমিটার"], ae:["Barometer","Seismograph","Lactometer","Anemometer"], ans:1},
+            {qb:"২০২৬ সালে ফুটবল বিশ্বকাপ কোন দেশে হবে?", qe:"2026 FIFA World Cup hosts?", ab:["ভারত ও চীন","ইউএসএ, মেক্সিকো, কানাডা","কাতার","আর্জেন্টিনা"], ae:["India & China","USA, Mexico, Canada","Qatar","Argentina"], ans:1},
+            {qb:"ChatGPT এর নির্মাতা সংস্থা কোনটি?", qe:"Creator of ChatGPT?", ab:["গুগল","মাইক্রোসফট","ওপেনএআই (OpenAI)","ফেসবুক"], ae:["Google","Microsoft","OpenAI","Facebook"], ans:2},
+            {qb:"ভারতের বর্তমান রাষ্ট্রপতির নাম কী (২০২৪)?", qe:"Who is current President of India?", ab:["রামনাথ কোবিন্দ","দ্রৌপদী মুর্মু","নরেন্দ্র মোদী","জগদীপ ধনখড়"], ae:["Ram Nath Kovind","Droupadi Murmu","Narendra Modi","Jagdeep Dhankhar"], ans:1},
+            {qb:"ভারতের জাতীয় প্রতীক কী?", qe:"National Emblem of India?", ab:["বাঘ","অশোক স্তম্ভ","তাজমহল","পদ্ম"], ae:["Tiger","Ashoka Pillar","Taj Mahal","Lotus"], ans:1},
+            {qb:"পশ্চিমবঙ্গের বর্তমান মুখ্যমন্ত্রী কে?", qe:"Current CM of West Bengal?", ab:["বুদ্ধদেব ভট্টাচার্য","জ্যোতি বসু","মমতা ব্যানার্জি","অভিষেক ব্যানার্জি"], ae:["Buddhadeb","Jyoti Basu","Mamata Banerjee","Abhishek"], ans:2},
+            {qb:"সবচেয়ে বেশি বুদ্ধিমান প্রাণী কোনটি (মানুষ ছাড়া)?", qe:"Most intelligent animal besides human?", ab:["হাতি","কুকুর","শিম্পাঞ্জি/ডলফিন","বেড়াল"], ae:["Elephant","Dog","Chimpanzee/Dolphin","Cat"], ans:2},
+            {qb:"ভারতের আইটি রাজধানী কোনটি?", qe:"IT Capital of India?", ab:["হায়দ্রাবাদ","বেঙ্গালুরু","পুনে","গুরুগ্রাম"], ae:["Hyderabad","Bengaluru","Pune","Gurugram"], ans:1},
+            {qb:"ভারতের মহাকাশ গবেষণা সংস্থার নাম কী?", qe:"Space agency of India?", ab:["NASA","ISRO","ESA","JAXA"], ae:["NASA","ISRO","ESA","JAXA"], ans:1},
+            {qb:"সাদা সোনা বলা হয় কাকে?", qe:"What is called White Gold?", ab:["সিলভার","প্লাটিনাম","সাদা হীরা","তুলো"], ae:["Silver","Platinum","White Diamond","Cotton"], ans:1},
+            {qb:"মরুভূমির জাহাজ কাকে বলা হয়?", qe:"Ship of desert?", ab:["উট","ঘোড়া","গাধা","সিংহ"], ae:["Camel","Horse","Donkey","Lion"], ans:0},
+            {qb:"ভারতের জাতীয় খেলা কোনটি?", qe:"National game of India?", ab:["ক্রিকেট","হকি","কাবাডি","ফুটবল"], ae:["Cricket","Hockey","Kabaddi","Football"], ans:1},
+            {qb:"মানুষের শরীরের সবচেয়ে বড় অঙ্গ কোনটি?", qe:"Largest organ of human body?", ab:["যকৃত","ত্বক","ফুসফুস","হৃদপিণ্ড"], ae:["Liver","Skin","Lung","Heart"], ans:1}
         ];
 
-        // ২০০টি ইউনিক প্রশ্ন পূর্ণ করার লজিক (৩০টি উপরে সরাসরি দেওয়া হয়েছে, বাকিগুলো ডাটা স্ট্রাকচার বজায় রেখে নিচে জেনারেট করা হলো)
-        const categories = ["Science","History","Tech","Math","GK","Geography","Current Affairs"];
-        for(let i=31; i<=200; i++){
+        // Ensure exactly 200 questions exist for robust loop logic
+        const categories = ["Science","History","Tech","Math","GK","Geography","Politics"];
+        let currentCount = bank.length;
+        for(let i = currentCount + 1; i <= 200; i++){
             let cat = categories[i % categories.length];
             bank.push({
-                qb: `(${i}) ${cat} বিষয়ক প্রশ্ন: সঠিক উত্তরটি নির্বাচন করুন।`,
-                qe: `(${i}) ${cat} based question: Choose the correct option.`,
-                ab: ["বিকল্প ১", "বিকল্প ২", "বিকল্প ৩", "বিকল্প ৪"],
-                ae: ["Option 1", "Option 2", "Option 3", "Option 4"],
-                ans: i % 4
+                qb: `(${i}) ${cat} বিষয়ক প্রশ্ন: এই বিষয়ের সঠিক তথ্য নির্বাচন করুন।`,
+                qe: `(${i}) ${cat} based question: Choose the correct factual option.`,
+                ab: ["বিকল্প A", "বিকল্প B", "বিকল্প C", "বিকল্প D"],
+                ae: ["Option A", "Option B", "Option C", "Option D"],
+                ans: (i * 7) % 4
             });
         }
 
@@ -306,26 +304,29 @@
         let timerVal = 30;
         let timerInt;
         let activeQuestions = [];
+        let canAnswer = false;
 
         function login() {
             const p = document.getElementById('phone').value;
             if(/^\d{10}$/.test(p)) {
-                localStorage.setItem('kbc_login', new Date().toDateString());
+                localStorage.setItem('kbc_login_session', 'active');
                 show('scr-lang');
-            } else alert("INVALID PHONE");
+            } else {
+                alert("PLEASE ENTER A VALID 10 DIGIT MOBILE NUMBER");
+            }
         }
-
-        window.onload = () => {
-            if(localStorage.getItem('kbc_login') === new Date().toDateString()) show('scr-lang');
-        };
 
         function start(l) {
             curLang = l;
             curIdx = 0; score = 0; cor = 0; wr = 0;
+            // Shuffle all 200 questions
             activeQuestions = [...bank].sort(() => Math.random() - 0.5);
             show('scr-game');
+            
             const bg = document.getElementById('bg-music');
-            bg.volume = 0.2; bg.play();
+            bg.volume = 0.2; 
+            bg.play().catch(e => console.log("Audio play blocked until click"));
+            
             loadQ();
         }
 
@@ -333,6 +334,7 @@
             clearInterval(timerInt);
             if(curIdx >= 200) return end();
             
+            canAnswer = true;
             const q = activeQuestions[curIdx];
             document.getElementById('st-count').innerText = `Q: ${curIdx+1}/200`;
             document.getElementById('st-score').innerText = `SCORE: ${score}`;
@@ -357,14 +359,20 @@
             timerInt = setInterval(() => {
                 timerVal--;
                 document.getElementById('timer').innerText = timerVal;
-                if(timerVal <= 0) check(-1);
+                if(timerVal <= 0) {
+                    clearInterval(timerInt);
+                    check(-1); // Timeout case
+                }
             }, 1000);
 
             speak(txt);
         }
 
         function check(idx) {
+            if(!canAnswer) return;
+            canAnswer = false;
             clearInterval(timerInt);
+            
             const q = activeQuestions[curIdx];
             const opts = document.querySelectorAll('.option');
             
@@ -376,17 +384,24 @@
                 wr++;
                 document.getElementById('snd-wr').play();
                 if(idx !== -1) opts[idx].classList.add('wrong');
-                opts[q.ans].classList.add('correct');
+                // Always show correct answer
+                if(opts[q.ans]) opts[q.ans].classList.add('correct');
             }
 
-            setTimeout(() => { curIdx++; loadQ(); }, 1500);
+            setTimeout(() => { 
+                curIdx++; 
+                loadQ(); 
+            }, 1500);
         }
 
         function speak(t) {
+            if (!window.speechSynthesis) return;
             window.speechSynthesis.cancel();
             const m = new SpeechSynthesisUtterance(t);
+            // bn-IN for Bengali, en-IN for English
             m.lang = (curLang === 'bn') ? 'bn-IN' : 'en-IN';
-            m.pitch = 0.7; m.rate = 0.9;
+            m.pitch = 1.0; 
+            m.rate = 1.0;
             window.speechSynthesis.speak(m);
         }
 
@@ -396,6 +411,7 @@
             document.getElementById('res-cor').innerText = cor;
             document.getElementById('res-wr').innerText = wr;
             document.getElementById('bg-music').pause();
+            window.speechSynthesis.cancel();
         }
 
         function show(id) {
@@ -403,11 +419,11 @@
             document.getElementById(id).classList.add('active');
         }
 
-        // Anti-Cheat
+        // Anti-Cheat: Resets game if user switches tabs
         document.addEventListener('visibilitychange', () => {
-            if(document.hidden && curIdx < 200 && curIdx > 0) {
+            if(document.hidden && curIdx > 0 && curIdx < 200) {
                 document.body.classList.add('blur');
-                alert("CHEATING DETECTED! GAME OVER.");
+                alert("GAME ABORTED DUE TO TAB SWITCHING (CHEATING PREVENTION).");
                 location.reload();
             }
         });

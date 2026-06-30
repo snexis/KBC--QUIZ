@@ -2,7 +2,7 @@
 // KBC PREMIUM 2026: COMPLETE 200 QUESTION DATABASE (BI-LINGUAL)
 // =================================================================
 
-const masterQuestionBank = [
+const questions = [
   // --- ক্যাটাগরি: ইতিহাস ও স্বাধীনতা সংগ্রাম (১ থেকে ৪০) ---
   {
     id: 1,

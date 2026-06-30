@@ -399,9 +399,10 @@ const masterQuestionBank = [
   {
     id: 66,
     bn: { q: "কৃষ্ণ মৃত্তিকা বা Black Soil কোন চাষের জন্য সবচেয়ে উপযোগী?", o: ["ধান", "গম", "তুলা (কার্পাস)", "চা"] },
-    en: { q: "Black soil is ideal for the cultivation of which crop?", o: ["Rice
+en: { q: "Black soil is ideal for the cultivation of which...", o: [...] }
+},
 // --- ক্যাটাগরি: বিজ্ঞান ও পরিবেশ (৬৭ থেকে ১০০) ---
-  {
+{
     id: 67,
     bn: { q: "মানবদেহের বৃহত্তম অঙ্গ (Organ) কোনটি?", o: ["যকৃৎ (Liver)", "ত্বক (Skin)", "হৃদপিণ্ড", "মস্তিষ্ক"] },
     en: { q: "Which is the largest organ of the human body?", o: ["Liver", "Skin", "Heart", "Brain"] },

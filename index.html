@@ -229,130 +229,129 @@
     <!-- প্রশ্নপত্রের মেইন ডাটাবেস ফাইল লিংক -->
     <script src="questions.js"></script>
 
-    <script>
-        // --- গেম গ্লোবাল স্টেট কন্ট্রোল ---
-        let currentLanguage = 'bn';
-        let currentLevel = 1; // মোট ১৫টি প্রশ্নের লেভেল থাকবে
-        let selectedQuestions = []; // র্যান্ডমাইজড ফিল্টার করা প্রশ্নের তালিকা
-        let activeQuestionObj = null;
-        let currentUserPhone = "";
+<script>
+// --- গেম গ্লোবাল স্টেট কন্ট্রোল ---
+let currentLanguage = 'bn';
+let currentLevel = 1; // মোট ১৫টি প্রশ্নের লেভেল থাকবে
+let selectedQuestions = []; // র্যান্ডমাইজড ফিল্টার করা প্রশ্নের তালিকা
+let activeQuestionObj = null;
+let currentUserPhone = "";
 
-        // ==========================================
-        // গ্লোবাল কনফিগারেশন সেটিংস (সহজে পরিবর্তনের জন্য)
-        // ==========================================
-        const CONFIG = {
-            VALID_PROMO: "kbc2026",      // <-- আপনার ভ্যালিড প্রোমো কোড এখানে পরিবর্তন করুন
-            REQUIRE_PAYMENT: false,        // <-- ট্রু (true) করলেই প্রোমো কোড বন্ধ হয়ে ডিরেক্ট পেমেন্ট গেটওয়ে চাইবে
-            TOTAL_QUESTIONS_TO_PLAY: 15    // <-- অরিজিনাল কেবিসি স্টাইলে এক রাউন্ডে কয়টি প্রশ্ন খেলা হবে
-        };
+// ==========================================
+// গ্লোবাল কনফিগারেশন সেটিংস (সহজে পরিবর্তনের জন্য)
+// ==========================================
+const CONFIG = {
+  VALID_PROMO: "KBC2026",        // <-- প্রমো কোডটি বড় হাতের অক্ষরে (KBC2026) করে দেওয়া হলো
+  REQUIRE_PAYMENT: false,        // <-- ট্রু (true) করলেই প্রোমো কোড বন্ধ হয়ে ডিরেক্ট পেমেন্ট গেটওয়ে চাইবে
+  TOTAL_QUESTIONS_TO_PLAY: 15    // <-- অরিজিনাল কেবিসি স্টাইলে এক রাউন্ডে কয়টি প্রশ্ন খেলা হবে
+};
 
-        // -----------------------------------------------------------------
-        // কমার্শিয়াল সিকিউরিটি অপশনস (অ্যান্টি-স্ক্রিনশট, অ্যান্টি-এআই, অ্যান্টি-কপি)
-        // -----------------------------------------------------------------
-        // সিকিউরিটি ১: রাইট ক্লিক লক করা
-        document.addEventListener('contextmenu', event => event.preventDefault());
+// -----------------------------------------------------------------
+// কমার্শিয়াল সিকিউরিটি অপশনস (অ্যান্টি-স্ক্রিনশট, অ্যান্টি-এআই, অ্যান্টি-কপি)
+// -----------------------------------------------------------------
+// সিকিউরিটি ১: রাইট ক্লিক লক করা
+document.addEventListener('contextmenu', event => event.preventDefault());
 
-        // সিকিউরিটি ২: কী-বোর্ড শর্টকাট লক (F12, Ctrl+Shift+I, Ctrl+C, Ctrl+S, PrintScreen)
-        document.addEventListener('keydown', function(e) {
-            if (e.keyCode == 123 || 
-                (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
-                (e.ctrlKey && e.keyCode == 85) || 
-                (e.ctrlKey && e.keyCode == 67) || 
-                (e.ctrlKey && e.keyCode == 83)) {
-                e.preventDefault();
-                alert("Security Alert: This action is heavily restricted inside the game engine.");
-                return false;
-            }
-        });
+// সিকিউরিটি ২: কী-বোর্ড শর্টকাট লক (F12, Ctrl+Shift+I, Ctrl+C, Ctrl+S, PrintScreen)
+document.addEventListener('keydown', function(e) {
+  if (e.keyCode == 123 || 
+     (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
+     (e.ctrlKey && e.keyCode == 85) || 
+     (e.ctrlKey && e.keyCode == 67) || 
+     (e.ctrlKey && e.keyCode == 83)) {
+    e.preventDefault();
+    alert("Security Alert: This action is heavily restricted inside the game engine.");
+    return false;
+  }
+});
 
-        // সিকিউরিটি ৩: স্ক্রিনশট ডিস্টার্ব বা এআই রিডার ট্র্যাপ লজিক (উইন্ডো ফোকাস আউট হলে স্ক্রিন ব্লার করা)
-        window.addEventListener('blur', () => {
-            document.body.style.filter = "blur(30px)";
-        });
-        window.addEventListener('focus', () => {
-            document.body.style.filter = "none";
-        });
+// সিকিউরিটি ৩: স্ক্রিনশট ডিস্টার্ব বা এআই রিডার ট্র্যাপ লজিক (উইন্ডো ফোকাস আউট হলে স্ক্রিন ব্লার করা)
+window.addEventListener('blur', () => {
+  document.body.style.filter = "blur(30px)";
+});
+window.addEventListener('focus', () => {
+  document.body.style.filter = "none";
+});
 
 
-        // -----------------------------------------------------------------
-        // ৪. লগইন এবং ওয়ান-টাইম ডিভাইস লকিং লজিক
-        // -----------------------------------------------------------------
-        function handleLogin() {
-            const phone = document.getElementById('phone-input').value.trim();
-            const promo = document.getElementById('promo-input').value.trim();
+// -----------------------------------------------------------------
+// ৪. লগইন এবং ওয়ান-টাইম ডিভাইস লকিং লজিক
+// -----------------------------------------------------------------
+function handleLogin() {
+  const phone = document.getElementById('phone-input').value.trim();
+  const promo = document.getElementById('promo-input').value.trim();
 
-            // ভ্যালিডেশন চেক
-            if (phone.length !== 10 || isNaN(phone)) {
-                alert("অনুগ্রহ করে একটি সঠিক ১০ ডিজিটের মোবাইল নাম্বার দিন।");
-                return;
-            }
+  // ভ্যালিডেশন চেক
+  if (phone.length !== 10 || isNaN(phone)) {
+    alert("অনুগ্রহ করে একটি সঠিক ১০ ডিজিটের মোবাইল নাম্বার দিন।");
+    return;
+  }
 
-            // সিকিউরিটি চেক: এক নাম্বার সারাদিনে একবারই খেলতে পারবে (Local Storage Lock)
-            const todayDate = new Date().toDateString();
-            const isUsed = localStorage.getItem(`kbc_user_${phone}`);
-            
-            if (isUsed === todayDate) {
-                showPayPage("দুঃখিত! এই মোবাইল নম্বরটি দিয়ে আজকে অলরেডি খেলা হয়ে গেছে। নতুন নম্বরে ট্রাই করুন বা প্রিমিয়াম কিনুন।");
-                return;
-            }
+  // সিকিউরিটি চেক: এক নাম্বার সারাদিনে একবারই খেলতে পারবে (Local Storage Lock)
+  const todayDate = new Date().toDateString();
+  const isUsed = localStorage.getItem(`kbc_user_${phone}`);
 
-            // পেমেন্ট গেটওয়ে গেট-লক স্ট্যাটাস চেক
-            if (CONFIG.REQUIRE_PAYMENT) {
-                showPayPage("ফ্রি প্রমো কোড লগইন অফ করা হয়েছে। গেম খেলতে সরাসরি পে করুন।");
-                return;
-            }
+  if (isUsed === todayDate) {
+    showPayPage("দুঃখিত! এই মোবাইল নম্বরটি দিয়ে আজকে অলরেডি খেলা হয়ে গেছে। নতুন নম্বরে ট্রাই করুন বা প্রিমিয়াম কিনুন।");
+    return;
+  }
 
-            // প্রোমো কোড ম্যাচিং লজিক
-            if (promo !== CONFIG.VALID_PROMO) {
-                alert("ভুল প্রমো কোড! সঠিক কোড না দিলে গেম লক থাকবে।");
-                return;
-            }
+  // পেমেন্ট গেটওয়ে গেট-লক স্ট্যাটাস চেক
+  if (CONFIG.REQUIRE_PAYMENT) {
+    showPayPage("ফ্রি প্রমো কোড লগইন অফ করা হয়েছে। গেম খেলতে সরাসরি পে করুন।");
+    return;
+  }
 
-            // সাকসেস লগইন এবং ডিভাইস লকিং এনভায়রনমেন্ট
-            currentUserPhone = phone;
-            localStorage.setItem(`kbc_user_${phone}`, todayDate); // ২৪ ঘণ্টার জন্য লক অ্যাপ্লাই হলো
+  // প্রোমো কোড ম্যাচিং লজিক (বড় বা ছোট হাতের যেকোনো অক্ষরে লিখলেই কাজ করবে)
+  if (promo.toUpperCase() !== CONFIG.VALID_PROMO.toUpperCase()) {
+    alert("ভুল প্রমো কোড! সঠিক কোড না দিলে গেম লক থাকবে।");
+    return;
+  }
 
-            // পরবর্তী পেজে এনিমেশন ট্রানজিশন
-            switchPage('login-page', 'lang-page');
-        }
+  // সাকসেস লগইন এবং ডিভাইস লকিং এনভায়রনমেন্ট
+  currentUserPhone = phone;
+  localStorage.setItem(`kbc_user_${phone}`, todayDate); // ২৪ ঘণ্টার জন্য লক অ্যাপ্লাই হলো
 
-        // -----------------------------------------------------------------
-        // ৫. র্যান্ডম ও মিক্সড কোশ্চেন সিলেকশন ইঞ্জিন (কঠিন, সহজ ও ইউনিক লুপ)
-        // -----------------------------------------------------------------
-        function prepareQuestionBank() {
-            // ১ থেকে ৫ নম্বর প্রশ্নের মিক্সিং লজিক (কখনো সহজ কখনো চরম কঠিন)
-            // সম্পূর্ণ ২০০টি প্রশ্ন থেকে র্যান্ডমাইজড মিক্স ফিল্টারিং করা হবে যাতে প্লেয়ার বুঝতে না পারে
-            let rawBank = [...masterQuestionBank];
-            
-            // ফিশার-ইয়েটস র্যান্ডম শাফল অ্যালগরিদম (যাতে কোনো প্রশ্ন রিপিট না হয়)
-            for (let i = rawBank.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [rawBank[i], rawBank[j]] = [rawBank[j], rawBank[i]];
-            }
+  // পরবর্তী পেজে এনিমেশন ট্রানজিশন
+  switchPage('login-page', 'lang-page');
+}
 
-            // গেম সেশনের জন্য প্রশ্ন বাছাই করা হলো
-            selectedQuestions = rawBank.slice(0, CONFIG.TOTAL_QUESTIONS_TO_PLAY);
-        }
+// -----------------------------------------------------------------
+// ৫. র্যান্ডম ও মিক্সড কোশ্চেন সিলেকশন ইঞ্জিন (কঠিন, সহজ ও ইউনিক লুপ)
+// -----------------------------------------------------------------
+function prepareQuestionBank() {
+  // masterQuestionBank পরিবর্তন করে questions করা হলো যাতে questions.js ফাইলের সাথে মেলে
+  let rawBank = [...questions];
 
-        function startActualGame() {
-            currentLanguage = document.getElementById('lang-select').value;
-            prepareQuestionBank();
-            currentLevel = 1;
-            
-            switchPage('lang-page', 'game-page');
-            document.getElementById('player-tag').innerText = `প্লেয়ার আইডি: ${currentUserPhone}`;
-            loadQuestion();
-        }
+  // ফিশার-ইয়েটস র্যান্ডম শাফল অ্যালগরিদম (যাতে কোনো প্রশ্ন রিপিট না হয়)
+  for (let i = rawBank.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [rawBank[i], rawBank[j]] = [rawBank[j], rawBank[i]];
+  }
 
-        function loadQuestion() {
-            // রিল্যাক্স অপশন ব্যাক কালার রিস্টোর
-            for(let i=0; i<4; i++) {
-                let opt = document.getElementById(`opt-${i}`);
-                opt.style.display = "block";
-                opt.style.background = "rgba(0, 0, 0, 0.6)";
-            }
+  // গেম সেশনের জন্য প্রশ্ন বাছাই করা হলো
+  selectedQuestions = rawBank.slice(0, CONFIG.TOTAL_QUESTIONS_TO_PLAY);
+}
 
-            activeQuestionObj = selectedQuestions[currentLevel - 1];
+function startActualGame() {
+  currentLanguage = document.getElementById('lang-select').value;
+  prepareQuestionBank();
+  currentLevel = 1;
+
+  switchPage('lang-page', 'game-page');
+  document.getElementById('player-tag').innerText = `প্লেয়ার আইডি: ${currentUserPhone}`;
+  loadQuestion();
+}
+
+function loadQuestion() {
+  // রিল্যাক্স অপশন ব্যাক কালার রিস্টোর
+  for(let i=0; i<4; i++) {
+    let opt = document.getElementById(`opt-${i}`);
+    opt.style.display = "block";
+    opt.style.background = "rgba(0, 0, 0, 0.6)";
+  }
+
+  activeQuestionObj = selectedQuestions[currentLevel - 1];
             
             // ভাষা অনুযায়ী ডেটা রেন্ডার করা
             const data = activeQuestionObj[currentLanguage];

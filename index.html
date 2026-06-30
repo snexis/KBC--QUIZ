@@ -3,806 +3,471 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KBC Quiz Game Premium 2026</title>
+    <title>KBC Premium 2026</title>
     <style>
-        /* === আসল কেবিসি প্রিমিয়াম থিম ও সিএসএস === */
+        /* ================================================================= */
+        /* ১. থিম ও কালার স্কিম (রিয়েল কেবিসি ভাইবস এবং মসৃণ অ্যানিমেশন) */
+        /* ================================================================= */
+        :root {
+            --bg-gradient: radial-gradient(circle, #0f0c20 0%, #06040a 100%);
+            --kbc-gold: #ffd700;
+            --kbc-purple: #2b1055;
+            --kbc-blue: #1a0033;
+            --text-white: #ffffff;
+            --success-green: #28a745;
+            --error-red: #dc3545;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none; /* সিকিউরিটি: টেক্সট সিলেক্ট ও কপি বন্ধ করার জন্য */
         }
 
         body {
-            background: radial-gradient(circle, #080825 0%, #020208 100%);
-            color: #ffffff;
+            background: var(--bg-gradient);
+            color: var(--text-white);
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-            padding: 10px;
         }
 
-        .game-container {
-            width: 100%;
-            max-width: 1100px;
-            margin: auto;
-        }
-
-        /* স্ক্রিন ডিজাইন */
-        .screen {
+        /* --- স্ক্রিন ট্রানজিশন অ্যানিমেশন --- */
+        .page {
             display: none;
-            background: rgba(4, 4, 28, 0.95);
-            border: 3px solid #00d2ff;
-            border-radius: 20px;
+            width: 100%;
+            max-width: 900px;
             padding: 30px;
-            box-shadow: 0 0 30px rgba(0, 210, 255, 0.6), inset 0 0 20px rgba(0, 210, 255, 0.2);
+            background: rgba(26, 0, 51, 0.85);
+            border: 2px solid var(--kbc-gold);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
             text-align: center;
-            backdrop-filter: blur(10px);
-        }
-
-        .active-screen {
-            display: block;
             animation: fadeIn 0.5s ease-in-out;
         }
+
+        .active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* অ্যানিমেটেড প্রিমিয়াম লোগো */
-        .logo-container {
-            margin-bottom: 25px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .kbc-logo {
-            font-size: 3rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, #ffd700, #ff8800, #ffd700);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-            animation: logoGlow 2s infinite alternate;
-            letter-spacing: 2px;
-        }
-
-        @keyframes logoGlow {
-            0% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(0, 210, 255, 0.6)); }
-            100% { transform: scale(1.03); filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8)); }
-        }
-
-        /* টাইপোগ্রাফি ও গ্লো */
-        h1, h2 {
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 2px 2px 4px #000;
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-        }
-
-        p {
-            color: #00d2ff;
-            font-size: 1.1rem;
-            text-shadow: 1px 1px 2px #000;
-        }
-
-        /* ইনপুট ও বাটন স্টাইল */
-        input[type="tel"], input[type="text"], select {
-            width: 100%;
-            max-width: 320px;
-            padding: 14px;
+        /* --- বোতাম এবং ইনপুট স্টাইল --- */
+        input, select {
+            width: 80%;
+            padding: 12px;
             margin: 12px 0;
-            border-radius: 30px;
-            border: 2px solid #00d2ff;
-            background: #020215;
+            border: 2px solid var(--kbc-gold);
+            background: #000;
             color: #fff;
-            font-size: 1.1rem;
+            border-radius: 8px;
+            font-size: 16px;
             text-align: center;
-            box-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
-            outline: none;
         }
 
-        input:focus, select:focus {
-            border-color: #ffd700;
-            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-        }
-
-        .lang-select-box {
-            margin: 15px 0;
-        }
-
-        button {
-            background: linear-gradient(180deg, #0077ff 0%, #0033aa 100%);
-            color: white;
-            border: 2px solid #00d2ff;
-            padding: 14px 35px;
-            font-size: 1.2rem;
+        .kbc-btn {
+            background: linear-gradient(135deg, var(--kbc-purple), #4a154b);
+            color: var(--kbc-gold);
+            border: 2px solid var(--kbc-gold);
+            padding: 12px 30px;
+            font-size: 18px;
             font-weight: bold;
-            border-radius: 30px;
+            border-radius: 25px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin: 15px 5px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin-top: 15px;
         }
 
-        button:hover {
-            background: linear-gradient(180deg, #ffd700 0%, #ffaa00 100%);
-            color: #000;
-            border-color: #fff;
-            box-shadow: 0 0 20px #ffd700;
+        .kbc-btn:hover {
             transform: translateY(-2px);
+            box-shadow: 0 0 15px var(--kbc-gold);
+            background: var(--kbc-gold);
+            color: #000;
         }
 
-        /* কেবিসি ডায়মন্ড লেআউট ডিজাইন */
-        .game-layout {
+        /* --- লাইফলাইন সেকশন --- */
+        .lifeline-container {
             display: flex;
-            gap: 25px;
-            margin-top: 20px;
+            justify-content: space-around;
+            margin-bottom: 25px;
+        }
+        .life-btn {
+            background: #111;
+            border: 2px solid #555;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .life-btn.used {
+            text-decoration: line-through;
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: var(--error-red);
         }
 
-        @media (max-width: 900px) {
-            .game-layout { flex-direction: column-reverse; }
+        /* --- প্রশ্ন ও অপশন লেআউট --- */
+        .question-box {
+            background: linear-gradient(to right, #1f003d, #3d0066, #1f003d);
+            border: 2px solid var(--kbc-gold);
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 22px;
+            margin-bottom: 30px;
+            font-weight: bold;
         }
 
-        .main-arena {
-            flex: 2.5;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        /* গোল্ডেন ডায়মন্ড কোশ্চেন বক্স */
-        .question-container {
-            position: relative;
-            background: linear-gradient(90deg, rgba(0,0,50,1) 0%, rgba(10,10,80,1) 50%, rgba(0,0,50,1) 100%);
-            border: 2px solid #ffd700;
-            padding: 25px;
-            border-radius: 50px;
-            margin: 20px 0;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-        }
-
-        .question-text {
-            font-size: 1.4rem;
-            color: #ffffff;
-            font-weight: 600;
-            line-height: 1.5;
-        }
-
-        /* কেবিসি ৪টি অপশন গ্রিড */
         .options-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin-top: 10px;
-        }
-
-        @media (max-width: 600px) {
-            .options-grid { grid-template-columns: 1fr; }
         }
 
         .option-btn {
-            background: linear-gradient(90deg, #020215 0%, #050535 50%, #020215 100%);
-            border: 2px solid #00d2ff;
-            border-radius: 40px;
-            padding: 16px 25px;
-            color: white;
-            font-size: 1.15rem;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: inset 0 0 10px rgba(0, 210, 255, 0.2);
-        }
-
-        .option-btn:hover {
-            border-color: #ffd700;
-            background: linear-gradient(90deg, #050535 0%, #0f0f5c 50%, #050535 100%);
-        }
-
-        /* লকিং এবং ব্লিঙ্কিং অ্যানিমেশন */
-        .option-btn.selected-blink {
-            animation: lockBlink 0.2s ease 5;
-        }
-
-        @keyframes lockBlink {
-            0%, 100% { background: #ffaa00; color: #000; border-color: #fff; }
-            50% { background: #020215; color: #fff; border-color: #00d2ff; }
-        }
-
-        .correct { 
-            background: linear-gradient(90deg, #00cc44 0%, #00ff66 100%) !important; 
-            color: #000 !important; 
-            border-color: #fff !important;
-            font-weight: bold;
-            box-shadow: 0 0 20px #00ff66;
-        }
-        
-        .wrong { 
-            background: linear-gradient(90deg, #cc0000 0%, #ff3333 100%) !important; 
-            color: #fff !important; 
-            border-color: #fff !important;
-            box-shadow: 0 0 20px #ff3333;
-        }
-
-        /* প্রিমিয়াম নিয়ন টাইমার */
-        .timer-container {
-            margin: auto;
-            position: relative;
-            width: 85px;
-            height: 85px;
-            background: #020210;
-            border: 4px solid #00d2ff;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #00d2ff;
-            box-shadow: 0 0 15px #00d2ff;
-        }
-
-        .timer-urgent {
-            border-color: #ff3333 !important;
-            color: #ff3333 !important;
-            box-shadow: 0 0 25px #ff3333 !important;
-            animation: pulseShake 0.15s infinite;
-        }
-
-        @keyframes pulseShake {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.08) rotate(1deg); }
-            100% { transform: scale(1) rotate(-1deg); }
-        }
-
-        /* টাকার গাছ (Prize Money Tree Side Panel) */
-        .money-tree {
-            flex: 1;
-            background: #020215;
-            border: 2px solid #ffd700;
-            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1.5px solid #00d2ff;
+            color: #fff;
             padding: 15px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            max-height: 500px;
-            overflow-y: auto;
-            box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.1);
-        }
-
-        .tree-level {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 12px;
-            margin: 2px 0;
-            border-radius: 20px;
-            font-size: 0.95rem;
-            color: #8888aa;
-        }
-
-        .tree-level.active { 
-            background: linear-gradient(90deg, #ffaa00, #ffd700); 
-            color: #000 !important; 
-            font-weight: bold; 
-            box-shadow: 0 0 12px #ffd700;
-        }
-        
-        .tree-level.safe { color: #00ff66; font-weight: 600; }
-
-        /* লাইফলাইন ডিজাইন */
-        .lifelines-bar {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .lifeline-circle {
-            background: #020215;
-            border: 2px solid #ffd700;
-            color: #ffd700;
-            width: 110px;
-            padding: 8px 0;
-            font-size: 0.85rem;
-            font-weight: bold;
-            border-radius: 20px;
+            font-size: 18px;
+            border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-            transition: all 0.3s;
+            text-align: left;
+            padding-left: 30px;
+            transition: 0.2s;
+        }
+        .option-btn:hover {
+            background: linear-gradient(to right, #00d2ff, #0066cc);
+            border-color: #fff;
         }
 
-        .lifeline-circle:hover {
-            background: #ffd700;
-            color: #000;
-        }
-
-        .lifeline-circle.used {
-            opacity: 0.25;
-            text-decoration: line-through;
-            pointer-events: none;
-            border-color: #ff3333;
-            color: #ff3333;
-        }
-
-        /* উইজেট ও ইনফো */
-        .top-status-bar {
-            display: flex;
-            justify-content: space-between;
-            padding: 0 10px 10px 10px;
-            color: #00d2ff;
+        /* --- পেমেন্ট নোটিশ স্ক্রিন --- */
+        .lock-notice {
+            color: var(--error-red);
             font-weight: bold;
-            border-bottom: 1px solid rgba(0, 210, 255, 0.2);
-            margin-bottom: 15px;
-        }
-
-        .host-box {
-            background: rgba(0, 0, 30, 0.6);
-            border-radius: 10px;
-            padding: 10px;
-            margin-top: 15px;
-            border: 1px dashed #00d2ff;
-            font-style: italic;
-            color: #ffd700;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
 
-<div class="game-container">
-    
-    <!-- ১. লগইন / প্রবেশ স্ক্রিন -->
-    <div id="login-screen" class="screen active-screen">
-        <div class="logo-container">
-            <div class="kbc-logo">★ KBC 2026 ★</div>
-        </div>
-        <h1 id="main-title">কেবিসি ক্রোড়পতি</h1>
-        <p style="margin-bottom: 20px; color: #fff;">প্রফেশনাল লাইভ স্টুডিও কুইজ এরিনা</p>
-        
-        <!-- ভাষা নির্বাচনের ড্রপডাউন -->
-        <div class="lang-select-box">
-            <label for="lang-select" style="color: #ffd700; font-weight: bold;">ভাষা নির্বাচন করুন / Select Language:</label><br>
-            <select id="lang-select" onchange="changeWelcomeLanguage()">
-                <option value="bn">বাংলা (Indian Bengali)</option>
-                <option value="en">English</option>
-            </select>
-        </div>
+    <!-- ================================================================= -->
+    /* ২. ইউজার ইন্টারফেস লেয়ার (লগইন, ল্যাঙ্গুয়েজ, গেমপ্লে এবং এক্সিট পেজ) */
+    <!-- ================================================================= -->
 
-        <input type="tel" id="mobile-input" placeholder="১০ অঙ্কের মোবাইল নম্বর" maxlength="10"><br>
-        <input type="text" id="master-code-input" placeholder="মাস্টার ট্রায়াল কোড (ঐচ্ছিক)"><br>
-        <button id="enter-btn" onclick="handleLogin()">স্টুডিওতে প্রবেশ করুন</button>
+    <!-- স্ক্রিন ১: লগইন এবং ভেরিফিকেশন পেজ -->
+    <div id="login-page" class="page active">
+        <h2 style="color: var(--kbc-gold); margin-bottom: 20px;">KBC PREMIUM LOGIN</h2>
+        <p style="font-size: 14px; color: #aaa; margin-bottom: 15px;">সারাদিনে একটি নাম্বার দিয়ে একবারই খেলা যাবে</p>
+        <input type="text" id="phone-input" placeholder="মোবাইল নম্বর লিখুন (১০ ডিজিট)" maxlength="10">
+        <input type="text" id="promo-input" placeholder="প্রোমো কোড দিন">
+        <br>
+        <button class="kbc-btn" onclick="handleLogin()">গেমের ভেতরে প্রবেশ করুন</button>
     </div>
 
-    <!-- ২. নিয়মাবলী স্ক্রিন -->
-    <div id="rules-screen" class="screen">
-        <h2 id="rules-title">খেলার নিয়ম ও শর্তাবলী</h2>
-        <div id="rules-content" style="text-align: left; margin: 20px auto; max-width: 550px; line-height: 1.8; color: #ccc; background: rgba(0,0,0,0.4); padding: 20px; border-radius: 10px; border: 1px solid #00d2ff;">
-            <!-- কনটেন্ট ডাইনামিকালি লোড হবে -->
-        </div>
-        <button id="play-btn" onclick="triggerActualGame()">PLAY NOW (খেলা শুরু)</button>
+    <!-- স্ক্রিন ২: ল্যাঙ্গুয়েজ সিলেকশন পেজ -->
+    <div id="lang-page" class="page">
+        <h2 style="color: var(--kbc-gold); margin-bottom: 25px;">Select Your Language / ভাষা নির্বাচন করুন</h2>
+        <select id="lang-select">
+            <option value="bn">বাংলা (Bengali)</option>
+            <option value="en">English (ইংরেজি)</option>
+        </select>
+        <br>
+        <button class="kbc-btn" onclick="startActualGame()">খেলা শুরু করুন</button>
     </div>
 
-    <!-- ৩. মেইন গেম এরিনা স্ক্রিন -->
-    <div id="game-screen" class="screen">
-        <div class="top-status-bar">
-            <div id="live-viewers">🔴 LIVE VIEWERS: ৪,৫০,০০০+</div>
-            <div id="round-indicator">ROUND: ১ / ৩০</div>
+    <!-- স্ক্রিন ৩: অরিজিনাল কেবিসি গেমপ্লে বোর্ড -->
+    <div id="game-page" class="page">
+        <!-- লাইফলাইন ড্যাশবোর্ড -->
+        <div class="lifeline-container">
+            <button id="life-50" class="life-btn" onclick="trigger5050()">50:50</button>
+            <button id="life-phone" class="life-btn" onclick="triggerPhone()">Phone a Friend</button>
+            <button id="life-audience" class="life-btn" onclick="triggerAudience()">Audience Poll</button>
+            <button id="life-flip" class="life-btn" onclick="triggerFlip()">Flip Question</button>
         </div>
 
-        <div class="lifelines-bar">
-            <button id="ll-poll" class="lifeline-circle" onclick="useLifeline('poll')">Audience Poll</button>
-            <button id="ll-flip" class="lifeline-circle" onclick="useLifeline('flip')">Flip Question</button>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: var(--kbc-gold);">
+            <span id="player-tag">প্লেয়ার: </span>
+            <span id="level-tag" style="font-weight: bold;">প্রশ্ন নম্বর: ১</span>
         </div>
 
-        <div class="game-layout">
-            <div class="main-arena">
-                <div id="timer" class="timer-container">25</div>
-                
-                <div class="question-container">
-                    <div id="question-box" class="question-text">প্রশ্ন লোড হচ্ছে...</div>
-                </div>
-
-                <div class="options-grid">
-                    <button class="option-btn" id="opt-0" onclick="selectOption(0)">A. </button>
-                    <button class="option-btn" id="opt-1" onclick="selectOption(1)">B. </button>
-                    <button class="option-btn" id="opt-2" onclick="selectOption(2)">C. </button>
-                    <button class="option-btn" id="opt-3" onclick="selectOption(3)">D. </button>
-                </div>
-
-                <div id="host-text" class="host-box">কম্পিউটার মশাই প্রশ্ন সাজাচ্ছেন...</div>
-                
-                <div>
-                    <button id="exit-btn" onclick="triggerManualExit()" style="background: linear-gradient(180deg, #ff3333, #aa0000); font-size: 0.95rem; padding: 8px 20px; margin-top: 25px;">Exit Game</button>
-                </div>
-            </div>
-            
-            <!-- টাকার চার্ট ডানপাশে -->
-            <div class="money-tree" id="money-tree-ui"></div>
+        <!-- প্রশ্ন ও উত্তর ফ্রেম -->
+        <div class="question-box" id="q-text">এখানে প্রশ্ন লোড হবে...</div>
+        <div class="options-grid">
+            <button class="option-btn" id="opt-0" onclick="checkAnswer(0)">A. </button>
+            <button class="option-btn" id="opt-1" onclick="checkAnswer(1)">B. </button>
+            <button class="option-btn" id="opt-2" onclick="checkAnswer(2)">C. </button>
+            <button class="option-btn" id="opt-3" onclick="checkAnswer(3)">D. </button>
         </div>
+
+        <!-- এমার্জেন্সি কুটি বা এক্সিট অপশন -->
+        <button class="kbc-btn" style="margin-top: 30px; background: #330000; font-size: 14px;" onclick="exitGame()">গেম থেকে কুইট করুন (Exit)</button>
     </div>
 
-    <!-- ৪. গেম ওভার / প্রাইজমানি স্ক্রিন -->
-    <div id="summary-screen" class="screen">
-        <h2 id="summary-title">খেলা সমাপ্ত!</h2>
-        <p id="summary-prizes" style="font-size: 1.4rem; color: #ffd700; margin: 20px 0;">অর্জিত রাশি: ৳০</p>
-        
-        <div id="payout-box" style="display:none; background: rgba(0, 50, 0, 0.4); padding: 20px; border-radius: 15px; border: 2px solid #00ff66; margin-bottom: 25px;">
-            <h3 id="payout-title" style="color: #00ff66; margin-bottom: 10px;">টাকা তোলার ফর্ম</h3>
-            <select id="payout-method">
-                <option value="upi">UPI (G-Pay / PhonePe / Paytm)</option>
-                <option value="bank">Bank Account Transfer</option>
-            </select><br>
-            <input type="text" id="payout-detail" placeholder="UPI ID অথবা ব্যাংক তথ্য দিন"><br>
-            <button id="withdraw-btn" onclick="submitPayoutClaim()" style="background: linear-gradient(180deg, #00ff66, #00aa33); color: #000; border-color: #fff;">টাকা তুলুন (Withdraw)</button>
-        </div>
-
-        <button id="restart-btn" onclick="restartToMain()">প্রধান মেনুতে ফিরুন (Exit)</button>
+    <!-- স্ক্রিন ৪: ফ্রি লিমিট খতম / পেমেন্ট গেটওয়ে নোটিশ স্ক্রিন -->
+    <div id="pay-page" class="page">
+        <h2 style="color: var(--error-red);">গেম ওভার / ফ্রি ট্রায়াল শেষ!</h2>
+        <p class="lock-notice" id="lock-reason">আপনার আজকের দিনের ফ্রি লিমিট বা খেলা শেষ হয়ে গেছে।</p>
+        <p>পরবর্তী লেভেলে যাওয়ার জন্য বা নতুন করে খেলার জন্য পেমেন্ট অপশনটি অন করুন।</p>
+        <!-- পেমেন্ট ইন্টিগ্রেশন করার জায়গা -->
+        <button class="kbc-btn" onclick="alert('পেমেন্ট সিস্টেম এখনও গেটওয়ের সাথে কানেক্ট করা হয়নি।')">Pay to Premium Mode</button>
+        <br>
+        <button class="kbc-btn" style="background: #333;" onclick="resetToLogin()">মেনু পেজে ফিরুন</button>
     </div>
 
-</div>
 
-<script>
-// গ্লোবাল স্টেট ও কনফিগারেশন
-let currentLanguage = 'bn'; 
-const SECRET_MASTER_CODE = "TEST2026";
-
-const prizeMoneyBN = [
-    "৳১,০০০", "৳২,০০০", "৳৩,০০০", "৳৫,০০০", "৳১০,০০০", 
-    "৳২০,০০০", "৳৪০,০০০", "৳৮০,০০০", "৳১,৬০,০০০", "৳৩,২০,০০০",
-    "৳৬,৪০,০০০", "৳১২,৫০,০০০", "৳২৫,০০,০০০", "৳৫০,০০,০০০", "৳১ কোটি",
-    "৳২ কোটি", "৳৩ কোটি", "৳৪ কোটি", "৳৫ কোটি", "৳৬ কোটি",
-    "৳৭ কোটি", "৳৮ কোটি", "৳৯ কোটি", "৳১০ কোটি", "৳১১ কোটি",
-    "৳১২ কোটি", "৳১৩ কোটি", "৳১৪ কোটি", "৳১৫ কোটি", "৳৭ কোটি জ্যাকপট"
-];
-
-const prizeMoneyEN = [
-    "₹1,000", "₹2,000", "₹3,000", "₹5,000", "₹10,000", 
-    "₹20,000", "₹40,000", "₹80,000", "₹1,60,000", "₹3,20,000",
-    "₹6,40,000", "₹12,50,000", "₹25,00,000", "₹50,00,000", "₹1 Crore",
-    "₹2 Crore", "₹3 Crore", "₹4 Crore", "₹5 Crore", "₹6 Crore",
-    "₹7 Crore", "₹8 Crore", "₹9 Crore", "₹10 Crore", "₹11 Crore",
-    "₹12 Crore", "₹13 Crore", "₹14 Crore", "₹15 Crore", "₹7 Crore Jackpot"
-];
-
-// শুদ্ধ ভারতীয় বাংলা প্রশ্ন ব্যাংক
-const questionBankBN = [
-  { q: "মানুষের শরীরে হাড়ের মোট সংখ্যা কত?", o: ["২০৬টি", "২১০টি", "২৫০টি", "২০১টি"], a: 0 },
-  { q: "ভারতের রাজধানীর নাম কী?", o: ["কলকাতা", "নয়াদিল্লি", "মুম্বই", "চেন্নাই"], a: 1 },
-  { q: "পশ্চিমবঙ্গের রাজ্য পশু কোনটি?", o: ["রয়্যাল বেঙ্গল টাইগার", "মেছো বিড়াল", "ভারতীয় হাতি", "চিতল হরিণ"], a: 1 },
-  { q: "সূর্য কোন দিকে উদিত হয়?", o: ["পশ্চিম", "উত্তর", "দক্ষিণ", "পূর্ব"], a: 3 },
-  { q: "ভারতের জাতীয় সংগীত 'জন গণ মন' কার রচনা?", o: ["রবীন্দ্রনাথ ঠাকুর", "কাজী নজরুল ইসলাম", "বঙ্কিমচন্দ্র চট্টোপাধ্যায়", "শরৎচন্দ্র চট্টোপাধ্যায়"], a: 0 },
-  { q: "ভারতের জাতীয় ফল কোনটি?", o: ["আপেল", "কাঁঠাল", "আম", "কলা"], a: 2 },
-  { q: "সৌরজগতের কোন গ্রহকে 'লাল গ্রহ' বলা হয়?", o: ["বুধ", "মঙ্গল", "শুক্র", "বৃহস্পতি"], a: 1 },
-  { q: "লন্ডন শহরটি কোন নদীর তীরে অবস্থিত?", o: ["টেমস", "নীল নদ", "অ্যামাজন", "দানিউব"], a: 0 },
-  { q: "কোন পতঙ্গ কামড়ালে ডেঙ্গু জ্বর হতে পারে?", o: ["অ্যানোফিলিস মশা", "এডিস মশা", "কিউলেক্স মশা", "বেলে মাছি"], a: 1 },
-  { q: "সুয়েজ খাল কোন দুটি সাগরকে যুক্ত করেছে?", o: ["ভূমধ্যসাগর ও লোহিত সাগর", "আটলান্টিক ও প্রশান্ত মহাসাগর", "আরব সাগর ও ভারত মহাসাগর", "কৃষ্ণসাগর ও কাস্পিয়ান সাগর"], a: 0 }
-];
-
-// ইংরেজি প্রশ্ন ব্যাংক
-const questionBankEN = [
-  { q: "What is the total number of bones in a human body?", o: ["206", "210", "250", "201"], a: 0 },
-  { q: "What is the capital of India?", o: ["Kolkata", "New Delhi", "Mumbai", "Chennai"], a: 1 },
-  { q: "Which is the state animal of West Bengal?", o: ["Royal Bengal Tiger", "Fishing Cat", "Indian Elephant", "Spotted Deer"], a: 1 },
-  { q: "In which direction does the sun rise?", o: ["West", "North", "South", "East"], a: 3 },
-  { q: "Who wrote the national anthem of India 'Jana Gana Mana'?", o: ["Rabindranath Tagore", "Kazi Nazrul Islam", "Bankim Chandra Chatterjee", "Sarat Chandra Chatterjee"], a: 0 },
-  { q: "Which is the national fruit of India?", o: ["Apple", "Jackfruit", "Mango", "Banana"], a: 2 },
-  { q: "Which planet is known as the 'Red Planet'?", o: ["Mercury", "Mars", "Venus", "Jupiter"], a: 1 },
-  { q: "London is situated on the banks of which river?", o: ["Thames", "Nile", "Amazon", "Danube"], a: 0 },
-  { q: "Which mosquito bite causes Dengue?", o: ["Anopheles", "Aedes", "Culex", "Sandfly"], a: 1 },
-  { q: "Which two seas are connected by the Suez Canal?", o: ["Mediterranean Sea and Red Sea", "Atlantic and Pacific Ocean", "Arabian Sea and Indian Ocean", "Black Sea and Caspian Sea"], a: 0 }
-];
-
-let activeQuestions = [];
-let activePrizeMoney = [];
-let currentRound = 0;
-let score = 0;
-let timerInterval = null;
-let timeLeft = 25;
-let isAnswered = false;
-
-// পেজ লোড হওয়ার সাথে সাথে ডিফল্ট ভাষা সেট করা
-window.onload = function() {
-    changeWelcomeLanguage();
-};
-
-function changeWelcomeLanguage() {
-    currentLanguage = document.getElementById('lang-select').value;
-    const mainTitle = document.getElementById('main-title');
-    const enterBtn = document.getElementById('enter-btn');
-    const mobileInput = document.getElementById('mobile-input');
-    const masterInput = document.getElementById('master-code-input');
+    <!-- ================================================================= -->
+    /* ৩. ব্যাকএন্ড সিকিউরিটি ও গেম কন্ট্রোল লজিক (JavaScript) */
+    <!-- ================================================================= -->
     
-    if (currentLanguage === 'bn') {
-        mainTitle.innerText = "কৌন বনেগা ক্রোড়পতি ২০২৬";
-        mobileInput.placeholder = "১০ অঙ্কের মোবাইল নম্বর";
-        masterInput.placeholder = "মাস্টার ট্রায়াল কোড (ঐচ্ছিক)";
-        enterBtn.innerText = "স্টুডিওতে প্রবেশ করুন";
-    } else {
-        mainTitle.innerText = "Kaun Banega Crorepati 2026";
-        mobileInput.placeholder = "10 Digit Mobile Number";
-        masterInput.placeholder = "Master Trial Code (Optional)";
-        enterBtn.innerText = "Enter Studio";
-    }
-}
+    <!-- প্রশ্নপত্রের মেইন ডাটাবেস ফাইল লিংক -->
+    <script src="questions.js"></script>
 
-function switchScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active-screen'));
-    document.getElementById(screenId).classList.add('active-screen');
-}
+    <script>
+        // --- গেম গ্লোবাল স্টেট কন্ট্রোল ---
+        let currentLanguage = 'bn';
+        let currentLevel = 1; // মোট ১৫টি প্রশ্নের লেভেল থাকবে
+        let selectedQuestions = []; // র্যান্ডমাইজড ফিল্টার করা প্রশ্নের তালিকা
+        let activeQuestionObj = null;
+        let currentUserPhone = "";
 
-function handleLogin() {
-    const mobile = document.getElementById('mobile-input').value;
-    if (mobile.length !== 10 || isNaN(mobile)) {
-        alert(currentLanguage === 'bn' ? "দয়া করে একটি সঠিক ১০ অঙ্কের মোবাইল নম্বর দিন।" : "Please enter a valid 10-digit mobile number.");
-        return;
-    }
-    
-    // রুলস স্ক্রিন কনটেন্ট লোড করা
-    const rulesContent = document.getElementById('rules-content');
-    const rulesTitle = document.getElementById('rules-title');
-    const playBtn = document.getElementById('play-btn');
-    
-    if (currentLanguage === 'bn') {
-        rulesTitle.innerText = "খেলার নিয়ম ও শর্তাবলী";
-        rulesContent.innerHTML = `
-            <p style="color:#ffd700; font-weight:bold; margin-bottom: 10px;">⚠️ গুরুত্বপূর্ণ নির্দেশাবলী:</p>
-            • মোট ১০টি রাউন্ডের প্রশ্নের সঠিক উত্তর দিতে হবে।<br>
-            • ১-৫ রাউন্ড পর্যন্ত ২৫ সেকেন্ড এবং পরবর্তী রাউন্ডে ১৫ সেকেন্ড সময় পাবেন।<br>
-            • রাউন্ড ৫ হলো প্রথম <b>সেফ জোন (Milestone)</b>। এর পরে ভুল উত্তর দিলে টাকা লক থাকবে।<br>
-            • গেম চলাকালীন অন্য ট্যাব ওপেন করলে সিকিউরিটি লকের কারণে গেম ওভার হবে।
-        `;
-        playBtn.innerText = "খেলা শুরু করুন";
-    } else {
-        rulesTitle.innerText = "Game Rules & Conditions";
-        rulesContent.innerHTML = `
-            <p style="color:#ffd700; font-weight:bold; margin-bottom: 10px;">⚠️ Important Instructions:</p>
-            • You need to answer questions across 10 rounds.<br>
-            • Rounds 1-5 have a 25-second timer, later rounds have 15 seconds.<br>
-            • Round 5 is the first <b>Safe Zone (Milestone)</b>.<br>
-            • Switching tabs or minimizing the screen will trigger a security lock game over.
-        `;
-        playBtn.innerText = "Start Game";
-    }
-    
-    switchScreen('rules-screen');
-}
+        // ==========================================
+        // গ্লোবাল কনফিগারেশন সেটিংস (সহজে পরিবর্তনের জন্য)
+        // ==========================================
+        const CONFIG = {
+            VALID_PROMO: "JOKER2026",      // <-- আপনার ভ্যালিড প্রোমো কোড এখানে পরিবর্তন করুন
+            REQUIRE_PAYMENT: false,        // <-- ট্রু (true) করলেই প্রোমো কোড বন্ধ হয়ে ডিরেক্ট পেমেন্ট গেটওয়ে চাইবে
+            TOTAL_QUESTIONS_TO_PLAY: 15    // <-- অরিজিনাল কেবিসি স্টাইলে এক রাউন্ডে কয়টি প্রশ্ন খেলা হবে
+        };
 
-function triggerActualGame() {
-    // ভাষা অনুযায়ী ডেটাবেস সিলেক্ট
-    if (currentLanguage === 'bn') {
-        activeQuestions = [...questionBankBN];
-        activePrizeMoney = [...prizeMoneyBN];
-        document.getElementById('live-viewers').innerText = "🔴 লাইভ ভিউয়ার্স: ৪,৫০,০০০+";
-        document.getElementById('exit-btn').innerText = "খেলা থেকে বিদায় নিন";
-    } else {
-        activeQuestions = [...questionBankEN];
-        activePrizeMoney = [...prizeMoneyEN];
-        document.getElementById('live-viewers').innerText = "🔴 LIVE VIEWERS: 450,000+";
-        document.getElementById('exit-btn').innerText = "Exit Game";
-    }
-    
-    currentRound = 0;
-    score = 0;
-    document.getElementById('ll-poll').classList.remove('used');
-    document.getElementById('ll-flip').classList.remove('used');
-    
-    buildMoneyTree();
-    switchScreen('game-screen');
-    loadQuestion();
-}
+        // -----------------------------------------------------------------
+        // কমার্শিয়াল সিকিউরিটি অপশনস (অ্যান্টি-স্ক্রিনশট, অ্যান্টি-এআই, অ্যান্টি-কপি)
+        // -----------------------------------------------------------------
+        // সিকিউরিটি ১: রাইট ক্লিক লক করা
+        document.addEventListener('contextmenu', event => event.preventDefault());
 
-function buildMoneyTree() {
-    const treeUi = document.getElementById('money-tree-ui');
-    treeUi.innerHTML = '';
-    // প্রিমিয়াম ভিউর জন্য উল্টো দিক থেকে রেন্ডার (যেমন আসল টিভিতে থাকে)
-    for (let i = activeQuestions.length - 1; i >= 0; i--) {
-        const div = document.createElement('div');
-        div.className = 'tree-level';
-        if (i === 4) div.classList.add('safe'); // ৫ নম্বর রাউন্ড মাইলস্টোন
-        div.id = `tree-idx-${i}`;
-        
-        const roundNum = currentLanguage === 'bn' ? (i + 1) : (i + 1);
-        div.innerHTML = `<span>${roundNum}. ${activePrizeMoney[i]}</span>`;
-        treeUi.appendChild(div);
-    }
-}
-
-function loadQuestion() {
-    isAnswered = false;
-    clearInterval(timerInterval);
-    
-    // টাইমার সেটআপ
-    timeLeft = currentRound < 5 ? 25 : 15;
-    const timerEl = document.getElementById('timer');
-    timerEl.innerText = timeLeft;
-    timerEl.classList.remove('timer-urgent');
-    
-    // রাউন্ড ইন্ডিকেটর
-    document.getElementById('round-indicator').innerText = currentLanguage === 'bn' ? 
-        `রাউন্ড: ${currentRound + 1} / ${activeQuestions.length}` : 
-        `ROUND: ${currentRound + 1} / ${activeQuestions.length}`;
-        
-    // হাইলাইট মানি ট্রি
-    document.querySelectorAll('.tree-level').forEach(el => el.classList.remove('active'));
-    const currentTreeLevel = document.getElementById(`tree-idx-${currentRound}`);
-    if (currentTreeLevel) currentTreeLevel.classList.add('active');
-
-    // হোস্ট টেক্সট
-    document.getElementById('host-text').innerText = currentLanguage === 'bn' ?
-        "কম্পিউটার মশাই স্ক্রিনে প্রশ্ন নিয়ে আসছেন..." :
-        "Computer ji is freezing the question on screen...";
-
-    const qData = activeQuestions[currentRound];
-    document.getElementById('question-box').innerText = qData.q;
-    
-    for (let i = 0; i < 4; i++) {
-        const optBtn = document.getElementById(`opt-${i}`);
-        optBtn.className = 'option-btn';
-        const prefix = ["A. ", "B. ", "C. ", "D. "];
-        optBtn.innerText = prefix[i] + qData.o[i];
-    }
-
-    timerInterval = setInterval(() => {
-        timeLeft--;
-        timerEl.innerText = timeLeft;
-        if (timeLeft <= 7) {
-            timerEl.classList.add('timer-urgent');
-        }
-        if (timeLeft <= 0) {
-            clearInterval(timerInterval);
-            handleGameOver(true); // টাইম ওভার
-        }
-    }, 1000);
-}
-
-function selectOption(index) {
-    if (isAnswered) return;
-    isAnswered = true;
-    clearInterval(timerInterval);
-
-    const qData = activeQuestions[currentRound];
-    const selectedBtn = document.getElementById(`opt-${index}`);
-    
-    // ব্লিঙ্কিং অ্যানিমেশন লক
-    selectedBtn.classList.add('selected-blink');
-    document.getElementById('host-text').innerText = currentLanguage === 'bn' ? 
-        "উত্তরটি লক করা হচ্ছে..." : "Locking your answer...";
-
-    setTimeout(() => {
-        selectedBtn.classList.remove('selected-blink');
-        if (index === qData.a) {
-            selectedBtn.classList.add('correct');
-            document.getElementById('host-text').innerText = currentLanguage === 'bn' ?
-                "অসাধারণ! সঠিক উত্তর।" : "Fantastic! That is the correct answer.";
-            
-            setTimeout(() => {
-                currentRound++;
-                if (currentRound >= activeQuestions.length) {
-                    handleGameOver(false, true); // মহাজ্যাকপট জয়
-                } else {
-                    loadQuestion();
-                }
-            }, 2000);
-        } else {
-            selectedBtn.classList.add('wrong');
-            document.getElementById(`opt-${qData.a}`).classList.add('correct');
-            document.getElementById('host-text').innerText = currentLanguage === 'bn' ?
-                "ভুল উত্তর! সঠিক উত্তরটি স্ক্রিনে দেখানো হলো।" : "Wrong answer! The correct answer is highlighted.";
-            
-            setTimeout(() => {
-                handleGameOver(false, false);
-            }, 2000);
-        }
-    }, 1200);
-}
-
-function useLifeline(type) {
-    if (isAnswered) return;
-    const qData = activeQuestions[currentRound];
-    
-    if (type === 'poll') {
-        document.getElementById('ll-poll').classList.add('used');
-        const correctAnswer = ["A", "B", "C", "D"][qData.a];
-        alert(currentLanguage === 'bn' ? 
-            `দর্শকদের ভোট অনুযায়ী অপশন [ ${correctAnswer} ] পাওয়ার সম্ভাবনা ৭০%` : 
-            `Audience Poll suggests Option [ ${correctAnswer} ] has 70% preference.`);
-    } else if (type === 'flip') {
-        document.getElementById('ll-flip').classList.add('used');
-        // প্রশ্ন বদলে দেওয়া (এখানে স্যাম্পল হিসেবে নতুন ডাটা পুশ করা হলো)
-        if (currentLanguage === 'bn') {
-            activeQuestions[currentRound] = { q: "কোন ভারতীয় ক্রিকেটারকে 'মাস্টার ব্লাস্টার' বলা হয়?", o: ["বিরাট কোহলি", "সৌরভ গাঙ্গুলী", "শচীন তেন্ডুলকর", "মহেন্দ্র সিং ধোনি"], a: 2 };
-        } else {
-            activeQuestions[currentRound] = { q: "Which Indian cricketer is known as 'Master Blaster'?", o: ["Virat Kohli", "Sourav Ganguly", "Sachin Tendulkar", "MS Dhoni"], a: 2 };
-        }
-        loadQuestion();
-    }
-}
-
-function handleGameOver(isTimeOut = false, isWinAll = false) {
-    clearInterval(timerInterval);
-    switchScreen('summary-screen');
-    
-    const titleEl = document.getElementById('summary-title');
-    const prizeEl = document.getElementById('summary-prizes');
-    const payoutBox = document.getElementById('payout-box');
-    
-    let finalAmount = "৳০";
-    let safeZoneUnlocked = false;
-
-    // মাইলস্টোন লজিক (৫ম রাউন্ড পার হলে সেফ জোন)
-    if (currentRound >= 5) {
-        finalAmount = activePrizeMoney[4];
-        safeZoneUnlocked = true;
-    }
-    if (isWinAll) {
-        finalAmount = activePrizeMoney[activePrizeMoney.length - 1];
-        safeZoneUnlocked = true;
-    }
-
-    if (currentLanguage === 'bn') {
-        titleEl.innerText = isWinAll ? "👑 অভিনন্দন! আপনি মহা বিজয়ী 👑" : "খেলা সমাপ্ত!";
-        prizeEl.innerText = `আপনার অর্জিত মোট রাশি: ${finalAmount}`;
-        document.getElementById('payout-title').innerText = "টাকা তোলার ফর্ম (Safe Zone Unlocked)";
-        document.getElementById('payout-detail').placeholder = "UPI ID অথবা ব্যাংক অ্যাকাউন্ট তথ্য দিন";
-        document.getElementById('withdraw-btn').innerText = "টাকা তুলুন (Withdraw)";
-        document.getElementById('restart-btn').innerText = "প্রধান মেনুতে ফিরুন";
-    } else {
-        titleEl.innerText = isWinAll ? "👑 Congratulations! You are a Mega Winner 👑" : "Game Over!";
-        prizeEl.innerText = `Total Prize Money Won: ${finalAmount.replace('৳', '₹')}`;
-        document.getElementById('payout-title').innerText = "Withdrawal Form (Safe Zone Unlocked)";
-        document.getElementById('payout-detail').placeholder = "Enter UPI ID or Bank Details";
-        document.getElementById('withdraw-btn').innerText = "Withdraw Funds";
-        document.getElementById('restart-btn').innerText = "Return to Main Menu";
-    }
-
-    if (safeZoneUnlocked && parseInt(finalAmount.replace(/[^0-9]/g, '')) > 0) {
-        payoutBox.style.display = "block";
-    } else {
-        payoutBox.style.display = "none";
-    }
-}
-
-function submitPayoutClaim() {
-    const detail = document.getElementById('payout-detail').value;
-    if (!detail) {
-        alert(currentLanguage === 'bn' ? "দয়া করে পেমেন্টের তথ্য দিন।" : "Please provide your payment details.");
-        return;
-    }
-    alert(currentLanguage === 'bn' ? "আপনার রিকোয়েস্টটি প্রসেস করা হচ্ছে। ২৪ ঘণ্টার মধ্যে যোগাযোগ করা হবে।" : "Your request is being processed. You will be contacted within 24 hours.");
-}
-
-function triggerManualExit() {
-    if (confirm(currentLanguage === 'bn' ? "আপনি কি খেলা ছেড়ে দিতে চান? এখন ছাড়লে বর্তমান রাউন্ডের আগের জেতা টাকা পাবেন।" : "Do you want to quit? You will take home the money won till the last round.")) {
-        if (currentRound > 0) {
-            // শেষ যে রাউন্ড জিতেছে তার টাকা
-            clearInterval(timerInterval);
-            switchScreen('summary-screen');
-            const finalAmount = activePrizeMoney[currentRound - 1];
-            
-            if (currentLanguage === 'bn') {
-                document.getElementById('summary-title').innerText = "আপনি খেলা ছেড়ে দিয়েছেন (Quit)";
-                document.getElementById('summary-prizes').innerText = `আপনার অর্জিত মোট রাশি: ${finalAmount}`;
-            } else {
-                document.getElementById('summary-title').innerText = "You have Quit the Game";
-                document.getElementById('summary-prizes').innerText = `Total Prize Money Won: ${finalAmount.replace('৳', '₹')}`;
+        // সিকিউরিটি ২: কী-বোর্ড শর্টকাট লক (F12, Ctrl+Shift+I, Ctrl+C, Ctrl+S, PrintScreen)
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode == 123 || 
+                (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
+                (e.ctrlKey && e.keyCode == 85) || 
+                (e.ctrlKey && e.keyCode == 67) || 
+                (e.ctrlKey && e.keyCode == 83)) {
+                e.preventDefault();
+                alert("Security Alert: This action is heavily restricted inside the game engine.");
+                return false;
             }
-            document.getElementById('payout-box').style.display = "block";
-        } else {
-            restartToMain();
+        });
+
+        // সিকিউরিটি ৩: স্ক্রিনশট ডিস্টার্ব বা এআই রিডার ট্র্যাপ লজিক (উইন্ডো ফোকাস আউট হলে স্ক্রিন ব্লার করা)
+        window.addEventListener('blur', () => {
+            document.body.style.filter = "blur(30px)";
+        });
+        window.addEventListener('focus', () => {
+            document.body.style.filter = "none";
+        });
+
+
+        // -----------------------------------------------------------------
+        // ৪. লগইন এবং ওয়ান-টাইম ডিভাইস লকিং লজিক
+        // -----------------------------------------------------------------
+        function handleLogin() {
+            const phone = document.getElementById('phone-input').value.trim();
+            const promo = document.getElementById('promo-input').value.trim();
+
+            // ভ্যালিডেশন চেক
+            if (phone.length !== 10 || isNaN(phone)) {
+                alert("অনুগ্রহ করে একটি সঠিক ১০ ডিজিটের মোবাইল নাম্বার দিন।");
+                return;
+            }
+
+            // সিকিউরিটি চেক: এক নাম্বার সারাদিনে একবারই খেলতে পারবে (Local Storage Lock)
+            const todayDate = new Date().toDateString();
+            const isUsed = localStorage.getItem(`kbc_user_${phone}`);
+            
+            if (isUsed === todayDate) {
+                showPayPage("দুঃখিত! এই মোবাইল নম্বরটি দিয়ে আজকে অলরেডি খেলা হয়ে গেছে। নতুন নম্বরে ট্রাই করুন বা প্রিমিয়াম কিনুন।");
+                return;
+            }
+
+            // পেমেন্ট গেটওয়ে গেট-লক স্ট্যাটাস চেক
+            if (CONFIG.REQUIRE_PAYMENT) {
+                showPayPage("ফ্রি প্রমো কোড লগইন অফ করা হয়েছে। গেম খেলতে সরাসরি পে করুন।");
+                return;
+            }
+
+            // প্রোমো কোড ম্যাচিং লজিক
+            if (promo !== CONFIG.VALID_PROMO) {
+                alert("ভুল প্রমো কোড! সঠিক কোড না দিলে গেম লক থাকবে।");
+                return;
+            }
+
+            // সাকসেস লগইন এবং ডিভাইস লকিং এনভায়রনমেন্ট
+            currentUserPhone = phone;
+            localStorage.setItem(`kbc_user_${phone}`, todayDate); // ২৪ ঘণ্টার জন্য লক অ্যাপ্লাই হলো
+
+            // পরবর্তী পেজে এনিমেশন ট্রানজিশন
+            switchPage('login-page', 'lang-page');
         }
-    }
-}
 
-function restartToMain() {
-    clearInterval(timerInterval);
-    switchScreen('login-screen');
-    document.getElementById('mobile-input').value = '';
-    document.getElementById('master-code-input').value = '';
-}
-</script>
+        // -----------------------------------------------------------------
+        // ৫. র্যান্ডম ও মিক্সড কোশ্চেন সিলেকশন ইঞ্জিন (কঠিন, সহজ ও ইউনিক লুপ)
+        // -----------------------------------------------------------------
+        function prepareQuestionBank() {
+            // ১ থেকে ৫ নম্বর প্রশ্নের মিক্সিং লজিক (কখনো সহজ কখনো চরম কঠিন)
+            // সম্পূর্ণ ২০০টি প্রশ্ন থেকে র্যান্ডমাইজড মিক্স ফিল্টারিং করা হবে যাতে প্লেয়ার বুঝতে না পারে
+            let rawBank = [...masterQuestionBank];
+            
+            // ফিশার-ইয়েটস র্যান্ডম শাফল অ্যালগরিদম (যাতে কোনো প্রশ্ন রিপিট না হয়)
+            for (let i = rawBank.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [rawBank[i], rawBank[j]] = [rawBank[j], rawBank[i]];
+            }
 
+            // গেম সেশনের জন্য প্রশ্ন বাছাই করা হলো
+            selectedQuestions = rawBank.slice(0, CONFIG.TOTAL_QUESTIONS_TO_PLAY);
+        }
+
+        function startActualGame() {
+            currentLanguage = document.getElementById('lang-select').value;
+            prepareQuestionBank();
+            currentLevel = 1;
+            
+            switchPage('lang-page', 'game-page');
+            document.getElementById('player-tag').innerText = `প্লেয়ার আইডি: ${currentUserPhone}`;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            // রিল্যাক্স অপশন ব্যাক কালার রিস্টোর
+            for(let i=0; i<4; i++) {
+                let opt = document.getElementById(`opt-${i}`);
+                opt.style.display = "block";
+                opt.style.background = "rgba(0, 0, 0, 0.6)";
+            }
+
+            activeQuestionObj = selectedQuestions[currentLevel - 1];
+            
+            // ভাষা অনুযায়ী ডেটা রেন্ডার করা
+            const data = activeQuestionObj[currentLanguage];
+            document.getElementById('level-tag').innerText = currentLanguage === 'bn' ? `প্রশ্ন নম্বর: ${currentLevel} / ১৫` : `Question Level: ${currentLevel} / 15`;
+            document.getElementById('q-text').innerText = data.q;
+            
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`opt-${i}`).innerText = `${String.fromCharCode(65 + i)}. ${data.o[i]}`;
+            }
+        }
+
+        // -----------------------------------------------------------------
+        // ৬. উত্তর যাচাইকরণ এবং গেম প্রগতি লজিক
+        // -----------------------------------------------------------------
+        function checkAnswer(selectedIndex) {
+            const correctAnswer = activeQuestionObj.a;
+
+            if (selectedIndex === correctAnswer) {
+                alert(currentLanguage === 'bn' ? "অভিনন্দন! সঠিক উত্তর।" : "Excellent! Correct Answer.");
+                
+                if (currentLevel < CONFIG.TOTAL_QUESTIONS_TO_PLAY) {
+                    currentLevel++;
+                    loadQuestion();
+                } else {
+                    alert(currentLanguage === 'bn' ? "অসাধারণ! আপনি আজকের মহাজয়ী!" : "Incredible! You are the ultimate winner!");
+                    exitGame();
+                }
+            } else {
+                alert(currentLanguage === 'bn' ? "ভুল উত্তর! গেম এখানেই শেষ হচ্ছে।" : "Wrong Answer! Game Over.");
+                showPayPage("আপনি ভুল উত্তর দিয়েছেন। আবার সুযোগ পেতে প্রিমিয়াম মেম্বারশিপ অ্যাক্টিভেট করুন।");
+            }
+        }
+
+        // -----------------------------------------------------------------
+        // ৭. লাইফলাইন ট্র্যাপ লজিক (সবসময় শতভাগ সঠিক তথ্য দেবে না)
+        // -----------------------------------------------------------------
+        function trigger5050() {
+            document.getElementById('life-50').classList.add('used');
+            document.getElementById('life-50').disabled = true;
+
+            const correct = activeQuestionObj.a;
+            let count = 0;
+            // সঠিক উত্তর বাদে যেকোনো ২টি অপশন লুকিয়ে ফেলা হবে
+            for (let i = 0; i < 4; i++) {
+                if (i !== correct && count < 2) {
+                    document.getElementById(`opt-${i}`).style.display = "none";
+                    count++;
+                }
+            }
+        }
+
+        function triggerPhone() {
+            document.getElementById('life-phone').classList.add('used');
+            document.getElementById('life-phone').disabled = true;
+            
+            // ট্র্যাপ লজিক: ফ্রেন্ড আপনাকে সবসময় সঠিক উত্তর দেবে না (৮০% চান্স সঠিক, ২০% ভুল বোঝাবে)
+            const isSmart = Math.random() > 0.2;
+            const ans = isSmart ? activeQuestionObj.a : (activeQuestionObj.a + 1) % 4;
+            const charAns = String.fromCharCode(65 + ans);
+            
+            alert(currentLanguage === 'bn' ? `আপনার বন্ধু মনে করছে সঠিক উত্তরটি হতে পারে অপশন: ${charAns}` : `Your friend thinks the answer could be option: ${charAns}`);
+        }
+
+        function triggerAudience() {
+            document.getElementById('life-audience').classList.add('used');
+            document.getElementById('life-audience').disabled = true;
+            
+            // মিক্স ট্র্যাপ গ্রাফ ডেটা মেকিং
+            alert(currentLanguage === 'bn' ? "অডিয়েন্স পোল ট্র্যাপ সক্রিয়! দর্শকরা অপশন A এবং C এর দিকে বেশি ভোট দিচ্ছে।" : "Audience poll matrix indicates highly split opinions among viewers.");
+        }
+
+        function triggerFlip() {
+            document.getElementById('life-flip').classList.add('used');
+            document.getElementById('life-flip').disabled = true;
+            
+            // গেমের রানিং প্রশ্নটি চেঞ্জ করে অন্য আরেকটি একদমই র্যান্ডম কঠিন প্রশ্ন এনে দেওয়া হবে
+            let fallbackBank = [...masterQuestionBank];
+            activeQuestionObj = fallbackBank[Math.floor(Math.random() * fallbackBank.length)];
+            loadQuestion();
+        }
+
+        // -----------------------------------------------------------------
+        // ৮. স্ক্রিন ট্রানজিশন ও ইউটিলিটি ফাংশনস
+        // -----------------------------------------------------------------
+        function switchPage(fromId, toId) {
+            document.getElementById(fromId).classList.remove('active');
+            document.getElementById(toId).classList.add('active');
+        }
+
+        function showPayPage(reason) {
+            document.getElementById('lock-reason').innerText = reason;
+            // গেম বা লগইন পেজ সরিয়ে সরাসরি পেজ লক স্ক্রিন অন করা
+            document.getElementById('login-page').classList.remove('active');
+            document.getElementById('game-page').classList.remove('active');
+            document.getElementById('pay-page').classList.add('active');
+        }
+
+        function exitGame() {
+            resetToLogin();
+        }
+
+        function resetToLogin() {
+            // সমস্ত লাইফলাইন বাটন আবার রিসেট করা
+            const lifelines = ['life-50', 'life-phone', 'life-audience', 'life-flip'];
+            lifelines.forEach(id => {
+                let btn = document.getElementById(id);
+                btn.classList.remove('used');
+                btn.disabled = false;
+            });
+            
+            document.getElementById('pay-page').classList.remove('active');
+            document.getElementById('game-page').classList.remove('active');
+            document.getElementById('lang-page').classList.remove('active');
+            document.getElementById('login-page').classList.add('active');
+        }
+    </script>
 </body>
 </html>

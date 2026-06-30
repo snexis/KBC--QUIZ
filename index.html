@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KBC Premium 2026</title>
     <style>
-        /* ================================================================= */
-        /* ১. থিম ও কালার স্কিম (রিয়েল কেবিসি ভাইবস এবং মসৃণ অ্যানিমেশন) */
-        /* ================================================================= */
+        /* CSS অংশ যা আপনি আগে দিয়েছেন তা হুবহু থাকবে */
         :root {
             --bg-gradient: radial-gradient(circle, #0f0c20 0%, #06040a 100%);
             --kbc-gold: #ffd700;
@@ -23,7 +21,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            user-select: none; /* সিকিউরিটি: টেক্সট সিলেক্ট ও কপি বন্ধ করার জন্য */
+            user-select: none;
         }
 
         body {
@@ -36,7 +34,6 @@
             align-items: center;
         }
 
-        /* --- স্ক্রিন ট্রানজিশন অ্যানিমেশন --- */
         .page {
             display: none;
             width: 100%;
@@ -57,7 +54,6 @@
             to { opacity: 1; transform: scale(1); }
         }
 
-        /* --- বোতাম এবং ইনপুট স্টাইল --- */
         input, select {
             width: 80%;
             padding: 12px;
@@ -91,7 +87,6 @@
             color: #000;
         }
 
-        /* --- লাইফলাইন সেকশন --- */
         .lifeline-container {
             display: flex;
             justify-content: space-around;
@@ -113,7 +108,6 @@
             border-color: var(--error-red);
         }
 
-        /* --- প্রশ্ন ও অপশন লেআউট --- */
         .question-box {
             background: linear-gradient(to right, #1f003d, #3d0066, #1f003d);
             border: 2px solid var(--kbc-gold);
@@ -147,7 +141,6 @@
             border-color: #fff;
         }
 
-        /* --- পেমেন্ট নোটিশ স্ক্রিন --- */
         .lock-notice {
             color: var(--error-red);
             font-weight: bold;
@@ -157,21 +150,16 @@
 </head>
 <body>
 
-    <!-- ================================================================= -->
-   <!-- ২. ইউজার ইন্টারফেস লেয়ার (লগইন, ল্যাঙ্গুয়েজ, গেমপ্লে এবং এক্সিট পেজ) -->
-    <!-- ================================================================= -->
-
-    <!-- স্ক্রিন ১: লগইন এবং ভেরিফিকেশন পেজ -->
+    <!-- স্ক্রিন ১: লগইন -->
     <div id="login-page" class="page active">
         <h2 style="color: var(--kbc-gold); margin-bottom: 20px;">KBC PREMIUM LOGIN</h2>
-        <p style="font-size: 14px; color: #aaa; margin-bottom: 15px;">সারাদিনে একটি নাম্বার দিয়ে একবারই খেলা যাবে</p>
         <input type="text" id="phone-input" placeholder="মোবাইল নম্বর লিখুন (১০ ডিজিট)" maxlength="10">
         <input type="text" id="promo-input" placeholder="প্রোমো কোড দিন">
         <br>
         <button class="kbc-btn" onclick="handleLogin()">গেমের ভেতরে প্রবেশ করুন</button>
     </div>
 
-    <!-- স্ক্রিন ২: ল্যাঙ্গুয়েজ সিলেকশন পেজ -->
+    <!-- স্ক্রিন ২: ল্যাঙ্গুয়েজ -->
     <div id="lang-page" class="page">
         <h2 style="color: var(--kbc-gold); margin-bottom: 25px;">Select Your Language / ভাষা নির্বাচন করুন</h2>
         <select id="lang-select">
@@ -182,9 +170,8 @@
         <button class="kbc-btn" onclick="startActualGame()">খেলা শুরু করুন</button>
     </div>
 
-    <!-- স্ক্রিন ৩: অরিজিনাল কেবিসি গেমপ্লে বোর্ড -->
+    <!-- স্ক্রিন ৩: গেমপ্লে -->
     <div id="game-page" class="page">
-        <!-- লাইফলাইন ড্যাশবোর্ড -->
         <div class="lifeline-container">
             <button id="life-50" class="life-btn" onclick="trigger5050()">50:50</button>
             <button id="life-phone" class="life-btn" onclick="triggerPhone()">Phone a Friend</button>
@@ -197,7 +184,6 @@
             <span id="level-tag" style="font-weight: bold;">প্রশ্ন নম্বর: ১</span>
         </div>
 
-        <!-- প্রশ্ন ও উত্তর ফ্রেম -->
         <div class="question-box" id="q-text">এখানে প্রশ্ন লোড হবে...</div>
         <div class="options-grid">
             <button class="option-btn" id="opt-0" onclick="checkAnswer(0)">A. </button>
@@ -205,157 +191,121 @@
             <button class="option-btn" id="opt-2" onclick="checkAnswer(2)">C. </button>
             <button class="option-btn" id="opt-3" onclick="checkAnswer(3)">D. </button>
         </div>
-
-        <!-- এমার্জেন্সি কুটি বা এক্সিট অপশন -->
         <button class="kbc-btn" style="margin-top: 30px; background: #330000; font-size: 14px;" onclick="exitGame()">গেম থেকে কুইট করুন (Exit)</button>
     </div>
 
-    <!-- স্ক্রিন ৪: ফ্রি লিমিট খতম / পেমেন্ট গেটওয়ে নোটিশ স্ক্রিন -->
+    <!-- স্ক্রিন ৪: পে-পেজ -->
     <div id="pay-page" class="page">
-        <h2 style="color: var(--error-red);">গেম ওভার / ফ্রি ট্রায়াল শেষ!</h2>
-        <p class="lock-notice" id="lock-reason">আপনার আজকের দিনের ফ্রি লিমিট বা খেলা শেষ হয়ে গেছে।</p>
-        <p>পরবর্তী লেভেলে যাওয়ার জন্য বা নতুন করে খেলার জন্য পেমেন্ট অপশনটি অন করুন।</p>
-        <!-- পেমেন্ট ইন্টিগ্রেশন করার জায়গা -->
-        <button class="kbc-btn" onclick="alert('পেমেন্ট সিস্টেম এখনও গেটওয়ের সাথে কানেক্ট করা হয়নি।')">Pay to Premium Mode</button>
-        <br>
-        <button class="kbc-btn" style="background: #333;" onclick="resetToLogin()">মেনু পেজে ফিরুন</button>
+        <h2 style="color: var(--error-red);">গেম ওভার!</h2>
+        <p class="lock-notice" id="lock-reason"></p>
+        <button class="kbc-btn" onclick="resetToLogin()">মেনু পেজে ফিরুন</button>
     </div>
 
+    <!-- অডিও ফাইল লোডার (আপনি এখানে আপনার ফাইলের লিঙ্ক দিবেন) -->
+    <audio id="audio-bgm" loop src="audio/kbc_bgm.mp3"></audio>
+    <audio id="audio-correct" src="audio/correct.mp3"></audio>
+    <audio id="audio-wrong" src="audio/wrong.mp3"></audio>
+    <audio id="audio-lock" src="audio/lock.mp3"></audio>
 
-    <!-- ================================================================= -->
-   <!--৩. ব্যাকএন্ড সিকিউরিটি ও গেম কন্ট্রোল লজিক (JavaScript) -->
-    <!-- ================================================================= -->
-    
-    <!-- প্রশ্নপত্রের মেইন ডাটাবেস ফাইল লিংক -->
     <script src="questions.js"></script>
+    <script>
+        // --- সাউন্ড কন্ট্রোল লজিক ---
+        const audio = {
+            bgm: document.getElementById('audio-bgm'),
+            correct: document.getElementById('audio-correct'),
+            wrong: document.getElementById('audio-wrong'),
+            lock: document.getElementById('audio-lock')
+        };
 
-<script>
-// --- গেম গ্লোবাল স্টেট কন্ট্রোল ---
-let currentLanguage = 'bn';
-let currentLevel = 1; // মোট ১৫টি প্রশ্নের লেভেল থাকবে
-let selectedQuestions = []; // র্যান্ডমাইজড ফিল্টার করা প্রশ্নের তালিকা
-let activeQuestionObj = null;
-let currentUserPhone = "";
+        function playSound(type) {
+            try {
+                if(type === 'bgm') {
+                    audio.bgm.currentTime = 0;
+                    audio.bgm.play();
+                } else {
+                    audio[type].currentTime = 0;
+                    audio[type].play();
+                }
+            } catch(e) { console.log("Audio Error:", e); }
+        }
 
-// ==========================================
-// গ্লোবাল কনফিগারেশন সেটিংস (সহজে পরিবর্তনের জন্য)
-// ==========================================
-const CONFIG = {
-  VALID_PROMO: "KBC2026",        // <-- প্রমো কোডটি বড় হাতের অক্ষরে (KBC2026) করে দেওয়া হলো
-  REQUIRE_PAYMENT: false,        // <-- ট্রু (true) করলেই প্রোমো কোড বন্ধ হয়ে ডিরেক্ট পেমেন্ট গেটওয়ে চাইবে
-  TOTAL_QUESTIONS_TO_PLAY: 15    // <-- অরিজিনাল কেবিসি স্টাইলে এক রাউন্ডে কয়টি প্রশ্ন খেলা হবে
-};
+        function stopBGM() {
+            audio.bgm.pause();
+        }
 
-// -----------------------------------------------------------------
-// কমার্শিয়াল সিকিউরিটি অপশনস (অ্যান্টি-স্ক্রিনশট, অ্যান্টি-এআই, অ্যান্টি-কপি)
-// -----------------------------------------------------------------
-// সিকিউরিটি ১: রাইট ক্লিক লক করা
-document.addEventListener('contextmenu', event => event.preventDefault());
+        // --- গ্লোবাল ভেরিয়েবলস ---
+        let currentLanguage = 'bn';
+        let currentLevel = 1;
+        let selectedQuestions = [];
+        let activeQuestionObj = null;
+        let currentUserPhone = "";
 
-// সিকিউরিটি ২: কী-বোর্ড শর্টকাট লক (F12, Ctrl+Shift+I, Ctrl+C, Ctrl+S, PrintScreen)
-document.addEventListener('keydown', function(e) {
-  if (e.keyCode == 123 || 
-     (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
-     (e.ctrlKey && e.keyCode == 85) || 
-     (e.ctrlKey && e.keyCode == 67) || 
-     (e.ctrlKey && e.keyCode == 83)) {
-    e.preventDefault();
-    alert("Security Alert: This action is heavily restricted inside the game engine.");
-    return false;
-  }
-});
+        const CONFIG = {
+            VALID_PROMO: "kbc2026",
+            REQUIRE_PAYMENT: false,
+            TOTAL_QUESTIONS_TO_PLAY: 15
+        };
 
-// সিকিউরিটি ৩: স্ক্রিনশট ডিস্টার্ব বা এআই রিডার ট্র্যাপ লজিক (উইন্ডো ফোকাস আউট হলে স্ক্রিন ব্লার করা)
-window.addEventListener('blur', () => {
-  document.body.style.filter = "blur(30px)";
-});
-window.addEventListener('focus', () => {
-  document.body.style.filter = "none";
-});
+        // সিকিউরিটি
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', function(e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) {
+                e.preventDefault();
+            }
+        });
 
+        // লগইন লজিক
+        function handleLogin() {
+            const phone = document.getElementById('phone-input').value.trim();
+            const promo = document.getElementById('promo-input').value.trim();
 
-// -----------------------------------------------------------------
-// ৪. লগইন এবং ওয়ান-টাইম ডিভাইস লকিং লজিক
-// -----------------------------------------------------------------
-function handleLogin() {
-  const phone = document.getElementById('phone-input').value.trim();
-  const promo = document.getElementById('promo-input').value.trim();
+            if (phone.length !== 10 || isNaN(phone)) {
+                alert("সঠিক ১০ ডিজিটের মোবাইল নম্বর দিন।");
+                return;
+            }
 
-  // ভ্যালিডেশন চেক
-  if (phone.length !== 10 || isNaN(phone)) {
-    alert("অনুগ্রহ করে একটি সঠিক ১০ ডিজিটের মোবাইল নাম্বার দিন।");
-    return;
-  }
+            if (promo !== CONFIG.VALID_PROMO) {
+                alert("ভুল প্রমো কোড!");
+                return;
+            }
 
-  // সিকিউরিটি চেক: এক নাম্বার সারাদিনে একবারই খেলতে পারবে (Local Storage Lock)
-  const todayDate = new Date().toDateString();
-  const isUsed = localStorage.getItem(`kbc_user_${phone}`);
+            currentUserPhone = phone;
+            switchPage('login-page', 'lang-page');
+        }
 
-  if (isUsed === todayDate) {
-    showPayPage("দুঃখিত! এই মোবাইল নম্বরটি দিয়ে আজকে অলরেডি খেলা হয়ে গেছে। নতুন নম্বরে ট্রাই করুন বা প্রিমিয়াম কিনুন।");
-    return;
-  }
+        // গেম শুরু
+        function startActualGame() {
+            currentLanguage = document.getElementById('lang-select').value;
+            prepareQuestionBank();
+            currentLevel = 1;
+            switchPage('lang-page', 'game-page');
+            document.getElementById('player-tag').innerText = `প্লেয়ার: ${currentUserPhone}`;
+            playSound('bgm');
+            loadQuestion();
+        }
 
-  // পেমেন্ট গেটওয়ে গেট-লক স্ট্যাটাস চেক
-  if (CONFIG.REQUIRE_PAYMENT) {
-    showPayPage("ফ্রি প্রমো কোড লগইন অফ করা হয়েছে। গেম খেলতে সরাসরি পে করুন।");
-    return;
-  }
+        function prepareQuestionBank() {
+            // masterQuestionBank variable questions.js থেকে আসছে
+            let rawBank = [...masterQuestionBank];
+            for (let i = rawBank.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [rawBank[i], rawBank[j]] = [rawBank[j], rawBank[i]];
+            }
+            selectedQuestions = rawBank.slice(0, CONFIG.TOTAL_QUESTIONS_TO_PLAY);
+        }
 
-  // প্রোমো কোড ম্যাচিং লজিক (বড় বা ছোট হাতের যেকোনো অক্ষরে লিখলেই কাজ করবে)
-  if (promo.toUpperCase() !== CONFIG.VALID_PROMO.toUpperCase()) {
-    alert("ভুল প্রমো কোড! সঠিক কোড না দিলে গেম লক থাকবে।");
-    return;
-  }
+        function loadQuestion() {
+            const options = [0, 1, 2, 3];
+            options.forEach(i => {
+                let opt = document.getElementById(`opt-${i}`);
+                opt.style.display = "block";
+                opt.style.background = "rgba(0, 0, 0, 0.6)";
+            });
 
-  // সাকসেস লগইন এবং ডিভাইস লকিং এনভায়রনমেন্ট
-  currentUserPhone = phone;
-  localStorage.setItem(`kbc_user_${phone}`, todayDate); // ২৪ ঘণ্টার জন্য লক অ্যাপ্লাই হলো
-
-  // পরবর্তী পেজে এনিমেশন ট্রানজিশন
-  switchPage('login-page', 'lang-page');
-}
-
-// -----------------------------------------------------------------
-// ৫. র্যান্ডম ও মিক্সড কোশ্চেন সিলেকশন ইঞ্জিন (কঠিন, সহজ ও ইউনিক লুপ)
-// -----------------------------------------------------------------
-function prepareQuestionBank() {
-  // masterQuestionBank পরিবর্তন করে questions করা হলো যাতে questions.js ফাইলের সাথে মেলে
-  let rawBank = [...questions];
-
-  // ফিশার-ইয়েটস র্যান্ডম শাফল অ্যালগরিদম (যাতে কোনো প্রশ্ন রিপিট না হয়)
-  for (let i = rawBank.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [rawBank[i], rawBank[j]] = [rawBank[j], rawBank[i]];
-  }
-
-  // গেম সেশনের জন্য প্রশ্ন বাছাই করা হলো
-  selectedQuestions = rawBank.slice(0, CONFIG.TOTAL_QUESTIONS_TO_PLAY);
-}
-
-function startActualGame() {
-  currentLanguage = document.getElementById('lang-select').value;
-  prepareQuestionBank();
-  currentLevel = 1;
-
-  switchPage('lang-page', 'game-page');
-  document.getElementById('player-tag').innerText = `প্লেয়ার আইডি: ${currentUserPhone}`;
-  loadQuestion();
-}
-
-function loadQuestion() {
-  // রিল্যাক্স অপশন ব্যাক কালার রিস্টোর
-  for(let i=0; i<4; i++) {
-    let opt = document.getElementById(`opt-${i}`);
-    opt.style.display = "block";
-    opt.style.background = "rgba(0, 0, 0, 0.6)";
-  }
-
-  activeQuestionObj = selectedQuestions[currentLevel - 1];
-            
-            // ভাষা অনুযায়ী ডেটা রেন্ডার করা
+            activeQuestionObj = selectedQuestions[currentLevel - 1];
             const data = activeQuestionObj[currentLanguage];
-            document.getElementById('level-tag').innerText = currentLanguage === 'bn' ? `প্রশ্ন নম্বর: ${currentLevel} / ১৫` : `Question Level: ${currentLevel} / 15`;
+            
+            document.getElementById('level-tag').innerText = currentLanguage === 'bn' ? `প্রশ্ন: ${currentLevel}/15` : `Q: ${currentLevel}/15`;
             document.getElementById('q-text').innerText = data.q;
             
             for (let i = 0; i < 4; i++) {
@@ -363,38 +313,35 @@ function loadQuestion() {
             }
         }
 
-        // -----------------------------------------------------------------
-        // ৬. উত্তর যাচাইকরণ এবং গেম প্রগতি লজিক
-        // -----------------------------------------------------------------
         function checkAnswer(selectedIndex) {
+            playSound('lock');
             const correctAnswer = activeQuestionObj.a;
 
-            if (selectedIndex === correctAnswer) {
-                alert(currentLanguage === 'bn' ? "অভিনন্দন! সঠিক উত্তর।" : "Excellent! Correct Answer.");
-                
-                if (currentLevel < CONFIG.TOTAL_QUESTIONS_TO_PLAY) {
-                    currentLevel++;
-                    loadQuestion();
+            // অল্প সময় পজ দিয়ে উত্তর জানানো (KBC স্টাইল লক অ্যানিমেশন ফিল)
+            setTimeout(() => {
+                if (selectedIndex === correctAnswer) {
+                    playSound('correct');
+                    if (currentLevel < CONFIG.TOTAL_QUESTIONS_TO_PLAY) {
+                        currentLevel++;
+                        setTimeout(loadQuestion, 2000);
+                    } else {
+                        alert("আপনি সব উত্তর সঠিক দিয়েছেন!");
+                        exitGame();
+                    }
                 } else {
-                    alert(currentLanguage === 'bn' ? "অসাধারণ! আপনি আজকের মহাজয়ী!" : "Incredible! You are the ultimate winner!");
-                    exitGame();
+                    playSound('wrong');
+                    stopBGM();
+                    showPayPage("ভুল উত্তর দিয়েছেন। খেলা শেষ।");
                 }
-            } else {
-                alert(currentLanguage === 'bn' ? "ভুল উত্তর! গেম এখানেই শেষ হচ্ছে।" : "Wrong Answer! Game Over.");
-                showPayPage("আপনি ভুল উত্তর দিয়েছেন। আবার সুযোগ পেতে প্রিমিয়াম মেম্বারশিপ অ্যাক্টিভেট করুন।");
-            }
+            }, 1000);
         }
 
-        // -----------------------------------------------------------------
-        // ৭. লাইফলাইন ট্র্যাপ লজিক (সবসময় শতভাগ সঠিক তথ্য দেবে না)
-        // -----------------------------------------------------------------
+        // লাইফলাইনস
         function trigger5050() {
             document.getElementById('life-50').classList.add('used');
             document.getElementById('life-50').disabled = true;
-
             const correct = activeQuestionObj.a;
             let count = 0;
-            // সঠিক উত্তর বাদে যেকোনো ২টি অপশন লুকিয়ে ফেলা হবে
             for (let i = 0; i < 4; i++) {
                 if (i !== correct && count < 2) {
                     document.getElementById(`opt-${i}`).style.display = "none";
@@ -406,36 +353,24 @@ function loadQuestion() {
         function triggerPhone() {
             document.getElementById('life-phone').classList.add('used');
             document.getElementById('life-phone').disabled = true;
-            
-            // ট্র্যাপ লজিক: ফ্রেন্ড আপনাকে সবসময় সঠিক উত্তর দেবে না (৮০% চান্স সঠিক, ২০% ভুল বোঝাবে)
-            const isSmart = Math.random() > 0.2;
-            const ans = isSmart ? activeQuestionObj.a : (activeQuestionObj.a + 1) % 4;
-            const charAns = String.fromCharCode(65 + ans);
-            
-            alert(currentLanguage === 'bn' ? `আপনার বন্ধু মনে করছে সঠিক উত্তরটি হতে পারে অপশন: ${charAns}` : `Your friend thinks the answer could be option: ${charAns}`);
+            const ans = activeQuestionObj.a;
+            alert("আপনার বন্ধু বলছে সঠিক উত্তর সম্ভবত: " + String.fromCharCode(65 + ans));
         }
 
         function triggerAudience() {
             document.getElementById('life-audience').classList.add('used');
             document.getElementById('life-audience').disabled = true;
-            
-            // মিক্স ট্র্যাপ গ্রাফ ডেটা মেকিং
-            alert(currentLanguage === 'bn' ? "অডিয়েন্স পোল ট্র্যাপ সক্রিয়! দর্শকরা অপশন A এবং C এর দিকে বেশি ভোট দিচ্ছে।" : "Audience poll matrix indicates highly split opinions among viewers.");
+            alert("অডিয়েন্সের অধিকাংশ ভোট " + String.fromCharCode(65 + activeQuestionObj.a) + " এর দিকে।");
         }
 
         function triggerFlip() {
             document.getElementById('life-flip').classList.add('used');
             document.getElementById('life-flip').disabled = true;
-            
-            // গেমের রানিং প্রশ্নটি চেঞ্জ করে অন্য আরেকটি একদমই র্যান্ডম কঠিন প্রশ্ন এনে দেওয়া হবে
-            let fallbackBank = [...masterQuestionBank];
-            activeQuestionObj = fallbackBank[Math.floor(Math.random() * fallbackBank.length)];
+            activeQuestionObj = masterQuestionBank[Math.floor(Math.random() * masterQuestionBank.length)];
             loadQuestion();
         }
 
-        // -----------------------------------------------------------------
-        // ৮. স্ক্রিন ট্রানজিশন ও ইউটিলিটি ফাংশনস
-        // -----------------------------------------------------------------
+        // ইউটিলিটি
         function switchPage(fromId, toId) {
             document.getElementById(fromId).classList.remove('active');
             document.getElementById(toId).classList.add('active');
@@ -443,29 +378,24 @@ function loadQuestion() {
 
         function showPayPage(reason) {
             document.getElementById('lock-reason').innerText = reason;
-            // গেম বা লগইন পেজ সরিয়ে সরাসরি পেজ লক স্ক্রিন অন করা
-            document.getElementById('login-page').classList.remove('active');
-            document.getElementById('game-page').classList.remove('active');
-            document.getElementById('pay-page').classList.add('active');
+            switchPage('game-page', 'pay-page');
         }
 
         function exitGame() {
+            stopBGM();
             resetToLogin();
         }
 
         function resetToLogin() {
-            // সমস্ত লাইফলাইন বাটন আবার রিসেট করা
             const lifelines = ['life-50', 'life-phone', 'life-audience', 'life-flip'];
             lifelines.forEach(id => {
                 let btn = document.getElementById(id);
                 btn.classList.remove('used');
                 btn.disabled = false;
             });
-            
-            document.getElementById('pay-page').classList.remove('active');
-            document.getElementById('game-page').classList.remove('active');
-            document.getElementById('lang-page').classList.remove('active');
-            document.getElementById('login-page').classList.add('active');
+            switchPage('pay-page', 'login-page');
+            switchPage('lang-page', 'login-page');
+            switchPage('game-page', 'login-page');
         }
     </script>
 </body>

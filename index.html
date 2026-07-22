@@ -61,6 +61,18 @@
             </div>
             <div id="timer" class="timer-circle">30</div>
             <div class="question-box" id="q-text"></div>
+            <div id="exp-box"
+style="
+display:none;
+margin-top:15px;
+padding:15px;
+background:rgba(255,255,255,.08);
+border-left:4px solid #ffd700;
+border-radius:10px;
+font-size:15px;
+line-height:1.6;
+text-align:left;">
+</div>
             <div class="options-grid" id="opt-container"></div>
         </div>
 
@@ -336,6 +348,10 @@
             
             canAnswer = true;
             const q = activeQuestions[curIdx];
+            const explanation =
+    curLang === "bn"
+        ? (q.expb || "এই প্রশ্নের ব্যাখ্যা উপলব্ধ নেই।")
+        : (q.expe || "Explanation not available.");
             document.getElementById('st-count').innerText = `Q: ${curIdx+1}/200`;
             document.getElementById('st-score').innerText = `SCORE: ${score}`;
             
@@ -388,11 +404,19 @@
                 if(opts[q.ans]) opts[q.ans].classList.add('correct');
             }
 
-            setTimeout(() => { 
-                curIdx++; 
-                loadQ(); 
-            }, 1500);
-        }
+          const box = document.getElementById("exp-box");
+box.style.display = "block";
+box.innerHTML =
+"<b>" +
+(curLang=="bn" ? "ব্যাখ্যা" : "Explanation") +
+":</b><br>" +
+explanation;
+
+setTimeout(() => {
+    box.style.display = "none";
+    curIdx++;
+    loadQ();
+}, 5000);
 
         function speak(t) {
             if (!window.speechSynthesis) return;

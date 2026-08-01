@@ -21,13 +21,14 @@ async function loadQuestionBank() {
     try {
         const response = await fetch('questions.json');
         if (!response.ok) throw new Error("Question bank not found");
-        fullQuestionPool = await response.json();
+        const textData = await response.text();
+        const cleanData = textData.trim();
+        fullQuestionPool = JSON.parse(cleanData);
         console.log("Successfully loaded " + fullQuestionPool.length + " questions.");
     } catch (error) {
         console.error("Error loading JSON, falling back to default pool:", error);
     }
 }
-
 // Initialize Speech Recognition
 function initVoice() {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
@@ -280,12 +281,13 @@ function playSound(type) {
         'tick': document.getElementById('snd-tick'),
         'alert': document.getElementById('snd-alert')
     };
-    if (sounds[type]) {
+    if (sounds[type] && typeof sounds[type].play === 'function') {
         sounds[type].currentTime = 0;
-        sounds[type].play().catch(e => {});
+        sounds[type].play().catch(e => {
+            console.warn("Audio play prevented or file missing for: " + type);
+        });
     }
 }
-
 function speak(t) {
     if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();

@@ -102,8 +102,21 @@
     <audio id="snd-wr" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
     <audio id="snd-tick" src="https://www.soundjay.com/misc/sounds/clock-tick-1.mp3"></audio>
     <audio id="snd-alert" src="https://www.soundjay.com/buttons/sounds/button-0.mp3"></audio>
+<!-- প্রোমো কোড ইনপুট বক্স -->
+<div id="promo-section" style="margin-top: 15px; text-align: center;">
+  <input type="text" id="promoInput" placeholder="প্রোমো কোড লিখুন (যেমন: KBC15DAYS)" style="padding: 8px; width: 220px;" />
+  <button onclick="handlePromoSubmit()" style="padding: 8px 15px; cursor: pointer;">আবেদন করুন</button>
+</div>
 
+<script>
+  // বোতামে ক্লিক করলে এই ফাংশনটি কল হবে
+  function handlePromoSubmit() {
+    const inputVal = document.getElementById("promoInput").value;
+    applyPromoCode(inputVal);
+  }
+</script>
     <!-- Main Logic Script -->
+    <script src="promo.js"></script>
     <script src="app.js"></script>
 </body>
 </html>

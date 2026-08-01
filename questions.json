@@ -8802,3 +8802,4407 @@
     "correct": "b"
   }
 ]
+[
+  {
+    "id": 401,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের বৃহত্তম মহাসাগর কোনটি?",
+      "a": "আটলান্টিক মহাসাগর",
+      "b": "প্রশান্ত মহাসাগর",
+      "c": "ভারত মহাসাগর",
+      "d": "উত্তর মহাসাগর",
+      "exp": "প্রশান্ত মহাসাগর হলো বিশ্বের বৃহত্তম এবং গভীরতম মহাসাগর।"
+    },
+    "en": {
+      "q": "Which is the largest ocean in the world?",
+      "a": "Atlantic Ocean",
+      "b": "Pacific Ocean",
+      "c": "Indian Ocean",
+      "d": "Arctic Ocean",
+      "exp": "The Pacific Ocean is the largest and deepest of Earth's oceanic divisions."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 402,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন দেশকে 'সহস্র হ্রদের দেশ' বলা হয়?",
+      "a": "নরওয়ে",
+      "b": "ফিনল্যান্ড",
+      "c": "আইসল্যান্ড",
+      "d": "সুইডেন",
+      "exp": "ফিনল্যান্ডে প্রায় ১,৮৮,০০০ হ্রদ রয়েছে, তাই এটিকে হাজার হ্রদের দেশ বলা হয়।"
+    },
+    "en": {
+      "q": "Which country is known as the 'Land of a Thousand Lakes'?",
+      "a": "Norway",
+      "b": "Finland",
+      "c": "Iceland",
+      "d": "Sweden",
+      "exp": "Finland has around 188,000 lakes, earning it this nickname."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 403,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের বৃহত্তম উষ্ণ মরুভূমি কোনটি?",
+      "a": "গোবি মরুভূমি",
+      "b": "কালাহারি মরুভূমি",
+      "c": "সাহারা মরুভূমি",
+      "d": "আতাকামা মরুভূমি",
+      "exp": "উত্তর আফ্রিকায় অবস্থিত সাহারা হলো বিশ্বের বৃহত্তম উষ্ণ মরুভূমি।"
+    },
+    "en": {
+      "q": "Which is the largest hot desert in the world?",
+      "a": "Gobi Desert",
+      "b": "Kalahari Desert",
+      "c": "Sahara Desert",
+      "d": "Atacama Desert",
+      "exp": "The Sahara Desert in North Africa is the largest hot desert in the world."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 404,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মানুষের রক্তে অক্সিজেন পরিবহনে সাহায্য করে কোন উপাদান?",
+      "a": "হিমোগ্লোবিন",
+      "b": "প্লাজমা",
+      "c": "অনুচক্রিকা",
+      "d": "শ্বেত রক্তকণিকা",
+      "exp": "লোহিত রক্তকণিকার হিমোগ্লোবিন ফুসফুস থেকে সারা শরীরে অক্সিজেন বহন করে।"
+    },
+    "en": {
+      "q": "Which component in human blood helps in oxygen transport?",
+      "a": "Hemoglobin",
+      "b": "Plasma",
+      "c": "Platelets",
+      "d": "Leukocytes",
+      "exp": "Hemoglobin in red blood cells binds to oxygen and distributes it."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 405,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্ব স্বাস্থ্য সংস্থা (WHO)-র সদর দফতর কোথায় অবস্থিত?",
+      "a": "নিউ ইয়র্ক",
+      "b": "জেনেভা",
+      "c": "প্যারিস",
+      "d": "লন্ডন",
+      "exp": "WHO-এর সদর দফতর সুইজারল্যান্ডের জেনেভা শহরে অবস্থিত।"
+    },
+    "en": {
+      "q": "Where is the headquarters of World Health Organization (WHO) located?",
+      "a": "New York",
+      "b": "Geneva",
+      "c": "Paris",
+      "d": "London",
+      "exp": "The WHO headquarters is situated in Geneva, Switzerland."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 406,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের জনক কাকে বলা হয়?",
+      "a": "অ্যালান টিউরিং",
+      "b": "চার্লস ব্যাবেজ",
+      "c": "জন ভন নিউম্যান",
+      "d": "বিল গেটস",
+      "exp": "প্রথম যান্ত্রিক কম্পিউটার আবিষ্কারের জন্য চার্লস ব্যাবেজকে কম্পিউটারের জনক বলা হয়।"
+    },
+    "en": {
+      "q": "Who is considered the father of computers?",
+      "a": "Alan Turing",
+      "b": "Charles Babbage",
+      "c": "John von Neumann",
+      "d": "Bill Gates",
+      "exp": "Charles Babbage is considered the father of computers for inventing mechanical computers."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 407,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সূর্যের আলো পৃথিবীতে পৌঁছাতে আনুমানিক কত সময় লাগে?",
+      "a": "৮ মিনিট ২০ সেকেন্ড",
+      "b": "৫ মিনিট",
+      "c": "১০ মিনিট",
+      "d": "১২ মিনিট ৩০ সেকেন্ড",
+      "exp": "সূর্যের আলো মহাশূন্য পেরিয়ে পৃথিবীতে পৌঁছাতে প্রায় ৫০০ সেকেন্ড বা ৮ মিনিট ২০ সেকেন্ড সময় নেয়।"
+    },
+    "en": {
+      "q": "Approximately how long does sunlight take to reach Earth?",
+      "a": "8 minutes 20 seconds",
+      "b": "5 minutes",
+      "c": "10 minutes",
+      "d": "12 minutes 30 seconds",
+      "exp": "Sunlight takes about 500 seconds, which is roughly 8 minutes and 20 seconds."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 408,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "প্রাপ্তবয়স্ক মানবদেহে মোট হাড়ের সংখ্যা কতটি?",
+      "a": "২০৬ টি",
+      "b": "২০৮ টি",
+      "c": "২০১ টি",
+      "d": "৩০০ টি",
+      "exp": "একজন পূর্ণবয়স্ক মানুষের শরীরে মোট ২০৬টি হাড় থাকে।"
+    },
+    "en": {
+      "q": "How many bones are there in an adult human body?",
+      "a": "206",
+      "b": "208",
+      "c": "201",
+      "d": "300",
+      "exp": "An adult human skeleton consists of 206 bones."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 409,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের সর্বোচ্চ পর্বতশৃঙ্গ কোনটি?",
+      "a": "কে-টু (K2)",
+      "b": "মাউন্ট এভারেস্ট",
+      "c": "কাঞ্চনজঙ্ঘা",
+      "d": "লহৎসে",
+      "exp": "মাউন্ট এভারেস্ট হলো সমুদ্রপৃষ্ঠ থেকে বিশ্বের সর্বোচ্চ পর্বতশৃঙ্গ (৮,৮৪৮.৮৬ মিটার)।"
+    },
+    "en": {
+      "q": "Which is the highest mountain peak in the world?",
+      "a": "K2",
+      "b": "Mount Everest",
+      "c": "Kanchenjunga",
+      "d": "Lhotse",
+      "exp": "Mount Everest is Earth's highest mountain above sea level."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 410,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পৃথিবীর বায়ুমণ্ডলে কোন গ্যাস সবচেয়ে বেশি পরিমাণে থাকে?",
+      "a": "অক্সিজেন",
+      "b": "নাইট্রোজেন",
+      "c": "কার্বন ডাই অক্সাইড",
+      "d": "আর্গন",
+      "exp": "বায়ুমণ্ডলে নাইট্রোজেনের পরিমাণ প্রায় ৭৮.০৮ শতাংশ।"
+    },
+    "en": {
+      "q": "Which gas is most abundant in the Earth's atmosphere?",
+      "a": "Oxygen",
+      "b": "Nitrogen",
+      "c": "Carbon Dioxide",
+      "d": "Argon",
+      "exp": "Nitrogen makes up approximately 78.08% of the Earth's atmosphere."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 411,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "ভিটামিন সি-এর অভাবে কোন রোগ হয়?",
+      "a": "বেরিবেরি",
+      "b": "স্কার্ভি",
+      "c": "রিকেটস",
+      "d": "রাতকানা",
+      "exp": "ভিটামিন সি-এর অভাবে মাড়ি রক্ত পড়া ও স্কার্ভি রোগ দেখা দেয়।"
+    },
+    "en": {
+      "q": "Deficiency of Vitamin C causes which disease?",
+      "a": "Beriberi",
+      "b": "Scurvy",
+      "c": "Rickets",
+      "d": "Night Blindness",
+      "exp": "Scurvy is caused by a severe lack of Vitamin C in the diet."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 412,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "প্রথম বিশ্বযুদ্ধ কত সালে শুরু হয়?",
+      "a": "১৯১৪",
+      "b": "১৯১৮",
+      "c": "১৯৩৯",
+      "d": "১৯১২",
+      "exp": "১৯১৪ সালের ২৮ জুলাই প্রথম বিশ্বযুদ্ধ আনুষ্ঠানিকভাবে শুরু হয়।"
+    },
+    "en": {
+      "q": "In which year did World War I begin?",
+      "a": "1914",
+      "b": "1918",
+      "c": "1939",
+      "d": "1912",
+      "exp": "World War I officially began on July 28, 1914."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 413,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "নোবেল পুরস্কার প্রথম কত সালে দেওয়া শুরু হয়?",
+      "a": "১৯০১",
+      "b": "১৮৯৫",
+      "c": "১৯১১",
+      "d": "১৯২৩",
+      "exp": "নোবেল ফাউন্ডেশনের উদ্যোগে ১৯০১ সালে প্রথম নোবেল পুরস্কার প্রদান করা হয়।"
+    },
+    "en": {
+      "q": "In which year was the Nobel Prize first awarded?",
+      "a": "1901",
+      "b": "1895",
+      "c": "1911",
+      "d": "1923",
+      "exp": "The first Nobel Prizes were awarded in 1901."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 414,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "এশিয়ার দীর্ঘতম নদী কোনটি?",
+      "a": "ইয়াংসি নদী",
+      "b": "গঙ্গা নদী",
+      "c": "মেকং নদী",
+      "d": "সিন্ধু নদী",
+      "exp": "চীনে অবস্থিত ইয়াংসি নদী হলো এশিয়ার দীর্ঘতম এবং বিশ্বের তৃতীয় দীর্ঘতম নদী।"
+    },
+    "en": {
+      "q": "Which is the longest river in Asia?",
+      "a": "Yangtze River",
+      "b": "Ganges",
+      "c": "Mekong",
+      "d": "Indus",
+      "exp": "The Yangtze River in China is the longest river in Asia."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 415,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পেনিসিলিন কে আবিষ্কার করেন?",
+      "a": "অ্যালেকজান্ডার ফ্লেমিং",
+      "b": "লুই পাস্তুর",
+      "c": "রবার্ট কখ",
+      "d": "এডওয়ার্ড জেনার",
+      "exp": "স্যার অ্যালেকজান্ডার ফ্লেমিং ১৯২৮ সালে প্রথম অ্যান্টিবায়োটিক পেনিসিলিন আবিষ্কার করেন।"
+    },
+    "en": {
+      "q": "Who discovered Penicillin?",
+      "a": "Alexander Fleming",
+      "b": "Louis Pasteur",
+      "c": "Robert Koch",
+      "d": "Edward Jenner",
+      "exp": "Alexander Fleming discovered penicillin in 1928."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 416,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "জাপানের মুদ্রার নাম কী?",
+      "a": "ইউয়ান",
+      "b": "ইয়েন",
+      "c": "ওয়ান",
+      "d": "রিংগিট",
+      "exp": "জাপানের সরকারি মুদ্রার নাম হলো 'ইয়েন' (Yen)।"
+    },
+    "en": {
+      "q": "What is the currency of Japan?",
+      "a": "Yuan",
+      "b": "Yen",
+      "c": "Won",
+      "d": "Ringgit",
+      "exp": "The official currency of Japan is the Yen."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 417,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন দেশকে 'সাদা হাতির দেশ' বলা হয়?",
+      "a": "থাইল্যান্ড",
+      "b": "মিয়ানমার",
+      "c": "লাওস",
+      "d": "ভিয়েতনামী",
+      "exp": "থাইল্যান্ডকে ঐতিহ্যগতভাবে 'সাদা হাতির দেশ' বলা হয়।"
+    },
+    "en": {
+      "q": "Which country is called the 'Land of White Elephants'?",
+      "a": "Thailand",
+      "b": "Myanmar",
+      "c": "Laos",
+      "d": "Vietnam",
+      "exp": "Thailand is traditionally known as the Land of White Elephants."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 418,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "আমাদের সৌরজগতের বৃহত্তম গ্রহ কোনটি?",
+      "a": "শনি",
+      "b": "বৃহস্পতি",
+      "c": "নেপচুন",
+      "d": "ইউরেনাস",
+      "exp": "বৃহস্পতি (Jupiter) হলো সৌরজগতের সবচেয়ে বড় গ্রহ।"
+    },
+    "en": {
+      "q": "Which is the largest planet in our solar system?",
+      "a": "Saturn",
+      "b": "Jupiter",
+      "c": "Neptune",
+      "d": "Uranus",
+      "exp": "Jupiter is the largest planet in our solar system."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 419,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের বৃহত্তম অঙ্গ কোনটি?",
+      "a": "যকৃৎ (লিভার)",
+      "b": "ত্বক (Skin)",
+      "c": "হৃদপিণ্ড",
+      "d": "ফুসফুস",
+      "exp": "ত্বক বা চর্ম হলো মানুষের দেহের বহিরাংশের বৃহত্তম অঙ্গ।"
+    },
+    "en": {
+      "q": "Which is the largest organ in the human body?",
+      "a": "Liver",
+      "b": "Skin",
+      "c": "Heart",
+      "d": "Lungs",
+      "exp": "The skin is the human body's largest organ."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 420,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের বৃহত্তম গ্রন্থি কোনটি?",
+      "a": "অগ্ন্যাশয়",
+      "b": "যকৃৎ (লিভার)",
+      "c": "থাইরয়েড",
+      "d": "পিটুইটারি",
+      "exp": "যকৃৎ বা লিভার হলো মানবদেহের বৃহত্তম অভ্যন্তরীণ গ্রন্থি।"
+    },
+    "en": {
+      "q": "Which is the largest gland in the human body?",
+      "a": "Pancreas",
+      "b": "Liver",
+      "c": "Thyroid",
+      "d": "Pituitary",
+      "exp": "The liver is the largest gland in the human body."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 421,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কাজিরাঙ্গা জাতীয় উদ্যান ভারতের কোন রাজ্যে অবস্থিত?",
+      "a": "অসম",
+      "b": "পশ্চিমবঙ্গ",
+      "c": "উত্তরাখণ্ড",
+      "d": "মধ্যপ্রদেশ",
+      "exp": "একশৃঙ্গ গণ্ডারের জন্য বিখ্যাত কাজিরাঙ্গা জাতীয় উদ্যান অসমে অবস্থিত।"
+    },
+    "en": {
+      "q": "Kaziranga National Park is situated in which Indian state?",
+      "a": "Assam",
+      "b": "West Bengal",
+      "c": "Uttarakhand",
+      "d": "Madhya Pradesh",
+      "exp": "Kaziranga National Park is located in Assam, India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 422,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "টেলিফোন কে আবিষ্কার করেন?",
+      "a": "থামাস এডিসন",
+      "b": "অ্যালেকজান্ডার গ্রাহাম বেল",
+      "c": "মার্ফোনি",
+      "d": "নিকোলা টেসলা",
+      "exp": "অ্যালেকজান্ডার গ্রাহাম বেল ১৮৭৬ সালে টেলিফোন আবিষ্কার করেন।"
+    },
+    "en": {
+      "q": "Who invented the telephone?",
+      "a": "Thomas Edison",
+      "b": "Alexander Graham Bell",
+      "c": "Guglielmo Marconi",
+      "d": "Nikola Tesla",
+      "exp": "Alexander Graham Bell is credited with inventing the telephone in 1876."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 423,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "রবীন্দ্রনাথ ঠাকুর কত সালে সাহিত্যে নোবেল পুরস্কার পান?",
+      "a": "১৯১৩",
+      "b": "১৯১১",
+      "c": "১৯২১",
+      "d": "১৯০৫",
+      "exp": "'গীতাঞ্জলি' কাব্যগ্রন্থের জন্য ১৯১৩ সালে রবীন্দ্রনাথ ঠাকুর নোবেল পান।"
+    },
+    "en": {
+      "q": "In which year did Rabindranath Tagore win the Nobel Prize in Literature?",
+      "a": "1913",
+      "b": "1911",
+      "c": "1921",
+      "d": "1905",
+      "exp": "Tagore won the Nobel Prize in Literature in 1913 for Gitanjali."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 424,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "'জয় হিন্দ' স্লোগানটি কে দিয়েছিলেন?",
+      "a": "নেতাজি সুভাষচন্দ্র বসু",
+      "b": "মহাত্মা গান্ধী",
+      "c": "ভগৎ সিং",
+      "d": "জওহরলাল নেহেরু",
+      "exp": "আজাদ হিন্দ ফৌজের অভিবাদন হিসেবে সুভাষচন্দ্র বসু এই স্লোগানটি জনপ্রিয় করেন।"
+    },
+    "en": {
+      "q": "Who gave the slogan 'Jai Hind'?",
+      "a": "Subhas Chandra Bose",
+      "b": "Mahatma Gandhi",
+      "c": "Bhagat Singh",
+      "d": "Jawaharlal Nehru",
+      "exp": "Subhas Chandra Bose popularized the slogan 'Jai Hind'."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 425,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের দীর্ঘতম নদী কোনটি?",
+      "a": "আমাজন নদী",
+      "b": "নীলনদ",
+      "c": "মিসিসিপি নদী",
+      "d": "ইয়াংসি নদী",
+      "exp": "আফ্রিকা মহাদেশে অবস্থিত নীল নদ হলো বিশ্বের দীর্ঘতম নদী।"
+    },
+    "en": {
+      "q": "Which is the longest river in the world?",
+      "a": "Amazon",
+      "b": "Nile",
+      "c": "Mississippi",
+      "d": "Yangtze",
+      "exp": "The Nile River in Africa is generally considered the world's longest river."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 426,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "আয়তনের দিক থেকে বিশ্বের বৃহত্তম দেশ কোনটি?",
+      "a": "চীন",
+      "b": "কানাডা",
+      "c": "রাশিয়া",
+      "d": "যুক্তরাষ্ট্র",
+      "exp": "রাশিয়া হলো আয়তনের ভিত্তিতে পৃথিবীর সবচেয়ে বড় দেশ।"
+    },
+    "en": {
+      "q": "Which is the largest country by land area?",
+      "a": "China",
+      "b": "Canada",
+      "c": "Russia",
+      "d": "United States",
+      "exp": "Russia is the largest country in the world by land area."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 427,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারে CPU-এর পূর্ণরূপ কী?",
+      "a": "Central Processing Unit",
+      "b": "Central Power Unit",
+      "c": "Computer Processing Unit",
+      "d": "Control Program Unit",
+      "exp": "CPU এর পূর্ণরূপ হলো Central Processing Unit (কেন্দ্রীয় প্রক্রিয়াকরণ ইউনিট)।"
+    },
+    "en": {
+      "q": "What is the full form of CPU in computers?",
+      "a": "Central Processing Unit",
+      "b": "Central Power Unit",
+      "c": "Computer Processing Unit",
+      "d": "Control Program Unit",
+      "exp": "CPU stands for Central Processing Unit."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 428,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "RAM-এর পূর্ণরূপ কী?",
+      "a": "Random Access Memory",
+      "b": "Read Access Memory",
+      "c": "Rapid Action Memory",
+      "d": "Run Access Memory",
+      "exp": "RAM এর পূর্ণরূপ হলো Random Access Memory।"
+    },
+    "en": {
+      "q": "What is the full form of RAM?",
+      "a": "Random Access Memory",
+      "b": "Read Access Memory",
+      "c": "Rapid Action Memory",
+      "d": "Run Access Memory",
+      "exp": "RAM stands for Random Access Memory."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 429,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের IC চিপ তৈরিতে প্রধানত কোন উপাদানটি ব্যবহৃত হয়?",
+      "a": "তামা",
+      "b": "সিলিকন",
+      "c": "জার্মেনিয়াম",
+      "d": "রূপা",
+      "exp": "ইন্টিগ্রেটেড সার্কিট (IC) তৈরিতে অর্ধপরিবাহী উপাদান হিসেবে প্রধানত সিলিকন ব্যবহৃত হয়।"
+    },
+    "en": {
+      "q": "Which element is primarily used in IC chips?",
+      "a": "Copper",
+      "b": "Silicon",
+      "c": "Germanium",
+      "d": "Silver",
+      "exp": "Silicon is the primary semiconductor used in manufacturing IC chips."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 430,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "গ্রিনহাউস প্রভাবের জন্য প্রধানত কোন গ্যাস দায়ী?",
+      "a": "কার্বন ডাই অক্সাইড",
+      "b": "মিথেন",
+      "c": "নাইট্রাস অক্সাইড",
+      "d": "ওজোন",
+      "exp": "বায়ুমণ্ডলে কার্বন ডাই অক্সাইড গ্যাস গ্লোবাল ওয়ার্মিং ও গ্রিনহাউস প্রভাব তৈরি করে।"
+    },
+    "en": {
+      "q": "Which gas is primarily responsible for the Greenhouse Effect?",
+      "a": "Carbon Dioxide",
+      "b": "Methane",
+      "c": "Nitrous Oxide",
+      "d": "Ozone",
+      "exp": "Carbon dioxide is the main contributor to the greenhouse effect."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 431,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "শুষ্ক বরফ (Dry Ice) আসলে কী?",
+      "a": "কঠিন নাইট্রোজেন",
+      "b": "কঠিন কার্বন ডাই অক্সাইড",
+      "c": "কঠিন অক্সিজেন",
+      "d": "জমাটবদ্ধ জল",
+      "exp": "কার্বন ডাই অক্সাইড গ্যাসকে অতিমাত্রায় ঠান্ডা ও সংকুচিত করলে তা কঠিন ড্রাই আইসে পরিণত হয়।"
+    },
+    "en": {
+      "q": "What is Dry Ice scientifically?",
+      "a": "Solid Nitrogen",
+      "b": "Solid Carbon Dioxide",
+      "c": "Solid Oxygen",
+      "d": "Frozen Water",
+      "exp": "Dry Ice is the solid form of carbon dioxide."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 432,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন গ্রন্থিকে মানবদেহের 'প্রভু গ্রন্থি' (Master Gland) বলা হয়?",
+      "a": "পিটুইটারি গ্রন্থি",
+      "b": "থাইরয়েড গ্রন্থি",
+      "c": "অ্যাড্রিনাল গ্রন্থি",
+      "d": "অগ্ন্যাশয়",
+      "exp": "পিটুইটারি গ্রন্থি শরীরের অন্যান্য অনাল গ্রন্থির হরমোন খরণ নিয়ন্ত্রণ করে।"
+    },
+    "en": {
+      "q": "Which gland is known as the Master Gland?",
+      "a": "Pituitary Gland",
+      "b": "Thyroid Gland",
+      "c": "Adrenal Gland",
+      "d": "Pancreas",
+      "exp": "The pituitary gland controls other endocrine glands and is called the master gland."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 433,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "লাফিং গ্যাসের (Laughing Gas) রাসায়নিক নাম কী?",
+      "a": "নাইট্রাস অক্সাইড",
+      "b": "নাইট্রিক অক্সাইড",
+      "c": "নাইট্রোজেন ডাই অক্সাইড",
+      "d": "অ্যামোনিয়া",
+      "exp": "নাইট্রাস অক্সাইড (N2O) গ্যাস নিঃশ্বাসের সাথে নিলে মৃদু হাসির অনুভূতি তৈরি হয়।"
+    },
+    "en": {
+      "q": "What is the chemical name of Laughing Gas?",
+      "a": "Nitrous Oxide",
+      "b": "Nitric Oxide",
+      "c": "Nitrogen Dioxide",
+      "d": "Ammonia",
+      "exp": "Nitrous oxide (N2O) is commonly known as laughing gas."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 434,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পৃথিবীর সবচেয়ে কঠিন প্রাকৃতিক পদার্থ কোনটি?",
+      "a": "সোনা",
+      "b": "লোহা",
+      "c": "হীরে (Diamond)",
+      "d": "প্ল্যাটিনাম",
+      "exp": "কার্বনের রূপভেদ হীরে হলো প্রকৃতির সবচেয়ে কঠিন প্রাকৃতিক পদার্থ।"
+    },
+    "en": {
+      "q": "Which is the hardest natural substance on Earth?",
+      "a": "Gold",
+      "b": "Iron",
+      "c": "Diamond",
+      "d": "Platinum",
+      "exp": "Diamond is the hardest naturally occurring substance found on Earth."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 435,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সাধারণ ঘরের তাপমাত্রায় কোন ধাতু তরল অবস্থায় থাকে?",
+      "a": "পারদ (Mercury)",
+      "b": "সোডিয়াম",
+      "c": "সীসা",
+      "d": "দস্তা",
+      "exp": "পারদ একমাত্র ধাতু যা সাধারণ তাপমাত্রায় তরল রূপ বজায় রাখে।"
+    },
+    "en": {
+      "q": "Which metal is liquid at room temperature?",
+      "a": "Mercury",
+      "b": "Sodium",
+      "c": "Lead",
+      "d": "Zinc",
+      "exp": "Mercury is the only metallic element that is liquid at room temperature."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 436,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "লোহিত রক্তকণিকার (RBC) গড় আয়ু কত দিন?",
+      "a": "১২০ দিন",
+      "b": "৯০ দিন",
+      "c": "৬০ দিন",
+      "d": "১৫০ দিন",
+      "exp": "মানবদেহে লোহিত রক্তকণিকা প্রায় ১২০ দিন জীবিত থাকে।"
+    },
+    "en": {
+      "q": "What is the average lifespan of Red Blood Cells (RBCs)?",
+      "a": "120 days",
+      "b": "90 days",
+      "c": "60 days",
+      "d": "150 days",
+      "exp": "The lifespan of a typical red blood cell is about 120 days."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 437,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোষের শক্তির ঘর (Powerhouse of the Cell) কাকে বলা হয়?",
+      "a": "মাইটোকন্ড্রিয়া",
+      "b": "রাইবোজোম",
+      "c": "নিউক্লিয়াস",
+      "d": "গলগি বডি",
+      "exp": "মাইটোকন্ড্রিয়া কোষের শ্বসন প্রক্রিয়া পরিচালনা করে শক্তি উৎপন্ন করে।"
+    },
+    "en": {
+      "q": "Which cell organelle is known as the Powerhouse of the Cell?",
+      "a": "Mitochondria",
+      "b": "Ribosome",
+      "c": "Nucleus",
+      "d": "Golgi Body",
+      "exp": "Mitochondria generate most of the chemical energy needed by the cell."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 438,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের প্রাচীনতম পর্বতমালা কোনটি?",
+      "a": "হিমালয় পর্বতমালা",
+      "b": "আরাবল্লী পর্বতমালা",
+      "c": "পশ্চিমঘাট পর্বতমালা",
+      "d": "বিন্ধ্য পর্বতমালা",
+      "exp": "আরাবল্লী হলো ভারতের প্রাচীনতম ক্ষয়জাত পর্বতমালা।"
+    },
+    "en": {
+      "q": "Which is the oldest mountain range in India?",
+      "a": "Himalayas",
+      "b": "Aravalli Range",
+      "c": "Western Ghats",
+      "d": "Vindhya Range",
+      "exp": "The Aravalli Range is the oldest fold mountain system in India."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 439,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের বৃহত্তম মিষ্টি জলের হ্রদ কোনটি?",
+      "a": "উলার হ্রদ (Wular Lake)",
+      "b": "চিল্কা হ্রদ",
+      "c": "ডাল হ্রদ",
+      "d": "সম্ভর হ্রদ",
+      "exp": "জম্মু ও কাশ্মীরে অবস্থিত উলার হ্রদ ভারতের বৃহত্তম স্বাদু জলের হ্রদ।"
+    },
+    "en": {
+      "q": "Which is the largest freshwater lake in India?",
+      "a": "Wular Lake",
+      "b": "Chilika Lake",
+      "c": "Dal Lake",
+      "d": "Sambhar Lake",
+      "exp": "Wular Lake in Jammu and Kashmir is one of the largest fresh water lakes in Asia."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 440,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "'ডিসকভারি অফ ইন্ডিয়া' (Discovery of India) বইটি কার লেখা?",
+      "a": "জওহরলাল নেহেরু",
+      "b": "মহাত্মা গান্ধী",
+      "c": "বি. আর. আম্বেদকর",
+      "d": "নেতাজি সুভাষচন্দ্র বসু",
+      "exp": "ভারতের প্রথম প্রধানমন্ত্রী জওহরলাল নেহেরু আহমেদনগর দুর্গে বন্দি থাকাকালীন এই বইটি রচনা করেন।"
+    },
+    "en": {
+      "q": "Who authored the book 'Discovery of India'?",
+      "a": "Jawaharlal Nehru",
+      "b": "Mahatma Gandhi",
+      "c": "B.R. Ambedkar",
+      "d": "Subhas Chandra Bose",
+      "exp": "The Discovery of India was written by India's first Prime Minister, Jawaharlal Nehru."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 441,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "রিজার্ভ ব্যাঙ্ক অফ ইন্ডিয়া (RBI) কত সালে প্রতিষ্ঠিত হয়?",
+      "a": "১৯৩৫",
+      "b": "১৯৪৭",
+      "c": "১৯৫০",
+      "d": "১৯২৮",
+      "exp": "১৯৩৫ সালের ১ই এপ্রিল আরবিআই (RBI) প্রতিষ্ঠিত হয়।"
+    },
+    "en": {
+      "q": "In which year was the Reserve Bank of India (RBI) established?",
+      "a": "1935",
+      "b": "1947",
+      "c": "1950",
+      "d": "1928",
+      "exp": "The Reserve Bank of India was established on April 1, 1935."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 442,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের সর্বোচ্চ অসামরিক সম্মান কোনটি?",
+      "a": "ভারত রত্ন",
+      "b": "পদ্মবিভূষণ",
+      "c": "পরমবীর চক্র",
+      "d": "পদ্মভূষণ",
+      "exp": "ভারত রত্ন হলো ভারতের সর্বোচ্চ অসামরিক নাগরিক পুরস্কার।"
+    },
+    "en": {
+      "q": "What is the highest civilian award in India?",
+      "a": "Bharat Ratna",
+      "b": "Padma Vibhushan",
+      "c": "Param Vir Chakra",
+      "d": "Padma Bhushan",
+      "exp": "Bharat Ratna is the highest civilian award of the Republic of India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 443,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "মহাকাশে পাড়ি দেওয়া প্রথম ভারতীয় কে?",
+      "a": "রাকেশ শর্মা",
+      "b": "কল্পনা চাওলা",
+      "c": "সুশুনিতা উইলিয়ামস",
+      "d": "বিক্রম সারাভাই",
+      "exp": "১৯৮৪ সালে রাকেশ শর্মা প্রথম ভারতীয় হিসেবে মহাকাশ ভ্রমণ করেন।"
+    },
+    "en": {
+      "q": "Who was the first Indian in space?",
+      "a": "Rakesh Sharma",
+      "b": "Kalpana Chawla",
+      "c": "Sunita Williams",
+      "d": "Vikram Sarabhai",
+      "exp": "Rakesh Sharma became the first Indian citizen to enter space in 1984."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 444,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারত ছাড়ো আন্দোলন কত সালে শুরু হয়?",
+      "a": "১৯৪২",
+      "b": "১৯৩০",
+      "c": "১৯২০",
+      "d": "১৯৪৫",
+      "exp": "মহাত্মা গান্ধীর আহ্বানে ১৯৪২ সালে ভারত ছাড়ো আন্দোলন শুরু হয়।"
+    },
+    "en": {
+      "q": "In which year was the Quit India Movement launched?",
+      "a": "1942",
+      "b": "1930",
+      "c": "1920",
+      "d": "1945",
+      "exp": "The Quit India Movement was launched by Mahatma Gandhi in August 1942."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 445,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "জালিয়ানওয়ালাবাগ হত্যাকাণ্ড কোন শহরে ঘটেছিল?",
+      "a": "অমৃতসর",
+      "b": "লাহোর",
+      "c": "দিল্লি",
+      "d": "জলন্ধর",
+      "exp": "১৯১৯ সালের ১৩ই এপ্রিল পাঞ্জাবের অমৃতসরে এই বর্বরোচিত হত্যাকাণ্ড ঘটে।"
+    },
+    "en": {
+      "q": "The Jallianwala Bagh massacre took place in which city?",
+      "a": "Amritsar",
+      "b": "Lahore",
+      "c": "Delhi",
+      "d": "Jalandhar",
+      "exp": "The massacre took place on April 13, 1919, in Amritsar, Punjab."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 446,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতীয় জাতীয় কংগ্রেস কত সালে প্রতিষ্ঠিত হয়?",
+      "a": "১৮৮৫",
+      "b": "১৯০৫",
+      "c": "১৮৫৭",
+      "d": "১৯২০",
+      "exp": "১৮৮৫ সালের ২৮ ডিসেম্বর বোম্বেতে জাতীয় কংগ্রেস প্রতিষ্ঠিত হয়।"
+    },
+    "en": {
+      "q": "In which year was the Indian National Congress founded?",
+      "a": "1885",
+      "b": "1905",
+      "c": "1857",
+      "d": "1920",
+      "exp": "The Indian National Congress was founded in December 1885."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 447,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "'স্বরাজ আমার জন্মগত অধিকার'— এটি কার উক্তি?",
+      "a": "বাল গঙ্গাধর তিলক",
+      "b": "লালা লাজপত রায়",
+      "c": "বিপিন চন্দ্র পাল",
+      "d": "গোপাল কৃষ্ণ গোখলে",
+      "exp": "লোকমান্য বাল গঙ্গাধর তিলক এই বিখ্যাত বাণীটি প্রচার করেন।"
+    },
+    "en": {
+      "q": "Who said 'Swaraj is my birthright and I shall have it'?",
+      "a": "Bal Gangadhar Tilak",
+      "b": "Lala Lajpat Rai",
+      "c": "Bipin Chandra Pal",
+      "d": "Gopal Krishna Gokhale",
+      "exp": "Bal Gangadhar Tilak uttered these famous words during the freedom struggle."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 448,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "গৌতম বুদ্ধ কোথায় দিব্যজ্ঞান (Bodhi) লাভ করেছিলেন?",
+      "a": "বোধগয়া",
+      "b": "সারনাথ",
+      "c": "লুম্বিনী",
+      "d": "কুশীনগর",
+      "exp": "বিহারের বোধগয়ায় অশ্বত্থ গাছের নিচে গৌতম বুদ্ধ বুদ্ধত্ব লাভ করেন।"
+    },
+    "en": {
+      "q": "Where did Gautama Buddha attain enlightenment?",
+      "a": "Bodh Gaya",
+      "b": "Sarnath",
+      "c": "Lumbini",
+      "d": "Kushinagar",
+      "exp": "Gautama Buddha attained enlightenment under a Bodhi tree in Bodh Gaya."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 449,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "কাকে 'ভারতের নেপোলিয়ন' বলা হয়?",
+      "a": "সমুদ্রগুপ্ত",
+      "b": "চন্দ্রগুপ্ত মৌর্য",
+      "c": "সম্রাট অশোক",
+      "d": "হর্ষবর্ধন",
+      "exp": "ঐতিহাসিক ভি. এ. স্মিথ গুপ্ত সম্রাট সমুদ্রগুপ্তকে 'ভারতের নেপোলিয়ন' আখ্যা দেন।"
+    },
+    "en": {
+      "q": "Who was known as the 'Napoleon of India'?",
+      "a": "Samudragupta",
+      "b": "Chandragupta Maurya",
+      "c": "Ashoka",
+      "d": "Harshavardhana",
+      "exp": "Historian V.A. Smith called Samudragupta the Napoleon of India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 450,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "আমাদের সৌরজগতের উষ্ণতম গ্রহ কোনটি?",
+      "a": "শুক্র (Venus)",
+      "b": "বুধ",
+      "c": "মঙ্গল",
+      "d": "বৃহস্পতি",
+      "exp": "ঘন বায়ুমণ্ডল ও গ্রিনহাউস প্রভাবের কারণে শুক্র সৌরজগতের সবচেয়ে উত্তপ্ত গ্রহ।"
+    },
+    "en": {
+      "q": "Which is the hottest planet in our solar system?",
+      "a": "Venus",
+      "b": "Mercury",
+      "c": "Mars",
+      "d": "Jupiter",
+      "exp": "Venus is the hottest planet in our solar system due to its thick atmosphere."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 451,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন গ্রহকে 'লাল গ্রহ' বলা হয়?",
+      "a": "মঙ্গল (Mars)",
+      "b": "শুক্র",
+      "c": "বৃহস্পতি",
+      "d": "শনি",
+      "exp": "মঙ্গলের মাটিতে আয়রন অক্সাইড (মরিচা) বেশি থাকার কারণে লাল দেখায়।"
+    },
+    "en": {
+      "q": "Which planet is known as the 'Red Planet'?",
+      "a": "Mars",
+      "b": "Venus",
+      "c": "Jupiter",
+      "d": "Saturn",
+      "exp": "Mars is called the Red Planet because of the iron oxide prevalent on its surface."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 452,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সাধারণত বায়ুমণ্ডলের কোন স্তরে বিমান চলাচল করে?",
+      "a": "স্ট্র্যাটোস্ফিয়ার",
+      "b": "ট্রপোস্ফিয়ার",
+      "c": "মেসোস্ফিয়ার",
+      "d": "থার্মোস্ফিয়ার",
+      "exp": "শান্ত ও মেঘমুক্ত পরিবেশের জন্য স্ট্র্যাটোস্ফিয়ার দিয়ে বিমান চলাচল করে।"
+    },
+    "en": {
+      "q": "In which atmospheric layer do airplanes usually fly?",
+      "a": "Stratosphere",
+      "b": "Troposphere",
+      "c": "Mesosphere",
+      "d": "Thermosphere",
+      "exp": "Commercial airplanes fly in the stratosphere to avoid turbulence."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 453,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পৃথিবীর সবচেয়ে কাছের বায়ুমণ্ডলীয় স্তর কোনটি?",
+      "a": "ট্রপোস্ফিয়ার",
+      "b": "স্ট্র্যাটোস্ফিয়ার",
+      "c": "এক্সোস্ফিয়ার",
+      "d": "আয়নোস্ফিয়ার",
+      "exp": "ভূপৃষ্ঠ লাগোয়া বায়ুমণ্ডলের প্রথম স্তরটি হলো ট্রপোস্ফিয়ার।"
+    },
+    "en": {
+      "q": "Which atmospheric layer is closest to Earth's surface?",
+      "a": "Troposphere",
+      "b": "Stratosphere",
+      "c": "Exosphere",
+      "d": "Ionosphere",
+      "exp": "The troposphere is the lowest layer of Earth's atmosphere."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 454,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন মালভূমিকে 'পৃথিবীর ছাদ' বলা হয়?",
+      "a": "পামির মালভূমি",
+      "b": "দাক্ষিণাত্যের মালভূমি",
+      "c": "তিব্বত মালভূমি",
+      "d": "কলরাডো মালভূমি",
+      "exp": "উচ্চতার কারণে পামির মালভূমিকে পৃথিবীর ছাদ আখ্যা দেওয়া হয়েছে।"
+    },
+    "en": {
+      "q": "Which plateau is known as the 'Roof of the World'?",
+      "a": "Pamir Plateau",
+      "b": "Deccan Plateau",
+      "c": "Tibetan Plateau",
+      "d": "Colorado Plateau",
+      "exp": "The Pamir Plateau is traditionally known as the Roof of the World."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 455,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "করবেট জাতীয় উদ্যান (Jim Corbett) কোন রাজ্যে অবস্থিত?",
+      "a": "উত্তরাখণ্ড",
+      "b": "হিমাচল প্রদেশ",
+      "c": "রাজস্থান",
+      "d": "মধ্যপ্রদেশ",
+      "exp": "ভারতের প্রাচীনতম জাতীয় উদ্যান জিম করবেট উত্তরাখণ্ডে অবস্থিত।"
+    },
+    "en": {
+      "q": "Jim Corbett National Park is located in which state?",
+      "a": "Uttarakhand",
+      "b": "Himachal Pradesh",
+      "c": "Rajasthan",
+      "d": "Madhya Pradesh",
+      "exp": "Jim Corbett National Park is located in Uttarakhand."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 456,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারে ROM-এর পূর্ণরূপ কী?",
+      "a": "Read-Only Memory",
+      "b": "Random Output Memory",
+      "c": "Real Option Memory",
+      "d": "Run-Only Memory",
+      "exp": "ROM-এর পূর্ণরূপ হলো Read-Only Memory, যা স্থায়ী তথ্য সঞ্চয় করে।"
+    },
+    "en": {
+      "q": "What is the full form of ROM in computing?",
+      "a": "Read-Only Memory",
+      "b": "Random Output Memory",
+      "c": "Real Option Memory",
+      "d": "Run-Only Memory",
+      "exp": "ROM stands for Read-Only Memory."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 457,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "ভিটামিন এ-এর অভাবে কোন রোগ হয়?",
+      "a": "রাতকানা (Night Blindness)",
+      "b": "স্কার্ভি",
+      "c": "রিকেটস",
+      "d": "অ্যানিমিয়া",
+      "exp": "ভিটামিন এ চোখের দৃষ্টিশক্তি রক্ষা করে, এর অভাবে রাতকানা রোগ হয়।"
+    },
+    "en": {
+      "q": "Deficiency of Vitamin A leads to which disease?",
+      "a": "Night Blindness",
+      "b": "Scurvy",
+      "c": "Rickets",
+      "d": "Anemia",
+      "exp": "Vitamin A deficiency leads to night blindness and vision impairment."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 458,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পানীয় জল জীবাণুমুক্ত করতে সাধারণত কোনটি ব্যবহৃত হয়?",
+      "a": "ক্লোরিন",
+      "b": "ফ্লোরিন",
+      "c": "আয়োডিন",
+      "d": "ব্রোমিন",
+      "exp": "জল শোধনের জন্য ব্লিসিং পাউডার বা ক্লোরিন গ্যাস ব্যবহার করা হয়।"
+    },
+    "en": {
+      "q": "Which chemical is commonly used to disinfect drinking water?",
+      "a": "Chlorine",
+      "b": "Fluorine",
+      "c": "Iodine",
+      "d": "Bromine",
+      "exp": "Chlorine is widely used to kill bacteria and disinfect drinking water."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 459,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "ওজোন স্তরের সবচেয়ে বেশি ক্ষতি করে কোন গ্যাস?",
+      "a": "ক্লোরোফ্লোরোকার্বন (CFC)",
+      "b": "কার্বন মনোক্সাইড",
+      "c": "সালফার ডাই অক্সাইড",
+      "d": "মিথেন",
+      "exp": "CFC গ্যাস বায়ুমণ্ডলের ওজোন স্তরকে ভেঙে পাতলা করে দেয়।"
+    },
+    "en": {
+      "q": "Which gas damages the Ozone layer the most?",
+      "a": "Chlorofluorocarbon (CFC)",
+      "b": "Carbon Monoxide",
+      "c": "Sulphur Dioxide",
+      "d": "Methane",
+      "exp": "Chlorofluorocarbons (CFCs) cause depletion of the stratospheric ozone layer."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 460,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "লোহার রাসায়নিক চিহ্ন বা সংকেত কী?",
+      "a": "Fe",
+      "b": "Ir",
+      "c": "In",
+      "d": "Fe2",
+      "exp": "লোহার ল্যাটিন নাম Ferrum, তাই এর সংকেত Fe।"
+    },
+    "en": {
+      "q": "What is the chemical symbol for Iron?",
+      "a": "Fe",
+      "b": "Ir",
+      "c": "In",
+      "d": "Fe2",
+      "exp": "The chemical symbol for Iron is Fe, derived from its Latin name Ferrum."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 461,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সোনার (Gold) রাসায়নিক সংকেত কী?",
+      "a": "Au",
+      "b": "Ag",
+      "c": "Go",
+      "d": "Gd",
+      "exp": "সোনার ল্যাটিন নাম Aurum, তাই এর প্রতীক Au।"
+    },
+    "en": {
+      "q": "What is the chemical symbol for Gold?",
+      "a": "Au",
+      "b": "Ag",
+      "c": "Go",
+      "d": "Gd",
+      "exp": "The symbol Au comes from the Latin word for gold, Aurum."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 462,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "উদ্ভিদের শালোকসংশ্লেষণে খাদ্য তৈরিতে সাহায্য করে কোন প্লাস্টিড?",
+      "a": "ক্লোরোপ্লাস্ট",
+      "b": "ক্রোমোপ্লাস্ট",
+      "c": "লিউকোপ্লাস্ট",
+      "d": "ভ্যাকুওল",
+      "exp": "সবুজ ক্লোরোপ্লাস্টের মধ্যে ক্লোরোফিল সাহায্যে শালোকসংশ্লেষণ ঘটে।"
+    },
+    "en": {
+      "q": "Which plant organelle produces food during photosynthesis?",
+      "a": "Chloroplast",
+      "b": "Chromoplast",
+      "c": "Leucoplast",
+      "d": "Vacuole",
+      "exp": "Chloroplasts contain chlorophyll and conduct photosynthesis."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 463,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের বৃহত্তম লবণাক্ত জলের হ্রদ কোনটি?",
+      "a": "চিল্কা হ্রদ",
+      "b": "উলার হ্রদ",
+      "c": "পুলিকট হ্রদ",
+      "d": "লোনার হ্রদ",
+      "exp": "ওড়িশায় অবস্থিত চিল্কা হলো ভারতের বৃহত্তম উপহ্রদ বা লবণাক্ত জলের হ্রদ।"
+    },
+    "en": {
+      "q": "Which is the largest saline water lake in India?",
+      "a": "Chilika Lake",
+      "b": "Wular Lake",
+      "c": "Pulicat Lake",
+      "d": "Lonar Lake",
+      "exp": "Chilika Lake in Odisha is the largest brackish water lagoon in India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 464,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "সুন্দরবনকে কত সালে ইউনেস্কো (UNESCO) ওয়ার্ল্ড হেরিটেজ সাইট ঘোষণা করে?",
+      "a": "১৯৮৭",
+      "b": "১৯৭৩",
+      "c": "১৯৯২",
+      "d": "২০০১",
+      "exp": "ম্যানগ্রোভ বনের গুরুত্বের কারণে ১৯৮৭ সালে সুন্দরবন ওয়ার্ল্ড হেরিটেজ তকমা পায়।"
+    },
+    "en": {
+      "q": "In which year was Sundarbans declared a UNESCO World Heritage Site?",
+      "a": "1987",
+      "b": "1973",
+      "c": "1992",
+      "d": "2001",
+      "exp": "The Sundarbans was declared a UNESCO World Heritage Site in 1987."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 465,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "তাজমহল কে নির্মাণ করেছিলেন?",
+      "a": "শাহজাহান",
+      "b": "আকবর",
+      "c": "জাহাঙ্গীর",
+      "d": "হুমায়ুন",
+      "exp": "মুঘল সম্রাট শাহজাহান তাঁর স্ত্রী মমতাজের স্মৃতিতে তাজমহল নির্মাণ করেন।"
+    },
+    "en": {
+      "q": "Who built the Taj Mahal?",
+      "a": "Shah Jahan",
+      "b": "Akbar",
+      "c": "Jahangir",
+      "d": "Humayun",
+      "exp": "Mughal emperor Shah Jahan built the Taj Mahal in memory of his wife Mumtaz."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 466,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "'আকবরনামা' গ্রন্থটি কার রচনা?",
+      "a": "আবুল ফজল",
+      "b": "ফৈজি",
+      "c": "বীরবল",
+      "d": "টোডর মল",
+      "exp": "আকবরের সভাসদ আবুল ফজল আকবরের জীবনী গ্রন্থ 'আকবরনামা' লেখেন।"
+    },
+    "en": {
+      "q": "Who wrote 'Akbarnama'?",
+      "a": "Abul Fazl",
+      "b": "Faizi",
+      "c": "Birbal",
+      "d": "Todar Mal",
+      "exp": "Abul Fazl was the author of Akbarnama, the official history of Akbar's reign."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 467,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের সর্বোচ্চ সামরিক পুরস্কার কোনটি?",
+      "a": "পরমবীর চক্র",
+      "b": "মহাবীর চক্র",
+      "c": "বীর চক্র",
+      "d": "অশোক চক্র",
+      "exp": "যুদ্ধের সময়ে অসীম সাহসিকতার জন্য সর্বোচ্চ পরমবীর চক্র প্রদান করা হয়।"
+    },
+    "en": {
+      "q": "What is the highest military decoration in India?",
+      "a": "Param Vir Chakra",
+      "b": "Maha Vir Chakra",
+      "c": "Vir Chakra",
+      "d": "Ashoka Chakra",
+      "exp": "The Param Vir Chakra is India's highest military decoration."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 468,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "বঙ্গভঙ্গ রদ কত সালে হয়?",
+      "a": "১৯১১",
+      "b": "১৯০৫",
+      "c": "১৯১৫",
+      "d": "১৯২০",
+      "exp": "১৯০৫ সালে বঙ্গভঙ্গ হওয়ার পর তীব্র আন্দোলনের মুখে ১৯১১ সালে তা রদ হয়।"
+    },
+    "en": {
+      "q": "In which year was the Partition of Bengal revoked?",
+      "a": "1911",
+      "b": "1905",
+      "c": "1915",
+      "d": "1920",
+      "exp": "The Partition of Bengal was annulled/revoked in 1911."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 469,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "আজাদ হিন্দ ফৌজ পুনঃসংগঠিত কে করেছিলেন?",
+      "a": "নেতাজি সুভাষচন্দ্র বসু",
+      "b": "রাসবিহারী বসু",
+      "c": "ক্যাপ্টেন মোহন সিং",
+      "d": "লালা হরদয়াল",
+      "exp": "সুভাষচন্দ্র বসু সিঙ্গাপুরে গিয়ে আজাদ হিন্দ ফৌজের দায়িত্বভার নিয়ে তা পুনর্গঠন করেন।"
+    },
+    "en": {
+      "q": "Who reorganized the Azad Hind Fauj (INA)?",
+      "a": "Subhas Chandra Bose",
+      "b": "Rash Behari Bose",
+      "c": "Mohan Singh",
+      "d": "Lala Har Dayal",
+      "exp": "Subhas Chandra Bose reorganized the Indian National Army in Singapore."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 470,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "'ইনকিলাব জিন্দাবাদ' স্লোগানটিকে জনপ্রিয় করেছিলেন কে?",
+      "a": "ভগৎ সিং",
+      "b": "হসরত মোহানি",
+      "c": "চন্দ্রশেখর আজাদ",
+      "d": "আশফাকউল্লা খান",
+      "exp": "হসরত মোহানি প্রথম লিখলেও ভগৎ সিং ও তাঁর সহযোদ্ধারা এটি বিখ্যাত করেন।"
+    },
+    "en": {
+      "q": "Who popularised the slogan 'Inquilab Zindabad'?",
+      "a": "Bhagat Singh",
+      "b": "Hasrat Mohani",
+      "c": "Chandrashekhar Azad",
+      "d": "Ashfaqulla Khan",
+      "exp": "Bhagat Singh popularized the slogan 'Inquilab Zindabad' during the freedom struggle."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 471,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "জৈন ধর্মের ২৪ তম তীর্থঙ্কর কে ছিলেন?",
+      "a": "মহাবীর",
+      "b": "পার্শ্বনাথ",
+      "c": "ঋষভদেব",
+      "d": "অরিস্টনেমি",
+      "exp": "ভারধমান মহাবীর ছিলেন জৈন ধর্মের ২৪তম তথা শেষ তীর্থঙ্কর।"
+    },
+    "en": {
+      "q": "Who was the 24th Tirthankara of Jainism?",
+      "a": "Mahavira",
+      "b": "Parshvanatha",
+      "c": "Rishabhdev",
+      "d": "Arishtanemi",
+      "exp": "Vardhamana Mahavira was the 24th and last Tirthankara of Jainism."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 472,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "মৌর্য বংশের প্রতিষ্ঠাতা কে ছিলেন?",
+      "a": "চন্দ্রগুপ্ত মৌর্য",
+      "b": "সম্রাট অশোক",
+      "c": "বিন্দুসার",
+      "d": "বিম্বিসার",
+      "exp": "চাণক্যের সহায়তায় চন্দ্রগুপ্ত মৌর্য নন্দ বংশ উচ্ছেদ করে মৌর্য সাম্রাজ্য গড়েন।"
+    },
+    "en": {
+      "q": "Who was the founder of the Maurya Empire?",
+      "a": "Chandragupta Maurya",
+      "b": "Ashoka",
+      "c": "Bindusara",
+      "d": "Bimbisara",
+      "exp": "Chandragupta Maurya founded the Mauryan Empire with the help of Chanakya."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 473,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "গুপ্ত বংশের মূল প্রতিষ্ঠাতা কে ছিলেন?",
+      "a": "শ্রীগুপ্ত",
+      "b": "প্রথম চন্দ্রগুপ্ত",
+      "c": "সমুদ্রগুপ্ত",
+      "d": "কুমারগুপ্ত",
+      "exp": "শ্রীগুপ্ত প্রাচীন ভারতের গুপ্ত রাজবংশের প্রতিষ্ঠা করেন।"
+    },
+    "en": {
+      "q": "Who was the founder of the Gupta Empire?",
+      "a": "Sri Gupta",
+      "b": "Chandragupta I",
+      "c": "Samudragupta",
+      "d": "Kumaragupta",
+      "exp": "Sri Gupta was the founder of the Gupta Dynasty."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 474,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ডান্ডি মার্চ (লবণ সত্যগ্রহ) কত সালে শুরু হয়?",
+      "a": "১৯৩০",
+      "b": "১৯২২",
+      "c": "১৯৩২",
+      "d": "১৯২৮",
+      "exp": "১৯৩০ সালের ১২ মার্চ গান্ধীজি ৭৮ জন অনুগামী নিয়ে ডান্ডি অভিযান শুরু করেন।"
+    },
+    "en": {
+      "q": "In which year did the Dandi March begin?",
+      "a": "1930",
+      "b": "1922",
+      "c": "1932",
+      "d": "1928",
+      "exp": "Mahatma Gandhi launched the Dandi March on March 12, 1930."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 475,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন গ্রহকে 'নীল গ্রহ' বলা হয়?",
+      "a": "পৃথিবী",
+      "b": "নেপচুন",
+      "c": "ইউরেনাস",
+      "d": "শুক্র",
+      "exp": "প্রচুর জলের উপস্থিতির কারণে মহাকাশ থেকে পৃথিবীকে নীল দেখায়।"
+    },
+    "en": {
+      "q": "Which planet is known as the 'Blue Planet'?",
+      "a": "Earth",
+      "b": "Neptune",
+      "c": "Uranus",
+      "d": "Venus",
+      "exp": "Earth is called the Blue Planet because of the vast oceans on its surface."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 476,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "পশ্চিমবঙ্গের রাজ্য পশু কোনটি?",
+      "a": "মেছো বিড়াল (Fishing Cat)",
+      "b": "রয়্যাল বেঙ্গল টাইগার",
+      "c": "একশৃঙ্গ গণ্ডার",
+      "d": "হাতি",
+      "exp": "মেছো বিড়াল হলো পশ্চিমবঙ্গের মেছো বাডু বা সরকারি রাজ্য প্রাণী।"
+    },
+    "en": {
+      "q": "What is the state animal of West Bengal?",
+      "a": "Fishing Cat",
+      "b": "Royal Bengal Tiger",
+      "c": "One-horned Rhino",
+      "d": "Elephant",
+      "exp": "The Fishing Cat is the official state animal of West Bengal."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 477,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "ইলেকট্রন কে আবিষ্কার করেন?",
+      "a": "জে. জে. থমসন",
+      "b": "আর্নেস্ট রাদারফোর্ড",
+      "c": "জেমস চ্যাডউইক",
+      "d": "নিলস বোর",
+      "exp": "১৮৯৭ সালে স্যার জে. জে. থমসন ঋণাত্মক আধানযুক্ত ইলেকট্রন আবিষ্কার করেন।"
+    },
+    "en": {
+      "q": "Who discovered electrons?",
+      "a": "J.J. Thomson",
+      "b": "Ernest Rutherford",
+      "c": "James Chadwick",
+      "d": "Niels Bohr",
+      "exp": "J.J. Thomson discovered the electron in 1897."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 478,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "জাপানের রাজধানী শহর কোনটি?",
+      "a": "টোকিও",
+      "b": "কিয়োটো",
+      "c": "ওসাকা",
+      "d": "হিরোশিমা",
+      "exp": "টোকিও হলো জাপানের রাজধানী এবং পৃথিবীর অন্যতম জনবহুল মহানগর।"
+    },
+    "en": {
+      "q": "What is the capital of Japan?",
+      "a": "Tokyo",
+      "b": "Kyoto",
+      "c": "Osaka",
+      "d": "Hiroshima",
+      "exp": "Tokyo is the capital city of Japan."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 479,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "অলিম্পিক গেমস কত বছর পর পর অনুষ্ঠিত হয়?",
+      "a": "প্রতি ৪ বছর পর",
+      "b": "প্রতি ২ বছর পর",
+      "c": "প্রতি ৫ বছর পর",
+      "d": "প্রতি ৩ বছর পর",
+      "exp": "আন্তর্জাতিক অলিম্পিক প্রতি চার বছর অন্তর একবার আয়োজিত হয়।"
+    },
+    "en": {
+      "q": "How often are the Olympic Games held?",
+      "a": "Every 4 years",
+      "b": "Every 2 years",
+      "c": "Every 5 years",
+      "d": "Every 3 years",
+      "exp": "The Olympic Games are held every four years."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 480,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "আমাদের সৌরজগতের ক্ষুদ্রতম গ্রহ কোনটি?",
+      "a": "বুধ (Mercury)",
+      "b": "মঙ্গল",
+      "c": "শুক্র",
+      "d": "প্লুটো",
+      "exp": "বুধ হলো সৌরজগতের সূর্যে নিকটতম ও ক্ষুদ্রতম গ্রহ।"
+    },
+    "en": {
+      "q": "Which is the smallest planet in our solar system?",
+      "a": "Mercury",
+      "b": "Mars",
+      "c": "Venus",
+      "d": "Pluto",
+      "exp": "Mercury is the smallest planet in our solar system."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 481,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "স্বাধীন ভারতের প্রথম প্রধানমন্ত্রী কে ছিলেন?",
+      "a": "জওহরলাল নেহেরু",
+      "b": "সরদার বল্লভভাই প্যাটেল",
+      "c": "ড. রাজেন্দ্র প্রসাদ",
+      "d": "লাল বাহাদুর শাস্ত্রী",
+      "exp": "১৯৪৭ সালে স্বাধীন ভারতের প্রথম প্রধানমন্ত্রী হিসেবে শপথ নেন জওহরলাল নেহেরু।"
+    },
+    "en": {
+      "q": "Who was the first Prime Minister of independent India?",
+      "a": "Jawaharlal Nehru",
+      "b": "Sardar Vallabhbhai Patel",
+      "c": "Dr. Rajendra Prasad",
+      "d": "Lal Bahadur Shastri",
+      "exp": "Jawaharlal Nehru was the first Prime Minister of independent India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 482,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "স্বাধীন ভারতের প্রথম রাষ্ট্রপতি কে ছিলেন?",
+      "a": "ড. রাজেন্দ্র প্রসাদ",
+      "b": "ড. সর্বপল্লী রাধাকৃষ্ণন",
+      "c": "জাকির হুসেন",
+      "d": "সি. রাজাগোপালাচারী",
+      "exp": "ড. রাজেন্দ্র প্রসাদ স্বাধীন ভারতের প্রথম রাষ্ট্রপতি নির্বাচিত হন।"
+    },
+    "en": {
+      "q": "Who was the first President of independent India?",
+      "a": "Dr. Rajendra Prasad",
+      "b": "Dr. S. Radhakrishnan",
+      "c": "Zakir Husain",
+      "d": "C. Rajagopalachari",
+      "exp": "Dr. Rajendra Prasad served as the first President of India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 483,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের সংবিধানের স্থপতি বা জনক কাকে বলা হয়?",
+      "a": "ড. বি. আর. আম্বেদকর",
+      "b": "মহাত্মা গান্ধী",
+      "c": "জওহরলাল নেহেরু",
+      "d": "বি. এন. রাউ",
+      "exp": "খসড়া কমিটির প্রধান ড. ভীমরাও রামজি আম্বেদকরকে সংবিধানে প্রধান কারিগর বলা হয়।"
+    },
+    "en": {
+      "q": "Who is considered the Father of the Indian Constitution?",
+      "a": "Dr. B.R. Ambedkar",
+      "b": "Mahatma Gandhi",
+      "c": "Jawaharlal Nehru",
+      "d": "B.N. Rau",
+      "exp": "Dr. B.R. Ambedkar is recognized as the Father of the Indian Constitution."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 484,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন অরণ্যকে 'পৃথিবীর ফুসফুস' বলা হয়?",
+      "a": "আমাজন বৃষ্টিঅরণ্য",
+      "b": "তাইগা অরণ্য",
+      "c": "কঙ্গো অববাহিকা",
+      "d": "সুন্দরবন",
+      "exp": "পৃথিবীর ২০%-এর বেশি অক্সিজেন যোগান দেওয়ার কারণে আমাজনকে এই নাম দেওয়া হয়।"
+    },
+    "en": {
+      "q": "Which forest is known as the 'Lungs of the Earth'?",
+      "a": "Amazon Rainforest",
+      "b": "Taiga Forest",
+      "c": "Congo Rainforest",
+      "d": "Sundarbans",
+      "exp": "The Amazon Rainforest is often called the Lungs of the Earth for producing vast oxygen."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 485,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "মহাত্মা গান্ধীকে প্রথম 'জাতির জনক' উপাধিতে কে ভূষিত করেন?",
+      "a": "নেতাজি সুভাষচন্দ্র বসু",
+      "b": "রবীন্দ্রনাথ ঠাকুর",
+      "c": "জওহরলাল নেহেরু",
+      "d": "সরোজিনী নাইডু",
+      "exp": "১৯৪৪ সালে সিঙ্গাপুর রেডিও থেকে দেওয়া এক ভাষণে নেতাজি তাঁকে এই উপাধিতে ডাকেন।"
+    },
+    "en": {
+      "q": "Who gave the title 'Father of the Nation' to Mahatma Gandhi?",
+      "a": "Subhas Chandra Bose",
+      "b": "Rabindranath Tagore",
+      "c": "Jawaharlal Nehru",
+      "d": "Sarojini Naidu",
+      "exp": "Subhas Chandra Bose first addressed Mahatma Gandhi as Father of the Nation in 1944."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 486,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের জাতীয় গান 'বন্দে মাতরম' কার রচনা?",
+      "a": "বঙ্কিমচন্দ্র চট্টোপাধ্যায়",
+      "b": "রবীন্দ্রনাথ ঠাকুর",
+      "c": "কাজী নজরুল ইসলাম",
+      "d": "সরোজিনী নাইডু",
+      "exp": "বঙ্কিমচন্দ্রের 'আনন্দমঠ' উপন্যাস থেকে বন্দে মাতরম গানটি নেওয়া হয়েছে।"
+    },
+    "en": {
+      "q": "Who composed the Indian national song 'Vande Mataram'?",
+      "a": "Bankim Chandra Chattopadhyay",
+      "b": "Rabindranath Tagore",
+      "c": "Kazi Nazrul Islam",
+      "d": "Sarojini Naidu",
+      "exp": "Vande Mataram was composed in Sanskritized Bengali by Bankim Chandra Chattopadhyay."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 487,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের জাতীয় সংগীত (জন গণ মন) গাইতে কত সময় লাগে?",
+      "a": "৫২ সেকেন্ড",
+      "b": "৬০ সেকেন্ড",
+      "c": "৪৫ সেকেন্ড",
+      "d": "৫০ সেকেন্ড",
+      "exp": "জাতীয় সংগীত গাওয়ার জন্য নির্দিষ্ট ও নির্ধারিত সময় হলো ৫২ সেকেন্ড।"
+    },
+    "en": {
+      "q": "How long does it take to sing the full version of the Indian National Anthem?",
+      "a": "52 seconds",
+      "b": "60 seconds",
+      "c": "45 seconds",
+      "d": "50 seconds",
+      "exp": "The full duration of playing or singing the national anthem is approximately 52 seconds."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 488,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "ভিটামিন ডি-এর অভাবে শিশুদের কোন রোগ হয়?",
+      "a": "রিকেটস",
+      "b": "বেরিবেরি",
+      "c": "স্কার্ভি",
+      "d": "পেলাগ্রা",
+      "exp": "ভিটামিন ডি ও ক্যালসিয়ামের অভাবে শিশুদের হাড় দুর্বল হয়ে রিকেটস রোগ হয়।"
+    },
+    "en": {
+      "q": "Deficiency of Vitamin D causes which disease?",
+      "a": "Rickets",
+      "b": "Beriberi",
+      "c": "Scurvy",
+      "d": "Pellagra",
+      "exp": "Vitamin D deficiency causes rickets, softening, and weakening of bones in children."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 489,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন অধাতু সাধারণ ঘরের তাপমাত্রায় তরল থাকে?",
+      "a": "ব্রোমিন",
+      "b": "আয়োডিন",
+      "c": "ক্লোরিন",
+      "d": "কার্বন",
+      "exp": "ব্রোমিন একমাত্র অধাতব মৌল যা সাধারণ তাপমাত্রায় তরল রূপ ধারণ করে।"
+    },
+    "en": {
+      "q": "Which non-metal is liquid at room temperature?",
+      "a": "Bromine",
+      "b": "Iodine",
+      "c": "Chlorine",
+      "d": "Carbon",
+      "exp": "Bromine is the only non-metallic element that is liquid at ordinary temperatures."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 490,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "মহাবিদ্রোহ (সিপাহী বিদ্রোহ) কত সালে অনুষ্ঠিত হয়েছিল?",
+      "a": "১৮৫৭",
+      "b": "১৮৪৮",
+      "c": "১৮৮৫",
+      "d": "১৯০৫",
+      "exp": "১৮৫৭ সালে ব্যারাকপুর ও মিরাট থেকে ব্রিটিশদের বিরুদ্ধে এই ঐতিহাসিক বিদ্রোহ শুরু হয়।"
+    },
+    "en": {
+      "q": "In which year did the Great Revolt (Sepoy Mutiny) occur in India?",
+      "a": "1857",
+      "b": "1848",
+      "c": "1885",
+      "d": "1905",
+      "exp": "The Indian Rebellion or Sepoy Mutiny occurred in the year 1857."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 491,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "পশ্চিমবঙ্গের সরকারি রাজ্য পাখি কোনটি?",
+      "a": "শ্বেতকণ্ঠ মাছরাঙা",
+      "b": "চরুই পাখি",
+      "c": "ময়ূর",
+      "d": "নীলকণ্ঠ পাখি",
+      "exp": "White-throated Kingfisher বা শ্বেতকণ্ঠ মাছরাঙা হলো পশ্চিমবঙ্গের রাজ্য পাখি।"
+    },
+    "en": {
+      "q": "What is the official state bird of West Bengal?",
+      "a": "White-throated Kingfisher",
+      "b": "House Sparrow",
+      "c": "Peacock",
+      "d": "Indian Roller",
+      "exp": "The White-throated Kingfisher is the official state bird of West Bengal."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 492,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "পশ্চিমবঙ্গের রাজ্য ফুল কোনটি?",
+      "a": "শিউলি ফুল",
+      "b": "পদ্ম",
+      "c": "গোলাপ",
+      "d": "গাঁদা",
+      "exp": "নাইট-ফ্লাওয়ারিং জেসমিন বা শিউলি (শেফালি) হলো পশ্চিমবঙ্গের স্বীকৃত রাজ্য ফুল।"
+    },
+    "en": {
+      "q": "What is the state flower of West Bengal?",
+      "a": "Night-flowering Jasmine (Shiuli)",
+      "b": "Lotus",
+      "c": "Rose",
+      "d": "Marigold",
+      "exp": "Night-flowering Jasmine (Shiuli) is the state flower of West Bengal."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 493,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের কোন রাজ্যের উপকূলরেখা (Coastline) দীর্ঘতম?",
+      "a": "গুজরাট",
+      "b": "অন্ধ্রপ্রদেশ",
+      "c": "তামিলনাড়ু",
+      "d": "মহারাষ্ট্র",
+      "exp": "প্রায় ১৬০০ কিমি দীর্ঘ সমুদ্র উপকূলের জন্য গুজরাট প্রথম স্থানে।"
+    },
+    "en": {
+      "q": "Which Indian state has the longest coastline?",
+      "a": "Gujarat",
+      "b": "Andhra Pradesh",
+      "c": "Tamil Nadu",
+      "d": "Maharashtra",
+      "exp": "Gujarat has the longest mainland coastline in India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 494,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "বায়ুমণ্ডলের কোন স্তরে ওজোন (O3) স্তর অবস্থান করে?",
+      "a": "স্ট্র্যাটোস্ফিয়ার",
+      "b": "ট্রপোস্ফিয়ার",
+      "c": "মেসোস্ফিয়ার",
+      "d": "এক্সোস্ফিয়ার",
+      "exp": "সূর্যের ক্ষতিকারক অতিবেগুনি রশ্নি থেকে পৃথিবীর জীবজগতকে রক্ষা করে স্ট্র্যাটোস্ফিয়ার স্তরের ওজোন।"
+    },
+    "en": {
+      "q": "Which layer of the atmosphere contains the Ozone layer?",
+      "a": "Stratosphere",
+      "b": "Troposphere",
+      "c": "Mesosphere",
+      "d": "Exosphere",
+      "exp": "The ozone layer is mainly found in the lower portion of the stratosphere."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 495,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "তড়িৎ প্রবাহমাত্রার (Electric Current) SI একক কী?",
+      "a": "অ্যাম্পিয়ার (Ampere)",
+      "b": "ভোল্ট",
+      "c": "ওহম",
+      "d": "ওয়াট",
+      "exp": "তড়িৎ প্রবাহের আন্তর্জাতিক একক হলো অ্যাম্পিয়ার (A)।"
+    },
+    "en": {
+      "q": "What is the SI unit of Electric Current?",
+      "a": "Ampere",
+      "b": "Volt",
+      "c": "Ohm",
+      "d": "Watt",
+      "exp": "The Ampere is the base SI unit of electric current."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 496,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "বায়ুমণ্ডলের চাপ মাপার জন্য কোন যন্ত্র ব্যবহার করা হয়?",
+      "a": "ব্যারোমিটার",
+      "b": "থার্মোমিটার",
+      "c": "হাইগ্রোমিটার",
+      "d": "অ্যানিমোমিটার",
+      "exp": "টরিচেলির উদ্ভাবিত ব্যারোমিটার দিয়ে বায়ুর চাপ মাপা হয়।"
+    },
+    "en": {
+      "q": "Which instrument is used to measure Atmospheric Pressure?",
+      "a": "Barometer",
+      "b": "Thermometer",
+      "c": "Hygrometer",
+      "d": "Anemometer",
+      "exp": "A barometer is a scientific instrument used to measure atmospheric pressure."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 497,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "দুধের বিশুদ্ধতা নির্ণয়ে কোন যন্ত্র ব্যবহৃত হয়?",
+      "a": "ল্যাকটোমিটার",
+      "b": "হাইড্রোমিটার",
+      "c": "রিফ্যাক্টোমিটার",
+      "d": "ব্যারোমিটার",
+      "exp": "দুধে জলের মিশ্রণ বা আপেক্ষিক ঘনত্ব মেপে ল্যাকটোমিটার দিয়ে বিশুদ্ধতা জানা যায়।"
+    },
+    "en": {
+      "q": "Which instrument is used to measure purity of Milk?",
+      "a": "Lactometer",
+      "b": "Hydrometer",
+      "c": "Refractometer",
+      "d": "Barometer",
+      "exp": "A lactometer is used to check the purity of milk by measuring its density."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 498,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "বসন্ত রোগের (Smallpox) প্রতিষেধক টিকা কে আবিষ্কার করেন?",
+      "a": "এডওয়ার্ড জেনার",
+      "b": "লুই পাস্তুর",
+      "c": "জোনাস সল্ক",
+      "d": "রবার্ট কখ",
+      "exp": "১৭৯৬ সালে এডওয়ার্ড জেনার বিশ্বের প্রথম স্মলপক্সের ভ্যাকসিন তৈরি করেন।"
+    },
+    "en": {
+      "q": "Who discovered the vaccine for Smallpox?",
+      "a": "Edward Jenner",
+      "b": "Louis Pasteur",
+      "c": "Jonas Salk",
+      "d": "Robert Koch",
+      "exp": "Edward Jenner discovered the smallpox vaccine in 1796."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 499,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "খাবার লবণের রাসায়নিক নাম কী?",
+      "a": "সোডিয়াম ক্লোরাইড",
+      "b": "সোডিয়াম বাইকার্বোনেট",
+      "c": "সোডিয়াম কার্বোনেট",
+      "d": "ক্যালসিয়াম ক্লোরাইড",
+      "exp": "সাধারণ খাবার লবণের রাসায়নিক সংকেত NaCl বা সোডিয়াম ক্লোরাইড।"
+    },
+    "en": {
+      "q": "What is the chemical name of common salt?",
+      "a": "Sodium Chloride",
+      "b": "Sodium Bicarbonate",
+      "c": "Sodium Carbonate",
+      "d": "Calcium Chloride",
+      "exp": "Common table salt is chemically known as Sodium Chloride (NaCl)."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 500,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "লেবুতে কোন অ্যাসিড উপস্থিত থাকে?",
+      "a": "সাইট্রিক অ্যাসিড",
+      "b": "অ্যাসিটিক অ্যাসিড",
+      "c": "টারটারিক অ্যাসিড",
+      "d": "ল্যাকটিক অ্যাসিড",
+      "exp": "লেবু জাতীয় টক ফলে প্রচুর সাইট্রিক অ্যাসিড থাকে।"
+    },
+    "en": {
+      "q": "Which acid is present in lemon?",
+      "a": "Citric Acid",
+      "b": "Acetic Acid",
+      "c": "Tartaric Acid",
+      "d": "Lactic Acid",
+      "exp": "Lemons contain a high concentration of citric acid."
+    },
+    "correct": "a"
+  }
+]
+[
+  {
+    "id": 501,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন ভিটামিনের অভাবে রিকেটস রোগ হয়?",
+      "a": "ভিটামিন এ",
+      "b": "ভিটামিন বি",
+      "c": "ভিটামিন সি",
+      "d": "ভিটামিন ডি",
+      "exp": "ভিটামিন ডি-এর অভাবে শিশুদের হাড় দুর্বল হয়ে রিকেটস রোগ দেখা দেয়।"
+    },
+    "en": {
+      "q": "Which vitamin deficiency causes Rickets?",
+      "a": "Vitamin A",
+      "b": "Vitamin B",
+      "c": "Vitamin C",
+      "d": "Vitamin D",
+      "exp": "Deficiency of Vitamin D leads to weakening of bones causing Rickets in children."
+    },
+    "correct": "d"
+  },
+  {
+    "id": 502,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের দীর্ঘতম নদী কোনটি?",
+      "a": "যমুনা",
+      "b": "গঙ্গা",
+      "c": "গো দাবরী",
+      "d": "ব্রহ্মপুত্র",
+      "exp": "গঙ্গা হলো ভারতের দীর্ঘতম নদী, যার দৈর্ঘ্য প্রায় ২,৫২৫ কিলোমিটার।"
+    },
+    "en": {
+      "q": "Which is the longest river in India?",
+      "a": "Yamuna",
+      "b": "Ganga",
+      "c": "Godavari",
+      "d": "Brahmaputra",
+      "exp": "The Ganga is the longest river flowing through India, spanning about 2,525 km."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 503,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "পলাশীর যুদ্ধ কত সালে অনুষ্ঠিত হয়েছিল?",
+      "a": "১৭৫৭",
+      "b": "১৭৬৪",
+      "c": "১৮৫৭",
+      "d": "১৭০৭",
+      "exp": "১৭৫৭ সালের ২৩ জুন সিরাজউদ্দৌলা ও ব্রিটিশ ইস্ট ইন্ডিয়া কোম্পানির মধ্যে পলাশীর যুদ্ধ হয়।"
+    },
+    "en": {
+      "q": "In which year was the Battle of Plassey fought?",
+      "a": "1757",
+      "b": "1764",
+      "c": "1857",
+      "d": "1707",
+      "exp": "The Battle of Plassey was fought on June 23, 1757."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 504,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পেনিসিলিন কে আবিষ্কার করেন?",
+      "a": "লুই পাস্তুর",
+      "b": "অ্যালেন টিউরিং",
+      "c": "অ্যালেকজান্ডার ফ্লেমিং",
+      "d": "এডওয়ার্ড জেনার",
+      "exp": "স্যার অ্যালেকজান্ডার ফ্লেমিং ১৯২৮ সালে প্রথম জীবন রক্ষাকারী অ্যান্টিবায়োটিক পেনিসিলিন আবিষ্কার করেন।"
+    },
+    "en": {
+      "q": "Who discovered Penicillin?",
+      "a": "Louis Pasteur",
+      "b": "Alan Turing",
+      "c": "Alexander Fleming",
+      "d": "Edward Jenner",
+      "exp": "Alexander Fleming discovered penicillin in 1928."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 505,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের সিলিকন ভ্যালি কোন শহরকে বলা হয়?",
+      "a": "হায়দরাবাদ",
+      "b": "বেঙ্গালুরু",
+      "c": "মুম্বাই",
+      "d": "পুনে",
+      "exp": "ভারতের তথ্যপ্রযুক্তি শিল্পের প্রধান কেন্দ্র হওয়ায় বেঙ্গালুরুকে ভারতের সিলিকন ভ্যালি বলা হয়।"
+    },
+    "en": {
+      "q": "Which city is known as the Silicon Valley of India?",
+      "a": "Hyderabad",
+      "b": "Bengaluru",
+      "c": "Mumbai",
+      "d": "Pune",
+      "exp": "Bengaluru is called the Silicon Valley of India because of its role as the nation's leading IT exporter."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 506,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "বায়ুমণ্ডলে কোন গ্যাসের পরিমাণ সবচেয়ে বেশি?",
+      "a": "অক্সিজেন",
+      "b": "নাইট্রোজেন",
+      "c": "কার্বন ডাই অক্সাইড",
+      "d": "আর্গন",
+      "exp": "বায়ুমণ্ডলে নাইট্রোজেনের পরিমাণ সবচেয়ে বেশি, যা প্রায় ৭৮.০৮ শতাংশ।"
+    },
+    "en": {
+      "q": "Which gas is most abundant in the Earth's atmosphere?",
+      "a": "Oxygen",
+      "b": "Nitrogen",
+      "c": "Carbon Dioxide",
+      "d": "Argon",
+      "exp": "Nitrogen makes up roughly 78.08% of Earth's atmosphere."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 507,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "জালিয়ানওয়ালাবাগ হত্যাকাণ্ড কোথায় ঘটেছিল?",
+      "a": "লাহোর",
+      "b": "অমৃতসর",
+      "c": "দিল্লি",
+      "d": "কানপুর",
+      "exp": "১৯১৯ সালের ১৩ই এপ্রিল পাঞ্জাবের অমৃতসরে এই ভয়াবহ হত্যাকাণ্ড ঘটেছিল।"
+    },
+    "en": {
+      "q": "Where did the Jallianwala Bagh massacre take place?",
+      "a": "Lahore",
+      "b": "Amritsar",
+      "c": "Delhi",
+      "d": "Kanpur",
+      "exp": "The massacre took place on April 13, 1919, in Amritsar, Punjab."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 508,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের ক্ষুদ্রতম হাড় কোনটি?",
+      "a": "ফি মার",
+      "b": "স্টেপিস",
+      "c": "রেডিয়াস",
+      "d": "টিবিয়া",
+      "exp": "মানুষের কানের মধ্যবর্তী অংশে অবস্থিত 'স্টেপিস' হলো মানবদেহের ক্ষুদ্রতম হাড়।"
+    },
+    "en": {
+      "q": "Which is the smallest bone in the human body?",
+      "a": "Femur",
+      "b": "Stapes",
+      "c": "Radius",
+      "d": "Tibia",
+      "exp": "The Stapes, located in the middle ear, is the smallest bone in the human body."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 509,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "নোবেল পুরস্কার প্রদানকারী দেশ কোনটি?",
+      "a": "সুইডেন",
+      "b": "যুক্তরাষ্ট্র",
+      "c": "যুক্তরাজ্য",
+      "d": "ফ্রান্স",
+      "exp": "নোবেল শান্তি পুরস্কার ছাড়া বাকি সমস্ত ক্যাটাগরির পুরস্কার নোবেল ফাউন্ডেশন, সুইডেন থেকে দেওয়া হয়।"
+    },
+    "en": {
+      "q": "Which country awards the Nobel Prizes (except Peace)?",
+      "a": "Sweden",
+      "b": "United States",
+      "c": "United Kingdom",
+      "d": "France",
+      "exp": "The Nobel Prizes (excluding the Peace Prize) are awarded in Sweden."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 510,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের বৃহত্তম মহাসাগর কোনটি?",
+      "a": "আটলান্টিক মহাসাগর",
+      "b": "ভারত মহাসাগর",
+      "c": "প্রশান্ত মহাসাগর",
+      "d": "উত্তর মহাসাগর",
+      "exp": "প্রশান্ত মহাসাগর হলো আয়তন এবং গভীরতা উভয় দিক দিয়েই পৃথিবীর বৃহত্তম মহাসাগর।"
+    },
+    "en": {
+      "q": "Which is the largest ocean in the world?",
+      "a": "Atlantic Ocean",
+      "b": "Indian Ocean",
+      "c": "Pacific Ocean",
+      "d": "Arctic Ocean",
+      "exp": "The Pacific Ocean is the largest and deepest ocean on Earth."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 511,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পারদের রাসায়নিক সংকেত কী?",
+      "a": "Hg",
+      "b": "Pb",
+      "c": "Ag",
+      "d": "Au",
+      "exp": "পারদের ল্যাটিন নাম Hydrargyrum, তাই এর রাসায়নিক সংকেত হলো Hg।"
+    },
+    "en": {
+      "q": "What is the chemical symbol for Mercury?",
+      "a": "Hg",
+      "b": "Pb",
+      "c": "Ag",
+      "d": "Au",
+      "exp": "The symbol Hg comes from its Greek name Hydrargyrum."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 512,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "মৌর্য রাজবংশের প্রতিষ্ঠাতা কে ছিলেন?",
+      "a": "সম্রাট অশোক",
+      "b": "চন্দ্রগুপ্ত মৌর্য",
+      "c": "বিন্দুসার",
+      "d": "বিম্বিসার",
+      "exp": "চাণক্যের সহায়তায় ধননন্দকে পরাজিত করে চন্দ্রগুপ্ত মৌর্য মৌর্য বংশ প্রতিষ্ঠা করেন।"
+    },
+    "en": {
+      "q": "Who was the founder of the Maurya Dynasty?",
+      "a": "Ashoka",
+      "b": "Chandragupta Maurya",
+      "c": "Bindusara",
+      "d": "Bimbisara",
+      "exp": "Chandragupta Maurya founded the Mauryan Dynasty with the help of Chanakya."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 513,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কাজিরাঙ্গা জাতীয় উদ্যান কিসের জন্য বিখ্যাত?",
+      "a": "রয়্যাল বেঙ্গল টাইগার",
+      "b": "একশৃঙ্গ গণ্ডার",
+      "c": "হাতি",
+      "d": "সিংহ",
+      "exp": "অসমের কাজিরাঙ্গা জাতীয় উদ্যান বিশ্বের বৃহত্তম একশৃঙ্গ গণ্ডারের বাসস্থান।"
+    },
+    "en": {
+      "q": "What is Kaziranga National Park famous for?",
+      "a": "Royal Bengal Tiger",
+      "b": "One-horned Rhinoceros",
+      "c": "Elephant",
+      "d": "Lion",
+      "exp": "Kaziranga National Park in Assam is famous for the great Indian one-horned rhinoceros."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 514,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "নিউক্লিয়াসের আবিষ্কারক কে?",
+      "a": "জে জে থমসন",
+      "b": "আর্নেস্ট রাদারফোর্ড",
+      "c": "জেমস চ্যাডউইক",
+      "d": "জন ডাল্টন",
+      "exp": "১৯১১ সালে আর্নেস্ট রাদারফোর্ড পরমাণুর কেন্দ্রস্থলে নিউক্লিয়াস আবিষ্কার করেন।"
+    },
+    "en": {
+      "q": "Who discovered the atomic nucleus?",
+      "a": "J.J. Thomson",
+      "b": "Ernest Rutherford",
+      "c": "James Chadwick",
+      "d": "John Dalton",
+      "exp": "Ernest Rutherford discovered the nucleus of the atom in 1911."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 515,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের সর্বোচ্চ বেসামরিক পুরস্কার কোনটি?",
+      "a": "পদ্মবিভূষণ",
+      "b": "পদ্মভূষণ",
+      "c": "ভারত রত্ন",
+      "d": "পরমবীর চক্র",
+      "exp": "১৯৫৪ সাল থেকে ভারত রত্ন সম্মানটি ভারতের সর্বোচ্চ বেসামরিক সম্মাননা হিসেবে দেওয়া হয়।"
+    },
+    "en": {
+      "q": "Which is the highest civilian award in India?",
+      "a": "Padma Vibhushan",
+      "b": "Padma Bhushan",
+      "c": "Bharat Ratna",
+      "d": "Param Vir Chakra",
+      "exp": "Bharat Ratna is the highest civilian award of the Republic of India."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 516,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন গ্যাসটি 'হাসানোর গ্যাস' বা Laughing Gas নামে পরিচিত?",
+      "a": "নাইট্রাস অক্সাইড",
+      "b": "নাইট্রোজেন ডাই অক্সাইড",
+      "c": "অ্যামোনিয়া",
+      "d": "সালফার ডাই অক্সাইড",
+      "exp": "নাইট্রাস অক্সাইড (N2O) নিঃশ্বাসের মাধ্যমে শরীরে গেলে মৃদু হাসির উদ্রেক ঘটায়।"
+    },
+    "en": {
+      "q": "Which gas is known as 'Laughing Gas'?",
+      "a": "Nitrous Oxide",
+      "b": "Nitrogen Dioxide",
+      "c": "Ammonia",
+      "d": "Sulphur Dioxide",
+      "exp": "Nitrous Oxide (N2O) is commonly referred to as laughing gas."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 517,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "আজাদ হিন্দ ফৌজ কে প্রতিষ্ঠা করেন?",
+      "a": "নেতাজি সুভাষচন্দ্র বসু",
+      "b": "রাসবিহারী বসু",
+      "c": "ক্যাপ্টেন মোহন সিং",
+      "d": "লালা হরদয়াল",
+      "exp": "১৯৪২ সালে দক্ষিণ-পূর্ব এশিয়ায় ক্যাপ্টেন মোহন সিং প্রথম আজাদ হিন্দ ফৌজ গঠন করেছিলেন।"
+    },
+    "en": {
+      "q": "Who originally established the Indian National Army (Azad Hind Fauj)?",
+      "a": "Subhas Chandra Bose",
+      "b": "Rash Behari Bose",
+      "c": "Captain Mohan Singh",
+      "d": "Lala Har Dayal",
+      "exp": "Captain Mohan Singh first founded the Indian National Army in 1942."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 518,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "পৃথিবীর ক্ষুদ্রতম দেশ কোনটি?",
+      "a": "মোনাকো",
+      "b": "ভ্যাটিকান সিটি",
+      "c": "সান মারিনো",
+      "d": "মালদ্বীপ",
+      "exp": "ভ্যাটিকান সিটি মাত্র ০.৪৯ বর্গকিলোমিটার আয়তন নিয়ে বিশ্বের ক্ষুদ্রতম স্বাধীন রাষ্ট্র।"
+    },
+    "en": {
+      "q": "Which is the smallest country in the world?",
+      "a": "Monaco",
+      "b": "Vatican City",
+      "c": "San Marino",
+      "d": "Maldives",
+      "exp": "Vatican City is the smallest independent state in the world by both area and population."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 519,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোষের 'আত্মঘাতী থলি' (Suicide Bag) কাকে বলা হয়?",
+      "a": "লাইসোজোম",
+      "b": "রাইবোজোম",
+      "c": "মাইটোকন্ড্রিয়া",
+      "d": "গলগি বডি",
+      "exp": "লাইসোজোম পুরাতন বা ক্ষতিগ্রস্ত কোষকে নিজস্ব উৎসেচক দিয়ে ধ্বংস করতে পারে বলে একে আত্মঘাতী থলি বলা হয়।"
+    },
+    "en": {
+      "q": "Which organelle is known as the 'Suicide Bag' of the cell?",
+      "a": "Lysosome",
+      "b": "Ribosome",
+      "c": "Mitochondria",
+      "d": "Golgi apparatus",
+      "exp": "Lysosomes are called suicide bags because they contain digestive enzymes that can destroy the cell if it gets damaged."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 520,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের কোন রাজ্য 'উদীয়মান সূর্যের দেশ' বা রাজ্য হিসেবে পরিচিত?",
+      "a": "অসাম",
+      "b": "অরুণাচল প্রদেশ",
+      "c": "সিকিম",
+      "d": "নাগাল্যান্ড",
+      "exp": "ভারতের একদম পূর্বে অবস্থিত হওয়ায় অরুণাচল প্রদেশে প্রথম সূর্যোদয় দেখা যায়।"
+    },
+    "en": {
+      "q": "Which Indian state is known as the 'Land of the Rising Sun'?",
+      "a": "Assam",
+      "b": "Arunachal Pradesh",
+      "c": "Sikkim",
+      "d": "Nagaland",
+      "exp": "Arunachal Pradesh is easternmost state of India where the sun rises first."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 521,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "শুষ্ক বরফ (Dry Ice) কী দিয়ে তৈরি?",
+      "a": "জমাটবদ্ধ জল",
+      "b": "কঠিন কার্বন ডাই অক্সাইড",
+      "c": "কঠিন নাইট্রোজেন",
+      "d": "জমাট মেথেন",
+      "exp": "কঠিন কার্বন ডাই অক্সাইডকে শুষ্ক বরফ বা ড্রাই আইস বলা হয়।"
+    },
+    "en": {
+      "q": "What is Dry Ice made of?",
+      "a": "Frozen Water",
+      "b": "Solid Carbon Dioxide",
+      "c": "Solid Nitrogen",
+      "d": "Frozen Methane",
+      "exp": "Dry Ice is the solid form of carbon dioxide."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 522,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ফরাসি বিপ্লব কত সালে শুরু হয়েছিল?",
+      "a": "১৭৭৬",
+      "b": "১৭৮৯",
+      "c": "১৮১৫",
+      "d": "১৭৯৯",
+      "exp": "১৭৮৯ সালে প্যারিসের বাস্তিল দুর্গ পতনের মাধ্যমে ফরাসি বিপ্লব সূচিত হয়।"
+    },
+    "en": {
+      "q": "In which year did the French Revolution begin?",
+      "a": "1776",
+      "b": "1789",
+      "c": "1815",
+      "d": "1799",
+      "exp": "The French Revolution began in 1789 with the storming of the Bastille."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 523,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "আইফেল টাওয়ার কোন শহরে অবস্থিত?",
+      "a": "লন্ডন",
+      "b": "নিউ ইয়র্ক",
+      "c": "প্যারিস",
+      "d": "রোম",
+      "exp": "আইফেল টাওয়ার ফ্রান্সে প্যারিস শহরে অবস্থিত একটি বিখ্যাত স্থাপত্য।"
+    },
+    "en": {
+      "q": "In which city is the Eiffel Tower located?",
+      "a": "London",
+      "b": "New York",
+      "c": "Paris",
+      "d": "Rome",
+      "exp": "The Eiffel Tower is a wrought-iron lattice tower on the Champ de Mars in Paris, France."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 524,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের স্বাভাবিক তাপমাত্রা কত ফারেনহাইট?",
+      "a": "৯৬.৪° F",
+      "b": "৯৮.৬° F",
+      "c": "১০০° F",
+      "d": "৯৭.৫° F",
+      "exp": "সুস্থ মানুষের দেহের গড় স্বাভাবিক তাপমাত্রা প্রায় ৯৮.৬ ডিগ্রি ফারেনহাইট (বা ৩৭ ডিগ্রি সেলসিয়াস)।"
+    },
+    "en": {
+      "q": "What is the normal human body temperature in Fahrenheit?",
+      "a": "96.4° F",
+      "b": "98.6° F",
+      "c": "100° F",
+      "d": "97.5° F",
+      "exp": "The average normal body temperature is accepted as 98.6°F (37°C)."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 525,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন নদীকে 'দক্ষিণ ভারতের গঙ্গা' বলা হয়?",
+      "a": "কৃষ্ণা",
+      "b": "কাবেরী",
+      "c": "গো দাবরী",
+      "d": "নর্মদা",
+      "exp": "দৈর্ঘ্য ও সাংস্কৃতিক গুরুত্বের কারণে গোদাবরী নদীকে দক্ষিণ ভারতের গঙ্গা বলা হয়।"
+    },
+    "en": {
+      "q": "Which river is known as the 'Ganges of South India'?",
+      "a": "Krishna",
+      "b": "Kaveri",
+      "c": "Godavari",
+      "d": "Narmada",
+      "exp": "Godavari is often referred to as Dakshin Ganga (Ganges of the South)."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 526,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "উজ্জ্বলতম তারা কোনটি?",
+      "a": "ধ্রুবতারা",
+      "b": "লুব্ধক (Sirius)",
+      "c": "সূর্য",
+      "d": "প্রক্সিমা সেন্টাউরি",
+      "exp": "রাতের আকাশে দৃশ্যমান নক্ষত্রগুলোর মধ্যে লুব্ধক (Sirius) সবচেয়ে উজ্জ্বল।"
+    },
+    "en": {
+      "q": "Which is the brightest star in the night sky?",
+      "a": "North Star",
+      "b": "Sirius",
+      "c": "Sun",
+      "d": "Proxima Centauri",
+      "exp": "Sirius is the brightest star in the night sky as seen from Earth."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 527,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "মহাত্মা গান্ধী কবে ডান্ডি অভিযান শুরু করেছিলেন?",
+      "a": "১৯২০",
+      "b": "১৯৩০",
+      "c": "১৯৪২",
+      "d": "১৯১৫",
+      "exp": "১৯৩০ সালের ১২ মার্চ গান্ধীজি লবণ আইন অমান্য করতে ডান্ডি যাত্রা শুরু করেন।"
+    },
+    "en": {
+      "q": "In which year did Mahatma Gandhi start the Dandi March?",
+      "a": "1920",
+      "b": "1930",
+      "c": "1942",
+      "d": "1915",
+      "exp": "Mahatma Gandhi began the Dandi Salt March on March 12, 1930."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 528,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের দীর্ঘতম প্রাচীর কোনটি?",
+      "a": "চীনের প্রাচীর",
+      "b": "বার্লিন প্রাচীর",
+      "c": "ক্রেমলিন প্রাচীর",
+      "d": "কোদাইকানাল প্রাচীর",
+      "exp": "চীনের মহাপ্রাচীর (Great Wall of China) হলো বিশ্বের দীর্ঘতম কৃত্রিম প্রাচীর।"
+    },
+    "en": {
+      "q": "Which is the longest wall in the world?",
+      "a": "Great Wall of China",
+      "b": "Berlin Wall",
+      "c": "Kremlin Wall",
+      "d": "Kodaikanal Wall",
+      "exp": "The Great Wall of China is the longest man-made structure in the world."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 529,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "ইলেকট্রিক বাল্বের ভেতরে কোন গ্যাস থাকে?",
+      "a": "অক্সিজেন",
+      "b": "হাইড্রোজেন",
+      "c": "আর্গন",
+      "d": "কার্বন ডাই অক্সাইড",
+      "exp": "ফিলামেন্টের জারণ রোধ করতে বাল্বের ভেতরে নিষ্ক্রিয় গ্যাস আর্গন বা নাইট্রোজেন ব্যবহার করা হয়।"
+    },
+    "en": {
+      "q": "Which gas is filled inside an electric bulb?",
+      "a": "Oxygen",
+      "b": "Hydrogen",
+      "c": "Argon",
+      "d": "Carbon Dioxide",
+      "exp": "Argon is an inert gas used in electric bulbs to prevent the filament from burning out."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 530,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "অস্ট্রেলিয়ার রাজধানী শহরের নাম কী?",
+      "a": "সিডনি",
+      "b": "মেলবোর্ন",
+      "c": "ক্যানবেরা",
+      "d": "পার্থ",
+      "exp": "অনেক অনেকে সিডনি ভাবলেও ক্যানবেরা হলো অস্ট্রেলিয়ার মূল রাজধানী।"
+    },
+    "en": {
+      "q": "What is the capital city of Australia?",
+      "a": "Sydney",
+      "b": "Melbourne",
+      "c": "Canberra",
+      "d": "Perth",
+      "exp": "Canberra is the official capital city of Australia."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 531,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "উদ্ভিদ কোষে দেখা যায় কিন্তু প্রাণী কোষে অনুপস্থিত কোনটি?",
+      "a": "কোষ প্রাচীর",
+      "b": "কোষ পর্দা",
+      "c": "সাইটোপ্লাজম",
+      "d": "মাইটোকন্ড্রিয়া",
+      "exp": "সেলুলোজ দিয়ে তৈরি শক্ত কোষ প্রাচীর কেবল উদ্ভিদ কোষে থাকে, প্রাণী কোষে থাকে না।"
+    },
+    "en": {
+      "q": "Which structure is present in plant cells but absent in animal cells?",
+      "a": "Cell Wall",
+      "b": "Cell Membrane",
+      "c": "Cytoplasm",
+      "d": "Mitochondria",
+      "exp": "Plant cells have a rigid cell wall, which is absent in animal cells."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 532,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "সিন্ধু সভ্যতার সবচেয়ে বড় বন্দর কোনটি ছিল?",
+      "a": "হরপ্পা",
+      "b": "মহেঞ্জোদাড়ো",
+      "c": "লোথাল",
+      "d": "কালিবঙ্গান",
+      "exp": "গুজরাটে অবস্থিত লোথাল ছিল সিন্ধু সভ্যতার প্রাচীনতম প্রথিতযশা সমুদ্র বন্দর।"
+    },
+    "en": {
+      "q": "Which was the major port city of the Indus Valley Civilization?",
+      "a": "Harappa",
+      "b": "Mohenjo-daro",
+      "c": "Lothal",
+      "d": "Kalibangan",
+      "exp": "Lothal in Gujarat was one of the prominent ports of the Indus Valley Civilization."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 533,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন মহাদেশকে 'অন্ধকারাচ্ছন্ন মহাদেশ' বলা হত?",
+      "a": "এশিয়া",
+      "b": "আফ্রিকা",
+      "c": "দক্ষিণ আমেরিকা",
+      "d": "অস্ট্রেলিয়া",
+      "exp": "দীর্ঘদিন অজানা এবং অনাবিষ্কৃত অঞ্চল থাকায় আফ্রিকাকে অন্ধকারাচ্ছন্ন মহাদেশ বলা হতো।"
+    },
+    "en": {
+      "q": "Which continent was historically known as the 'Dark Continent'?",
+      "a": "Asia",
+      "b": "Africa",
+      "c": "South America",
+      "d": "Australia",
+      "exp": "Africa was historically called the Dark Continent due to lack of European knowledge about its interior."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 534,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "রক্ত তঞ্চনে সাহায্য করে কোন ভিটামিন?",
+      "a": "ভিটামিন এ",
+      "b": "ভিটামিন সি",
+      "c": "ভিটামিন কে",
+      "d": "ভিটামিন ই",
+      "exp": "ভিটামিন কে রক্ত জমাট বাঁধার প্রয়োজনীয় প্রোটিন প্রথ্রম্বিন উৎপাদনে সাহায্য করে।"
+    },
+    "en": {
+      "q": "Which vitamin helps in blood clotting?",
+      "a": "Vitamin A",
+      "b": "Vitamin C",
+      "c": "Vitamin K",
+      "d": "Vitamin E",
+      "exp": "Vitamin K plays a critical role in helping the blood clot to prevent excessive bleeding."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 535,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "আসামের রাজ্য রাজধানী কোনটি?",
+      "a": "গৌহাটি",
+      "b": "দিসপুর",
+      "c": "শিলং",
+      "d": "জোরহাট",
+      "exp": "অসমের দিসপুর হলো রাজ্যটির বর্তমান রাজধানী।"
+    },
+    "en": {
+      "q": "What is the capital city of Assam?",
+      "a": "Guwahati",
+      "b": "Dispur",
+      "c": "Shillong",
+      "d": "Jorhat",
+      "exp": "Dispur is the capital of the northeastern Indian state of Assam."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 536,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন যন্ত্রের সাহায্যে রক্তচাপ মাপা হয়?",
+      "a": "ব্যারোমিটার",
+      "b": "স্ফিগমোম্যানোমিটার",
+      "c": "থার্মোমিটার",
+      "d": "স্ট্রেথোস্কোপ",
+      "exp": "ধমনীর রক্তচাপ সঠিকভাবে পরিমাপের জন্য স্ফিগমোম্যানোমিটার ব্যবহৃত হয়।"
+    },
+    "en": {
+      "q": "Which instrument is used to measure Blood Pressure?",
+      "a": "Barometer",
+      "b": "Sphygmomanometer",
+      "c": "Thermometer",
+      "d": "Stethoscope",
+      "exp": "A Sphygmomanometer is used to measure blood pressure."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 537,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন মুঘল সম্রাট 'জিন্দাপীর' নামে পরিচিত ছিলেন?",
+      "a": "আকবর",
+      "b": "শাহজাহান",
+      "c": "আওরঙ্গজেব",
+      "d": "বা বর",
+      "exp": "আওরঙ্গজেবের সাধারণ ও নীতিগত জীবনযাত্রার জন্য তাঁকে 'জিন্দাপীর' বলা হতো।"
+    },
+    "en": {
+      "q": "Which Mughal Emperor was known as 'Zinda Pir' (Living Saint)?",
+      "a": "Akbar",
+      "b": "Shah Jahan",
+      "c": "Aurangzeb",
+      "d": "Babur",
+      "exp": "Aurangzeb was often called 'Zinda Pir' due to his simple and orthodox lifestyle."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 538,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের মস্তিষ্ক কাকে বলা হয়?",
+      "a": "RAM",
+      "b": "Hard Disk",
+      "c": "CPU",
+      "d": "Motherboard",
+      "exp": "CPU (Central Processing Unit) কম্পিউটারের সকল নির্দেশ ও গাণিতিক কাজ পরিচালনা করে।"
+    },
+    "en": {
+      "q": "Which is known as the 'Brain of the Computer'?",
+      "a": "RAM",
+      "b": "Hard Disk",
+      "c": "CPU",
+      "d": "Motherboard",
+      "exp": "The Central Processing Unit (CPU) is considered the brain of a computer."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 539,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "শব্দের গতিবেগ সবচেয়ে বেশি কোন মাধ্যমে?",
+      "a": "বায়ু মাধ্যম",
+      "b": "জল মাধ্যম",
+      "c": "কঠিন মাধ্যম",
+      "d": "শূন্য মাধ্যম",
+      "exp": "ঘনত্ব বেশি থাকায় কঠিন মাধ্যমে (যেমন লোহা) শব্দের দ্রুতি সবচেয়ে বেশি হয়।"
+    },
+    "en": {
+      "q": "Through which medium does sound travel fastest?",
+      "a": "Air",
+      "b": "Water",
+      "c": "Solid",
+      "d": "Vacuum",
+      "exp": "Sound waves travel fastest through solid materials because molecules are tightly packed."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 540,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের সবচেয়ে বড় দ্বীপ কোনটি?",
+      "a": "গ্রিনল্যান্ড",
+      "b": "মাদাগাস্কার",
+      "c": "সুমাত্রা",
+      "d": "বোর্নিও",
+      "exp": "গ্রিনল্যান্ড হলো চারদিক জলবেষ্টিত পৃথিবীর বৃহত্তম ভৌগোলিক দ্বীপ।"
+    },
+    "en": {
+      "q": "Which is the largest island in the world?",
+      "a": "Greenland",
+      "b": "Madagascar",
+      "c": "Sumatra",
+      "d": "Borneo",
+      "exp": "Greenland is the largest non-continental island in the world."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 541,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সূর্যের আলো থেকে পাওয়া যায় কোন ভিটামিন?",
+      "a": "ভিটামিন এ",
+      "b": "ভিটামিন বি",
+      "c": "ভিটামিন সি",
+      "d": "ভিটামিন ডি",
+      "exp": "সূর্যের আল্ট্রাভায়োলেট রশ্নি মানব ত্বকে প্রবেশ করলে দেহে ভিটামিন ডি তৈরি হয়।"
+    },
+    "en": {
+      "q": "Which vitamin is synthesized by the body in sunlight?",
+      "a": "Vitamin A",
+      "b": "Vitamin B",
+      "c": "Vitamin C",
+      "d": "Vitamin D",
+      "exp": "Human skin produces Vitamin D when exposed to ultraviolet rays from the Sun."
+    },
+    "correct": "d"
+  },
+  {
+    "id": 542,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "সিপাহী বিদ্রোহ বা মহাবিদ্রোহ কত সালে শুরু হয়েছিল?",
+      "a": "১৮৫৭",
+      "b": "১৮৮৫",
+      "c": "১৯০৫",
+      "d": "১৮২৪",
+      "exp": "১৮৫৭ সালে ব্যারাকপুরে মঙ্গলা পাণ্ডের মাধ্যমে ভারতীয় সিপাহীদের এই ঐতিহাসিক বিদ্রোহ শুরু হয়।"
+    },
+    "en": {
+      "q": "In which year did the Sepoy Mutiny begin?",
+      "a": "1857",
+      "b": "1885",
+      "c": "1905",
+      "d": "1824",
+      "exp": "The Sepoy Mutiny, or Indian Rebellion, broke out in the year 1857."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 543,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "উত্তরাখণ্ডের রাজধানী কোনটি?",
+      "a": "দেরাদুন",
+      "b": "শিমলা",
+      "c": "নৈনিতাল",
+      "d": "হরিদ্বার",
+      "exp": "দেরাদুন হলো ভারতের উত্তরাখণ্ড রাজ্যের শীতকালীন রাজধানী।"
+    },
+    "en": {
+      "q": "What is the capital of Uttarakhand?",
+      "a": "Dehradun",
+      "b": "Shimla",
+      "c": "Nainital",
+      "d": "Haridwar",
+      "exp": "Dehradun is the winter capital city of Uttarakhand."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 544,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কাশি বা অ্যাসিড পেটে তৈরি হলে উপশমে কী ব্যবহৃত হয়?",
+      "a": "এন্টাসিড",
+      "b": "অ্যান্টিবায়োটিক",
+      "c": "অ্যানালজেসিক",
+      "d": "অ্যান্টিসেপ্টিক",
+      "exp": "পেটের অতিরিক্ত অ্যাসিড প্রশমিত করতে ক্ষার জাতীয় এন্টাসিড কাজ করে।"
+    },
+    "en": {
+      "q": "Which medicine is used to neutralize stomach acidity?",
+      "a": "Antacid",
+      "b": "Antibiotic",
+      "c": "Analgesic",
+      "d": "Antiseptic",
+      "exp": "Antacids are medications that neutralize stomach acid to relieve heartburn."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 545,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "সৌরজগতের সবচেয়ে কাছের গ্রহ কোনটি?",
+      "a": "বুধ",
+      "b": "শুক্র",
+      "c": "মঙ্গল",
+      "d": "পৃথিবী",
+      "exp": "সূর্যের সবচেয়ে নিকটতম কক্ষপথে অবস্থিত গ্রহ হলো বুধ (Mercury)।"
+    },
+    "en": {
+      "q": "Which is the closest planet to the Sun?",
+      "a": "Mercury",
+      "b": "Venus",
+      "c": "Mars",
+      "d": "Earth",
+      "exp": "Mercury is the smallest and closest planet to the Sun in the Solar System."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 546,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পলাশ বা জবা ফুলের লাল রঙের কারণ কোন রঞ্জক?",
+      "a": "অ্যান্থোসায়ানিন",
+      "b": "ক্লোরোফিল",
+      "c": "ক্যারোটিন",
+      "d": "জ্যান্থোফিল",
+      "exp": "অ্যান্থোসায়ানিন নামক রঞ্জক পদার্থের কারণে ফুলে লাল, বেগুনি বা নীল রং দেখা যায়।"
+    },
+    "en": {
+      "q": "Which pigment is responsible for the red colour in flowers?",
+      "a": "Anthocyanin",
+      "b": "Chlorophyll",
+      "c": "Carotene",
+      "d": "Xanthophyll",
+      "exp": "Anthocyanins are pigments responsible for red, purple, and blue hues in plants."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 547,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "পানিপথের প্রথম যুদ্ধ কত সালে হয়েছিল?",
+      "a": "১৫২৬",
+      "b": "১৫৫৬",
+      "c": "১৭৬১",
+      "d": "১৫৩৯",
+      "exp": "১৫২৬ সালে বাবর ও ইব্রাহিম লোদির মধ্যে পানিপথের প্রথম যুদ্ধ হয়, যার মাধ্যমে ভারতে মুঘল সাম্রাজ্য স্থাপিত হয়।"
+    },
+    "en": {
+      "q": "When was the First Battle of Panipat fought?",
+      "a": "1526",
+      "b": "1556",
+      "c": "1761",
+      "d": "1539",
+      "exp": "The First Battle of Panipat was fought on April 21, 1526 between Babur and Ibrahim Lodi."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 548,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের জাতীয় জলজ প্রাণী কোনটি?",
+      "a": "গাঙ্গেয় ডলফিন",
+      "b": "নীল তিমি",
+      "c": "হাঙ্গর",
+      "d": "কুমির",
+      "exp": "গাঙ্গেয় ডলফিন (South Asian river dolphin) ভারতের জাতীয় জলজ প্রাণী।"
+    },
+    "en": {
+      "q": "Which is the national aquatic animal of India?",
+      "a": "Ganges River Dolphin",
+      "b": "Blue Whale",
+      "c": "Shark",
+      "d": "Crocodile",
+      "exp": "The Ganges River Dolphin is declared as the National Aquatic Animal of India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 549,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন যন্ত্র দিয়ে ভূমিকম্পের তীব্রতা মাপা হয়?",
+      "a": "রিখটার স্কেল",
+      "b": "সিসমোগ্রাফ",
+      "c": "ব্যারোমিটার",
+      "d": "ক্রোনোমিটার",
+      "exp": "সিসমোগ্রাফ যন্ত্র দিয়ে ভূমিকম্প রেকর্ড করা হয় এবং রিখটার স্কেল দিয়ে এর মাত্রা পরিমাপ করা হয়।"
+    },
+    "en": {
+      "q": "Which instrument is used to record Earthquakes?",
+      "a": "Richter scale",
+      "b": "Seismograph",
+      "c": "Barometer",
+      "d": "Chronometer",
+      "exp": "A Seismograph is an instrument used to detect and record earthquakes."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 550,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্ব পরিবেশ দিবস কত তারিখে পালিত হয়?",
+      "a": "৫ জুন",
+      "b": "২২ এপ্রিল",
+      "c": "৮ মার্চ",
+      "d": "১ ডিসেম্বর",
+      "exp": "পরিবেশ সচেতনতা তৈরিতে প্রতি বছর ৫ জুন বিশ্ব পরিবেশ দিবস পালন করা হয়।"
+    },
+    "en": {
+      "q": "World Environment Day is observed on which date?",
+      "a": "5th June",
+      "b": "22nd April",
+      "c": "8th March",
+      "d": "1st December",
+      "exp": "World Environment Day is celebrated annually on June 5."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 551,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের অস্থায়ী মেমোরি (Volatile Memory) কোনটি?",
+      "a": "RAM",
+      "b": "ROM",
+      "c": "Hard Disk",
+      "d": "SSD",
+      "exp": "বিদ্যুৎ চলে গেলে RAM-এর মধ্যে থাকা সমস্ত ডাটা মুছে যায়, তাই এটি অস্থায়ী মেমোরি।"
+    },
+    "en": {
+      "q": "Which of the following is a Volatile Memory in computers?",
+      "a": "RAM",
+      "b": "ROM",
+      "c": "Hard Disk",
+      "d": "SSD",
+      "exp": "RAM is a volatile memory because its contents are erased when power is switched off."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 552,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "আর্যরা প্রথম ভারতে এসে কোথায় বসতি স্থাপন করেছিল?",
+      "a": "সপ্তসিন্ধু অঞ্চল",
+      "b": "মগধ",
+      "c": "বঙ্গদেশ",
+      "d": "দাক্ষিণাত্য",
+      "exp": "আর্যরা প্রথম উত্তর-পশ্চিম ভারতের ৭টি নদীবেষ্টিত সপ্তসিন্ধু অঞ্চলে বসবাস শুরু করে।"
+    },
+    "en": {
+      "q": "Where did the Aryans first settle in India?",
+      "a": "Saptasindhu Region",
+      "b": "Magadha",
+      "c": "Bengal",
+      "d": "Deccan",
+      "exp": "The early Aryans first settled in the region of Saptasindhu (land of seven rivers)."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 553,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "সার্ক (SAARC)-এর সদর দপ্তর কোথায় অবস্থিত?",
+      "a": "কাঠমান্ডু",
+      "b": "নয়াদিল্লি",
+      "c": "ঢাকা",
+      "d": "কলম্বো",
+      "exp": "দক্ষিণ এশীয় আঞ্চলিক সহযোগিতা সংস্থার (SAARC) সদর দপ্তর নেপালের কাঠমান্ডুতে অবস্থিত।"
+    },
+    "en": {
+      "q": "Where is the headquarters of SAARC located?",
+      "a": "Kathmandu",
+      "b": "New Delhi",
+      "c": "Dhaka",
+      "d": "Colombo",
+      "exp": "The SAARC Secretariat is established in Kathmandu, Nepal."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 554,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সবচেয়ে হালকা গ্যাস কোনটি?",
+      "a": "হাইড্রোজেন",
+      "b": "হিলিয়াম",
+      "c": "নাইট্রোজেন",
+      "d": "অক্সিজেন",
+      "exp": "হাইড্রোজেনের পারমাণবিক ভর সবচেয়ে কম হওয়ায় এটি পৃথিবীর সবচেয়ে হালকা গ্যাস।"
+    },
+    "en": {
+      "q": "Which is the lightest gas?",
+      "a": "Hydrogen",
+      "b": "Helium",
+      "c": "Nitrogen",
+      "d": "Oxygen",
+      "exp": "Hydrogen is the lightest element and the lightest gas in existence."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 555,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের দীর্ঘতম পর্বতমালা কোনটি?",
+      "a": "অ্যান্ডিজ পর্বতমালা",
+      "b": "হিমালয় পর্বতমালা",
+      "c": "রকি পর্বতমালা",
+      "d": "আল্পস পর্বতমালা",
+      "exp": "দক্ষিণ আমেরিকায় অবস্থিত আন্দিজ পর্বতমালা বিশ্বের দীর্ঘতম মহাদেশীয় পর্বতমালা।"
+    },
+    "en": {
+      "q": "Which is the longest mountain range in the world?",
+      "a": "Andes",
+      "b": "Himalayas",
+      "c": "Rockies",
+      "d": "Alps",
+      "exp": "The Andes along South America's western coast form the longest continental mountain range."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 556,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন ভিটামিন জলে দ্রবণীয়?",
+      "a": "ভিটামিন সি",
+      "b": "ভিটামিন এ",
+      "c": "ভিটামিন ডি",
+      "d": "ভিটামিন কে",
+      "exp": "ভিটামিন বি কমপ্লেক্স এবং ভিটামিন সি হলো জলে দ্রবণীয় ভিটামিন।"
+    },
+    "en": {
+      "q": "Which of the following is a water-soluble vitamin?",
+      "a": "Vitamin C",
+      "b": "Vitamin A",
+      "c": "Vitamin D",
+      "d": "Vitamin K",
+      "exp": "Vitamin C and B-complex vitamins dissolve in water."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 557,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "কলকাতা বিশ্ববিদ্যালয় কত সালে প্রতিষ্ঠিত হয়?",
+      "a": "১৮৫৭",
+      "b": "১৮৫৪",
+      "c": "১৮৬২",
+      "d": "১৯০৫",
+      "exp": "১৮৫৭ সালের ২৪শে জানুয়ারি এশিয়ার প্রথম বহুমুখী আধুনিক বিশ্ববিদ্যালয় হিসেবে এটি গড়ে ওঠে।"
+    },
+    "en": {
+      "q": "In which year was the University of Calcutta established?",
+      "a": "1857",
+      "b": "1854",
+      "c": "1862",
+      "d": "1905",
+      "exp": "The University of Calcutta was established on 24 January 1857."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 558,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "থাইল্যান্ডের মুদ্রার নাম কী?",
+      "a": "বাত (Baht)",
+      "b": "রিঙ্গিত",
+      "c": "রুপিয়া",
+      "d": "ইয়েন",
+      "exp": "থাইল্যান্ডের অফিসিয়াল কারেন্সি বা মুদ্রার নাম হলো থাই বাত (Thai Baht)।"
+    },
+    "en": {
+      "q": "What is the currency of Thailand?",
+      "a": "Baht",
+      "b": "Ringgit",
+      "c": "Rupiah",
+      "d": "Yen",
+      "exp": "The Thai Baht is the official currency of Thailand."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 559,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সৌরকোষ (Solar Cell) তৈরিতে কোন উপাদান প্রধানত ব্যবহৃত হয়?",
+      "a": "সিলিকন",
+      "b": "তামা",
+      "c": "রূপা",
+      "d": "অ্যালুমিনিয়াম",
+      "exp": "সৌর প্যানেলে সূর্যালোক থেকে বিদ্যুৎ তৈরিতে সেমিকন্ডাক্টর সিলিকন ব্যবহৃত হয়।"
+    },
+    "en": {
+      "q": "Which material is mainly used in making Solar Cells?",
+      "a": "Silicon",
+      "b": "Copper",
+      "c": "Silver",
+      "d": "Aluminium",
+      "exp": "Silicon is the most commonly used semiconductor material in solar cells."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 560,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের কোন রাজ্যে প্রথম সূর্যোদয় হয়?",
+      "a": "অরুণাচল প্রদেশ",
+      "b": "নাগাল্যান্ড",
+      "c": "মিজোরাম",
+      "d": "পশ্চিমবঙ্গ",
+      "exp": "অরুণাচল প্রদেশের দোং (Dong) উপত্যকা ভারতে সর্বপ্রথম প্রাতঃসূর্য প্রত্যক্ষ করে।"
+    },
+    "en": {
+      "q": "Which state in India experiences sunrise first?",
+      "a": "Arunachal Pradesh",
+      "b": "Nagaland",
+      "c": "Mizoram",
+      "d": "West Bengal",
+      "exp": "Arunachal Pradesh witnesses the first rays of the Sun in India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 561,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের দীর্ঘতম স্নায়ু (Nerve) কোনটি?",
+      "a": "সায়াটিক স্নায়ু",
+      "b": "অপটিক স্নায়ু",
+      "c": "ভেগাস স্নায়ু",
+      "d": "অলফ্যাক্টরি স্নায়ু",
+      "exp": "মেরুদণ্ড থেকে পা পর্যন্ত বিস্তৃত সায়াটিক নার্ভ হলো সবচেয়ে দীর্ঘ স্নায়ু।"
+    },
+    "en": {
+      "q": "Which is the longest nerve in the human body?",
+      "a": "Sciatic nerve",
+      "b": "Optic nerve",
+      "c": "Vagus nerve",
+      "d": "Olfactory nerve",
+      "exp": "The sciatic nerve is the largest and longest individual nerve in the human body."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 562,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের শেষ ভাইসরয় কে ছিলেন?",
+      "a": "লর্ড মাউন্টব্যাটেন",
+      "b": "লর্ড কার্জন",
+      "c": "লর্ড ক্যানিং",
+      "d": "লর্ড ওয়াভেল",
+      "exp": "লর্ড মাউন্টব্যাটেন ছিলেন ব্রিটিশ শাসিত ভারতের শেষ ভাইসরয়।"
+    },
+    "en": {
+      "q": "Who was the last Viceroy of India?",
+      "a": "Lord Mountbatten",
+      "b": "Lord Curzon",
+      "c": "Lord Canning",
+      "d": "Lord Wavell",
+      "exp": "Lord Mountbatten was the last Viceroy of British India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 563,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "হীরক শহর (Diamond City) কাকে বলা হয়?",
+      "a": "সুরাট",
+      "b": "জয়পুর",
+      "c": "মুম্বাই",
+      "d": "আমেদাবাদ",
+      "exp": "বিশ্বের অধিকাংশ হিরে কাটিং ও পলিশিংয়ের কাজ হওয়ার দরুণ সুরাটকে এই আখ্যা দেওয়া হয়।"
+    },
+    "en": {
+      "q": "Which Indian city is known as the 'Diamond City'?",
+      "a": "Surat",
+      "b": "Jaipur",
+      "c": "Mumbai",
+      "d": "Ahmedabad",
+      "exp": "Surat is known as Diamond City because it polishes over 90% of the world's rough diamonds."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 564,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মরিচা পড়া রোধ করতে লোহার ওপর কিসের প্রলেপ দেওয়া হয়?",
+      "a": "দস্তা (Zinc)",
+      "b": "তামা",
+      "c": "টি ন",
+      "d": "সীসা",
+      "exp": "লোহার ওপর জিংকের পাতলা আস্তরণ দেওয়ার প্রক্রিয়াকে গ্যালভানাইজেশন বলে।"
+    },
+    "en": {
+      "q": "Which metal coating is applied on iron to prevent rusting?",
+      "a": "Zinc",
+      "b": "Copper",
+      "c": "Tin",
+      "d": "Lead",
+      "exp": "Galvanization is the process of applying a protective zinc coating to iron to prevent rusting."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 565,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন নদীকে 'বাংলার দুঃখ' (Sorrow of Bengal) বলা হত?",
+      "a": "দামোদর নদী",
+      "b": "হুগলী নদী",
+      "c": "তিস্তা নদী",
+      "d": "রূপনারায়ণ নদী",
+      "exp": "পূর্বে প্রতি বছর বর্ষায় ভয়াবহ প্লাবন ঘটানোর জন্য দামোদরকে বাংলার দুঃখ বলা হতো।"
+    },
+    "en": {
+      "q": "Which river was historically called the 'Sorrow of Bengal'?",
+      "a": "Damodar River",
+      "b": "Hooghly River",
+      "c": "Teesta River",
+      "d": "Rupnarayan River",
+      "exp": "Damodar River was known as the Sorrow of Bengal due to its ravaging floods."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 566,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "আকাশ নীল দেখায় কেন?",
+      "a": "আলোর বিক্ষেপণ (Scattering)",
+      "b": "আলোর প্রতিফলন",
+      "c": "আলোর প্রতিসরণ",
+      "d": "আলোর বিচ্ছুরণ",
+      "exp": "বায়ুমণ্ডলে ছোট তরঙ্গের নীল আলো বেশি ছড়িয়ে পড়ার (রেলে বিক্ষেপণ) জন্য আকাশ নীল দেখায়।"
+    },
+    "en": {
+      "q": "Why does the sky appear blue?",
+      "a": "Scattering of light",
+      "b": "Reflection of light",
+      "c": "Refraction of light",
+      "d": "Dispersion of light",
+      "exp": "Rayleigh scattering of sunlight by the atmosphere makes the sky blue."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 567,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ইন্ডিয়ান ন্যাশনাল কংগ্রেস (INC) কত সালে প্রতিষ্ঠিত হয়?",
+      "a": "১৮৮৫",
+      "b": "১৯০৫",
+      "c": "১৯২০",
+      "d": "১৮৫৭",
+      "exp": "অ্যালান অক্টাভিয়ান হিউমের উদ্যোগে ১৮৮৫ সালে বম্বেতে জাতীয় কংগ্রেস তৈরি হয়।"
+    },
+    "en": {
+      "q": "In which year was the Indian National Congress founded?",
+      "a": "1885",
+      "b": "1905",
+      "c": "1920",
+      "d": "1857",
+      "exp": "The Indian National Congress was founded in December 1885."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 568,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের বৃহত্তম রাজ্য কোনটি (আয়তনের দিক থেকে)?",
+      "a": "রাজস্থান",
+      "b": "মধ্যপ্রদেশ",
+      "c": "মহারাষ্ট্র",
+      "d": "উত্তরপ্রদেশ",
+      "exp": "আয়তনের বিচারে রাজস্থান ভারতের বৃহত্তম রাজ্য।"
+    },
+    "en": {
+      "q": "Which is the largest state in India by area?",
+      "a": "Rajasthan",
+      "b": "Madhya Pradesh",
+      "c": "Maharashtra",
+      "d": "Uttar Pradesh",
+      "exp": "Rajasthan is the largest Indian state by land area."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 569,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "ক্যালসিয়াম কার্বোনেটের সাধারণ রূপ কোনটি?",
+      "a": "মার্বেল পাথর বা চুনাপাথর",
+      "b": "খাবার সোডা",
+      "c": "কাপড় কাচার সোডা",
+      "d": "প্লাস্টার অব প্যারিস",
+      "exp": "চুনাপাথর, মার্বেল এবং ডিমের খোসার প্রধান উপাদান হলো CaCO3 (ক্যালসিয়াম কার্বোনেট)।"
+    },
+    "en": {
+      "q": "What is the common form of Calcium Carbonate?",
+      "a": "Limestone or Marble",
+      "b": "Baking Soda",
+      "c": "Washing Soda",
+      "d": "Plaster of Paris",
+      "exp": "Limestone, marble, and chalk are form of calcium carbonate."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 570,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের দীর্ঘতম ট্রেন প্লাটফর্ম কোনটি?",
+      "a": "শ্রী সিদ্ধারুধা স্বামীজি স্টেশন (হুবল্লী)",
+      "b": "গোরক্ষপুর",
+      "c": "খড়গপুর",
+      "d": "কোল্লাম",
+      "exp": "ভারতের কর্ণাটকের হুবল্লী রেলওয়ে স্টেশন বর্তমানে পৃথিবীর দীর্ঘতম প্ল্যাটফর্ম।"
+    },
+    "en": {
+      "q": "Which is the longest railway platform in the world?",
+      "a": "Shree Siddharoodha Swamiji Hubballi Station",
+      "b": "Gorakhpur",
+      "c": "Kharagpur",
+      "d": "Kollam",
+      "exp": "Hubballi railway platform in Karnataka, India, holds the Guinness World Record as the longest platform."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 571,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহে চিনির (গ্লুকোজ) মাত্রা নিয়ন্ত্রণ করে কোন হরমোন?",
+      "a": "ইনসুলিন",
+      "b": "অ্যাড্রেনালিন",
+      "c": "থাইরক্সিন",
+      "d": "এস্ট্রোজেন",
+      "exp": "অগ্ন্যাশয়ের আইলেটস অব ল্যাঙ্গারহ্যান্স থেকে নিঃসৃত ইনসুলিন রক্তে শর্করার মাত্রা কমায়।"
+    },
+    "en": {
+      "q": "Which hormone regulates blood sugar level in the human body?",
+      "a": "Insulin",
+      "b": "Adrenaline",
+      "c": "Thyroxine",
+      "d": "Estrogen",
+      "exp": "Insulin produced by the pancreas helps regulate blood glucose levels."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 572,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "বক্সারের যুদ্ধ কত সালে হয়েছিল?",
+      "a": "১৭৬৪",
+      "b": "১৭৫৭",
+      "c": "১৭৬১",
+      "d": "১৭৭৬",
+      "exp": "১৭৬৪ সালের ২২ অক্টোবর ইস্ট ইন্ডিয়া কোম্পানির সাথে মীর কাশিম ও জোট বাহিনীর মধ্যে এই যুদ্ধ ঘটে।"
+    },
+    "en": {
+      "q": "In which year was the Battle of Buxar fought?",
+      "a": "1764",
+      "b": "1757",
+      "c": "1761",
+      "d": "1776",
+      "exp": "The Battle of Buxar was fought on 22 October 1764."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 573,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের বৃহত্তম ড্যাম বা বাঁধ কোনটি (উচ্চতার দিক দিয়ে)?",
+      "a": "তেহরি বাঁধ",
+      "b": "ভাকরা নাঙ্গাল",
+      "c": "হীরাকুদ",
+      "d": "সরদার সরোবর",
+      "exp": "উত্তরাখণ্ডের ভাগীরথী নদীর ওপর নির্মিত তেহরি বাঁধ ভারতের সর্বোচ্চ বাঁধ।"
+    },
+    "en": {
+      "q": "Which is the tallest dam in India?",
+      "a": "Tehri Dam",
+      "b": "Bhakra Nangal Dam",
+      "c": "Hirakud Dam",
+      "d": "Sardar Sarovar Dam",
+      "exp": "Tehri Dam on the Bhagirathi River in Uttarakhand is the highest dam in India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 574,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "বায়ুমণ্ডলের উষ্ণতম স্তর কোনটি?",
+      "a": "থার্মোস্ফিয়ার",
+      "b": "মেসোস্ফিয়ার",
+      "c": "ট্রপোস্ফিয়ার",
+      "d": "স্ট্র্যাটোস্ফিয়ার",
+      "exp": "থার্মোস্ফিয়ার স্তরে সৌর বিকিরণের কারণে তাপমাত্রা অত্যন্ত দ্রুত বৃদ্ধি পায়।"
+    },
+    "en": {
+      "q": "Which is the hottest layer of Earth's atmosphere?",
+      "a": "Thermosphere",
+      "b": "Mesosphere",
+      "c": "Troposphere",
+      "d": "Stratosphere",
+      "exp": "The thermosphere experiences extremely high temperatures due to solar radiation absorption."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 575,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "চীনে প্রবাহিত এশিয়ার দীর্ঘতম নদী কোনটি?",
+      "a": "ইয়াংসি নদী",
+      "b": "হোয়াংহো",
+      "c": "মেকং",
+      "d": "আমুর",
+      "exp": "ইয়াংসি নদী হলো এশিয়া মহাদেশের দীর্ঘতম নদী এবং বিশ্বের ৩য় দীর্ঘতম নদী।"
+    },
+    "en": {
+      "q": "Which is the longest river in Asia?",
+      "a": "Yangtze River",
+      "b": "Yellow River",
+      "c": "Mekong River",
+      "d": "Amur River",
+      "exp": "The Yangtze is the longest river in Asia and the third-longest in the world."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 576,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "নিউটনের প্রথম গতিসূত্র থেকে কিসের ধারণা পাওয়া যায়?",
+      "a": "জড়তা ও বলের সংজ্ঞা",
+      "b": "বলের পরিমাপ",
+      "c": "ক্রিয়া ও প্রতিক্রিয়া",
+      "d": "ভরবেগ",
+      "exp": "প্রথম গতিসূত্র পদার্থের জড়তা ধর্ম এবং বলের গুণগত সংজ্ঞা প্রদান করে।"
+    },
+    "en": {
+      "q": "What concept is obtained from Newton's First Law of Motion?",
+      "a": "Inertia and definition of Force",
+      "b": "Measurement of force",
+      "c": "Action and Reaction",
+      "d": "Momentum",
+      "exp": "Newton's First Law defines inertia and provides the qualitative definition of force."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 577,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "গুপ্ত রাজবংশের শ্রেষ্ঠ রাজা কাকে গণ্য করা হয়?",
+      "a": "সমুদ্রগুপ্ত",
+      "b": "শ্রীগুপ্ত",
+      "c": "দ্বিতীয় চন্দ্রগুপ্ত",
+      "d": "কুমারগুপ্ত",
+      "exp": "সাম্রাজ্য বিস্তার ও প্রশাসনিক বিচক্ষণতার জন্য সমুদ্রগুপ্তকে সর্বশ্রেষ্ঠ গুপ্ত শাসক ধরা হয়।"
+    },
+    "en": {
+      "q": "Who is considered the greatest ruler of the Gupta Empire?",
+      "a": "Samudragupta",
+      "b": "Sri Gupta",
+      "c": "Chandragupta II",
+      "d": "Kumaragupta",
+      "exp": "Samudragupta is widely regarded as the greatest emperor of the Gupta Dynasty."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 578,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্ব রেড ক্রস দিবস কত তারিখে পালিত হয়?",
+      "a": "৮ মে",
+      "b": "১২ জুন",
+      "c": "১ মে",
+      "d": "১৫ আগস্ট",
+      "exp": "রেড ক্রসের প্রতিষ্ঠাতা হেনরি ডুনান্টের জন্মদিনে ৮ মে এই দিবসটি উদযাপিত হয়।"
+    },
+    "en": {
+      "q": "World Red Cross Day is observed on which date?",
+      "a": "8th May",
+      "b": "12th June",
+      "c": "1st May",
+      "d": "15th August",
+      "exp": "World Red Cross Day is celebrated on 8 May, the birth anniversary of Henry Dunant."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 579,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মানুষের লোহিত রক্তকণিকা (RBC) কোথায় তৈরি হয়?",
+      "a": "অস্থিমজ্জা (Bone Marrow)",
+      "b": "হৃদপিণ্ড",
+      "c": "যকৃৎ",
+      "d": "বৃক্ক",
+      "exp": "প্রাপ্তবয়স্কদের ক্ষেত্রে লাল অস্থিমজ্জায় লোহিত রক্তকণিকা উৎপন্ন হয়।"
+    },
+    "en": {
+      "q": "Where are Red Blood Cells (RBCs) produced in the human body?",
+      "a": "Bone Marrow",
+      "b": "Heart",
+      "c": "Liver",
+      "d": "Kidney",
+      "exp": "Red blood cells are formed in the red bone marrow of bones."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 580,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন দেশকে 'সূর্যোদয়ের দেশ' বলা হয়?",
+      "a": "জাপান",
+      "b": "নরওয়ে",
+      "c": "ফিনল্যান্ড",
+      "d": "থাইল্যান্ড",
+      "exp": "জাপানকে ঐতিহাসিকভাবে 'Land of the Rising Sun' বা সূর্যোদয়ের দেশ বলা হয়।"
+    },
+    "en": {
+      "q": "Which country is called the 'Land of the Rising Sun'?",
+      "a": "Japan",
+      "b": "Norway",
+      "c": "Finland",
+      "d": "Thailand",
+      "exp": "Japan is traditionally nicknamed the 'Land of the Rising Sun'."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 581,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সবুজ পাতায় কোন ধাতব মৌলটি উপস্থিত থাকে?",
+      "a": "ম্যাগনেসিয়াম",
+      "b": "লোহা",
+      "c": "ক্যালসিয়াম",
+      "d": "সোডিয়াম",
+      "exp": "ক্লোরোফিল অণুর কেন্দ্রীয় পরমাণু হলো ম্যাগনেসিয়াম (Mg)।"
+    },
+    "en": {
+      "q": "Which metallic element is present in chlorophyll?",
+      "a": "Magnesium",
+      "b": "Iron",
+      "c": "Calcium",
+      "d": "Sodium",
+      "exp": "Magnesium is the central atom in the chlorophyll molecule."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 582,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "গান্ধী-আরউইন চুক্তি কত সালে স্বাক্ষরিত হয়েছিল?",
+      "a": "১৯৩১",
+      "b": "১৯৩০",
+      "c": "১৯৩২",
+      "d": "১৯২৯",
+      "exp": "১৯৩১ সালের ৫ মার্চ মহাত্মা গান্ধী এবং লর্ড আরউইনের মধ্যে এই চুক্তি স্বাক্ষর হয়।"
+    },
+    "en": {
+      "q": "In which year was the Gandhi-Irwin Pact signed?",
+      "a": "1931",
+      "b": "1930",
+      "c": "1932",
+      "d": "1929",
+      "exp": "The Gandhi-Irwin Pact was signed on 5 March 1931."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 583,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের দীর্ঘতম নদী আমাজন কোন মহাদেশে অবস্থিত?",
+      "a": "দক্ষিণ আমেরিকা",
+      "b": "উত্তর আমেরিকা",
+      "c": "আফ্রিকা",
+      "d": "এশিয়া",
+      "exp": "জলপ্রবাহের দিক থেকে সবচেয়ে বড় নদী আমাজন দক্ষিণ আমেরিকা মহাদেশে অবস্থিত।"
+    },
+    "en": {
+      "q": "In which continent is the Amazon River located?",
+      "a": "South America",
+      "b": "North America",
+      "c": "Africa",
+      "d": "Asia",
+      "exp": "The Amazon River flows through the continent of South America."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 584,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "অ্যাসিড নীল লিটমাসকে কোন রঙে পরিণত করে?",
+      "a": "লাল",
+      "b": "সবুজ",
+      "c": "হলুদ",
+      "d": "গোলাপি",
+      "exp": "অ্যাসিডের জলীয় দ্রবণ নীল লিটমাস কাগজকে লালে রূপান্তরিত করে।"
+    },
+    "en": {
+      "q": "Acid turns blue litmus paper into which colour?",
+      "a": "Red",
+      "b": "Green",
+      "c": "Yellow",
+      "d": "Pink",
+      "exp": "Acids turn blue litmus paper red."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 585,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের কোন রাজ্যে সাক্ষরতার হার সবচেয়ে বেশি?",
+      "a": "কেরালা",
+      "b": "মিজোরাম",
+      "c": "তামিলনাড়ু",
+      "d": "গোয়া",
+      "exp": "ভারতের রাজ্যগুলোর মধ্যে কেরালায় সবচেয়ে বেশি জনসংখ্যা শিক্ষিত (সাক্ষরতার হার প্রায় ৯৬%)।"
+    },
+    "en": {
+      "q": "Which Indian state has the highest literacy rate?",
+      "a": "Kerala",
+      "b": "Mizoram",
+      "c": "Tamil Nadu",
+      "d": "Goa",
+      "exp": "Kerala holds the highest literacy rate among all states in India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 586,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পর্যায় সারণির (Periodic Table) জনক কাকে বলা হয়?",
+      "a": "দিমিত্রি মেন্দেলিফ",
+      "b": "হেনরি মোসলে",
+      "c": "জন ডাল্টন",
+      "d": "অ্যান্টনি ল্যাভয়সিয়ে",
+      "exp": "মেন্দেলিফ ১৮৬৯ সালে প্রথম সারণিবদ্ধ পর্যায় সূত্র উদ্ভাবন করেছিলেন।"
+    },
+    "en": {
+      "q": "Who is known as the Father of the Periodic Table?",
+      "a": "Dmitri Mendeleev",
+      "b": "Henry Moseley",
+      "c": "John Dalton",
+      "d": "Antoine Lavoisier",
+      "exp": "Dmitri Mendeleev is recognized as the father of the Periodic Table."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 587,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "দীন-ই-ইলাহি ধর্মের প্রবর্তক কে ছিলেন?",
+      "a": "সম্রাট আকবর",
+      "b": "শাহজাহান",
+      "c": "বাবর",
+      "d": "শেরশাহ",
+      "exp": "১৫৮২ খ্রিস্টাব্দে মুঘল সম্রাট আকবর সকল ধর্মের সারবস্তু নিয়ে দীন-ই-ইলাহি প্রবর্তন করেন।"
+    },
+    "en": {
+      "q": "Who founded the religion Din-i-Ilahi?",
+      "a": "Akbar",
+      "b": "Shah Jahan",
+      "c": "Babur",
+      "d": "Sher Shah",
+      "exp": "Din-i-Ilahi was a syncretic religion propounded by the Mughal Emperor Akbar in 1582."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 588,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের কোন শহরকে 'গোলাপী শহর' (Pink City) বলা হয়?",
+      "a": "জয়পুর",
+      "b": "উদয়পুর",
+      "c": "যোধপুর",
+      "d": "জয়সলমীর",
+      "exp": "রাজস্থানের রাজধানী জয়পুরের অধিকাংশ ভবনের রং গোলাপী হওয়ায় একে পিঙ্ক সিটি বলা হয়।"
+    },
+    "en": {
+      "q": "Which city is known as the 'Pink City' of India?",
+      "a": "Jaipur",
+      "b": "Udaipur",
+      "c": "Jodhpur",
+      "d": "Jaisalmer",
+      "exp": "Jaipur is famously called the Pink City because of the trademark color of its buildings."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 589,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের পিত্তরস (Bile) কোথায় উৎপন্ন হয়?",
+      "a": "যকৃৎ (Liver)",
+      "b": "পিত্তাশয়",
+      "c": "অগ্ন্যাশয়",
+      "d": "পাকস্থলী",
+      "exp": "পিত্তরস যকৃতে তৈরি হয় এবং তা পিত্তাশয়ে জমা থাকে।"
+    },
+    "en": {
+      "q": "Where is Bile produced in the human body?",
+      "a": "Liver",
+      "b": "Gallbladder",
+      "c": "Pancreas",
+      "d": "Stomach",
+      "exp": "Bile juice is secreted by the liver and stored in the gallbladder."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 590,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের জাতীয় বৃক্ষ কোনটি?",
+      "a": "বট গাছ",
+      "b": "আম গাছ",
+      "c": "নিম গাছ",
+      "d": "নারকেল গাছ",
+      "exp": "বট গাছ (Banyan Tree) ভারতের জাতীয় বৃক্ষ হিসেবে স্বীকৃত।"
+    },
+    "en": {
+      "q": "Which is the National Tree of India?",
+      "a": "Banyan Tree",
+      "b": "Mango Tree",
+      "c": "Neem Tree",
+      "d": "Coconut Tree",
+      "exp": "The Indian Banyan is the official national tree of India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 591,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন যন্ত্র দ্বারা বিদ্যুৎ প্রবাহ পরিমাপ করা হয়?",
+      "a": "অ্যামিটার (Ammeter)",
+      "b": "ভোল্টমিটার",
+      "c": "গ্যালভানোমিটার",
+      "d": "ওয়াটমিটার",
+      "exp": "বর্তনীতে তড়িৎ প্রবাহের মান সরাসরি অ্যাম্পিয়ার বা মিলিঅ্যাম্পিয়ারে মাপতে অ্যামিটার ব্যবহৃত হয়।"
+    },
+    "en": {
+      "q": "Which instrument is used to measure Electric Current?",
+      "a": "Ammeter",
+      "b": "Voltmeter",
+      "c": "Galvanometer",
+      "d": "Wattmeter",
+      "exp": "An ammeter is a measuring instrument used to measure the electric current in a circuit."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 592,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "প্রথম গোলটেবিল বৈঠক কত সালে অনুষ্ঠিত হয়েছিল?",
+      "a": "১৯৩০",
+      "b": "১৯৩১",
+      "c": "১৯৩২",
+      "d": "১৯২৯",
+      "exp": "১৯৩০ সালের নভেম্বর থেকে ১৯৩১ সালের জানুয়ারি পর্যন্ত লন্ডনে প্রথম গোলটেবিল বৈঠক বসে।"
+    },
+    "en": {
+      "q": "In which year was the First Round Table Conference held?",
+      "a": "1930",
+      "b": "1931",
+      "c": "1932",
+      "d": "1929",
+      "exp": "The First Round Table Conference officially launched in London in November 1930."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 593,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন নদীকে 'চীনের দুঃখ' বলা হয়?",
+      "a": "হোয়াংহো নদী",
+      "b": "ইয়াংসি নদী",
+      "c": "পিয়ার্ল নদী",
+      "d": "মেকং নদী",
+      "exp": "ঘন ঘন গতিপথ বদলে ভয়াবহ বন্যা সৃষ্টির কারণে হোয়াংহো নদীকে চীনের দুঃখ বলা হতো।"
+    },
+    "en": {
+      "q": "Which river is known as the 'Sorrow of China'?",
+      "a": "Yellow River (Huang He)",
+      "b": "Yangtze River",
+      "c": "Pearl River",
+      "d": "Mekong River",
+      "exp": "The Yellow River has been called 'China's Sorrow' because of devastating floods."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 594,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পরমাণুর ঋণাত্মক আধানযুক্ত (Negative charge) কণা কোনটি?",
+      "a": "ইলেকট্রন",
+      "b": "প্রোটন",
+      "c": "নিউট্রন",
+      "d": "পজিট্রন",
+      "exp": "পরমাণুর নিউক্লিয়াসের চারপাশে ঘূর্ণায়মান ইলেকট্রন নেগেটিভ চার্জ বহন করে।"
+    },
+    "en": {
+      "q": "Which subatomic particle has a negative electric charge?",
+      "a": "Electron",
+      "b": "Proton",
+      "c": "Neutron",
+      "d": "Positron",
+      "exp": "Electrons carry a negative fundamental electric charge."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 595,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কাজিরাঙ্গা জাতীয় উদ্যান ভারতের কোন রাজ্যে অবস্থিত?",
+      "a": "অসম",
+      "b": "পশ্চিমবঙ্গ",
+      "c": "মেঘালয়",
+      "d": "উত্তরাখণ্ড",
+      "exp": "একশৃঙ্গ গণ্ডার সংরক্ষণের জন্য বিখ্যাত এই অভয়ারণ্যটি অসমে অবস্থিত।"
+    },
+    "en": {
+      "q": "Kaziranga National Park is located in which state?",
+      "a": "Assam",
+      "b": "West Bengal",
+      "c": "Meghalaya",
+      "d": "Uttarakhand",
+      "exp": "Kaziranga National Park is situated in the state of Assam, India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 596,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন হরমোনকে 'জরুরি কালীন হরমোন' বলা হয়?",
+      "a": "অ্যাড্রেনালিন",
+      "b": "ইনসুলিন",
+      "c": "থাইরক্সিন",
+      "d": "গ্রোথ হরমোন",
+      "exp": "ভয় বা উত্তেজনার মতো বিশেষ জরুরি পরিস্থিতিতে শরীরে দ্রুত প্রতিক্রিয়া জানাতে অ্যাড্রেনালিন খরিত হয়।"
+    },
+    "en": {
+      "q": "Which hormone is known as the 'Emergency Hormone'?",
+      "a": "Adrenaline",
+      "b": "Insulin",
+      "c": "Thyroxine",
+      "d": "Growth Hormone",
+      "exp": "Adrenaline is called the emergency hormone as it prepares the body for fight or flight response."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 597,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "আರ್ಯসমাজ কে প্রতিষ্ঠা করেন?",
+      "a": "স্বামী দয়ানন্দ সরস্বতী",
+      "b": "স্বামী বিবেকানন্দ",
+      "c": "রাজা রামমোহন রায়",
+      "d": "ঈশ্বরচন্দ্র বিদ্যাসাগর",
+      "exp": "১৮৭৫ সালে বোম্বেতে স্বামী দয়ানন্দ সরস্বতী আর্যসমাজ প্রতিষ্ঠা করেন।"
+    },
+    "en": {
+      "q": "Who founded the Arya Samaj?",
+      "a": "Swami Dayananda Saraswati",
+      "b": "Swami Vivekananda",
+      "c": "Raja Ram Mohan Roy",
+      "d": "Ishwar Chandra Vidyasagar",
+      "exp": "Arya Samaj was founded by Dayananda Saraswati in April 1875."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 598,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "হীরার ভৌত কঠোরতার মূল কারণ কী?",
+      "a": "ত্রি-মাত্রিক সমযোজী বন্ধন গঠন",
+      "b": "উচ্চ গলনাঙ্ক",
+      "c": "ধাতব বন্ধন",
+      "d": "আয়নিক গঠন",
+      "exp": "হীরকে প্রতিটি কার্বন পরমাণু চারটি অন্য কার্বন পরমাণুর সাথে শক্তিশালী সমযোজী বন্ধনে যুক্ত থাকে।"
+    },
+    "en": {
+      "q": "What is the primary reason for the physical hardness of Diamond?",
+      "a": "3D Covalent Network Structure",
+      "b": "High Melting Point",
+      "c": "Metallic Bonding",
+      "d": "Ionic Lattice Structure",
+      "exp": "Diamond's hardness is due to strong covalent bonds forming a rigid 3D tetrahedral network."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 599,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন আলোতে শালোকসংশ্লেষণ সবচেয়ে ভালো বা দ্রুত হয়?",
+      "a": "লাল ও নীল আলো",
+      "b": "সবুজ আলো",
+      "c": "হলুদ আলো",
+      "d": "বেগুনি আলো",
+      "exp": "ক্লোরোফিল প্রধানত লাল এবং নীল তরঙ্গদৈর্ঘ্যের আলো সবচেয়ে বেশি শোষণ করে শালোকসংশ্লেষণ করায়।"
+    },
+    "en": {
+      "q": "In which color light does photosynthesis occur best?",
+      "a": "Red and Blue light",
+      "b": "Green light",
+      "c": "Yellow light",
+      "d": "Violet light",
+      "exp": "Photosynthesis is most active in red and blue light because chlorophyll absorbs these wavelengths efficiently."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 600,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারে HTML-এর পূর্ণরূপ কী?",
+      "a": "HyperText Markup Language",
+      "b": "HighText Machine Language",
+      "c": "HyperText Machine Language",
+      "d": "HyperTool Markup Language",
+      "exp": "ওয়েব পেজ তৈরির মূল ভাষা হলো HTML, যার পূর্ণ নাম HyperText Markup Language।"
+    },
+    "en": {
+      "q": "What is the full form of HTML in computer technology?",
+      "a": "HyperText Markup Language",
+      "b": "HighText Machine Language",
+      "c": "HyperText Machine Language",
+      "d": "HyperTool Markup Language",
+      "exp": "HTML stands for HyperText Markup Language, the standard code for web pages."
+    },
+    "correct": "a"
+  }
+]

@@ -13,13 +13,19 @@
 
     <div class="container" id="app">
         
-        <!-- Screen 1: Login -->
+     <!-- Screen 1: Login -->
         <div id="scr-login" class="screen active">
             <h1>KBC PREMIUM 2026</h1>
             <p class="subtitle">শিক্ষা ও জ্ঞানভিত্তিক কুইজ প্ল্যাটফর্ম</p>
             <input type="text" id="phone" placeholder="১০ ডিজিটের মোবাইল নম্বর দিন" maxlength="10">
             <br>
             <button class="btn" onclick="login()">LOGIN / প্রবেশ করুন</button>
+            
+            <!-- প্রোমো কোড ইনপুট বক্স -->
+            <div id="promo-section" style="margin-top: 15px; text-align: center;">
+              <input type="text" id="promoInput" placeholder="প্রোমো কোড লিখুন (যেমন: KBC15DAYS)" style="padding: 8px; width: 220px;" />
+              <button class="btn" onclick="handlePromoSubmit()" style="padding: 8px 15px; cursor: pointer;">আবেদন করুন</button>
+            </div>
         </div>
 
         <!-- Screen 2: Language Selection -->

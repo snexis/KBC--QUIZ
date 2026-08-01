@@ -1,0 +1,243 @@
+// Master Question Database (Categorized & Multi-level)
+const quizQuestions = [
+    {
+        id: 1,
+        subject: "general",
+        level: "junior",
+        bn: { q: "পশ্চিমবঙ্গের রাজধানী কোনটি?", a: "হাওড়া", b: "কলকাতা", c: "শিলিগুড়ি", d: "বর্ধমান", exp: "কলকাতা হলো পশ্চিমবঙ্গের প্রশাসনিক ও রাজনৈতিক রাজধানী।" },
+        en: { q: "Which is the capital of West Bengal?", a: "Howrah", b: "Kolkata", c: "Siliguri", d: "Burdwan", exp: "Kolkata is the official capital of West Bengal." },
+        correct: "b"
+    },
+    {
+        id: 2,
+        subject: "general",
+        level: "junior",
+        bn: { q: "ভারতের জাতীয় পশু কোনটি?", a: "সিংহ", b: "হাতি", c: "রয়েল বেঙ্গল টাইগার", d: "চিতাবাঘ", exp: "১৯৭৩ সালে রয়েল বেঙ্গল টাইগারকে ভারতের জাতীয় পশু হিসেবে ঘোষণা করা হয়।" },
+        en: { q: "Which is the national animal of India?", a: "Lion", b: "Elephant", c: "Royal Bengal Tiger", d: "Leopard", exp: "The Royal Bengal Tiger was declared the national animal of India in 1973." },
+        correct: "c"
+    },
+    {
+        id: 3,
+        subject: "science",
+        level: "junior",
+        bn: { q: "সূর্য কোন দিকে ওঠে?", a: "পূর্ব", b: "পশ্চিম", c: "উত্তর", d: "দক্ষিণ", exp: "পৃথিবী পশ্চিম থেকে পূর্বে ঘোরে, তাই সূর্য পূর্ব দিকে উদিত দেখায়।" },
+        en: { q: "In which direction does the sun rise?", a: "East", b: "West", c: "North", d: "South", exp: "Earth rotates west to east, making the sun appear to rise in the east." },
+        correct: "a"
+    },
+    {
+        id: 4,
+        subject: "science",
+        level: "secondary",
+        bn: { q: "আমাদের সৌরজগতের সবচেয়ে বড় গ্রহ কোনটি?", a: "পৃথিবী", b: "মঙ্গল", c: "বৃহস্পতি", d: "শনি", exp: "বৃহস্পতি (Jupiter) সৌরজগতের সর্ববৃহৎ গ্রহ।" },
+        en: { q: "Which is the largest planet in our solar system?", a: "Earth", b: "Mars", c: "Jupiter", d: "Saturn", exp: "Jupiter is the largest planet in our solar system." },
+        correct: "c"
+    },
+    {
+        id: 5,
+        subject: "biology",
+        level: "junior",
+        bn: { q: "মানুষের শরীরে মোট কয়টি হাড় থাকে?", a: "২০৬টি", b: "৩০৮টি", c: "১৫০টি", d: "২১০টি", exp: "একজন পূর্ণবয়স্ক মানুষের কঙ্কালতন্ত্রে ২০৬টি হাড় থাকে।" },
+        en: { q: "How many bones are there in an adult human body?", a: "206", b: "308", c: "150", d: "210", exp: "An adult human body consists of 206 bones." },
+        correct: "a"
+    },
+    {
+        id: 6,
+        subject: "science",
+        level: "secondary",
+        bn: { q: "জলের রাসায়নিক সংকেত কী?", a: "CO2", b: "H2O", c: "O2", d: "NaCl", exp: "জলে ২টি হাইড্রোজেন ও ১টি অক্সিজেন পরমাণু থাকায় এর সংকেত H2O।" },
+        en: { q: "What is the chemical formula of water?", a: "CO2", b: "H2O", c: "O2", d: "NaCl", exp: "Water contains 2 Hydrogen atoms and 1 Oxygen atom." },
+        correct: "b"
+    },
+    {
+        id: 7,
+        subject: "history",
+        level: "secondary",
+        bn: { q: "কোন দেশ প্রথম কাগজের মুদ্রা চালু করে?", a: "ভারত", b: "চীন", c: "আমেরিকা", d: "জাপান", exp: "টং রাজবংশের আমলে চীন প্রথম কাগজের নোট ব্যবহার শুরু করে।" },
+        en: { q: "Which country first introduced paper money?", a: "India", b: "China", c: "America", d: "Japan", exp: "China was the first country to issue paper currency." },
+        correct: "b"
+    },
+    {
+        id: 8,
+        subject: "literature",
+        level: "junior",
+        bn: { q: "গীতাঞ্জলি কাব্যগ্রন্থটি কার লেখা?", a: "নজরুল ইসলাম", b: "বঙ্কিমচন্দ্র", c: "রবীন্দ্রনাথ ঠাকুর", d: "শরৎচন্দ্র", exp: "রবীন্দ্রনাথ ঠাকুর এই কাব্যগ্রন্থের জন্যই ১৯১৩ সালে নোবেল পান।" },
+        en: { q: "Who wrote the book Gitanjali?", a: "Nazrul Islam", b: "Bankim Chandra", c: "Rabindranath Tagore", d: "Sharat Chandra", exp: "Rabindranath Tagore won the Nobel Prize in 1913 for Gitanjali." },
+        correct: "c"
+    },
+    {
+        id: 9,
+        subject: "tech",
+        level: "junior",
+        bn: { q: "কম্পিউটারের মস্তিষ্ক কাকে বলা হয়?", a: "র‍্যাম", b: "মনিটর", c: "সিপিইউ (CPU)", d: "হার্ডডিস্ক", exp: "CPU যাবতীয় হিসাব-নিকাশ প্রসেস করে তাই এটি ব্রেন।" },
+        en: { q: "What is called the brain of a computer?", a: "RAM", b: "Monitor", c: "CPU", d: "Hard Disk", exp: "CPU processes all instructions, serving as the computer's brain." },
+        correct: "c"
+    },
+    {
+        id: 10,
+        subject: "history",
+        level: "junior",
+        bn: { q: "ভারতের স্বাধীনতা দিবস কবে পালিত হয়?", a: "২৬শে জানুয়ারি", b: "১৫ই আগস্ট", c: "২রা অক্টোবর", d: "৫ই সেপ্টেম্বর", exp: "১৯৪৭ সালের ১৫ই আগস্ট ভারত ব্রিটিশ শাসন থেকে মুক্ত হয়।" },
+        en: { q: "When is India's Independence Day celebrated?", a: "26th January", b: "15th August", c: "2nd October", d: "5th September", exp: "India gained independence from British rule on August 15, 1947." },
+        correct: "b"
+    },
+    {
+        id: 11,
+        subject: "geography",
+        level: "secondary",
+        bn: { q: "পৃথিবীর সবচেয়ে উঁচু পর্বত কোনটি?", a: "কে-টু", b: "কাঞ্চনজঙ্ঘা", c: "মাউন্ট এভারেস্ট", d: "আল্পস", exp: "মাউন্ট এভারেস্ট সমুদ্রপৃষ্ঠ থেকে সবচেয়ে উঁচুতে অবস্থিত।" },
+        en: { q: "Which is the highest mountain in the world?", a: "K2", b: "Kangchenjunga", c: "Mount Everest", d: "Alps", exp: "Mount Everest is the highest peak above sea level." },
+        correct: "c"
+    },
+    {
+        id: 12,
+        subject: "science",
+        level: "secondary",
+        bn: { q: "টেলিফোন কে আবিষ্কার করেন?", a: "আইনস্টাইন", b: "আলেকজান্ডার গ্রাহাম বেল", c: "নিউটন", d: "টমাস আলভা এডিসন", exp: "১৮৭৬ সালে গ্রাহাম বেল প্রথম কার্যকরী টেলিফোন পেটেন্ট করেন।" },
+        en: { q: "Who invented the telephone?", a: "Einstein", b: "Alexander Graham Bell", c: "Newton", d: "Thomas Alva Edison", exp: "Alexander Graham Bell was granted the first patent for the telephone." },
+        correct: "b"
+    },
+    {
+        id: 13,
+        subject: "science",
+        level: "junior",
+        bn: { q: "কোন গ্রহকে লাল গ্রহ বলা হয়?", a: "বুধ", b: "শুক্র", c: "মঙ্গল", d: "বৃহস্পতি", exp: "মঙ্গলের মাটিতে আয়রন অক্সাইড বেশি থাকায় একে লাল দেখায়।" },
+        en: { q: "Which planet is called the Red Planet?", a: "Mercury", b: "Venus", c: "Mars", d: "Jupiter", exp: "Mars appears red due to the prevalence of iron oxide on its surface." },
+        correct: "c"
+    },
+    {
+        id: 14,
+        subject: "science",
+        level: "secondary",
+        bn: { q: "সূর্যের আলো পৃথিবীতে আসতে কত সময় লাগে?", a: "২ মিনিট", b: "৫ মিনিট", c: "প্রায় ৮ মিনিট", d: "১২ মিনিট", exp: "সূর্য থেকে পৃথিবীর গড়ের কারণে আলো পৌঁছাতে প্রায় ৮ মিনিট ২০ সেকেন্ড লাগে।" },
+        en: { q: "How long does it take for sunlight to reach Earth?", a: "2 minutes", b: "5 minutes", c: "About 8 minutes", d: "12 minutes", exp: "Sunlight takes approximately 8 minutes and 20 seconds to reach Earth." },
+        correct: "c"
+    },
+    {
+        id: 15,
+        subject: "geography",
+        level: "junior",
+        bn: { q: "তাজমহল ভারতের কোন শহরে অবস্থিত?", a: "দিল্লি", b: "আগ্রা", c: "মুম্বাই", d: "জয়পুর", exp: "উত্তরপ্রদেশের আগ্রা শহরে যমুনা নদীর তীরে তাজমহল অবস্থিত।" },
+        en: { q: "In which Indian city is the Taj Mahal located?", a: "Delhi", b: "Agra", c: "Mumbai", d: "Jaipur", exp: "The Taj Mahal is located in Agra, Uttar Pradesh." },
+        correct: "b"
+    },
+    {
+        id: 16,
+        subject: "geography",
+        level: "secondary",
+        bn: { q: "কোন মহাদেশকে সাদা মহাদেশ বলা হয়?", a: "এশিয়া", b: "আফ্রিকা", c: "অ্যান্টার্কটিকা", d: "ইউরোপ", exp: "সারা বছর পুরু বরফে ঢাকা থাকার কারণে অ্যান্টার্কটিকাকে সাদা মহাদেশ বলা হয়।" },
+        en: { q: "Which continent is known as the White Continent?", a: "Asia", b: "Africa", c: "Antarctica", d: "Europe", exp: "Antarctica is covered with permanent ice, giving it a white appearance." },
+        correct: "c"
+    },
+    {
+        id: 17,
+        subject: "biology",
+        level: "secondary",
+        bn: { q: "কোন ভিটামিনের অভাবে রাতকানা রোগ হয়?", a: "ভিটামিন A", b: "ভিটামিন B", c: "ভিটামিন C", d: "ভিটামিন D", exp: "চোখের দৃষ্টিশক্তি ঠিক রাখার জন্য ভিটামিন A প্রয়োজন।" },
+        en: { q: "Deficiency of which vitamin causes night blindness?", a: "Vitamin A", b: "Vitamin B", c: "Vitamin C", d: "Vitamin D", exp: "Vitamin A is essential for healthy vision; its deficiency leads to night blindness." },
+        correct: "a"
+    },
+    {
+        id: 18,
+        subject: "science",
+        level: "secondary",
+        bn: { q: "সবচেয়ে শক্ত প্রাকৃতিক পদার্থ কোনটি?", a: "লোহা", b: "সোনা", c: "হীরা", d: "তামা", exp: "হীরা হলো কার্বনের তৈরি সবচেয়ে কঠিন প্রাকৃতিক পদার্থ।" },
+        en: { q: "Which is the hardest natural substance?", a: "Iron", b: "Gold", c: "Diamond", d: "Copper", exp: "Diamond is the hardest naturally occurring substance known." },
+        correct: "c"
+    },
+    {
+        id: 19,
+        subject: "geography",
+        level: "secondary",
+        bn: { q: "কোন মহাসাগর সবচেয়ে বড়?", a: "ভারত মহাসাগর", b: "আটলান্টিক মহাসাগর", c: "প্রশান্ত মহাসাগর", d: "সুমেরু মহাসাগর", exp: "প্রশান্ত মহাসাগর আয়তনে পৃথিবীর সর্ববৃহৎ মহাসাগর।" },
+        en: { q: "Which ocean is the largest?", a: "Indian Ocean", b: "Atlantic Ocean", c: "Pacific Ocean", d: "Arctic Ocean", exp: "The Pacific Ocean is the largest and deepest ocean on Earth." },
+        correct: "c"
+    },
+    {
+        id: 20,
+        subject: "history",
+        level: "secondary",
+        bn: { q: "ভারতের প্রথম প্রধানমন্ত্রীর নাম কী?", a: "মহাত্মা গান্ধী", b: "জওহরলাল নেহরু", c: "ড. বি আর আম্বেদকর", d: "সুভাষচন্দ্র বসু", exp: "পণ্ডিত জওহরলাল নেহরু স্বাধীন ভারতের প্রথম প্রধানমন্ত্রী ছিলেন।" },
+        en: { q: "What is the name of the first Prime Minister of India?", a: "Mahatma Gandhi", b: "Jawaharlal Nehru", c: "Dr. B.R. Ambedkar", d: "Subhash Chandra Bose", exp: "Pandit Jawaharlal Nehru was India's first Prime Minister." },
+        correct: "b"
+    },
+    {
+        id: 21,
+        subject: "math",
+        level: "junior",
+        bn: { q: "কোনো সংখ্যার সাথে ০ গুণ করলে ফল কী হয়?", a: "১", b: "সেই সংখ্যাটিই", c: "০", d: "১০০", exp: "যেকোনো সংখ্যাকে ০ দিয়ে গুণ করলে গুণফল সবসময় ০ হয়।" },
+        en: { q: "What is the result when a number is multiplied by 0?", a: "1", b: "The number itself", c: "0", d: "100", exp: "Any number multiplied by zero equals zero." },
+        correct: "c"
+    },
+    {
+        id: 22,
+        subject: "science",
+        level: "secondary",
+        bn: { q: "কোন গ্যাস আমাদের বাঁচিয়ে রাখতে সাহায্য করে?", a: "নাইট্রোজেন", b: "কার্বন ডাই অক্সাইড", c: "অক্সিজেন", d: "হাইড্রোজেন", exp: "মানুষ ও প্রাণী শ্বসনের জন্য বায়ুমণ্ডল থেকে অক্সিজেন গ্রহণ করে।" },
+        en: { q: "Which gas helps to keep us alive?", a: "Nitrogen", b: "Carbon dioxide", c: "Oxygen", d: "Hydrogen", exp: "Oxygen is essential for human respiration and survival." },
+        correct: "c"
+    },
+    {
+        id: 23,
+        subject: "biology",
+        level: "advanced",
+        bn: { q: "কোন প্রাণীর রক্ত নীল রঙের হয়?", a: "হাঙর", b: "অক্টোপাস", c: "তিমি", d: "ডলফিন", exp: "অক্টোপাসের রক্তে হিমোসায়ানিন নামক কপার সমৃদ্ধ প্রোটিন থাকায় রক্ত নীল হয়।" },
+        en: { q: "Which animal has blue blood?", a: "Shark", b: "Octopus", c: "Whale", d: "Dolphin", exp: "Octopuses have hemocyanin in their blood, which turns it blue." },
+        correct: "b"
+    },
+    {
+        id: 24,
+        subject: "history",
+        level: "advanced",
+        bn: { q: "কোন দেশ প্রথম মহাকাশে কৃত্রিম উপগ্রহ পাঠায়?", a: "আমেরিকা", b: "রাশিয়া", c: "ভারত", d: "চীন", exp: "১৯৫৭ সালে তৎকালীন সোভিয়েত ইউনিয়ন (রাশিয়া) স্পুটনিক-১ উৎক্ষেপণ করে।" },
+        en: { q: "Which country first sent an artificial satellite into space?", a: "America", b: "Russia", c: "India", d: "China", exp: "The USSR (Russia) launched Sputnik 1 in 1957." },
+        correct: "b"
+    },
+    {
+        id: 25,
+        subject: "geography",
+        level: "advanced",
+        bn: { q: "বিশ্বের দীর্ঘতম নদী কোনটি?", a: "আমাজন", b: "নীল নদ", c: "গঙ্গা", d: "মিসিসিপি", exp: "আফ্রিকা মহাদেশের নীল নদ দৈর্ঘ্যের বিচারে বিশ্বের দীর্ঘতম।" },
+        en: { q: "Which is the longest river in the world?", a: "Amazon", b: "Nile", c: "Ganga", d: "Mississippi", exp: "The Nile River in Africa is the longest river globally." },
+        correct: "b"
+    },
+    {
+        id: 26,
+        subject: "biology",
+        level: "junior",
+        bn: { q: "গাছের পাতা সবুজ দেখায় কেন?", a: "জলের জন্য", b: "ক্লোরোফিলের জন্য", c: "সূর্যের আলোর জন্য", d: "মাটির জন্য", exp: "পাতায় ক্লোরোফিল নামক সবুজ রঞ্জক পদার্থ থাকার কারণে পাতা সবুজ হয়।" },
+        en: { q: "Why do plant leaves look green?", a: "Due to water", b: "Due to chlorophyll", c: "Due to sunlight", d: "Due to soil", exp: "Chlorophyll is the pigment responsible for the green color in plants." },
+        correct: "b"
+    },
+    {
+        id: 27,
+        subject: "tech",
+        level: "advanced",
+        bn: { q: "HTML-এর পূর্ণরূপ কী?", a: "Hyper Text Markup Language", b: "High Tech Modern Language", c: "Hyper Transfer Method Logic", d: "Home Tool Markup Language", exp: "HTML এর পূর্ণরূপ হলো Hyper Text Markup Language।" },
+        en: { q: "What is the full form of HTML?", a: "Hyper Text Markup Language", b: "High Tech Modern Language", c: "Hyper Transfer Method Logic", d: "Home Tool Markup Language", exp: "HTML stands for Hyper Text Markup Language." },
+        correct: "a"
+    },
+    {
+        id: 28,
+        subject: "math",
+        level: "secondary",
+        bn: { q: "পাই (π)-এর মান কত ধরা হয়?", a: "২.১৪", b: "৩.১৪", c: "৪.১৪", d: "১.১৪", exp: "গণিতে পাই এর মান ধরা হয় ২২/৭ বা প্রায় ৩.১৪।" },
+        en: { q: "What is the approximate value of Pi (π)?", a: "2.14", b: "3.14", c: "4.14", d: "1.14", exp: "The value of Pi is approximately 3.14 or 22/7." },
+        correct: "b"
+    },
+    {
+        id: 29,
+        subject: "commerce",
+        level: "higher",
+        bn: { q: "ভারতের কেন্দ্রীয় ব্যাংকের নাম কী?", a: "এসবিআই (SBI)", b: "আরবিআই (RBI)", c: "এইচডিএফসি (HDFC)", d: "পিএনবি (PNB)", exp: "Reserve Bank of India (RBI) হলো ভারতের কেন্দ্রীয় ব্যাংক।" },
+        en: { q: "What is the central bank of India?", a: "SBI", b: "RBI", c: "HDFC", d: "PNB", exp: "The Reserve Bank of India (RBI) is the supreme monetary authority." },
+        correct: "b"
+    },
+    {
+        id: 30,
+        subject: "philosophy",
+        level: "advanced",
+        bn: { q: "'আমি চিন্তা করি, তাই আমি আছি' - উক্তিটি কার?", a: "সক্রেটিস", b: "প্লেটো", c: "রেনে দেকার্তে", d: "অ্যারিস্টটল", exp: "ফরাসি দার্শনিক রেনে দেকার্তে এই বিখ্যাত উক্তিটি করেছিলেন।" },
+        en: { q: "'I think, therefore I am' was stated by?", a: "Socrates", b: "Plato", c: "Rene Descartes", d: "Aristotle", exp: "Rene Descartes coined the famous philosophical statement." },
+        correct: "c"
+    }
+];

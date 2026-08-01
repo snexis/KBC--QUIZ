@@ -1,243 +1,5500 @@
-// Master Question Database (Categorized & Multi-level)
-const quizQuestions = [
-    {
-        id: 1,
-        subject: "general",
-        level: "junior",
-        bn: { q: "পশ্চিমবঙ্গের রাজধানী কোনটি?", a: "হাওড়া", b: "কলকাতা", c: "শিলিগুড়ি", d: "বর্ধমান", exp: "কলকাতা হলো পশ্চিমবঙ্গের প্রশাসনিক ও রাজনৈতিক রাজধানী।" },
-        en: { q: "Which is the capital of West Bengal?", a: "Howrah", b: "Kolkata", c: "Siliguri", d: "Burdwan", exp: "Kolkata is the official capital of West Bengal." },
-        correct: "b"
+[
+  {
+    "id": 1,
+    "subject": "general",
+    "level": "junior",
+    "bn": {
+      "q": "পশ্চিমবঙ্গের রাজধানী কোনটি?",
+      "a": "হাওড়া",
+      "b": "কলকাতা",
+      "c": "শিলিগুড়ি",
+      "d": "বর্ধমান",
+      "exp": "কলকাতা হলো পশ্চিমবঙ্গের প্রশাসনিক ও রাজনৈতিক রাজধানী।"
     },
-    {
-        id: 2,
-        subject: "general",
-        level: "junior",
-        bn: { q: "ভারতের জাতীয় পশু কোনটি?", a: "সিংহ", b: "হাতি", c: "রয়েল বেঙ্গল টাইগার", d: "চিতাবাঘ", exp: "১৯৭৩ সালে রয়েল বেঙ্গল টাইগারকে ভারতের জাতীয় পশু হিসেবে ঘোষণা করা হয়।" },
-        en: { q: "Which is the national animal of India?", a: "Lion", b: "Elephant", c: "Royal Bengal Tiger", d: "Leopard", exp: "The Royal Bengal Tiger was declared the national animal of India in 1973." },
-        correct: "c"
+    "en": {
+      "q": "Which is the capital of West Bengal?",
+      "a": "Howrah",
+      "b": "Kolkata",
+      "c": "Siliguri",
+      "d": "Burdwan",
+      "exp": "Kolkata is the official capital of West Bengal."
     },
-    {
-        id: 3,
-        subject: "science",
-        level: "junior",
-        bn: { q: "সূর্য কোন দিকে ওঠে?", a: "পূর্ব", b: "পশ্চিম", c: "উত্তর", d: "দক্ষিণ", exp: "পৃথিবী পশ্চিম থেকে পূর্বে ঘোরে, তাই সূর্য পূর্ব দিকে উদিত দেখায়।" },
-        en: { q: "In which direction does the sun rise?", a: "East", b: "West", c: "North", d: "South", exp: "Earth rotates west to east, making the sun appear to rise in the east." },
-        correct: "a"
+    "correct": "b"
+  },
+  {
+    "id": 2,
+    "subject": "general",
+    "level": "junior",
+    "bn": {
+      "q": "ভারতের জাতীয় পশু কোনটি?",
+      "a": "সিংহ",
+      "b": "হাতি",
+      "c": "রয়েল বেঙ্গল টাইগার",
+      "d": "চিতাবাঘ",
+      "exp": "১৯৭৩ সালে রয়েল বেঙ্গল টাইগারকে ভারতের জাতীয় পশু হিসেবে ঘোষণা করা হয়।"
     },
-    {
-        id: 4,
-        subject: "science",
-        level: "secondary",
-        bn: { q: "আমাদের সৌরজগতের সবচেয়ে বড় গ্রহ কোনটি?", a: "পৃথিবী", b: "মঙ্গল", c: "বৃহস্পতি", d: "শনি", exp: "বৃহস্পতি (Jupiter) সৌরজগতের সর্ববৃহৎ গ্রহ।" },
-        en: { q: "Which is the largest planet in our solar system?", a: "Earth", b: "Mars", c: "Jupiter", d: "Saturn", exp: "Jupiter is the largest planet in our solar system." },
-        correct: "c"
+    "en": {
+      "q": "Which is the national animal of India?",
+      "a": "Lion",
+      "b": "Elephant",
+      "c": "Royal Bengal Tiger",
+      "d": "Leopard",
+      "exp": "The Royal Bengal Tiger was declared the national animal of India in 1973."
     },
-    {
-        id: 5,
-        subject: "biology",
-        level: "junior",
-        bn: { q: "মানুষের শরীরে মোট কয়টি হাড় থাকে?", a: "২০৬টি", b: "৩০৮টি", c: "১৫০টি", d: "২১০টি", exp: "একজন পূর্ণবয়স্ক মানুষের কঙ্কালতন্ত্রে ২০৬টি হাড় থাকে।" },
-        en: { q: "How many bones are there in an adult human body?", a: "206", b: "308", c: "150", d: "210", exp: "An adult human body consists of 206 bones." },
-        correct: "a"
+    "correct": "c"
+  },
+  {
+    "id": 3,
+    "subject": "science",
+    "level": "junior",
+    "bn": {
+      "q": "সূর্য কোন দিকে ওঠে?",
+      "a": "পূর্ব",
+      "b": "পশ্চিম",
+      "c": "উত্তর",
+      "d": "দক্ষিণ",
+      "exp": "পৃথিবী পশ্চিম থেকে পূর্বে ঘোরে, তাই সূর্য পূর্ব দিকে উদিত দেখায়।"
     },
-    {
-        id: 6,
-        subject: "science",
-        level: "secondary",
-        bn: { q: "জলের রাসায়নিক সংকেত কী?", a: "CO2", b: "H2O", c: "O2", d: "NaCl", exp: "জলে ২টি হাইড্রোজেন ও ১টি অক্সিজেন পরমাণু থাকায় এর সংকেত H2O।" },
-        en: { q: "What is the chemical formula of water?", a: "CO2", b: "H2O", c: "O2", d: "NaCl", exp: "Water contains 2 Hydrogen atoms and 1 Oxygen atom." },
-        correct: "b"
+    "en": {
+      "q": "In which direction does the sun rise?",
+      "a": "East",
+      "b": "West",
+      "c": "North",
+      "d": "South",
+      "exp": "Earth rotates west to east, making the sun appear to rise in the east."
     },
-    {
-        id: 7,
-        subject: "history",
-        level: "secondary",
-        bn: { q: "কোন দেশ প্রথম কাগজের মুদ্রা চালু করে?", a: "ভারত", b: "চীন", c: "আমেরিকা", d: "জাপান", exp: "টং রাজবংশের আমলে চীন প্রথম কাগজের নোট ব্যবহার শুরু করে।" },
-        en: { q: "Which country first introduced paper money?", a: "India", b: "China", c: "America", d: "Japan", exp: "China was the first country to issue paper currency." },
-        correct: "b"
+    "correct": "a"
+  },
+  {
+    "id": 4,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "আমাদের সৌরজগতের সবচেয়ে বড় গ্রহ কোনটি?",
+      "a": "পৃথিবী",
+      "b": "মঙ্গল",
+      "c": "বৃহস্পতি",
+      "d": "শনি",
+      "exp": "বৃহস্পতি (Jupiter) সৌরজগতের সর্ববৃহৎ গ্রহ।"
     },
-    {
-        id: 8,
-        subject: "literature",
-        level: "junior",
-        bn: { q: "গীতাঞ্জলি কাব্যগ্রন্থটি কার লেখা?", a: "নজরুল ইসলাম", b: "বঙ্কিমচন্দ্র", c: "রবীন্দ্রনাথ ঠাকুর", d: "শরৎচন্দ্র", exp: "রবীন্দ্রনাথ ঠাকুর এই কাব্যগ্রন্থের জন্যই ১৯১৩ সালে নোবেল পান।" },
-        en: { q: "Who wrote the book Gitanjali?", a: "Nazrul Islam", b: "Bankim Chandra", c: "Rabindranath Tagore", d: "Sharat Chandra", exp: "Rabindranath Tagore won the Nobel Prize in 1913 for Gitanjali." },
-        correct: "c"
+    "en": {
+      "q": "Which is the largest planet in our solar system?",
+      "a": "Earth",
+      "b": "Mars",
+      "c": "Jupiter",
+      "d": "Saturn",
+      "exp": "Jupiter is the largest planet in our solar system."
     },
-    {
-        id: 9,
-        subject: "tech",
-        level: "junior",
-        bn: { q: "কম্পিউটারের মস্তিষ্ক কাকে বলা হয়?", a: "র‍্যাম", b: "মনিটর", c: "সিপিইউ (CPU)", d: "হার্ডডিস্ক", exp: "CPU যাবতীয় হিসাব-নিকাশ প্রসেস করে তাই এটি ব্রেন।" },
-        en: { q: "What is called the brain of a computer?", a: "RAM", b: "Monitor", c: "CPU", d: "Hard Disk", exp: "CPU processes all instructions, serving as the computer's brain." },
-        correct: "c"
+    "correct": "c"
+  },
+  {
+    "id": 5,
+    "subject": "biology",
+    "level": "junior",
+    "bn": {
+      "q": "মানুষের শরীরে মোট কয়টি হাড় থাকে?",
+      "a": "২০৬টি",
+      "b": "৩০৮টি",
+      "c": "১৫০টি",
+      "d": "২১০টি",
+      "exp": "একজন পূর্ণবয়স্ক মানুষের কঙ্কালতন্ত্রে ২০৬টি হাড় থাকে।"
     },
-    {
-        id: 10,
-        subject: "history",
-        level: "junior",
-        bn: { q: "ভারতের স্বাধীনতা দিবস কবে পালিত হয়?", a: "২৬শে জানুয়ারি", b: "১৫ই আগস্ট", c: "২রা অক্টোবর", d: "৫ই সেপ্টেম্বর", exp: "১৯৪৭ সালের ১৫ই আগস্ট ভারত ব্রিটিশ শাসন থেকে মুক্ত হয়।" },
-        en: { q: "When is India's Independence Day celebrated?", a: "26th January", b: "15th August", c: "2nd October", d: "5th September", exp: "India gained independence from British rule on August 15, 1947." },
-        correct: "b"
+    "en": {
+      "q": "How many bones are there in an adult human body?",
+      "a": "206",
+      "b": "308",
+      "c": "150",
+      "d": "210",
+      "exp": "An adult human body consists of 206 bones."
     },
-    {
-        id: 11,
-        subject: "geography",
-        level: "secondary",
-        bn: { q: "পৃথিবীর সবচেয়ে উঁচু পর্বত কোনটি?", a: "কে-টু", b: "কাঞ্চনজঙ্ঘা", c: "মাউন্ট এভারেস্ট", d: "আল্পস", exp: "মাউন্ট এভারেস্ট সমুদ্রপৃষ্ঠ থেকে সবচেয়ে উঁচুতে অবস্থিত।" },
-        en: { q: "Which is the highest mountain in the world?", a: "K2", b: "Kangchenjunga", c: "Mount Everest", d: "Alps", exp: "Mount Everest is the highest peak above sea level." },
-        correct: "c"
+    "correct": "a"
+  },
+  {
+    "id": 6,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "জলের রাসায়নিক সংকেত কী?",
+      "a": "CO2",
+      "b": "H2O",
+      "c": "O2",
+      "d": "NaCl",
+      "exp": "জলে ২টি হাইড্রোজেন ও ১টি অক্সিজেন পরমাণু থাকায় এর সংকেত H2O।"
     },
-    {
-        id: 12,
-        subject: "science",
-        level: "secondary",
-        bn: { q: "টেলিফোন কে আবিষ্কার করেন?", a: "আইনস্টাইন", b: "আলেকজান্ডার গ্রাহাম বেল", c: "নিউটন", d: "টমাস আলভা এডিসন", exp: "১৮৭৬ সালে গ্রাহাম বেল প্রথম কার্যকরী টেলিফোন পেটেন্ট করেন।" },
-        en: { q: "Who invented the telephone?", a: "Einstein", b: "Alexander Graham Bell", c: "Newton", d: "Thomas Alva Edison", exp: "Alexander Graham Bell was granted the first patent for the telephone." },
-        correct: "b"
+    "en": {
+      "q": "What is the chemical formula of water?",
+      "a": "CO2",
+      "b": "H2O",
+      "c": "O2",
+      "d": "NaCl",
+      "exp": "Water contains 2 Hydrogen atoms and 1 Oxygen atom."
     },
-    {
-        id: 13,
-        subject: "science",
-        level: "junior",
-        bn: { q: "কোন গ্রহকে লাল গ্রহ বলা হয়?", a: "বুধ", b: "শুক্র", c: "মঙ্গল", d: "বৃহস্পতি", exp: "মঙ্গলের মাটিতে আয়রন অক্সাইড বেশি থাকায় একে লাল দেখায়।" },
-        en: { q: "Which planet is called the Red Planet?", a: "Mercury", b: "Venus", c: "Mars", d: "Jupiter", exp: "Mars appears red due to the prevalence of iron oxide on its surface." },
-        correct: "c"
+    "correct": "b"
+  },
+  {
+    "id": 7,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন দেশ প্রথম কাগজের মুদ্রা চালু করে?",
+      "a": "ভারত",
+      "b": "চীন",
+      "c": "আমেরিকা",
+      "d": "জাপান",
+      "exp": "টং রাজবংশের আমলে চীন প্রথম কাগজের নোট ব্যবহার শুরু করে।"
     },
-    {
-        id: 14,
-        subject: "science",
-        level: "secondary",
-        bn: { q: "সূর্যের আলো পৃথিবীতে আসতে কত সময় লাগে?", a: "২ মিনিট", b: "৫ মিনিট", c: "প্রায় ৮ মিনিট", d: "১২ মিনিট", exp: "সূর্য থেকে পৃথিবীর গড়ের কারণে আলো পৌঁছাতে প্রায় ৮ মিনিট ২০ সেকেন্ড লাগে।" },
-        en: { q: "How long does it take for sunlight to reach Earth?", a: "2 minutes", b: "5 minutes", c: "About 8 minutes", d: "12 minutes", exp: "Sunlight takes approximately 8 minutes and 20 seconds to reach Earth." },
-        correct: "c"
+    "en": {
+      "q": "Which country first introduced paper money?",
+      "a": "India",
+      "b": "China",
+      "c": "America",
+      "d": "Japan",
+      "exp": "China was the first country to issue paper currency."
     },
-    {
-        id: 15,
-        subject: "geography",
-        level: "junior",
-        bn: { q: "তাজমহল ভারতের কোন শহরে অবস্থিত?", a: "দিল্লি", b: "আগ্রা", c: "মুম্বাই", d: "জয়পুর", exp: "উত্তরপ্রদেশের আগ্রা শহরে যমুনা নদীর তীরে তাজমহল অবস্থিত।" },
-        en: { q: "In which Indian city is the Taj Mahal located?", a: "Delhi", b: "Agra", c: "Mumbai", d: "Jaipur", exp: "The Taj Mahal is located in Agra, Uttar Pradesh." },
-        correct: "b"
+    "correct": "b"
+  },
+  {
+    "id": 8,
+    "subject": "literature",
+    "level": "junior",
+    "bn": {
+      "q": "গীতাঞ্জলি কাব্যগ্রন্থটি কার লেখা?",
+      "a": "নজরুল ইসলাম",
+      "b": "বঙ্কিমচন্দ্র",
+      "c": "রবীন্দ্রনাথ ঠাকুর",
+      "d": "শরৎচন্দ্র",
+      "exp": "রবীন্দ্রনাথ ঠাকুর এই কাব্যগ্রন্থের জন্যই ১৯১৩ সালে নোবেল পান।"
     },
-    {
-        id: 16,
-        subject: "geography",
-        level: "secondary",
-        bn: { q: "কোন মহাদেশকে সাদা মহাদেশ বলা হয়?", a: "এশিয়া", b: "আফ্রিকা", c: "অ্যান্টার্কটিকা", d: "ইউরোপ", exp: "সারা বছর পুরু বরফে ঢাকা থাকার কারণে অ্যান্টার্কটিকাকে সাদা মহাদেশ বলা হয়।" },
-        en: { q: "Which continent is known as the White Continent?", a: "Asia", b: "Africa", c: "Antarctica", d: "Europe", exp: "Antarctica is covered with permanent ice, giving it a white appearance." },
-        correct: "c"
+    "en": {
+      "q": "Who wrote the book Gitanjali?",
+      "a": "Nazrul Islam",
+      "b": "Bankim Chandra",
+      "c": "Rabindranath Tagore",
+      "d": "Sharat Chandra",
+      "exp": "Rabindranath Tagore won the Nobel Prize in 1913 for Gitanjali."
     },
-    {
-        id: 17,
-        subject: "biology",
-        level: "secondary",
-        bn: { q: "কোন ভিটামিনের অভাবে রাতকানা রোগ হয়?", a: "ভিটামিন A", b: "ভিটামিন B", c: "ভিটামিন C", d: "ভিটামিন D", exp: "চোখের দৃষ্টিশক্তি ঠিক রাখার জন্য ভিটামিন A প্রয়োজন।" },
-        en: { q: "Deficiency of which vitamin causes night blindness?", a: "Vitamin A", b: "Vitamin B", c: "Vitamin C", d: "Vitamin D", exp: "Vitamin A is essential for healthy vision; its deficiency leads to night blindness." },
-        correct: "a"
+    "correct": "c"
+  },
+  {
+    "id": 9,
+    "subject": "tech",
+    "level": "junior",
+    "bn": {
+      "q": "কম্পিউটারের মস্তিষ্ক কাকে বলা হয়?",
+      "a": "র‍্যাম",
+      "b": "মনিটর",
+      "c": "সিপিইউ (CPU)",
+      "d": "হার্ডডিস্ক",
+      "exp": "CPU যাবতীয় হিসাব-নিকাশ প্রসেস করে তাই এটি ব্রেন।"
     },
-    {
-        id: 18,
-        subject: "science",
-        level: "secondary",
-        bn: { q: "সবচেয়ে শক্ত প্রাকৃতিক পদার্থ কোনটি?", a: "লোহা", b: "সোনা", c: "হীরা", d: "তামা", exp: "হীরা হলো কার্বনের তৈরি সবচেয়ে কঠিন প্রাকৃতিক পদার্থ।" },
-        en: { q: "Which is the hardest natural substance?", a: "Iron", b: "Gold", c: "Diamond", d: "Copper", exp: "Diamond is the hardest naturally occurring substance known." },
-        correct: "c"
+    "en": {
+      "q": "What is called the brain of a computer?",
+      "a": "RAM",
+      "b": "Monitor",
+      "c": "CPU",
+      "d": "Hard Disk",
+      "exp": "CPU processes all instructions, serving as the computer's brain."
     },
-    {
-        id: 19,
-        subject: "geography",
-        level: "secondary",
-        bn: { q: "কোন মহাসাগর সবচেয়ে বড়?", a: "ভারত মহাসাগর", b: "আটলান্টিক মহাসাগর", c: "প্রশান্ত মহাসাগর", d: "সুমেরু মহাসাগর", exp: "প্রশান্ত মহাসাগর আয়তনে পৃথিবীর সর্ববৃহৎ মহাসাগর।" },
-        en: { q: "Which ocean is the largest?", a: "Indian Ocean", b: "Atlantic Ocean", c: "Pacific Ocean", d: "Arctic Ocean", exp: "The Pacific Ocean is the largest and deepest ocean on Earth." },
-        correct: "c"
+    "correct": "c"
+  },
+  {
+    "id": 10,
+    "subject": "history",
+    "level": "junior",
+    "bn": {
+      "q": "ভারতের স্বাধীনতা দিবস কবে পালিত হয়?",
+      "a": "২৬শে জানুয়ারি",
+      "b": "১৫ই আগস্ট",
+      "c": "২রা অক্টোবর",
+      "d": "৫ই সেপ্টেম্বর",
+      "exp": "১৯৪৭ সালের ১৫ই আগস্ট ভারত ব্রিটিশ শাসন থেকে মুক্ত হয়।"
     },
-    {
-        id: 20,
-        subject: "history",
-        level: "secondary",
-        bn: { q: "ভারতের প্রথম প্রধানমন্ত্রীর নাম কী?", a: "মহাত্মা গান্ধী", b: "জওহরলাল নেহরু", c: "ড. বি আর আম্বেদকর", d: "সুভাষচন্দ্র বসু", exp: "পণ্ডিত জওহরলাল নেহরু স্বাধীন ভারতের প্রথম প্রধানমন্ত্রী ছিলেন।" },
-        en: { q: "What is the name of the first Prime Minister of India?", a: "Mahatma Gandhi", b: "Jawaharlal Nehru", c: "Dr. B.R. Ambedkar", d: "Subhash Chandra Bose", exp: "Pandit Jawaharlal Nehru was India's first Prime Minister." },
-        correct: "b"
+    "en": {
+      "q": "When is India's Independence Day celebrated?",
+      "a": "26th January",
+      "b": "15th August",
+      "c": "2nd October",
+      "d": "5th September",
+      "exp": "India gained independence from British rule on August 15, 1947."
     },
-    {
-        id: 21,
-        subject: "math",
-        level: "junior",
-        bn: { q: "কোনো সংখ্যার সাথে ০ গুণ করলে ফল কী হয়?", a: "১", b: "সেই সংখ্যাটিই", c: "০", d: "১০০", exp: "যেকোনো সংখ্যাকে ০ দিয়ে গুণ করলে গুণফল সবসময় ০ হয়।" },
-        en: { q: "What is the result when a number is multiplied by 0?", a: "1", b: "The number itself", c: "0", d: "100", exp: "Any number multiplied by zero equals zero." },
-        correct: "c"
+    "correct": "b"
+  },
+  {
+    "id": 11,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "পৃথিবীর সবচেয়ে উঁচু পর্বত কোনটি?",
+      "a": "কে-টু",
+      "b": "কাঞ্চনজঙ্ঘা",
+      "c": "মাউন্ট এভারেস্ট",
+      "d": "আল্পস",
+      "exp": "মাউন্ট এভারেস্ট সমুদ্রপৃষ্ঠ থেকে সবচেয়ে উঁচুতে অবস্থিত।"
     },
-    {
-        id: 22,
-        subject: "science",
-        level: "secondary",
-        bn: { q: "কোন গ্যাস আমাদের বাঁচিয়ে রাখতে সাহায্য করে?", a: "নাইট্রোজেন", b: "কার্বন ডাই অক্সাইড", c: "অক্সিজেন", d: "হাইড্রোজেন", exp: "মানুষ ও প্রাণী শ্বসনের জন্য বায়ুমণ্ডল থেকে অক্সিজেন গ্রহণ করে।" },
-        en: { q: "Which gas helps to keep us alive?", a: "Nitrogen", b: "Carbon dioxide", c: "Oxygen", d: "Hydrogen", exp: "Oxygen is essential for human respiration and survival." },
-        correct: "c"
+    "en": {
+      "q": "Which is the highest mountain in the world?",
+      "a": "K2",
+      "b": "Kangchenjunga",
+      "c": "Mount Everest",
+      "d": "Alps",
+      "exp": "Mount Everest is the highest peak above sea level."
     },
-    {
-        id: 23,
-        subject: "biology",
-        level: "advanced",
-        bn: { q: "কোন প্রাণীর রক্ত নীল রঙের হয়?", a: "হাঙর", b: "অক্টোপাস", c: "তিমি", d: "ডলফিন", exp: "অক্টোপাসের রক্তে হিমোসায়ানিন নামক কপার সমৃদ্ধ প্রোটিন থাকায় রক্ত নীল হয়।" },
-        en: { q: "Which animal has blue blood?", a: "Shark", b: "Octopus", c: "Whale", d: "Dolphin", exp: "Octopuses have hemocyanin in their blood, which turns it blue." },
-        correct: "b"
+    "correct": "c"
+  },
+  {
+    "id": 12,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "টেলিফোন কে আবিষ্কার করেন?",
+      "a": "আইনস্টাইন",
+      "b": "আলেকজান্ডার গ্রাহাম বেল",
+      "c": "নিউটন",
+      "d": "টমাস আলভা এডিসন",
+      "exp": "১৮৭৬ সালে গ্রাহাম বেল প্রথম কার্যকরী টেলিফোন পেটেন্ট করেন।"
     },
-    {
-        id: 24,
-        subject: "history",
-        level: "advanced",
-        bn: { q: "কোন দেশ প্রথম মহাকাশে কৃত্রিম উপগ্রহ পাঠায়?", a: "আমেরিকা", b: "রাশিয়া", c: "ভারত", d: "চীন", exp: "১৯৫৭ সালে তৎকালীন সোভিয়েত ইউনিয়ন (রাশিয়া) স্পুটনিক-১ উৎক্ষেপণ করে।" },
-        en: { q: "Which country first sent an artificial satellite into space?", a: "America", b: "Russia", c: "India", d: "China", exp: "The USSR (Russia) launched Sputnik 1 in 1957." },
-        correct: "b"
+    "en": {
+      "q": "Who invented the telephone?",
+      "a": "Einstein",
+      "b": "Alexander Graham Bell",
+      "c": "Newton",
+      "d": "Thomas Alva Edison",
+      "exp": "Alexander Graham Bell was granted the first patent for the telephone."
     },
-    {
-        id: 25,
-        subject: "geography",
-        level: "advanced",
-        bn: { q: "বিশ্বের দীর্ঘতম নদী কোনটি?", a: "আমাজন", b: "নীল নদ", c: "গঙ্গা", d: "মিসিসিপি", exp: "আফ্রিকা মহাদেশের নীল নদ দৈর্ঘ্যের বিচারে বিশ্বের দীর্ঘতম।" },
-        en: { q: "Which is the longest river in the world?", a: "Amazon", b: "Nile", c: "Ganga", d: "Mississippi", exp: "The Nile River in Africa is the longest river globally." },
-        correct: "b"
+    "correct": "b"
+  },
+  {
+    "id": 13,
+    "subject": "science",
+    "level": "junior",
+    "bn": {
+      "q": "কোন গ্রহকে লাল গ্রহ বলা হয়?",
+      "a": "বুধ",
+      "b": "শুক্র",
+      "c": "মঙ্গল",
+      "d": "বৃহস্পতি",
+      "exp": "মঙ্গলের মাটিতে আয়রন অক্সাইড বেশি থাকায় একে লাল দেখায়।"
     },
-    {
-        id: 26,
-        subject: "biology",
-        level: "junior",
-        bn: { q: "গাছের পাতা সবুজ দেখায় কেন?", a: "জলের জন্য", b: "ক্লোরোফিলের জন্য", c: "সূর্যের আলোর জন্য", d: "মাটির জন্য", exp: "পাতায় ক্লোরোফিল নামক সবুজ রঞ্জক পদার্থ থাকার কারণে পাতা সবুজ হয়।" },
-        en: { q: "Why do plant leaves look green?", a: "Due to water", b: "Due to chlorophyll", c: "Due to sunlight", d: "Due to soil", exp: "Chlorophyll is the pigment responsible for the green color in plants." },
-        correct: "b"
+    "en": {
+      "q": "Which planet is called the Red Planet?",
+      "a": "Mercury",
+      "b": "Venus",
+      "c": "Mars",
+      "d": "Jupiter",
+      "exp": "Mars appears red due to the prevalence of iron oxide on its surface."
     },
-    {
-        id: 27,
-        subject: "tech",
-        level: "advanced",
-        bn: { q: "HTML-এর পূর্ণরূপ কী?", a: "Hyper Text Markup Language", b: "High Tech Modern Language", c: "Hyper Transfer Method Logic", d: "Home Tool Markup Language", exp: "HTML এর পূর্ণরূপ হলো Hyper Text Markup Language।" },
-        en: { q: "What is the full form of HTML?", a: "Hyper Text Markup Language", b: "High Tech Modern Language", c: "Hyper Transfer Method Logic", d: "Home Tool Markup Language", exp: "HTML stands for Hyper Text Markup Language." },
-        correct: "a"
+    "correct": "c"
+  },
+  {
+    "id": 14,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সূর্যের আলো পৃথিবীতে আসতে কত সময় লাগে?",
+      "a": "২ মিনিট",
+      "b": "৫ মিনিট",
+      "c": "প্রায় ৮ মিনিট",
+      "d": "১২ মিনিট",
+      "exp": "সূর্য থেকে পৃথিবীর দূরত্বের কারণে আলো পৌঁছাতে প্রায় ৮ মিনিট ২০ সেকেন্ড লাগে।"
     },
-    {
-        id: 28,
-        subject: "math",
-        level: "secondary",
-        bn: { q: "পাই (π)-এর মান কত ধরা হয়?", a: "২.১৪", b: "৩.১৪", c: "৪.১৪", d: "১.১৪", exp: "গণিতে পাই এর মান ধরা হয় ২২/৭ বা প্রায় ৩.১৪।" },
-        en: { q: "What is the approximate value of Pi (π)?", a: "2.14", b: "3.14", c: "4.14", d: "1.14", exp: "The value of Pi is approximately 3.14 or 22/7." },
-        correct: "b"
+    "en": {
+      "q": "How long does it take for sunlight to reach Earth?",
+      "a": "2 minutes",
+      "b": "5 minutes",
+      "c": "About 8 minutes",
+      "d": "12 minutes",
+      "exp": "Sunlight takes approximately 8 minutes and 20 seconds to reach Earth."
     },
-    {
-        id: 29,
-        subject: "commerce",
-        level: "higher",
-        bn: { q: "ভারতের কেন্দ্রীয় ব্যাংকের নাম কী?", a: "এসবিআই (SBI)", b: "আরবিআই (RBI)", c: "এইচডিএফসি (HDFC)", d: "পিএনবি (PNB)", exp: "Reserve Bank of India (RBI) হলো ভারতের কেন্দ্রীয় ব্যাংক।" },
-        en: { q: "What is the central bank of India?", a: "SBI", b: "RBI", c: "HDFC", d: "PNB", exp: "The Reserve Bank of India (RBI) is the supreme monetary authority." },
-        correct: "b"
+    "correct": "c"
+  },
+  {
+    "id": 15,
+    "subject": "geography",
+    "level": "junior",
+    "bn": {
+      "q": "তাজমহল ভারতের কোন শহরে অবস্থিত?",
+      "a": "দিল্লি",
+      "b": "আগ্রা",
+      "c": "মুম্বাই",
+      "d": "জয়পুর",
+      "exp": "উত্তরপ্রদেশের আগ্রা শহরে যমুনা নদীর তীরে তাজমহল অবস্থিত।"
     },
-    {
-        id: 30,
-        subject: "philosophy",
-        level: "advanced",
-        bn: { q: "'আমি চিন্তা করি, তাই আমি আছি' - উক্তিটি কার?", a: "সক্রেটিস", b: "প্লেটো", c: "রেনে দেকার্তে", d: "অ্যারিস্টটল", exp: "ফরাসি দার্শনিক রেনে দেকার্তে এই বিখ্যাত উক্তিটি করেছিলেন।" },
-        en: { q: "'I think, therefore I am' was stated by?", a: "Socrates", b: "Plato", c: "Rene Descartes", d: "Aristotle", exp: "Rene Descartes coined the famous philosophical statement." },
-        correct: "c"
-    }
-];
+    "en": {
+      "q": "In which Indian city is the Taj Mahal located?",
+      "a": "Delhi",
+      "b": "Agra",
+      "c": "Mumbai",
+      "d": "Jaipur",
+      "exp": "The Taj Mahal is located in Agra, Uttar Pradesh."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 16,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন মহাদেশকে সাদা মহাদেশ বলা হয়?",
+      "a": "এশিয়া",
+      "b": "আফ্রিকা",
+      "c": "অ্যান্টার্কটিকা",
+      "d": "ইউরোপ",
+      "exp": "সারা বছর পুরু বরফে ঢাকা থাকার কারণে অ্যান্টার্কটিকাকে সাদা মহাদেশ বলা হয়।"
+    },
+    "en": {
+      "q": "Which continent is known as the White Continent?",
+      "a": "Asia",
+      "b": "Africa",
+      "c": "Antarctica",
+      "d": "Europe",
+      "exp": "Antarctica is covered with permanent ice, giving it a white appearance."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 17,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন ভিটামিনের অভাবে রাতকানা রোগ হয়?",
+      "a": "ভিটামিন A",
+      "b": "ভিটামিন B",
+      "c": "ভিটামিন C",
+      "d": "ভিটামিন D",
+      "exp": "চোখের দৃষ্টিশক্তি ঠিক রাখার জন্য ভিটামিন A প্রয়োজন।"
+    },
+    "en": {
+      "q": "Deficiency of which vitamin causes night blindness?",
+      "a": "Vitamin A",
+      "b": "Vitamin B",
+      "c": "Vitamin C",
+      "d": "Vitamin D",
+      "exp": "Vitamin A is essential for healthy vision; its deficiency leads to night blindness."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 18,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সবচেয়ে শক্ত প্রাকৃতিক পদার্থ কোনটি?",
+      "a": "লোহা",
+      "b": "সোনা",
+      "c": "হীরা",
+      "d": "তামা",
+      "exp": "হীরা হলো কার্বনের তৈরি সবচেয়ে কঠিন প্রাকৃতিক পদার্থ।"
+    },
+    "en": {
+      "q": "Which is the hardest natural substance?",
+      "a": "Iron",
+      "b": "Gold",
+      "c": "Diamond",
+      "d": "Copper",
+      "exp": "Diamond is the hardest naturally occurring substance known."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 19,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন মহাসাগর সবচেয়ে বড়?",
+      "a": "ভারত মহাসাগর",
+      "b": "আটলান্টিক মহাসাগর",
+      "c": "প্রশান্ত মহাসাগর",
+      "d": "সুমেরু মহাসাগর",
+      "exp": "প্রশান্ত মহাসাগর আয়তনে পৃথিবীর সর্ববৃহৎ মহাসাগর।"
+    },
+    "en": {
+      "q": "Which ocean is the largest?",
+      "a": "Indian Ocean",
+      "b": "Atlantic Ocean",
+      "c": "Pacific Ocean",
+      "d": "Arctic Ocean",
+      "exp": "The Pacific Ocean is the largest and deepest ocean on Earth."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 20,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের প্রথম প্রধানমন্ত্রীর নাম কী?",
+      "a": "মহাত্মা গান্ধী",
+      "b": "জওহরলাল নেহরু",
+      "c": "ড. বি আর আম্বেদকর",
+      "d": "সুভাষচন্দ্র বসু",
+      "exp": "পণ্ডিত জওহরলাল নেহরু স্বাধীন ভারতের প্রথম প্রধানমন্ত্রী ছিলেন।"
+    },
+    "en": {
+      "q": "What is the name of the first Prime Minister of India?",
+      "a": "Mahatma Gandhi",
+      "b": "Jawaharlal Nehru",
+      "c": "Dr. B.R. Ambedkar",
+      "d": "Subhash Chandra Bose",
+      "exp": "Pandit Jawaharlal Nehru was India's first Prime Minister."
+    },
+    "correct": "b"
+  }
+]
+[
+  {
+    "id": 21,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "কোনো সংখ্যার সাথে ০ গুণ করলে ফল কী হয়?",
+      "a": "১",
+      "b": "সেই সংখ্যাটিই",
+      "c": "০",
+      "d": "১০০",
+      "exp": "যেকোনো সংখ্যাকে ০ দিয়ে গুণ করলে গুণফল সবসময় ০ হয়।"
+    },
+    "en": {
+      "q": "What is the result when a number is multiplied by 0?",
+      "a": "1",
+      "b": "The number itself",
+      "c": "0",
+      "d": "100",
+      "exp": "Any number multiplied by zero equals zero."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 22,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন গ্যাস আমাদের বাঁচিয়ে রাখতে সাহায্য করে?",
+      "a": "নাইট্রোজেন",
+      "b": "কার্বন ডাই অক্সাইড",
+      "c": "অক্সিজেন",
+      "d": "হাইড্রোজেন",
+      "exp": "মানুষ ও প্রাণী শ্বসনের জন্য বায়ুমণ্ডল থেকে অক্সিজেন গ্রহণ করে।"
+    },
+    "en": {
+      "q": "Which gas helps to keep us alive?",
+      "a": "Nitrogen",
+      "b": "Carbon dioxide",
+      "c": "Oxygen",
+      "d": "Hydrogen",
+      "exp": "Oxygen is essential for human respiration and survival."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 23,
+    "subject": "biology",
+    "level": "advanced",
+    "bn": {
+      "q": "কোন প্রাণীর রক্ত নীল রঙের হয়?",
+      "a": "হাঙর",
+      "b": "অক্টোপাস",
+      "c": "তিমি",
+      "d": "ডলফিন",
+      "exp": "অক্টোপাসের রক্তে হিমোসায়ানিন নামক কপার সমৃদ্ধ প্রোটিন থাকায় রক্ত নীল হয়।"
+    },
+    "en": {
+      "q": "Which animal has blue blood?",
+      "a": "Shark",
+      "b": "Octopus",
+      "c": "Whale",
+      "d": "Dolphin",
+      "exp": "Octopuses have hemocyanin in their blood, which turns it blue."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 24,
+    "subject": "history",
+    "level": "advanced",
+    "bn": {
+      "q": "কোন দেশ প্রথম মহাকাশে কৃত্রিম উপগ্রহ পাঠায়?",
+      "a": "আমেরিকা",
+      "b": "রাশিয়া",
+      "c": "ভারত",
+      "d": "চীন",
+      "exp": "১৯৫৭ সালে তৎকালীন সোভিয়েত ইউনিয়ন (রাশিয়া) স্পুটনিক-১ উৎক্ষেপণ করে।"
+    },
+    "en": {
+      "q": "Which country first sent an artificial satellite into space?",
+      "a": "America",
+      "b": "Russia",
+      "c": "India",
+      "d": "China",
+      "exp": "The USSR (Russia) launched Sputnik 1 in 1957."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 25,
+    "subject": "geography",
+    "level": "advanced",
+    "bn": {
+      "q": "বিশ্বের দীর্ঘতম নদী কোনটি?",
+      "a": "আমাজন",
+      "b": "নীল নদ",
+      "c": "গঙ্গা",
+      "d": "মিসিসিপি",
+      "exp": "আফ্রিকা মহাদেশের নীল নদ দৈর্ঘ্যের বিচারে বিশ্বের দীর্ঘতম।"
+    },
+    "en": {
+      "q": "Which is the longest river in the world?",
+      "a": "Amazon",
+      "b": "Nile",
+      "c": "Ganga",
+      "d": "Mississippi",
+      "exp": "The Nile River in Africa is the longest river globally."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 26,
+    "subject": "biology",
+    "level": "junior",
+    "bn": {
+      "q": "গাছের পাতা সবুজ দেখায় কেন?",
+      "a": "জলের জন্য",
+      "b": "ক্লোরোফিলের জন্য",
+      "c": "সূর্যের আলোর জন্য",
+      "d": "মাটির জন্য",
+      "exp": "পাতায় ক্লোরোফিল নামক সবুজ রঞ্জক পদার্থ থাকার কারণে পাতা সবুজ হয়।"
+    },
+    "en": {
+      "q": "Why do plant leaves look green?",
+      "a": "Due to water",
+      "b": "Due to chlorophyll",
+      "c": "Due to sunlight",
+      "d": "Due to soil",
+      "exp": "Chlorophyll is the pigment responsible for the green color in plants."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 27,
+    "subject": "tech",
+    "level": "advanced",
+    "bn": {
+      "q": "HTML-এর পূর্ণরূপ কী?",
+      "a": "Hyper Text Markup Language",
+      "b": "High Tech Modern Language",
+      "c": "Hyper Transfer Method Logic",
+      "d": "Home Tool Markup Language",
+      "exp": "HTML এর পূর্ণরূপ হলো Hyper Text Markup Language।"
+    },
+    "en": {
+      "q": "What is the full form of HTML?",
+      "a": "Hyper Text Markup Language",
+      "b": "High Tech Modern Language",
+      "c": "Hyper Transfer Method Logic",
+      "d": "Home Tool Markup Language",
+      "exp": "HTML stands for Hyper Text Markup Language."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 28,
+    "subject": "math",
+    "level": "secondary",
+    "bn": {
+      "q": "পাই (π)-এর মান কত ধরা হয়?",
+      "a": "২.১৪",
+      "b": "৩.১৪",
+      "c": "৪.১৪",
+      "d": "১.১৪",
+      "exp": "গণিতে পাই এর মান ধরা হয় ২২/৭ বা প্রায় ৩.১৪।"
+    },
+    "en": {
+      "q": "What is the approximate value of Pi (π)?",
+      "a": "2.14",
+      "b": "3.14",
+      "c": "4.14",
+      "d": "1.14",
+      "exp": "The value of Pi is approximately 3.14 or 22/7."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 29,
+    "subject": "commerce",
+    "level": "higher",
+    "bn": {
+      "q": "ভারতের কেন্দ্রীয় ব্যাংকের নাম কী?",
+      "a": "এসবিআই (SBI)",
+      "b": "আরবিআই (RBI)",
+      "c": "এইচডিএফসি (HDFC)",
+      "d": "পিএনবি (PNB)",
+      "exp": "Reserve Bank of India (RBI) হলো ভারতের কেন্দ্রীয় ব্যাংক।"
+    },
+    "en": {
+      "q": "What is the central bank of India?",
+      "a": "SBI",
+      "b": "RBI",
+      "c": "HDFC",
+      "d": "PNB",
+      "exp": "The Reserve Bank of India (RBI) is the supreme monetary authority."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 30,
+    "subject": "philosophy",
+    "level": "advanced",
+    "bn": {
+      "q": "'আমি চিন্তা করি, তাই আমি আছি' - উক্তিটি কার?",
+      "a": "সক্রেটিস",
+      "b": "প্লেটো",
+      "c": "রেনে দেকার্তে",
+      "d": "অ্যারিস্টটল",
+      "exp": "ফরাসি দার্শনিক রেনে দেকার্তে এই বিখ্যাত উক্তিটি করেছিলেন।"
+    },
+    "en": {
+      "q": "'I think, therefore I am' was stated by?",
+      "a": "Socrates",
+      "b": "Plato",
+      "c": "Rene Descartes",
+      "d": "Aristotle",
+      "exp": "Rene Descartes coined the famous philosophical statement."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 31,
+    "subject": "science",
+    "level": "junior",
+    "bn": {
+      "q": "পদার্থের কয়টি প্রধান অবস্থা থাকে?",
+      "a": "২টি",
+      "b": "৩টি",
+      "c": "৪টি",
+      "d": "৫টি",
+      "exp": "পদার্থের প্রধান ৩টি অবস্থা হলো কঠিন, তরল ও গ্যাসীয়।"
+    },
+    "en": {
+      "q": "How many main states of matter are there?",
+      "a": "2",
+      "b": "3",
+      "c": "4",
+      "d": "5",
+      "exp": "The three main states of matter are solid, liquid, and gas."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 32,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের ক্ষুদ্রতম রাজ্য কোনটি?",
+      "a": "সিকিম",
+      "b": "গোয়া",
+      "c": "ত্রিপুরা",
+      "d": "মিজোরাম",
+      "exp": "আয়তনের দিক থেকে গোয়া ভারতের ক্ষুদ্রতম রাজ্য।"
+    },
+    "en": {
+      "q": "Which is the smallest state in India?",
+      "a": "Sikkim",
+      "b": "Goa",
+      "c": "Tripura",
+      "d": "Mizoram",
+      "exp": "Goa is the smallest state in India by area."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 33,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "মহাত্মা গান্ধীকে কে হত্যা করেন?",
+      "a": "নাথুরাম গডসে",
+      "b": "ভগৎ সিং",
+      "c": "উধম সিং",
+      "d": "লর্ড মাউন্টব্যাটেন",
+      "exp": "১৯৪৮ সালের ৩০শে জানুয়ারি নাথুরাম গডসে মহাত্মা গান্ধীকে গুলি করেন।"
+    },
+    "en": {
+      "q": "Who assassinated Mahatma Gandhi?",
+      "a": "Nathuram Godse",
+      "b": "Bhagat Singh",
+      "c": "Udham Singh",
+      "d": "Lord Mountbatten",
+      "exp": "Mahatma Gandhi was assassinated by Nathuram Godse on January 30, 1948."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 34,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের বৃহত্তম অঙ্গ কোনটি?",
+      "a": "যকৃৎ (Liver)",
+      "b": "ত্বক (Skin)",
+      "c": "হৃদপিণ্ড",
+      "d": "মস্তিষ্ক",
+      "exp": "ত্বক মানবদেহের সবচেয়ে বড় বাহ্যিক অঙ্গ।"
+    },
+    "en": {
+      "q": "Which is the largest organ in the human body?",
+      "a": "Liver",
+      "b": "Skin",
+      "c": "Heart",
+      "d": "Brain",
+      "exp": "Skin is the largest organ of the human body."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 35,
+    "subject": "science",
+    "level": "junior",
+    "bn": {
+      "q": "বিদ্যুৎ পরিমাপের একক কী?",
+      "a": "মিটার",
+      "b": "ওয়াট",
+      "c": "অ্যাম্পিয়ার",
+      "d": "লিটার",
+      "exp": "তড়িৎ প্রবাহের আন্তর্জাতিক একক হলো অ্যাম্পিয়ার (Ampere)।"
+    },
+    "en": {
+      "q": "What is the SI unit of electric current?",
+      "a": "Meter",
+      "b": "Watt",
+      "c": "Ampere",
+      "d": "Liter",
+      "exp": "The SI unit of electric current is the Ampere."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 36,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'মেঘনাদবধ কাব্য' কার রচনা?",
+      "a": "মাইকেল মধুসূদন দত্ত",
+      "b": "ঈশ্বরচন্দ্র বিদ্যাসাগর",
+      "c": "বঙ্কিমচন্দ্র চট্টোপাধ্যায়",
+      "d": "কাজী নজরুল ইসলাম",
+      "exp": "মাইকেল মধুসূদন দত্ত মহাকাব্যিক ধারায় মেঘনাদবধ কাব্য রচনা করেন।"
+    },
+    "en": {
+      "q": "Who wrote 'Meghnad Badh Kavya'?",
+      "a": "Michael Madhusudan Dutt",
+      "b": "Ishwar Chandra Vidyasagar",
+      "c": "Bankim Chandra Chattopadhyay",
+      "d": "Kazi Nazrul Islam",
+      "exp": "Michael Madhusudan Dutt composed the epic poem Meghnad Badh Kavya."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 37,
+    "subject": "tech",
+    "level": "junior",
+    "bn": {
+      "q": "WWW-এর পূর্ণরূপ কী?",
+      "a": "World Wide Web",
+      "b": "World Whole Web",
+      "c": "Web World Wide",
+      "d": "Wide World Web",
+      "exp": "WWW হলো World Wide Web এর সংক্ষিপ্ত রূপ।"
+    },
+    "en": {
+      "q": "What is the full form of WWW?",
+      "a": "World Wide Web",
+      "b": "World Whole Web",
+      "c": "Web World Wide",
+      "d": "Wide World Web",
+      "exp": "WWW stands for World Wide Web."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 38,
+    "subject": "geography",
+    "level": "junior",
+    "bn": {
+      "q": "কোনটি 'গোলাপী শহর' নামে পরিচিত?",
+      "a": "কলকাতা",
+      "b": "জয়পুর",
+      "c": "উদয়পুর",
+      "d": "দিল্লি",
+      "exp": "রাজস্থানের জয়পুর শহরটি গোলাপী শহর (Pink City) নামে পরিচিত।"
+    },
+    "en": {
+      "q": "Which city is known as the 'Pink City'?",
+      "a": "Kolkata",
+      "b": "Jaipur",
+      "c": "Udaipur",
+      "d": "Delhi",
+      "exp": "Jaipur in Rajasthan is famously known as the Pink City."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 39,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "ত্রিভুজের তিনটি কোণের সমষ্টি কত ডিগ্রী?",
+      "a": "৯০°",
+      "b": "১৮০°",
+      "c": "৩৬০°",
+      "d": "২৭০°",
+      "exp": "যে কোনো ত্রিভুজের ভেতরের তিন কোণের যোগফল সবসময় ১৮০° হয়।"
+    },
+    "en": {
+      "q": "What is the sum of the angles in a triangle?",
+      "a": "90°",
+      "b": "180°",
+      "c": "360°",
+      "d": "270°",
+      "exp": "The sum of all internal angles in any triangle is always 180 degrees."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 40,
+    "subject": "general",
+    "level": "junior",
+    "bn": {
+      "q": "অলিম্পিক পতাকায় কয়টি রিং বা বৃত্ত থাকে?",
+      "a": "৪টি",
+      "b": "৫টি",
+      "c": "৬টি",
+      "d": "৭টি",
+      "exp": "অলিম্পিকের পতাকায় পাঁচটি মহাদেশের প্রতীক হিসেবে ৫টি রিং থাকে।"
+    },
+    "en": {
+      "q": "How many rings are there on the Olympic flag?",
+      "a": "4",
+      "b": "5",
+      "c": "6",
+      "d": "7",
+      "exp": "The Olympic symbol consists of five interconnected rings representing five continents."
+    },
+    "correct": "b"
+  }
+]
+[
+  {
+    "id": 41,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "শব্দ কোন মাধ্যমের মধ্য দিয়ে যেতে পারে না?",
+      "a": "জল",
+      "b": "বায়ু",
+      "c": "শূন্য মাধ্যম",
+      "d": "লোহা",
+      "exp": "শব্দ সঞ্চালনের জন্য জড় মাধ্যমের প্রয়োজন, তাই শূন্য মাধ্যমে শব্দ চলাচল করতে পারে না।"
+    },
+    "en": {
+      "q": "Through which medium can sound not travel?",
+      "a": "Water",
+      "b": "Air",
+      "c": "Vacuum",
+      "d": "Iron",
+      "exp": "Sound requires a material medium to travel, so it cannot travel through a vacuum."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 42,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন নদীকে 'ভারতের দীর্ঘতম নদী' বলা হয়?",
+      "a": "যমুনা",
+      "b": "গঙ্গা",
+      "c": "গো দাবরী",
+      "d": "ব্রহ্মপুত্র",
+      "exp": "গঙ্গা নদী ভারতের সীমানার ভেতরে দীর্ঘতম নদী (প্রায় ২৫২৫ কিমি)।"
+    },
+    "en": {
+      "q": "Which river is known as the longest river in India?",
+      "a": "Yamuna",
+      "b": "Ganga",
+      "c": "Godavari",
+      "d": "Brahmaputra",
+      "exp": "The Ganga is the longest river flowing within India."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 43,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "সিপাহী বিদ্রোহ কত সালে শুরু হয়েছিল?",
+      "a": "১৮৫৭",
+      "b": "১৯৪৭",
+      "c": "১৯০৫",
+      "d": "১৭৫৭",
+      "exp": "১৮৫৭ সালে বারাকপুরে মঙ্গল পাণ্ডের নেতৃত্বে সিপাহী বিদ্রোহের সূচনা হয়।"
+    },
+    "en": {
+      "q": "In which year did the Sepoy Mutiny begin?",
+      "a": "1857",
+      "b": "1947",
+      "c": "1905",
+      "d": "1757",
+      "exp": "The Sepoy Mutiny began in the year 1857."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 44,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের রক্তচাপ মাপার যন্ত্রের নাম কী?",
+      "a": "থার্মোমিটার",
+      "b": "স্ফিগমোম্যানোমিটার",
+      "c": "ব্যারোমিটার",
+      "d": "স্ট্রেথোস্কোপ",
+      "exp": "স্ফিগমোম্যানোমিটার যন্ত্রের সাহায্যে রক্তচাপ (Blood Pressure) মাপা হয়।"
+    },
+    "en": {
+      "q": "What is the instrument used to measure blood pressure?",
+      "a": "Thermometer",
+      "b": "Sphygmomanometer",
+      "c": "Barometer",
+      "d": "Stethoscope",
+      "exp": "A Sphygmomanometer is used to measure human blood pressure."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 45,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের অস্থায়ী মেমোরি কোনটি?",
+      "a": "ROM",
+      "b": "RAM",
+      "c": "Hard Disk",
+      "d": "SSD",
+      "exp": "RAM (Random Access Memory) হলো একটি ভোলাটাইল বা অস্থায়ী মেমোরি।"
+    },
+    "en": {
+      "q": "Which is the temporary memory of a computer?",
+      "a": "ROM",
+      "b": "RAM",
+      "c": "Hard Disk",
+      "d": "SSD",
+      "exp": "RAM is a volatile memory that holds data temporarily."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 46,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'আরণ্যক' উপন্যাসটি কার লেখা?",
+      "a": "শরৎচন্দ্র চট্টোপাধ্যায়",
+      "b": "বিভূতিভূষণ বন্দ্যোপাধ্যায়",
+      "c": "তারাশঙ্কর বন্দ্যোপাধ্যায়",
+      "d": "মানিক বন্দ্যোপাধ্যায়",
+      "exp": "প্রসিদ্ধ কথাসাহিত্যিক বিভূতিভূষণ বন্দ্যোপাধ্যায় 'আরণ্যক' উপন্যাসটি রচনা করেন।"
+    },
+    "en": {
+      "q": "Who wrote the novel 'Aranyak'?",
+      "a": "Sharat Chandra Chattopadhyay",
+      "b": "Bibhutibhushan Bandyopadhyay",
+      "c": "Tarashankar Bandyopadhyay",
+      "d": "Manik Bandyopadhyay",
+      "exp": "Bibhutibhushan Bandyopadhyay is the author of the famous novel 'Aranyak'."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 47,
+    "subject": "science",
+    "level": "junior",
+    "bn": {
+      "q": "কোন গ্রহের সবচেয়ে বেশি সংখ্যক উপগ্রহ রয়েছে?",
+      "a": "বৃহস্পতি",
+      "b": "শনি",
+      "c": "ইউরেনাস",
+      "d": "মঙ্গল",
+      "exp": "বর্তমানে শনি গ্রহের আবিষ্কৃত উপগ্রহের সংখ্যা সৌরজগতে সবচেয়ে বেশি।"
+    },
+    "en": {
+      "q": "Which planet has the highest number of moons?",
+      "a": "Jupiter",
+      "b": "Saturn",
+      "c": "Uranus",
+      "d": "Mars",
+      "exp": "Saturn holds the record for the most confirmed moons in our solar system."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 48,
+    "subject": "math",
+    "level": "secondary",
+    "bn": {
+      "q": "সবচেয়ে ছোট মৌলিক সংখ্যা কোনটি?",
+      "a": "০",
+      "b": "১",
+      "c": "২",
+      "d": "৩",
+      "exp": "২ হলো একমাত্র জোড় মৌলিক সংখ্যা এবং এটিই সবচেয়ে ছোট।"
+    },
+    "en": {
+      "q": "Which is the smallest prime number?",
+      "a": "0",
+      "b": "1",
+      "c": "2",
+      "d": "3",
+      "exp": "2 is the smallest and the only even prime number."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 49,
+    "subject": "general",
+    "level": "junior",
+    "bn": {
+      "q": "ভারতের জাতীয় গান কোনটি?",
+      "a": "জন গণ মন",
+      "b": "বন্দে মাতরম্‌",
+      "c": "সারে জাহাঁ সে আচ্ছা",
+      "d": "আমার সোনার বাংলা",
+      "exp": "বঙ্কিমচন্দ্র চট্টোপাধ্যায়ের রচিত 'বন্দে মাতরম্‌' ভারতের জাতীয় গান।"
+    },
+    "en": {
+      "q": "Which is the national song of India?",
+      "a": "Jana Gana Mana",
+      "b": "Vande Mataram",
+      "c": "Sare Jahan Se Achha",
+      "d": "Amar Sonar Bangla",
+      "exp": "'Vande Mataram', composed by Bankim Chandra Chattopadhyay, is India's national song."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 50,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "সূর্যোদয়ের দেশ কাকে বলা হয়?",
+      "a": "নরওয়ে",
+      "b": "জাপান",
+      "c": "চীন",
+      "d": "থাইল্যান্ড",
+      "exp": "পূর্বে অবস্থিত হওয়ার কারণে জাপানকে সূর্যোদয়ের দেশ বলা হয়।"
+    },
+    "en": {
+      "q": "Which country is called the Land of the Rising Sun?",
+      "a": "Norway",
+      "b": "Japan",
+      "c": "China",
+      "d": "Thailand",
+      "exp": "Japan is globally known as the Land of the Rising Sun."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 51,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "জোরপূর্বক সতীদাহ প্রথা কে রদ করেন?",
+      "a": "রাজা রামমোহন রায় ও লর্ড উইলিয়াম বেন্টিঙ্ক",
+      "b": "ঈশ্বরচন্দ্র বিদ্যাসাগর",
+      "c": "স্বামী বিবেকানন্দ",
+      "d": "লর্ড কার্জন",
+      "exp": "১৮২৯ সালে রামমোহন রায়ের প্রচেষ্টায় লর্ড উইলিয়াম বেন্টিঙ্ক আইনিভাবে সতীদাহ প্রথা বন্ধ করেন।"
+    },
+    "en": {
+      "q": "Who abolished the Sati practice in India?",
+      "a": "Raja Ram Mohan Roy and Lord William Bentinck",
+      "b": "Ishwar Chandra Vidyasagar",
+      "c": "Swami Vivekananda",
+      "d": "Lord Curzon",
+      "exp": "Lord William Bentinck abolished Sati in 1829 with strong efforts from Raja Ram Mohan Roy."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 52,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "বায়ুমণ্ডলের কোন স্তরে বিমান চলাচলের জন্য সবচেয়ে সুবিধাজনক?",
+      "a": "ট্রোপোস্ফিয়ার",
+      "b": "স্ট্র্যাটোস্ফিয়ার",
+      "c": "মেসোস্ফিয়ার",
+      "d": "থার্মোস্ফিয়ার",
+      "exp": "স্ট্র্যাটোস্ফিয়ারে মেঘ ও ঝড়বৃষ্টি না থাকায় বিমান নিরাপদে চলতে পারে।"
+    },
+    "en": {
+      "q": "Which atmospheric layer is most suitable for flying airplanes?",
+      "a": "Troposphere",
+      "b": "Stratosphere",
+      "c": "Mesosphere",
+      "d": "Thermosphere",
+      "exp": "The Stratosphere is calm and free of weather disruptions, making it ideal for jet flights."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 53,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "কোষের শক্তিঘর (Powerhouse) কাকে বলা হয়?",
+      "a": "রাইবোজোম",
+      "b": "মাইটোকন্ড্রিয়া",
+      "c": "লাইসোজোম",
+      "d": "নিউক্লিয়াস",
+      "exp": "মাইটোকন্ড্রিয়ায় শক্তির উৎপাদন ঘটে বলে একে কোষের শক্তিঘর বলা হয়।"
+    },
+    "en": {
+      "q": "Which organelle is known as the powerhouse of the cell?",
+      "a": "Ribosome",
+      "b": "Mitochondria",
+      "c": "Lysosome",
+      "d": "Nucleus",
+      "exp": "Mitochondria generate cellular energy, earning the name 'powerhouse of the cell'."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 54,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "ইন্টারনেটের জনক কাকে বলা হয়?",
+      "a": "বিল গেটস",
+      "b": "ভিন্ট সার্ফ (Vint Cerf)",
+      "c": "স্টিভ জবস",
+      "d": "মার্ক জুকারবার্গ",
+      "exp": "TCP/IP প্রোটোকল ডিজাইনের জন্য ভিন্ট সার্ফকে ইন্টারনেটের জনক বলা হয়।"
+    },
+    "en": {
+      "q": "Who is considered the father of the Internet?",
+      "a": "Bill Gates",
+      "b": "Vint Cerf",
+      "c": "Steve Jobs",
+      "d": "Mark Zuckerberg",
+      "exp": "Vint Cerf is widely recognized as one of the fathers of the Internet for co-designing TCP/IP."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 55,
+    "subject": "history",
+    "level": "advanced",
+    "bn": {
+      "q": "মৌর্য বংশের প্রতিষ্ঠাতা কে ছিলেন?",
+      "a": "অশোক",
+      "b": "চন্দ্রগুপ্ত মৌর্য",
+      "c": "বিন্দুসার",
+      "d": "বিম্বিসার",
+      "exp": "চাণক্যের সহায়তায় নন্দ বংশকে পরাজিত করে চন্দ্রগুপ্ত মৌর্য সাম্রাজ্য প্রতিষ্ঠা করেন।"
+    },
+    "en": {
+      "q": "Who was the founder of the Mauryan Empire?",
+      "a": "Ashoka",
+      "b": "Chandragupta Maurya",
+      "c": "Bindusara",
+      "d": "Bimbisara",
+      "exp": "Chandragupta Maurya founded the Mauryan Dynasty with the guidance of Chanakya."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 56,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন রেখাটি ভারতের ওপর দিয়ে প্রসারিত হয়েছে?",
+      "a": "নিরক্ষরেখা",
+      "b": "করকটক্রান্তি রেখা",
+      "c": "মকরক্রান্তি রেখা",
+      "d": "মূল মধ্যরেখা",
+      "exp": "করকটক্রান্তি রেখা (Tropic of Cancer) ভারতের ৮টি রাজ্যের ওপর দিয়ে গেছে।"
+    },
+    "en": {
+      "q": "Which important latitude passes through India?",
+      "a": "Equator",
+      "b": "Tropic of Cancer",
+      "c": "Tropic of Capricorn",
+      "d": "Prime Meridian",
+      "exp": "The Tropic of Cancer passes almost centrally through 8 states in India."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 57,
+    "subject": "science",
+    "level": "junior",
+    "bn": {
+      "q": "আলোর বেগ কত (প্রায়)?",
+      "a": "৩ লাখ কিমি/সেকেন্ড",
+      "b": "১ লাখ কিমি/সেকেন্ড",
+      "c": "৫ লাখ কিমি/সেকেন্ড",
+      "d": "১০ লাখ কিমি/সেকেন্ড",
+      "exp": "শূন্যস্থানে আলোর গতিবেগ প্রতি সেকেন্ডে প্রায় ৩,০০,০০০ কিলোমিটার।"
+    },
+    "en": {
+      "q": "What is the approximate speed of light in a vacuum?",
+      "a": "300,000 km/s",
+      "b": "100,000 km/s",
+      "c": "500,000 km/s",
+      "d": "1,000,000 km/s",
+      "exp": "Light travels at roughly 300,000 kilometers per second in a vacuum."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 58,
+    "subject": "literature",
+    "level": "junior",
+    "bn": {
+      "q": "কাজী নজরুল ইসলামকে বাংলাদেশের কী উপাধি দেওয়া হয়?",
+      "a": "বিশ্বকবি",
+      "b": "জাতীয় কবি",
+      "c": "পল্লীকবি",
+      "d": "মহাকবি",
+      "exp": "কাজী নজরুল ইসলাম হলেন বাংলাদেশের জাতীয় কবি।"
+    },
+    "en": {
+      "q": "Kazi Nazrul Islam is recognized as which poet title in Bangladesh?",
+      "a": "World Poet",
+      "b": "National Poet",
+      "c": "Folk Poet",
+      "d": "Epic Poet",
+      "exp": "Kazi Nazrul Islam is official recognized as the National Poet of Bangladesh."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 59,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহে রক্তের শোধনাগার বা ফিল্টার হিসেবে কাজ করে কোনটি?",
+      "a": "ফুসফুস",
+      "b": "বৃক্ক (Kidney)",
+      "c": "হৃদপিণ্ড",
+      "d": "পাকস্থলী",
+      "exp": "বৃক্ক বা কিডনি রক্তের বর্জ্য পদার্থ ছেঁকে প্রস্রাব হিসেবে বের করে দেয়।"
+    },
+    "en": {
+      "q": "Which organ acts as a natural filter for blood in humans?",
+      "a": "Lungs",
+      "b": "Kidneys",
+      "c": "Heart",
+      "d": "Stomach",
+      "exp": "The kidneys filter metabolic wastes and extra water from the bloodstream."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 60,
+    "subject": "commerce",
+    "level": "secondary",
+    "bn": {
+      "q": "জিএসটি (GST)-এর পূর্ণরূপ কী?",
+      "a": "Goods and Services Tax",
+      "b": "General Sales Tax",
+      "c": "Government Service Tax",
+      "d": "Gross System Tax",
+      "exp": "GST এর পূর্ণ অর্থ হলো Goods and Services Tax।"
+    },
+    "en": {
+      "q": "What is the full form of GST?",
+      "a": "Goods and Services Tax",
+      "b": "General Sales Tax",
+      "c": "Government Service Tax",
+      "d": "Gross System Tax",
+      "exp": "GST stands for Goods and Services Tax."
+    },
+    "correct": "a"
+  }
+]
+[
+  {
+    "id": 61,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পর্যায় সারণীর (Periodic Table) জনক কাকে বলা হয়?",
+      "a": "ডাল্টন",
+      "b": "দিমিত্রি মেন্দেলিফ",
+      "c": "রদারফোর্ড",
+      "d": "নীল্স বোর",
+      "exp": "রাশিয়ান রসায়নবিদ দিমিত্রি মেন্দেলিফ প্রথম সফলভাবে পর্যায় সারণী তৈরি করেন।"
+    },
+    "en": {
+      "q": "Who is known as the father of the Periodic Table?",
+      "a": "Dalton",
+      "b": "Dmitri Mendeleev",
+      "c": "Rutherford",
+      "d": "Niels Bohr",
+      "exp": "Russian chemist Dmitri Mendeleev created the framework for the periodic table of elements."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 62,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের কোন রাজ্য 'মসলার বাগান' নামে পরিচিত?",
+      "a": "তামিলনাড়ু",
+      "b": "কেরালা",
+      "c": "কর্ণাটক",
+      "d": "অন্ধ্রপ্রদেশ",
+      "exp": "প্রচুর পরিমাণে গুণগত মসলা উৎপাদনের জন্য কেরালাকে মসলার বাগান বলা হয়।"
+    },
+    "en": {
+      "q": "Which state of India is known as the 'Spice Garden of India'?",
+      "a": "Tamil Nadu",
+      "b": "Kerala",
+      "c": "Karnataka",
+      "d": "Andhra Pradesh",
+      "exp": "Kerala is famous for its rich history of spice cultivation and trade."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 63,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "জালিয়ানওয়ালাবাগের হত্যাকাণ্ড কত সালে ঘটেছিল?",
+      "a": "১৯০৫",
+      "b": "১৯১৯",
+      "c": "১৯৩০",
+      "d": "১৯৪২",
+      "exp": "১৯১৯ সালের ১৩ই এপ্রিল অমৃতসরে জেনারেল ডায়ারের আদেশে নিরপরাধ মানুষের ওপর গুলি চালানো হয়।"
+    },
+    "en": {
+      "q": "In which year did the Jallianwala Bagh massacre take place?",
+      "a": "1905",
+      "b": "1919",
+      "c": "1930",
+      "d": "1942",
+      "exp": "The Jallianwala Bagh massacre took place on April 13, 1919."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 64,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "শালোকসংশ্লেষের (Photosynthesis) সময় উদ্ভিদ কোন গ্যাস গ্রহণ করে?",
+      "a": "অক্সিজেন",
+      "b": "কার্বন ডাই অক্সাইড",
+      "c": "নাইট্রোজেন",
+      "d": "হাইড্রোজেন",
+      "exp": "উদ্ভিদ খাদ্য তৈরির সময় পরিবেশ থেকে কার্বন ডাই অক্সাইড গ্রহণ করে ও অক্সিজেন ত্যাগ করে।"
+    },
+    "en": {
+      "q": "Which gas do plants absorb during photosynthesis?",
+      "a": "Oxygen",
+      "b": "Carbon Dioxide",
+      "c": "Nitrogen",
+      "d": "Hydrogen",
+      "exp": "Plants take in Carbon Dioxide from the atmosphere to perform photosynthesis."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 65,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "PDF-এর পূর্ণরূপ কী?",
+      "a": "Portable Document Format",
+      "b": "Print Document File",
+      "c": "Public Data File",
+      "d": "Portable Data Format",
+      "exp": "PDF এর পূর্ণ অর্থ হলো Portable Document Format।"
+    },
+    "en": {
+      "q": "What is the full form of PDF?",
+      "a": "Portable Document Format",
+      "b": "Print Document File",
+      "c": "Public Data File",
+      "d": "Portable Data Format",
+      "exp": "PDF stands for Portable Document Format."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 66,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'পথের পাঁচালী' উপন্যাসটি কার লেখা?",
+      "a": "রবীন্দ্রনাথ ঠাকুর",
+      "b": "বিভূতিভূষণ বন্দ্যোপাধ্যায়",
+      "c": "শরৎচন্দ্র চট্টোপাধ্যায়",
+      "d": "তপন সিংহ",
+      "exp": "বিভূতিভূষণ বন্দ্যোপাধ্যায় এই কালজয়ী উপন্যাসটি প্রকাশ করেন, যা পরবর্তীতে সত্যজিৎ রায় চলচ্চিত্রায়িত করেন।"
+    },
+    "en": {
+      "q": "Who is the author of the novel 'Pather Panchali'?",
+      "a": "Rabindranath Tagore",
+      "b": "Bibhutibhushan Bandyopadhyay",
+      "c": "Sharat Chandra Chattopadhyay",
+      "d": "Tapan Sinha",
+      "exp": "Bibhutibhushan Bandyopadhyay wrote the classic Bengali novel Pather Panchali."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 67,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মহাকর্ষ সূত্র (Law of Gravitation) কে আবিষ্কার করেন?",
+      "a": "গ্যালিলিও",
+      "b": "স্যার আইজ্যাক নিউটন",
+      "c": "আলবার্ট আইনস্টাইন",
+      "d": "মাইকেল ফ্যারাডে",
+      "exp": "স্যার আইজ্যাক নিউটন আপেল পড়ার ঘটনা থেকে মহাকর্ষ সূত্র আবিষ্কার ও ব্যাখ্যা করেন।"
+    },
+    "en": {
+      "q": "Who formulated the Law of Universal Gravitation?",
+      "a": "Galileo",
+      "b": "Sir Isaac Newton",
+      "c": "Albert Einstein",
+      "d": "Michael Faraday",
+      "exp": "Sir Isaac Newton discovered and mathematically defined universal gravitation."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 68,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "সবচেয়ে ছোট ঋণাত্মক পূর্ণসংখ্যা কি নির্ধারণ করা সম্ভব?",
+      "a": "হ্যাঁ (-১)",
+      "b": "হ্যাঁ (-১০০)",
+      "c": "না (অসীম)",
+      "d": "হ্যাঁ (০)",
+      "exp": "ঋণাত্মক সংখ্যা বাঁ দিকে অসীম পর্যন্ত বিস্তৃত হওয়ায় সবচেয়ে ছোট ঋণাত্মক সংখ্যা নির্দিষ্ট নয়।"
+    },
+    "en": {
+      "q": "Is it possible to define the smallest negative integer?",
+      "a": "Yes (-1)",
+      "b": "Yes (-100)",
+      "c": "No (Infinite)",
+      "d": "Yes (0)",
+      "exp": "Negative numbers decrease infinitely, so there is no absolute smallest negative integer."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 69,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্ব পরিবেশ দিবস কবে পালন করা হয়?",
+      "a": "৫ই জুন",
+      "b": "৮ই মার্চ",
+      "c": "২২শে এপ্রিল",
+      "d": "১লা ডিসেম্বর",
+      "exp": "প্রতি বছর ৫ই জুন সারা বিশ্বে পরিবেশ সচেতনতা বৃদ্ধিতে বিশ্ব পরিবেশ দিবস উদযাপিত হয়।"
+    },
+    "en": {
+      "q": "When is World Environment Day celebrated?",
+      "a": "5th June",
+      "b": "8th March",
+      "c": "22nd April",
+      "d": "1st December",
+      "exp": "World Environment Day is celebrated annually on 5th June."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 70,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন নদীকে 'দক্ষিণ ভারতের গঙ্গা' বলা হয়?",
+      "a": "কৃষ্ণা",
+      "b": "কাবেরী",
+      "c": "গোদাবরী",
+      "d": "নর্মদা",
+      "exp": "দৈর্ঘ্য ও পবিত্রময়তার সুনামের জন্য গোদাবরী নদীকে দক্ষিণ ভারতের গঙ্গা বলা হয়।"
+    },
+    "en": {
+      "q": "Which river is known as the 'Ganga of South India'?",
+      "a": "Krishna",
+      "b": "Kaveri",
+      "c": "Godavari",
+      "d": "Narmada",
+      "exp": "The Godavari River is often called the Ganga of South India due to its vast size."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 71,
+    "subject": "history",
+    "level": "advanced",
+    "bn": {
+      "q": "পলাশীর যুদ্ধ কত সালে সংঘটিত হয়েছিল?",
+      "a": "১৭৫৭",
+      "b": "১৭৬৪",
+      "c": "১৮৫৭",
+      "d": "১৭০৭",
+      "exp": "১৭৫৭ সালের ২৩শে জুন নবাব সিরাজউদ্দৌলা ও রবার্ট ক্লাইভের ইস্ট ইন্ডিয়া কোম্পানির মধ্যে এই যুদ্ধ হয়।"
+    },
+    "en": {
+      "q": "In which year was the Battle of Plassey fought?",
+      "a": "1757",
+      "b": "1764",
+      "c": "1857",
+      "d": "1707",
+      "exp": "The Battle of Plassey was fought on June 23, 1757."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 72,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "শব্দের গতিবেগ সবচেয়ে বেশি কোন মাধ্যমে?",
+      "a": "গ্যাসীয়",
+      "b": "তরল",
+      "c": "কঠিন",
+      "d": "শূন্য মাধ্যম",
+      "exp": "অণুগুলোর কাছাকাছি অবস্থানের কারণে কঠিন মাধ্যমে শব্দ সবচেয়ে দ্রুত ভ্রমণ করে।"
+    },
+    "en": {
+      "q": "In which medium is the speed of sound the fastest?",
+      "a": "Gas",
+      "b": "Liquid",
+      "c": "Solid",
+      "d": "Vacuum",
+      "exp": "Sound travels fastest in solids because particles are tightly packed together."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 73,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "ইনসুলিন (Insulin) হরমোন মানবদেহের কোন অঙ্গ থেকে নিঃসৃত হয়?",
+      "a": "যকৃৎ",
+      "b": "অগ্ন্যাশয় (Pancreas)",
+      "c": "পাকস্থলী",
+      "d": "থাইরয়েড",
+      "exp": "অগ্ন্যাশয়ের আইলেটস অব ল্যাঙ্গারহ্যান্সের বিটা কোশ থেকে ইনসুলিন নিঃসৃত হয়।"
+    },
+    "en": {
+      "q": "Which organ secretes the hormone insulin?",
+      "a": "Liver",
+      "b": "Pancreas",
+      "c": "Stomach",
+      "d": "Thyroid",
+      "exp": "Insulin is secreted by the beta cells of the pancreas."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 74,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "USB-এর পূর্ণরূপ কী?",
+      "a": "Universal Serial Bus",
+      "b": "Unified System Bus",
+      "c": "Universal System Board",
+      "d": "Ultra Speed Bus",
+      "exp": "USB এর পূর্ণ রূপ হলো Universal Serial Bus।"
+    },
+    "en": {
+      "q": "What is the full form of USB?",
+      "a": "Universal Serial Bus",
+      "b": "Unified System Bus",
+      "c": "Universal System Board",
+      "d": "Ultra Speed Bus",
+      "exp": "USB stands for Universal Serial Bus."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 75,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "সুভাষচন্দ্র বসু কোথায় 'আজাদ হিন্দ সরকার' প্রতিষ্ঠা করেছিলেন?",
+      "a": "টোকিও",
+      "b": "সিঙ্গাপুর",
+      "c": "বার্লিন",
+      "d": "ব্যাংকক",
+      "exp": "১৯৪৩ সালের ২১শে অক্টোবর সিঙ্গাপুরে নেতাজি সুভাষচন্দ্র বসু আজাদ হিন্দ সরকার গঠন করেন।"
+    },
+    "en": {
+      "q": "Where did Subhash Chandra Bose establish the 'Azad Hind Government'?",
+      "a": "Tokyo",
+      "b": "Singapore",
+      "c": "Berlin",
+      "d": "Bangkok",
+      "exp": "Subhash Chandra Bose announced the establishment of Azad Hind Government in Singapore in 1943."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 76,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "পশ্চিমবঙ্গের জাতীয় পশু কোনটি?",
+      "a": "রয়েল বেঙ্গল টাইগার",
+      "b": "মেছো বিড়াল (Fishing Cat)",
+      "c": "একশৃঙ্গ গণ্ডার",
+      "d": "হাতি",
+      "exp": "মেছো বিড়াল (Fishing Cat) হলো পশ্চিমবঙ্গের রাজ্য পশু।"
+    },
+    "en": {
+      "q": "Which is the state animal of West Bengal?",
+      "a": "Royal Bengal Tiger",
+      "b": "Fishing Cat",
+      "c": "One-horned Rhino",
+      "d": "Elephant",
+      "exp": "The Fishing Cat is the official state animal of West Bengal."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 77,
+    "subject": "science",
+    "level": "junior",
+    "bn": {
+      "q": "শুষ্ক বরফ (Dry Ice) আসলে কী?",
+      "a": "জমে যাওয়া জল",
+      "b": "কঠিন কার্বন ডাই অক্সাইড",
+      "c": "কঠিন নাইট্রোজেন",
+      "d": "জমে যাওয়া মিথেন",
+      "exp": "কঠিন অবস্থায় থাকা কার্বন ডাই অক্সাইড গ্যাসকে ড্রায় আইস বা শুষ্ক বরফ বলা হয়।"
+    },
+    "en": {
+      "q": "What is Dry Ice made of?",
+      "a": "Frozen Water",
+      "b": "Solid Carbon Dioxide",
+      "c": "Solid Nitrogen",
+      "d": "Frozen Methane",
+      "exp": "Dry ice is the solid form of carbon dioxide."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 78,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "বাংলা ভাষার প্রথম ব্যাকরণ গ্রন্থ কে রচনা করেন?",
+      "a": "উইলিয়াম কেরি",
+      "b": "মনোয়েল দা আস্সুম্পসাঁউ",
+      "c": "ন্যাথানিয়েল ব্র্যাসি হ্যালহেড",
+      "d": "ঈশ্বরচন্দ্র বিদ্যাসাগর",
+      "exp": "১৭৪৩ সালে পর্তুগিজ পাাদ্রি মনোয়েল দা আস্সুম্পসাঁউ প্রথম বাংলা ব্যাকরণ রচনা করেন।"
+    },
+    "en": {
+      "q": "Who wrote the first grammar book of the Bengali language?",
+      "a": "William Carey",
+      "b": "Manuel da Assumpção",
+      "c": "Nathaniel Brassey Halhed",
+      "d": "Ishwar Chandra Vidyasagar",
+      "exp": "Manuel da Assumpção compiled the first Bengali grammar in Portuguese in 1743."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 79,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "রক্তাতঙ্ক বা রক্ত জমাট না বাঁধার রোগকে কী বলা হয়?",
+      "a": "অ্যানিমিয়া",
+      "b": "হিমোফিলিয়া",
+      "c": "লিউকেমিয়া",
+      "d": "থ্যালাসেমিয়া",
+      "exp": "হিমোফিলিয়া একটি জিনগত রোগ যার ফলে কেটে গেলে সহজে রক্ত জমাট বাঁধে না।"
+    },
+    "en": {
+      "q": "A genetic disorder where blood does not clot properly is called?",
+      "a": "Anemia",
+      "b": "Hemophilia",
+      "c": "Leukemia",
+      "d": "Thalassemia",
+      "exp": "Hemophilia is a rare hereditary disorder in which blood fails to clot normally."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 80,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "নোবেল পুরস্কার কয়টি বিষয়ে দেওয়া হয়?",
+      "a": "৪টি",
+      "b": "৫টি",
+      "c": "৬টি",
+      "d": "৭টি",
+      "exp": "পদার্থবিজ্ঞান, রসায়ন, চিকিৎসা, সাহিত্য, শান্তি ও অর্থনীতি— এই ৬টি ক্ষেত্রে নোবেল দেওয়া হয়।"
+    },
+    "en": {
+      "q": "In how many categories are Nobel Prizes awarded?",
+      "a": "4",
+      "b": "5",
+      "c": "6",
+      "d": "7",
+      "exp": "The Nobel Prizes are awarded in 6 specific fields."
+    },
+    "correct": "c"
+  }
+]
+[
+  {
+    "id": 81,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন ধাতুকে 'ভবিষ্যতের ধাতু' (Metal of the Future) বলা হয়?",
+      "a": "তামা",
+      "b": "টাইটানিয়াম",
+      "c": "অ্যালুমিনিয়াম",
+      "d": "প্লাটিনাম",
+      "exp": "উচ্চ স্থায়িত্ব ও হালকা ওজনের কারণে টাইটানিয়ামকে 'ভবিষ্যতের ধাতু' বলা হয়।"
+    },
+    "en": {
+      "q": "Which metal is known as the 'Metal of the Future'?",
+      "a": "Copper",
+      "b": "Titanium",
+      "c": "Aluminum",
+      "d": "Platinum",
+      "exp": "Titanium is called the 'Metal of the Future' due to its high strength, low density, and durability."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 82,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের সবচেয়ে দীর্ঘতম পর্বতমালা কোনটি?",
+      "a": "হিমালয়",
+      "b": "আন্দিজ",
+      "c": "আল্পস",
+      "d": "রকি",
+      "exp": "দক্ষিণ আমেরিকায় অবস্থিত আন্দিজ পর্বতমালা বিশ্বের দীর্ঘতম মহাদেশীয় পর্বতমালা (প্রায় ৭,০০০ কিমি)।"
+    },
+    "en": {
+      "q": "Which is the longest mountain range in the world?",
+      "a": "Himalayas",
+      "b": "Andes",
+      "c": "Alps",
+      "d": "Rockies",
+      "exp": "The Andes in South America is the world's longest continental mountain range."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 83,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতরত্ন পুরস্কার লাভকারী প্রথম ভারতীয় কে ছিলেন?",
+      "a": "জওহরলাল নেহরু",
+      "b": "ড. সর্বপল্লী রাধাকৃষ্ণন",
+      "c": "মহাত্মা গান্ধী",
+      "d": "ড. বি. আর. আম্বেদকর",
+      "exp": "১৯৫৪ সালে ড. সর্বপল্লী রাধাকৃষ্ণন, সি. রাজাগোপালাচারী এবং সি. ভি. রমন প্রথম ভারতরত্ন পান।"
+    },
+    "en": {
+      "q": "Who was the first Indian to receive the Bharat Ratna award?",
+      "a": "Jawaharlal Nehru",
+      "b": "Dr. Sarvepalli Radhakrishnan",
+      "c": "Mahatma Gandhi",
+      "d": "Dr. B. R. Ambedkar",
+      "exp": "Dr. Sarvepalli Radhakrishnan was among the first recipients of the Bharat Ratna in 1954."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 84,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "রক্তে অক্সিজেনের প্রধান বাহক কোনটি?",
+      "a": "প্লাজমা",
+      "b": "হিমোগ্লোবিন",
+      "c": "শ্বেত রক্তকণিকা",
+      "d": "অণুচক্রিকা",
+      "exp": "লোহিত রক্তকণিকায় থাকা হিমোগ্লোবিন ফুসফুস থেকে সারা শরীরে অক্সিজেন পরিবহন করে।"
+    },
+    "en": {
+      "q": "What is the primary carrier of oxygen in the human blood?",
+      "a": "Plasma",
+      "b": "Hemoglobin",
+      "c": "White Blood Cells",
+      "d": "Platelets",
+      "exp": "Hemoglobin, present in red blood cells, binds to oxygen and transports it throughout the body."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 85,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটার নেটওয়ার্কের ক্ষেত্রে 'IP'-এর পূর্ণরূপ কী?",
+      "a": "Internet Process",
+      "b": "Internet Protocol",
+      "c": "Internal Program",
+      "d": "Interconnected Path",
+      "exp": "IP এর পূর্ণ অর্থ হলো Internet Protocol, যা নেটওয়ার্কে ডিভাইস শনাক্ত করতে ব্যবহৃত হয়।"
+    },
+    "en": {
+      "q": "In computer networking, what does 'IP' stand for?",
+      "a": "Internet Process",
+      "b": "Internet Protocol",
+      "c": "Internal Program",
+      "d": "Interconnected Path",
+      "exp": "IP stands for Internet Protocol, used to identify network devices."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 86,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'মেঘনাদবধ কাব্য' কার রচনা?",
+      "a": "মাইকেল মধুসূদন দত্ত",
+      "b": "হেমাচন্দ্র বন্দ্যোপাধ্যায়",
+      "c": "নবীনচন্দ্র সেন",
+      "d": "রবীন্দ্রনাথ ঠাকুর",
+      "exp": "১৮৬১ সালে মাইকেল মধুসূদন দত্ত অমিত্রাক্ষর ছন্দে 'মেঘনাদবধ কাব্য' প্রকাশ করেন।"
+    },
+    "en": {
+      "q": "Who wrote the epic 'Meghnad Badh Kavya'?",
+      "a": "Michael Madhusudan Dutt",
+      "b": "Hemchandra Bandyopadhyay",
+      "c": "Nabinchandra Sen",
+      "d": "Rabindranath Tagore",
+      "exp": "Michael Madhusudan Dutt composed the famous epic 'Meghnad Badh Kavya' in blank verse."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 87,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পারদের প্রতীক (Chemical Symbol) কোনটি?",
+      "a": "Ag",
+      "b": "Hg",
+      "c": "Pb",
+      "d": "Fe",
+      "exp": "পারদের রাসায়নিক প্রতীক হলো Hg, যা গ্রিক শব্দ 'Hydrargyrum' থেকে এসেছে।"
+    },
+    "en": {
+      "q": "What is the chemical symbol for Mercury?",
+      "a": "Ag",
+      "b": "Hg",
+      "c": "Pb",
+      "d": "Fe",
+      "exp": "The symbol Hg comes from the Greek word 'Hydrargyrum' meaning liquid silver."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 88,
+    "subject": "math",
+    "level": "secondary",
+    "bn": {
+      "q": "একটি বৃত্তের পরিধি ও ব্যাসের অনুপাত কত?",
+      "a": "π (পাই)",
+      "b": "২",
+      "c": "৩.১৪২",
+      "d": "১.৬১৮",
+      "exp": "যেকোনো বৃত্তের পরিধিকে তার ব্যাস দিয়ে ভাগ করলে ধ্রুবক সংখ্যা 'π' (পাই) পাওয়া যায়।"
+    },
+    "en": {
+      "q": "What is the ratio of a circle's circumference to its diameter?",
+      "a": "π (Pi)",
+      "b": "2",
+      "c": "3.142",
+      "d": "1.618",
+      "exp": "The ratio of circumference to diameter for any circle is mathematically defined as Pi (π)."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 89,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "আন্তর্জাতিক বিচারালয় (International Court of Justice) কোথায় অবস্থিত?",
+      "a": "জিনোভা",
+      "b": "হেগ (The Hague)",
+      "c": "নিউ ইয়র্ক",
+      "d": "প্যারিস",
+      "exp": "নেদারল্যান্ডসের হেগ শহরে আন্তর্জাতিক বিচারালয় অবস্থিত।"
+    },
+    "en": {
+      "q": "Where is the International Court of Justice located?",
+      "a": "Geneva",
+      "b": "The Hague",
+      "c": "New York",
+      "d": "Paris",
+      "exp": "The International Court of Justice is located at The Hague in the Netherlands."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 90,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন শহরকে 'ভারতের গোলাপী শহর' (Pink City) বলা হয়?",
+      "a": "উদেপুর",
+      "b": "জয়পুর",
+      "c": "জোধপুর",
+      "d": "জয়সালমীর",
+      "exp": "রাজস্থানের জয়পুর শহরকে এর স্থাপত্য ও রঙিনের জন্য গোলাপী শহর বলা হয়।"
+    },
+    "en": {
+      "q": "Which city is known as the 'Pink City' of India?",
+      "a": "Udaipur",
+      "b": "Jaipur",
+      "c": "Jodhpur",
+      "d": "Jaisalmer",
+      "exp": "Jaipur, the capital of Rajasthan, is known worldwide as the Pink City."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 91,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ইস্ট ইন্ডিয়া কোম্পানি কত সালে ভারতে প্রতিষ্ঠিত হয়?",
+      "a": "১৬০০",
+      "b": "১৭৫৭",
+      "c": "১৬১৫",
+      "d": "১৬০৫",
+      "exp": "১৬০০ সালে রানি প্রথম এলিজাবেথের চার্টার দ্বারা ইস্ট ইন্ডিয়া কোম্পানি গঠিত হয়।"
+    },
+    "en": {
+      "q": "In which year was the East India Company founded?",
+      "a": "1600",
+      "b": "1757",
+      "c": "1615",
+      "d": "1605",
+      "exp": "The East India Company was incorporated by royal charter on December 31, 1600."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 92,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "বায়ুমণ্ডলের চাপ মাপার জন্য কোন যন্ত্র ব্যবহার করা হয়?",
+      "a": "হাইগ্রোমিটার",
+      "b": "ব্যারোমিটার",
+      "c": "অ্যালটিমিটার",
+      "d": "ম্যানোমিটার",
+      "exp": "টরিচেলির আবিষ্কৃত ব্যারোমিটার যন্ত্র দিয়ে বায়ুমণ্ডলের চাপ মাপা হয়।"
+    },
+    "en": {
+      "q": "Which instrument is used to measure atmospheric pressure?",
+      "a": "Hygrometer",
+      "b": "Barometer",
+      "c": "Altimeter",
+      "d": "Manometer",
+      "exp": "A Barometer is an instrument used to measure atmospheric pressure."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 93,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন ভিটামিনের অভাবে রিকেট (Rickets) রোগ হয়?",
+      "a": "ভিটামিন এ",
+      "b": "ভিটামিন ডি",
+      "c": "ভিটামিন সি",
+      "d": "ভিটামিন কে",
+      "exp": "ভিটামিন ডি-এর অভাবে শিশুদের হাড় নরম হয়ে বাঁকা হয়ে যাওয়াকে রিকেট রোগ বলে।"
+    },
+    "en": {
+      "q": "Deficiency of which vitamin causes Rickets?",
+      "a": "Vitamin A",
+      "b": "Vitamin D",
+      "c": "Vitamin C",
+      "d": "Vitamin K",
+      "exp": "Vitamin D deficiency impairs bone mineralization, leading to Rickets in children."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 94,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "প্রথম যান্ত্রিক গণনা যন্ত্র (Mechanical Calculator) 'পাসকালাইন' কে আবিষ্কার করেন?",
+      "a": "চার্লস ব্যাবেজ",
+      "b": "ব্লেইজ পাসকাল",
+      "c": "অ্যালান টিউরিং",
+      "d": "জন ভন নিউম্যান",
+      "exp": "১৬৪২ সালে ফরাসি গণিতবিদ ব্লেইজ পাসকাল পাসকালাইন আবিষ্কার করেন।"
+    },
+    "en": {
+      "q": "Who invented the first mechanical calculator named 'Pascaline'?",
+      "a": "Charles Babbage",
+      "b": "Blaise Pascal",
+      "c": "Alan Turing",
+      "d": "John von Neumann",
+      "exp": "Blaise Pascal invented the Pascaline calculator in 1642."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 95,
+    "subject": "history",
+    "level": "advanced",
+    "bn": {
+      "q": "ফরাসি বিপ্লব (French Revolution) কত সালে শুরু হয়েছিল?",
+      "a": "১৭৭৬",
+      "b": "১৭৮৯",
+      "c": "১৭৯৯",
+      "d": "১৮১৫",
+      "exp": "১৭৮৯ সালে বাস্তিল দুর্গের পতনের মাধ্যমে ফরাসি বিপ্লব সূচিত হয়।"
+    },
+    "en": {
+      "q": "In which year did the French Revolution begin?",
+      "a": "1776",
+      "b": "1789",
+      "c": "1799",
+      "d": "1815",
+      "exp": "The French Revolution began in 1789 with the storming of the Bastille."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 96,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "পৃথিবীর বৃহত্তম মিষ্টি জলের হ্রদ কোনটি?",
+      "a": "কাস্পিয়ান সাগর",
+      "b": "লেক সুপিরিয়র",
+      "c": "বৈকাল হ্রদ",
+      "d": "ভিক্টোরিয়া হ্রদ",
+      "exp": "পৃষ্ঠভূমির ক্ষেত্রফলের বিচারে উত্তর আমেরিকার লেক সুপিরিয়র পৃথিবীর বৃহত্তম মিষ্টি জলের হ্রদ।"
+    },
+    "en": {
+      "q": "Which is the largest freshwater lake in the world by surface area?",
+      "a": "Caspian Sea",
+      "b": "Lake Superior",
+      "c": "Lake Baikal",
+      "d": "Lake Victoria",
+      "exp": "Lake Superior in North America is the world's largest freshwater lake by surface area."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 97,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সবুজাভ-নীল শিখা প্রদর্শন করে কোন ধাতব লবণ পোড়ালে?",
+      "a": "সোডিয়াম",
+      "b": "তামা (Copper)",
+      "c": "পটাশিয়াম",
+      "d": "ক্যালসিয়াম",
+      "exp": "তামা বা কপারের লবণ আগুনে পোড়ালে শিখার বর্ণ সবুজাভ-নীল হয়ে থাকে।"
+    },
+    "en": {
+      "q": "Which metal salt gives a bluish-green flame in a flame test?",
+      "a": "Sodium",
+      "b": "Copper",
+      "c": "Potassium",
+      "d": "Calcium",
+      "exp": "Copper compounds emit a characteristic green-blue color during a flame test."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 98,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "বাংলা সাহিত্যে 'ভোরের পাখি' নামে কে পরিচিত?",
+      "a": "বিহারীলাল চক্রবর্তী",
+      "b": "রবীন্দ্রনাথ ঠাকুর",
+      "c": "জীবনানন্দ দাশ",
+      "d": "কাজী নজরুল ইসলাম",
+      "exp": "রবীন্দ্রনাথ ঠাকুর কবি বিহারীলাল চক্রবর্তীকে 'ভোরের পাখি' উপাধিতে ভূষিত করেছিলেন।"
+    },
+    "en": {
+      "q": "Who is known as the 'Bhorer Pakhi' (Bird of Dawn) in Bengali literature?",
+      "a": "Biharilal Chakraborty",
+      "b": "Rabindranath Tagore",
+      "c": "Jibanananda Das",
+      "d": "Kazi Nazrul Islam",
+      "exp": "Biharilal Chakraborty was called 'Bhorer Pakhi' by Rabindranath Tagore."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 99,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানুষের শরীরের দীর্ঘতম অস্থি (Bone) কোনটি?",
+      "a": "স্টেপিস",
+      "b": "ফিমার",
+      "c": "হিউমেরাস",
+      "d": "টিবিয়া",
+      "exp": "উরু বা থাই-এ অবস্থিত ফিমার (Femur) হলো মানবদেহের দীর্ঘতম ও শক্তিশালী অস্থি।"
+    },
+    "en": {
+      "q": "Which is the longest bone in the human body?",
+      "a": "Stapes",
+      "b": "Femur",
+      "c": "Humerus",
+      "d": "Tibia",
+      "exp": "The Femur, or thigh bone, is the longest and strongest bone in the human body."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 100,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "অলিম্পিক পতাকায় কয়টি রিং বা বলয় থাকে?",
+      "a": "৪টি",
+      "b": "৫টি",
+      "c": "৬টি",
+      "d": "৭টি",
+      "exp": "অলিম্পিক পতাকায় ৫টি ভিন্ন রঙের বলয় থাকে যা বিশ্বের ৫টি মহাদেশকে প্রতিনিধিত্ব করে।"
+    },
+    "en": {
+      "q": "How many rings are there on the Olympic flag?",
+      "a": "4",
+      "b": "5",
+      "c": "6",
+      "d": "7",
+      "exp": "The Olympic symbol consists of five interlocking rings representing the five inhabited continents."
+    },
+    "correct": "b"
+  }
+]
+[
+  {
+    "id": 101,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন বলের কারণে গ্রহগুলো সূর্যের চারদিকে ঘোরে?",
+      "a": "কেন্দ্রমুখী বল",
+      "b": "মহাকর্ষ বল",
+      "c": "ঘর্ষণ বল",
+      "d": "চৌম্বক বল",
+      "exp": "সূর্য ও গ্রহগুলোর মধ্যকার মহাকর্ষ বলের আকর্ষণে গ্রহগুলো সূর্যের চারদিকে নির্দিষ্ট কক্ষপথে ঘোরে।"
+    },
+    "en": {
+      "q": "Which force causes planets to orbit around the Sun?",
+      "a": "Centripetal Force",
+      "b": "Gravitational Force",
+      "c": "Frictional Force",
+      "d": "Magnetic Force",
+      "exp": "The gravitational force between the Sun and the planets keeps them in their orbits."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 102,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "পৃথিবীর ক্ষুদ্রতম মহাদেশ কোনটি?",
+      "a": "ইউরোপ",
+      "b": "অস্ট্রেলিয়া (ওশেনিয়া)",
+      "c": "অ্যান্টার্কটিকা",
+      "d": "উত্তর আমেরিকা",
+      "exp": "আয়তনের দিক থেকে অস্ট্রেলিয়া পৃথিবীর ক্ষুদ্রতম মহাদেশ।"
+    },
+    "en": {
+      "q": "Which is the smallest continent in the world?",
+      "a": "Europe",
+      "b": "Australia (Oceania)",
+      "c": "Antarctica",
+      "d": "North America",
+      "exp": "Australia is the world's smallest continent by total land area."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 103,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের 'লৌহমানব' (Iron Man of India) কাকে বলা হয়?",
+      "a": "সুভাষচন্দ্র বসু",
+      "b": "সর্দার বল্লভভাই প্যাটেল",
+      "c": "জওহরলাল নেহরু",
+      "d": "ভগত সিং",
+      "exp": "স্বাধীনতার পর দেশীয় রাজ্যগুলোকে ভারতের অন্তর্ভুক্ত করার বলিষ্ঠ ভূমিকার জন্য সর্দার বল্লভভাই প্যাটেলকে লৌহমানব বলা হয়।"
+    },
+    "en": {
+      "q": "Who is known as the 'Iron Man of India'?",
+      "a": "Subhash Chandra Bose",
+      "b": "Sardar Vallabhbhai Patel",
+      "c": "Jawaharlal Nehru",
+      "d": "Bhagat Singh",
+      "exp": "Sardar Vallabhbhai Patel is called the Iron Man of India for his integration of princely states."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 104,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহে ভিটামিন সি-এর অভাবে কোন রোগ হয়?",
+      "a": "বেরিবেরি",
+      "b": "স্কার্ভি",
+      "c": "রাতকানা",
+      "d": "রিকেট",
+      "exp": "ভিটামিন সি-এর অভাবে মাড়ি দিয়ে রক্ত পড়া ও স্কার্ভি রোগ হয়।"
+    },
+    "en": {
+      "q": "Deficiency of Vitamin C causes which disease?",
+      "a": "Beriberi",
+      "b": "Scurvy",
+      "c": "Night Blindness",
+      "d": "Rickets",
+      "exp": "Lack of Vitamin C in the diet leads to Scurvy, characterized by bleeding gums and weakness."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 105,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের সমস্ত গাণিতিক ও যুক্তিমূলক কাজ সম্পাদন করে কোনটি?",
+      "a": "CU (Control Unit)",
+      "b": "ALU (Arithmetic Logic Unit)",
+      "c": "RAM",
+      "d": "Cache Memory",
+      "exp": "ALU (Arithmetic Logic Unit) কম্পিউটারের গাণিতিক ও সিদ্ধান্তমূলক সব কাজ করে।"
+    },
+    "en": {
+      "q": "Which part of the CPU performs arithmetic and logical operations?",
+      "a": "CU (Control Unit)",
+      "b": "ALU (Arithmetic Logic Unit)",
+      "c": "RAM",
+      "d": "Cache Memory",
+      "exp": "The Arithmetic Logic Unit (ALU) performs all calculations and logical decisions in a computer."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 106,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'কপিলবস্তু' কার জন্মস্থান হিসেবে বিখ্যাত?",
+      "a": "মহাবীর",
+      "b": "গৌতম বুদ্ধ",
+      "c": "শঙ্করাচার্য",
+      "d": "কবীর",
+      "exp": "গৌতম বুদ্ধ প্রাচীন শাক্য বংশের রাজ্য কপিলবস্তুর লুম্বিনী উদ্যানে জন্মগ্রহণ করেন।"
+    },
+    "en": {
+      "q": "'Kapilavastu' is famous as the birthplace of which personality?",
+      "a": "Mahavira",
+      "b": "Gautama Buddha",
+      "c": "Shankaracharya",
+      "d": "Kabir",
+      "exp": "Gautama Buddha was born near Kapilavastu in Lumbini."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 107,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোনটি অ্যাসিড বৃষ্টির (Acid Rain) জন্য প্রধানত দায়ী?",
+      "a": "কার্বন মনোক্সাইড ও মিথেন",
+      "b": "সালফার ডাই অক্সাইড ও নাইট্রোজেন অক্সাইড",
+      "c": "অক্সিজেন ও হাইড্রোজেন",
+      "d": "ক্লোরিন ও ফ্লুরিন",
+      "exp": "SO2 এবং NOx বায়ুমণ্ডলের জলের সাথে বিক্রিয়া করে অ্যাসিড বৃষ্টি তৈরি করে।"
+    },
+    "en": {
+      "q": "Which gases are primarily responsible for Acid Rain?",
+      "a": "Carbon Monoxide and Methane",
+      "b": "Sulfur Dioxide and Nitrogen Oxides",
+      "c": "Oxygen and Hydrogen",
+      "d": "Chlorine and Fluorine",
+      "exp": "Sulfur dioxide (SO2) and Nitrogen oxides (NOx) react with water molecules in the atmosphere to form acid rain."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 108,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "যেকোনো সংখ্যার ঘাত (Power) যদি ০ হয়, তবে তার মান কত?",
+      "a": "০",
+      "b": "১",
+      "c": "অসংজ্ঞায়িত",
+      "d": "সেই সংখ্যাটি নিজেই",
+      "exp": "শূন্য ব্যতীত যেকোনো সংখ্যা x-এর জন্য, x^0 = 1।"
+    },
+    "en": {
+      "q": "What is the value of any non-zero number raised to the power of 0?",
+      "a": "0",
+      "b": "1",
+      "c": "Undefined",
+      "d": "The number itself",
+      "exp": "For any non-zero number x, x^0 is always equal to 1."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 109,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের সুপ্রিম কোর্টের বিচারপতিদের অবসরের বয়স কত?",
+      "a": "৬০ বছর",
+      "b": "৬২ বছর",
+      "c": "৬৫ বছর",
+      "d": "৭০ বছর",
+      "exp": "ভারতের সংবিধান অনুসারে সুপ্রিম কোর্টের বিচারপতিরা ৬৫ বছর বয়সে অবসর নেন।"
+    },
+    "en": {
+      "q": "What is the retirement age of Supreme Court judges in India?",
+      "a": "60 years",
+      "b": "62 years",
+      "c": "65 years",
+      "d": "70 years",
+      "exp": "Judges of the Supreme Court of India retire upon attaining the age of 65 years."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 110,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "এশিয়ার বৃহত্তম মরুভূমি কোনটি?",
+      "a": "থর মরুভূমি",
+      "b": "গোবি মরুভূমি",
+      "c": "সাহারা মরুভূমি",
+      "d": "আটাকামা মরুভূমি",
+      "exp": "চীন ও মঙ্গোলিয়া জুড়ে বিস্তৃত গোবি মরুভূমি হলো এশিয়ার বৃহত্তম মরুভূমি।"
+    },
+    "en": {
+      "q": "Which is the largest desert in Asia?",
+      "a": "Thar Desert",
+      "b": "Gobi Desert",
+      "c": "Sahara Desert",
+      "d": "Atacama Desert",
+      "exp": "The Gobi Desert, covering parts of China and Mongolia, is Asia's largest desert."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 111,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "মহাত্মা গান্ধী কোন আন্দোলনের মাধ্যমে 'করো অথবা মরো' (Do or Die) ডাক দিয়েছিলেন?",
+      "a": "অসহযোগ আন্দোলন",
+      "b": "আইন অমান্য আন্দোলন",
+      "c": "ভারত ছাড়ো আন্দোলন",
+      "d": "খিলাফত আন্দোলন",
+      "exp": "১৯৪২ সালের ভারত ছাড়ো আন্দোলনের সময় গান্ধীজি 'করো অথবা মরো' স্লোগানটি দেন।"
+    },
+    "en": {
+      "q": "During which movement did Mahatma Gandhi give the slogan 'Do or Die'?",
+      "a": "Non-Cooperation Movement",
+      "b": "Civil Disobedience Movement",
+      "c": "Quit India Movement",
+      "d": "Khilafat Movement",
+      "exp": "Mahatma Gandhi gave the famous 'Do or Die' slogan during the Quit India Movement in 1942."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 112,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "পেনিসিলিন (Penicillin) কে আবিষ্কার করেন?",
+      "a": "লুই পাস্তুর",
+      "b": "অ্যালেকজান্ডার ফ্র্লেমিং",
+      "c": "রবার্ট হুক",
+      "d": "এডওয়ার্ড জেনার",
+      "exp": "১৯২৮ সালে স্যার অ্যালেকজান্ডার ফ্র্লেমিং প্রথম অ্যান্টিবায়োটিক পেনিসিলিন আবিষ্কার করেন।"
+    },
+    "en": {
+      "q": "Who discovered Penicillin?",
+      "a": "Louis Pasteur",
+      "b": "Alexander Fleming",
+      "c": "Robert Hooke",
+      "d": "Edward Jenner",
+      "exp": "Sir Alexander Fleming discovered Penicillin in 1928."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 113,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "উদ্ভিদের মূল দ্বারা জল শোষণের প্রক্রিয়াটিকে কী বলা হয়?",
+      "a": "বাষ্পমোচন",
+      "b": "অভিস্রবণ (Osmosis)",
+      "c": "শালোকসংশ্লেষ",
+      "d": "শ্বসন",
+      "exp": "অভিস্রবণ প্রক্রিয়ার মাধ্যমে উদ্ভিদের মূলরোম মাটি থেকে জল শোষণ করে।"
+    },
+    "en": {
+      "q": "The process by which plant roots absorb water from the soil is called?",
+      "a": "Transpiration",
+      "b": "Osmosis",
+      "c": "Photosynthesis",
+      "d": "Respiration",
+      "exp": "Water enters plant roots from the soil primarily through Osmosis."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 114,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "ডোমেইন নেমের শেষে থাকা '.org' কী নির্দেশ করে?",
+      "a": "বাণিজ্যিক সংস্থা",
+      "b": "অলাভজনক সংস্থা (Organization)",
+      "c": "সরকারি সংস্থা",
+      "d": "শিক্ষা প্রতিষ্ঠান",
+      "exp": "সাধারণত অলাভজনক সংস্থাসমূহ (Non-profit Organizations) `.org` ডোমেইন ব্যবহার করে।"
+    },
+    "en": {
+      "q": "What does the domain suffix '.org' stand for?",
+      "a": "Commercial Enterprise",
+      "b": "Organization (Non-profit)",
+      "c": "Government Agency",
+      "d": "Educational Institution",
+      "exp": "The '.org' domain suffix is typically used by non-profit organizations."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 115,
+    "subject": "history",
+    "level": "advanced",
+    "bn": {
+      "q": "প্রথম বিশ্বযুদ্ধ কত সালে শুরু হয়েছিল?",
+      "a": "১৯১২",
+      "b": "১৯১৪",
+      "c": "১৯১৮",
+      "d": "১৯৩৯",
+      "exp": "১৯১৪ সালের২৮শে জুলাই প্রথম বিশ্বযুদ্ধ শুরু হয় এবং ১৯১৮ সালে শেষ হয়।"
+    },
+    "en": {
+      "q": "In which year did World War I begin?",
+      "a": "1912",
+      "b": "1914",
+      "c": "1918",
+      "d": "1939",
+      "exp": "World War I began on July 28, 1914, and lasted until 1918."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 116,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "ভূমধ্যসাগর ও লোহিত সাগরকে যুক্ত করেছে কোন খাল?",
+      "a": "পানামা খাল",
+      "b": "সুয়েজ খাল",
+      "c": "কিল খাল",
+      "d": "ইরি খাল",
+      "exp": "মিশরের সুয়েজ খাল ভূমধ্যসাগর ও লোহিত সাগরকে যুক্ত করে এশিয়া ও ইউরোপের দূরত্ব কমিয়েছে।"
+    },
+    "en": {
+      "q": "Which canal connects the Mediterranean Sea to the Red Sea?",
+      "a": "Panama Canal",
+      "b": "Suez Canal",
+      "c": "Kiel Canal",
+      "d": "Erie Canal",
+      "exp": "The Suez Canal in Egypt connects the Mediterranean Sea directly to the Red Sea."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 117,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "মানুষের শোনার উপযোগী শব্দের কম্পাঙ্ক কত?",
+      "a": "২০ Hz এর কম",
+      "b": "২০ Hz থেকে ২০,০০০ Hz",
+      "c": "২০,০০০ Hz এর বেশি",
+      "d": "১০০,০০০ Hz",
+      "exp": "মানুষের কান ২০ হার্টজ থেকে ২০,০০০ হার্টজ কম্পাঙ্কের শব্দ শুনতে সক্ষম (Audible range)।"
+    },
+    "en": {
+      "q": "What is the audible frequency range for human hearing?",
+      "a": "Below 20 Hz",
+      "b": "20 Hz to 20,000 Hz",
+      "c": "Above 20,000 Hz",
+      "d": "100,000 Hz",
+      "exp": "The typical human ear can hear frequencies between 20 Hz and 20,000 Hz."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 118,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "রবীন্দ্রনাথ ঠাকুরের বিখ্যাত শিশুতোষ ছড়ার বই কোনটি?",
+      "a": "শিশু",
+      "b": "বোলপুর",
+      "c": "কণিকা",
+      "d": "সোনার তরী",
+      "exp": "'শিশু' হলো রবীন্দ্রনাথ ঠাকুরের রচিত অন্যতম প্রধান শিশুতোষ কবিতার সংকলন।"
+    },
+    "en": {
+      "q": "Which is a famous children's poetry collection by Rabindranath Tagore?",
+      "a": "Shishu",
+      "b": "Bolpur",
+      "c": "Kanika",
+      "d": "Sonar Tori",
+      "exp": "'Shishu' is one of Tagore's most celebrated poetry collections written for children."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 119,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের ক্ষুদ্রতম হাড় (Bone) কোনটি?",
+      "a": "ম্যালিয়াস",
+      "b": "ইনকাস",
+      "c": "স্টেপিস (Stapes)",
+      "d": "প্যাটেলা",
+      "exp": "মানুষের মধ্যকর্ণে অবস্থিত স্টেপিস হলো মানবদেহের ক্ষুদ্রতম হাড়।"
+    },
+    "en": {
+      "q": "Which is the smallest bone in the human body?",
+      "a": "Malleus",
+      "b": "Incus",
+      "c": "Stapes",
+      "d": "Patella",
+      "exp": "The Stapes, located in the middle ear, is the smallest bone in the human body."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 120,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্ব রেড ক্রস দিবস কবে উদযাপিত হয়?",
+      "a": "৮ই মে",
+      "b": "১০ই জুন",
+      "c": "১৫ই আগস্ট",
+      "d": "১লা মে",
+      "exp": "রেড ক্রসের প্রতিষ্ঠাতা হেনরি ডুনান্টের জন্মদিনে ৮ই মে বিশ্ব রেড ক্রস দিবস পালন করা হয়।"
+    },
+    "en": {
+      "q": "When is World Red Cross Day celebrated?",
+      "a": "8th May",
+      "b": "10th June",
+      "c": "15th August",
+      "d": "1st May",
+      "exp": "World Red Cross Day is celebrated on May 8, the birth anniversary of Henry Dunant."
+    },
+    "correct": "a"
+  }
+]
+[
+  {
+    "id": 121,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন আলোর তরঙ্গদৈর্ঘ্য (Wavelength) সবচেয়ে বেশি?",
+      "a": "বেগুনি",
+      "b": "লাল",
+      "c": "সবুজ",
+      "d": "হলুদ",
+      "exp": "দৃশ্যমান আলোর মধ্যে লাল আলোর তরঙ্গদৈর্ঘ্য সবচেয়ে বেশি এবং বিক্ষেপণ সবচেয়ে কম।"
+    },
+    "en": {
+      "q": "Which light has the longest wavelength in the visible spectrum?",
+      "a": "Violet",
+      "b": "Red",
+      "c": "Green",
+      "d": "Yellow",
+      "exp": "Red light has the longest wavelength and lowest frequency in the visible spectrum."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 122,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের একমাত্র সক্রিয় আগ্নেয়গিরি 'ব্যারেন দ্বীপ' কোথায় অবস্থিত?",
+      "a": "লক্ষদ্বীপ",
+      "b": "আন্দামান ও নিকোবর দ্বীপপুঞ্জ",
+      "c": "পুদুচেরি",
+      "d": "দমন ও দিউ",
+      "exp": "আন্দামান সাগরে অবস্থিত ব্যারেন দ্বীপ ভারতের একমাত্র সক্রিয় আগ্নেয়গিরি।"
+    },
+    "en": {
+      "q": "Where is India's only active volcano, 'Barren Island', located?",
+      "a": "Lakshadweep",
+      "b": "Andaman and Nicobar Islands",
+      "c": "Puducherry",
+      "d": "Daman and Diu",
+      "exp": "Barren Island, located in the Andaman Sea, is the only confirmed active volcano in India."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 123,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "আর্য সমাজ (Arya Samaj) কে প্রতিষ্ঠা করেন?",
+      "a": "রাজা রামমোহন রায়",
+      "b": "স্বামী দয়ানন্দ সরস্বতী",
+      "c": "স্বামী বিবেকানন্দ",
+      "d": "আ his শচন্দ্র বিদ্যাসাগর",
+      "exp": "১৮৭৫ সালে স্বামী দয়ানন্দ সরস্বতী মুম্বাইতে আর্য সমাজ প্রতিষ্ঠা করেন।"
+    },
+    "en": {
+      "q": "Who founded the 'Arya Samaj'?",
+      "a": "Raja Ram Mohan Roy",
+      "b": "Swami Dayananda Saraswati",
+      "c": "Swami Vivekananda",
+      "d": "Ishwar Chandra Vidyasagar",
+      "exp": "Arya Samaj was founded by Swami Dayananda Saraswati in 1875."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 124,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের বৃহত্তম গ্রন্থি (Largest Gland) কোনটি?",
+      "a": "প্যানক্রিয়াস",
+      "b": "যকৃৎ (Liver)",
+      "c": "থাইরয়েড",
+      "d": "পিটুইটারি",
+      "exp": "যকৃৎ বা লিভার হলো মানবদেহের বৃহত্তম অঙ্গ ও গ্রন্থি।"
+    },
+    "en": {
+      "q": "Which is the largest gland in the human body?",
+      "a": "Pancreas",
+      "b": "Liver",
+      "c": "Thyroid",
+      "d": "Pituitary",
+      "exp": "The liver is the largest internal organ and largest gland in the human body."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 125,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের প্রসেসরের গতি প্রধানত কিসে পরিমাপ করা হয়?",
+      "a": "মেগাবাইট (MB)",
+      "b": "গিগাহার্টজ (GHz)",
+      "c": "কিলোবাইট (KB)",
+      "d": "বিট (Bit)",
+      "exp": "আধুনিক প্রসেসরের ক্লক স্পিড বা গতি গিগাহার্টজ (GHz) এককে মাপা হয়।"
+    },
+    "en": {
+      "q": "The speed of a computer processor is measured in?",
+      "a": "Megabytes (MB)",
+      "b": "Gigahertz (GHz)",
+      "c": "Kilobytes (KB)",
+      "d": "Bits",
+      "exp": "Modern computer CPU clock speed is typically measured in Gigahertz (GHz)."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 126,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "বাংলা সাহিত্যের আদি নিদর্শন 'চর্যাপদ' কোথায় আবিষ্কৃত হয়েছিল?",
+      "a": "ভারতের উড়িষ্যায়",
+      "b": "নেপালের রাজদরবারে",
+      "c": "তিব্বতের আশ্রমে",
+      "d": "বাংলাদেশের বাংলায়",
+      "exp": "১৯০৭ সালে হরপ্রসাদ শাস্ত্রী নেপালের রাজদরবারের গ্রanthাগার থেকে চর্যাপদের পুঁথি আবিষ্কার করেন।"
+    },
+    "en": {
+      "q": "Where was the ancient manuscript of 'Charyapada' discovered?",
+      "a": "Odisha, India",
+      "b": "Royal Court of Nepal",
+      "c": "Monastery in Tibet",
+      "d": "Bengal, Bangladesh",
+      "exp": "Haraprasad Shastri discovered the Charyapada manuscript from the Royal Court library of Nepal in 1907."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 127,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন মৌলটিকে 'তরল ধাতু' বলা হয়?",
+      "a": "সোডিয়াম",
+      "b": "পারদ (Mercury)",
+      "c": "ব্রোমিন",
+      "d": "পটাশিয়াম",
+      "exp": "পারদ হলো একমাত্র ধাতু যা সাধারণ ঘরের তাপমাত্রায় তরল থাকে।"
+    },
+    "en": {
+      "q": "Which metal remains liquid at room temperature?",
+      "a": "Sodium",
+      "b": "Mercury",
+      "c": "Bromine",
+      "d": "Potassium",
+      "exp": "Mercury is the only metal that is liquid at standard room temperature."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 128,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "সমকোণী ত্রিভুজের বৃহত্তম বাহু কোনটি?",
+      "a": "ভূমি",
+      "b": "অতিভুজ",
+      "c": "লম্ব",
+      "d": "কোনোটিই নয়",
+      "exp": "সমকোণের বিপরীত বাহু হলো অতিভুজ এবং এটিই সমকোণী ত্রিভুজের দীর্ঘতম বাহু।"
+    },
+    "en": {
+      "q": "Which is the longest side of a right-angled triangle?",
+      "a": "Base",
+      "b": "Hypotenuse",
+      "c": "Perpendicular",
+      "d": "None of these",
+      "exp": "The side opposite the right angle is the hypotenuse, which is always the longest side."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 129,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের দীর্ঘতম নদী কোনটি?",
+      "a": "অ্যামাজন",
+      "b": "নীলনদ",
+      "c": "মিসিসিপি",
+      "d": "ইয়াংসি",
+      "exp": "আফ্রিকা মহাদেশে অবস্থিত নীলনদ হলো বিশ্বের দীর্ঘতম নদী (প্রায় ৬,৬৫০ কিমি)।"
+    },
+    "en": {
+      "q": "Which is the longest river in the world?",
+      "a": "Amazon",
+      "b": "Nile",
+      "c": "Mississippi",
+      "d": "Yangtze",
+      "exp": "The Nile River in Africa is generally considered the longest river in the world."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 130,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন প্রণালী এশিয়া ও উত্তর আমেরিকা মহাদেশকে পৃথক করেছে?",
+      "a": "জিব্রাল্টার প্রণালী",
+      "b": "বেরিং প্রণালী",
+      "c": "পাক প্রণালী",
+      "d": "মালাক্কা প্রণালী",
+      "exp": "বেরিং প্রণালী এশিয়া (রাশিয়া) ও উত্তর আমেরিকা (আলাস্কা)-কে পৃথক করেছে।"
+    },
+    "en": {
+      "q": "Which strait separates Asia from North America?",
+      "a": "Strait of Gibraltar",
+      "b": "Bering Strait",
+      "c": "Palk Strait",
+      "d": "Strait of Malacca",
+      "exp": "The Bering Strait separates Asia (Russia) from North America (Alaska)."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 131,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "কাকে 'বাংলার নবজাগরণের জনক' বলা হয়?",
+      "a": "ঈশ্বরচন্দ্র বিদ্যাসাগর",
+      "b": "রাজা রামমোহন রায়",
+      "c": "রবীন্দ্রনাথ ঠাকুর",
+      "d": "ডেভিড হেয়ার",
+      "exp": "কুসংস্কার দূরীকরণ ও আধুনিক শিক্ষা বিস্তারে অগ্রণী ভূমিকার জন্য রামমোহন রায়কে নবজাগরণের জনক বলা হয়।"
+    },
+    "en": {
+      "q": "Who is regarded as the 'Father of the Bengali Renaissance'?",
+      "a": "Ishwar Chandra Vidyasagar",
+      "b": "Raja Ram Mohan Roy",
+      "c": "Rabindranath Tagore",
+      "d": "David Hare",
+      "exp": "Raja Ram Mohan Roy is considered the Father of the Bengal Renaissance for his social reforms."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 132,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "বায়ুমণ্ডলে কোন গ্যাসের পরিমাণ সবচেয়ে বেশি?",
+      "a": "অক্সিজেন",
+      "b": "নাইট্রোজেন",
+      "c": "কার্বন ডাই অক্সাইড",
+      "d": "আর্গন",
+      "exp": "বায়ুমণ্ডলে প্রায় ৭৮.০৮% অংশ জুড়ে নাইট্রোজেন গ্যাস বিদ্যমান।"
+    },
+    "en": {
+      "q": "Which gas is most abundant in Earth's atmosphere?",
+      "a": "Oxygen",
+      "b": "Nitrogen",
+      "c": "Carbon Dioxide",
+      "d": "Argon",
+      "exp": "Nitrogen makes up approximately 78% of the Earth's atmosphere."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 133,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহের মাস্টার গ্ল্যান্ড (Master Gland) কাকে বলা হয়?",
+      "a": "থাইরয়েড",
+      "b": "পিটুইটারি গ্রন্থি",
+      "c": "অ্যাড্রেনাল",
+      "d": "অগ্ন্যাশয়",
+      "exp": "অন্যান্য হরমোন নিঃসরণকারী গ্রন্থিকে নিয়ন্ত্রণ করার কারণে পিটুইটারিকে প্রভু গ্রন্থি বা মাস্টার গ্ল্যান্ড বলা হয়।"
+    },
+    "en": {
+      "q": "Which gland is known as the 'Master Gland' of the human body?",
+      "a": "Thyroid",
+      "b": "Pituitary Gland",
+      "c": "Adrenal",
+      "d": "Pancreas",
+      "exp": "The Pituitary Gland is called the Master Gland because it controls other endocrine glands."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 134,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "প্রথম গণক যন্ত্র (Calculating Device) কোনটি ছিল?",
+      "a": "পাসকালাইন",
+      "b": "অ্যাবাকাস (Abacus)",
+      "c": "ডিফারেন্স ইঞ্জিন",
+      "d": "এনিয়াক (ENIAC)",
+      "exp": "প্রাচীনকালে গণনার কাজের জন্য আবিষ্কৃত 'অ্যাবাকাস' হলো পৃথিবীর প্রথম গণনা যন্ত্র।"
+    },
+    "en": {
+      "q": "Which is considered the first counting/calculating device?",
+      "a": "Pascaline",
+      "b": "Abacus",
+      "c": "Difference Engine",
+      "d": "ENIAC",
+      "exp": "The Abacus, developed in ancient times, is recognized as the earliest calculating device."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 135,
+    "subject": "history",
+    "level": "advanced",
+    "bn": {
+      "q": "মহাত্মা গান্ধী কবে দক্ষিণ আফ্রিকা থেকে পাকাপাকিভাবে ভারতে ফেরেন?",
+      "a": "১৯০৫",
+      "b": "১৯১৫",
+      "c": "১৯১৯",
+      "d": "১৯৩০",
+      "exp": "১৯১৫ সালের ৯ই জানুয়ারি গান্ধীজি দক্ষিণ আফ্রিকা থেকে ভারতে প্রত্যাবর্তন করেন।"
+    },
+    "en": {
+      "q": "In which year did Mahatma Gandhi permanently return to India from South Africa?",
+      "a": "1905",
+      "b": "1915",
+      "c": "1919",
+      "d": "1930",
+      "exp": "Mahatma Gandhi returned to India from South Africa on January 9, 1915."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 136,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের দীর্ঘতম জাতীয় সড়ক কোনটি?",
+      "a": "NH 1",
+      "b": "NH 44",
+      "c": "NH 7",
+      "d": "NH 2",
+      "exp": "শ্রীনগর থেকে কন্যাকুমারী পর্যন্ত বিস্তৃত NH 44 হলো ভারতের দীর্ঘতম জাতীয় সড়ক।"
+    },
+    "en": {
+      "q": "Which is the longest National Highway in India?",
+      "a": "NH 1",
+      "b": "NH 44",
+      "c": "NH 7",
+      "d": "NH 2",
+      "exp": "NH 44, running from Srinagar to Kanyakumari, is the longest national highway in India."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 137,
+    "subject": "science",
+    "level": "junior",
+    "bn": {
+      "q": "সূর্য থেকে পৃথিবীতে আলো আসতে কত সময় লাগে (প্রায়)?",
+      "a": "৫ মিনিট",
+      "b": "৮ মিনিট ২০ সেকেন্ড",
+      "c": "১০ মিনিট",
+      "d": "১২ মিনিট ১৫ সেকেন্ড",
+      "exp": "সূর্যের আলো প্রায় ৫০০ সেকেন্ডে বা ৮ মিনিট ২০ সেকেন্ডে পৃথিবীতে পৌঁছায়।"
+    },
+    "en": {
+      "q": "How long does sunlight take to reach Earth approximately?",
+      "a": "5 minutes",
+      "b": "8 minutes 20 seconds",
+      "c": "10 minutes",
+      "d": "12 minutes 15 seconds",
+      "exp": "It takes about 8 minutes and 20 seconds (approx 500 seconds) for sunlight to reach Earth."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 138,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'কপিলকুণ্ডলা' উপন্যাসটি কার লেখা?",
+      "a": "শরৎচন্দ্র চট্টোপাধ্যায়",
+      "b": "বঙ্কিমচন্দ্র চট্টোপাধ্যায়",
+      "c": "রবীন্দ্রনাথ ঠাকুর",
+      "d": "তারাশঙ্কর বন্দ্যোপাধ্যায়",
+      "exp": "বঙ্কিমচন্দ্র চট্টোপাধ্যায় ১৮৬৬ সালে রোমান্টিক উপন্যাস 'কপিলকুণ্ডলা' প্রকাশ করেন।"
+    },
+    "en": {
+      "q": "Who wrote the famous Bengali novel 'Kapalkundala'?",
+      "a": "Sharat Chandra Chattopadhyay",
+      "b": "Bankim Chandra Chattopadhyay",
+      "c": "Rabindranath Tagore",
+      "d": "Tarashankar Bandyopadhyay",
+      "exp": "Bankim Chandra Chattopadhyay wrote the romantic novel 'Kapalkundala' in 1866."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 139,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন উপক্ষারটি মানুষের উচ্চ রক্তচাপ কমানোর ওষুধ তৈরিতে ব্যবহৃত হয়?",
+      "a": "কুইনাইন",
+      "b": "রেসারপিন",
+      "c": "নিকোটিন",
+      "d": "মরফিন",
+      "exp": "সর্পগন্ধা গাছের মূল থেকে প্রাপ্ত রেসারপিন উচ্চ রক্তচাপ নিয়ন্ত্রণে ব্যবহৃত হয়।"
+    },
+    "en": {
+      "q": "Which alkaloid extracted from plants is used to lower high blood pressure?",
+      "a": "Quinine",
+      "b": "Reserpine",
+      "c": "Nicotine",
+      "d": "Morphine",
+      "exp": "Reserpine, extracted from Rauvolfia serpentina roots, is used to treat hypertension."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 140,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "সার্ক (SAARC)-এর সদর দপ্তর কোথায় অবস্থিত?",
+      "a": "নয়াদিল্লি",
+      "b": "কাঠমান্ডু",
+      "c": "ঢাকা",
+      "d": "কলম্বো",
+      "exp": "নেপালের রাজধানী কাঠমান্ডুতে সার্কের স্থায়ী সচিবালয় বা সদর দপ্তর অবস্থিত।"
+    },
+    "en": {
+      "q": "Where is the headquarters of SAARC located?",
+      "a": "New Delhi",
+      "b": "Kathmandu",
+      "c": "Dhaka",
+      "d": "Colombo",
+      "exp": "The SAARC Secretariat was established in Kathmandu, Nepal."
+    },
+    "correct": "b"
+  }
+]
+[
+  {
+    "id": 141,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন আলোতে উদ্ভিদের শালোকসংশ্লেষ সবচেয়ে বেশি হয়?",
+      "a": "সবুজ ও হলুদ",
+      "b": "লাল ও নীল",
+      "c": "বেগুনি ও সাদা",
+      "d": "কমলা ও গোলাপি",
+      "exp": "ক্লোরোফিল প্রধানত লাল ও নীল তরঙ্গদৈর্ঘ্যের আলো সবচেয়ে ভালো শোষণ করে, তাই এই দুই আলোতে শালোকসংশ্লেষ সবচেয়ে বেশি হয়।"
+    },
+    "en": {
+      "q": "In which color light is the rate of photosynthesis highest?",
+      "a": "Green and Yellow",
+      "b": "Red and Blue",
+      "c": "Violet and White",
+      "d": "Orange and Pink",
+      "exp": "Chlorophyll absorbs red and blue light most efficiently, resulting in the highest rate of photosynthesis."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 142,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন নদীকে 'দক্ষিণ ভারতের গঙ্গা' বলা হয়?",
+      "a": "কৃষ্ণা",
+      "b": "কাবেরী",
+      "c": "গোদাবরী",
+      "d": "নর্মদা",
+      "exp": "দৈর্ঘ্য ও সাংস্কৃতিক গুরুত্বের কারণে গোদাবরীকে দক্ষিণ ভারতের গঙ্গা বা 'বৃদ্ধ গঙ্গা' বলা হয়।"
+    },
+    "en": {
+      "q": "Which river is known as the 'Ganges of South India' (Dakshin Ganga)?",
+      "a": "Krishna",
+      "b": "Kaveri",
+      "c": "Godavari",
+      "d": "Narmada",
+      "exp": "The Godavari river is often called 'Dakshin Ganga' due to its length and religious significance."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 143,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "মৌর্য বংশের প্রতিষ্ঠাতা কে ছিলেন?",
+      "a": "অশোক",
+      "b": "চন্দ্রগুপ্ত মৌর্য",
+      "c": "বিন্দুসার",
+      "d": "বৃহদ্রথ",
+      "exp": "আচার্য চাণক্যের সহায়তায় নন্দ বংশ উচ্ছেদ করে চন্দ্রগুপ্ত মৌর্য মৌর্য সাম্রাজ্য প্রতিষ্ঠা করেন।"
+    },
+    "en": {
+      "q": "Who was the founder of the Maurya Empire?",
+      "a": "Ashoka",
+      "b": "Chandragupta Maurya",
+      "c": "Bindusara",
+      "d": "Brihadratha",
+      "exp": "Chandragupta Maurya founded the Mauryan Empire with the help of his advisor Chanakya."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 144,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন অঙ্গকে মানবদেহের 'ব্লাড ব্যাংক' (Blood Bank) বলা হয়?",
+      "a": "হৃদপিণ্ড",
+      "b": "প্লিহা (Spleen)",
+      "c": "যকৃৎ",
+      "d": "বৃক্ক",
+      "exp": "প্লিহা বা স্প্লিন অতিরিক্ত লোহিত রক্তকণিকা জমা রাখে এবং প্রয়োজন অনুসারে তা সরবরাহ করে।"
+    },
+    "en": {
+      "q": "Which organ is known as the 'Blood Bank' of the human body?",
+      "a": "Heart",
+      "b": "Spleen",
+      "c": "Liver",
+      "d": "Kidney",
+      "exp": "The spleen acts as a blood filter and stores blood reserves, earning it the nickname 'blood bank'."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 145,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের স্থায়ী মেমোরি (Permanent Memory) কোনটি?",
+      "a": "RAM",
+      "b": "ROM",
+      "c": "Cache",
+      "d": "Virtual Memory",
+      "exp": "ROM (Read-Only Memory) হলো একটি নন-ভোলাটাইল মেমোরি, বিদ্যুৎ চলে গেলেও এতে তথ্য স্থায়ী থাকে।"
+    },
+    "en": {
+      "q": "Which of the following is permanent memory in a computer?",
+      "a": "RAM",
+      "b": "ROM",
+      "c": "Cache",
+      "d": "Virtual Memory",
+      "exp": "ROM (Read-Only Memory) is non-volatile memory that retains data even when powered off."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 146,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'গীতাঞ্জলি' কাব্যগ্রন্থের ইংরেজি অনুবাদ 'Gitanjali: Song Offerings'-এর ভূমিকা (Introduction) কে লিখেছিলেন?",
+      "a": "টি. এস. এলিয়ট",
+      "b": "ডব্লিউ. বি. ইয়েটস (W. B. Yeats)",
+      "c": "জর্জ বার্নার্ড শ",
+      "d": "রবার্ট ফ্রস্ট",
+      "exp": "আয়ারল্যান্ডের বিখ্যাত কবি ডব্লিউ. বি. ইয়েটস গীতাঞ্জলির ইংরেজি অনুবাদের ভূমিকা লেখেন।"
+    },
+    "en": {
+      "q": "Who wrote the introduction to Tagore's 'Gitanjali: Song Offerings'?",
+      "a": "T. S. Eliot",
+      "b": "W. B. Yeats",
+      "c": "George Bernard Shaw",
+      "d": "Robert Frost",
+      "exp": "Irish poet W. B. Yeats wrote the famous introduction to the English edition of Gitanjali."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 147,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "গ্যাসের চাপ মাপার যন্ত্রের নাম কী?",
+      "a": "ব্যারোমিটার",
+      "b": "ম্যানোমিটার",
+      "c": "থার্মোমিটার",
+      "d": "স্পিডোমিটার",
+      "exp": "বদ্ধ পাত্রে থাকা গ্যাসের চাপ পরিমাপ করার জন্য ম্যানোমিটার ব্যবহার করা হয়।"
+    },
+    "en": {
+      "q": "Which instrument is used to measure the pressure of gases?",
+      "a": "Barometer",
+      "b": "Manometer",
+      "c": "Thermometer",
+      "d": "Speedometer",
+      "exp": "A Manometer is used to measure fluid or gas pressure in a closed container."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 148,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "একটি বৃত্তের কেন্দ্রে কত ডিগ্রি কোণ উৎপন্ন হয়?",
+      "a": "১৮০°",
+      "b": "৩৬০°",
+      "c": "৯০°",
+      "d": "২৭০°",
+      "exp": "যেকোনো বৃত্তের কেন্দ্র মোট ৩৬০° কোণ বা চার সমকোণ তৈরি করে।"
+    },
+    "en": {
+      "q": "What is the total angle formed at the center of a circle?",
+      "a": "180°",
+      "b": "360°",
+      "c": "90°",
+      "d": "270°",
+      "exp": "A complete circle forms a 360-degree angle around its central point."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 149,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "আন্তর্জাতিক মানবাধিকার দিবস (Human Rights Day) কবে উদযাপিত হয়?",
+      "a": "১০ই ডিসেম্বর",
+      "b": "২৪শে অক্টোবর",
+      "c": "৫ই জুন",
+      "d": "৮ই মার্চ",
+      "exp": "১৯৪৮ সালের ১০ই ডিসেম্বর জাতিসংঘ মানবাধিকারের সর্বজনীন ঘোষণাপত্র গ্রহণ করে, তাই দিনটি মানবাধিকার দিবস হিসেবে পালিত হয়।"
+    },
+    "en": {
+      "q": "When is International Human Rights Day celebrated?",
+      "a": "10th December",
+      "b": "24th October",
+      "c": "5th June",
+      "d": "8th March",
+      "exp": "Human Rights Day is observed annually on 10 December, commemorating the UN adoption of Universal Declaration of Human Rights."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 150,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "পৃথিবীর সর্বোচ্চ আগ্নেয়গিরি কোনটি?",
+      "a": "মাউন্ট ফুজি",
+      "b": "ওহোস দেল সালাদো",
+      "c": "মাউন্ট এতনা",
+      "d": "ক্রাকাতোয়া",
+      "exp": "আর্জেন্টিনা ও চিলি সীমান্তে অবস্থিত 'ওহোস দেল সালাদো' হলো পৃথিবীর সর্বোচ্চ সক্রিয় আগ্নেয়গিরি।"
+    },
+    "en": {
+      "q": "Which is the highest volcano on Earth?",
+      "a": "Mount Fuji",
+      "b": "Ojos del Salado",
+      "c": "Mount Etna",
+      "d": "Krakatoa",
+      "exp": "Ojos del Salado on the Argentina-Chile border is the world's highest active volcano."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 151,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "পলাশীর যুদ্ধ কত সালে সংঘটিত হয়েছিল?",
+      "a": "১৭৫৭",
+      "b": "১৭৬৪",
+      "c": "১৮৫৭",
+      "d": "১৭০৭",
+      "exp": "১৭৫৭ সালের ২৩শে জুন নবাব সিরাজউদ্দৌলা ও ব্রিটিশ ইস্ট ইন্ডিয়া কোম্পানির মধ্যে পলাশীর যুদ্ধ হয়।"
+    },
+    "en": {
+      "q": "In which year was the Battle of Plassey fought?",
+      "a": "1757",
+      "b": "1764",
+      "c": "1857",
+      "d": "1707",
+      "exp": "The Battle of Plassey was fought on June 23, 1757, between Siraj-ud-Daulah and the British East India Company."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 152,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "বৈদ্যুতিক বাতির ফিলামেন্টে কোন ধাতু ব্যবহার করা হয়?",
+      "a": "তামা",
+      "b": "টংস্টেন",
+      "c": "নাইক্রোম",
+      "d": "অ্যালুমিনিয়াম",
+      "exp": "টংস্টেন ধাতুর গলনাঙ্ক খুব বেশি (প্রায় ৩৪২২° সেলসিয়াস) হওয়ায় বৈদ্যুতিক বাল্বের ফিলামেন্টে এটি ব্যবহৃত হয়।"
+    },
+    "en": {
+      "q": "Which metal is used to make the filament of an electric bulb?",
+      "a": "Copper",
+      "b": "Tungsten",
+      "c": "Nichrome",
+      "d": "Aluminum",
+      "exp": "Tungsten is used because of its extremely high melting point and resistance."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 153,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "উদ্ভিদ কোষে বায়বীয় শসনের (Respiration) প্রধান স্থান কোনটি?",
+      "a": "রাইবোজোম",
+      "b": "মাইটোকন্ড্রিয়া",
+      "c": "গলগি বডি",
+      "d": "লাইসোজোম",
+      "exp": "ক্লেবস চক্র ও এটিপি (ATP) তৈরির প্রধান ধাপগুলো মাইটোকন্ড্রিয়াতেই ঘটে।"
+    },
+    "en": {
+      "q": "Where does aerobic cellular respiration mainly take place in a cell?",
+      "a": "Ribosome",
+      "b": "Mitochondria",
+      "c": "Golgi Body",
+      "d": "Lysosome",
+      "exp": "Mitochondria are responsible for ATP generation through cellular respiration."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 154,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "ওয়েব পেজ তৈরির জন্য কোন ল্যাঙ্গুয়েজটি প্রাথমিক বা প্রধান হিসেবে ব্যবহৃত হয়?",
+      "a": "Python",
+      "b": "HTML",
+      "c": "C++",
+      "d": "Java",
+      "exp": "HTML (HyperText Markup Language) যেকোনো সাধারণ ওয়েব পেজের মূল গঠন তৈরি করতে ব্যবহৃত হয়।"
+    },
+    "en": {
+      "q": "Which language is primarily used for structuring web pages?",
+      "a": "Python",
+      "b": "HTML",
+      "c": "C++",
+      "d": "Java",
+      "exp": "HTML (HyperText Markup Language) is the standard markup language used to build web pages."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 155,
+    "subject": "history",
+    "level": "advanced",
+    "bn": {
+      "q": "দ্বিতীয় বিশ্বযুদ্ধের সময় জাপানের হিরোশিমায় কোন পারমাণবিক বোমাটি ফেলা হয়েছিল?",
+      "a": "Fat Man",
+      "b": "Little Boy",
+      "c": "Tsar Bomba",
+      "d": "Trinity",
+      "exp": "১৯৪৫ সালের ৬ই আগস্ট হিরোশিমায় ফেলা বোমার কোড নেম ছিল 'Little Boy' এবং নাগাসাকিতে ফেলা বোমার নাম ছিল 'Fat Man'।"
+    },
+    "en": {
+      "q": "What was the codename of the atomic bomb dropped on Hiroshima during WWII?",
+      "a": "Fat Man",
+      "b": "Little Boy",
+      "c": "Tsar Bomba",
+      "d": "Trinity",
+      "exp": "The atomic bomb dropped on Hiroshima on August 6, 1945, was codenamed 'Little Boy'."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 156,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "পৃথিবীর গভীরতম খাদ কোনটি?",
+      "a": "পুয়ের্তো রিকো খাদ",
+      "b": "মারিয়ানা খাত (Mariana Trench)",
+      "c": "সুন্দা খাদ",
+      "d": "জাবলিস খাদ",
+      "exp": "প্রশান্ত মহাসাগরে অবস্থিত মারিয়ানা খাতের 'চ্যালেঞ্জার ডিপ' পৃথিবীর গভীরতম বিন্দু।"
+    },
+    "en": {
+      "q": "Which is the deepest oceanic trench in the world?",
+      "a": "Puerto Rico Trench",
+      "b": "Mariana Trench",
+      "c": "Sunda Trench",
+      "d": "Java Trench",
+      "exp": "The Mariana Trench in the western Pacific Ocean contains the deepest known point on Earth."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 157,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন স্কেলে তাপমাত্রার ঋণাত্মক (Negative) মান হয় না?",
+      "a": "সেলসিয়াস",
+      "b": "কেলভিন",
+      "c": "ফারেনহাইট",
+      "d": "রিয়ারমার",
+      "exp": "কেলভিন স্কেল পরম শূন্য (0 K বা -273.15°C) থেকে শুরু হয়, তাই এতে ঋণাত্মক মান অসম্ভব।"
+    },
+    "en": {
+      "q": "Which temperature scale does not have negative values?",
+      "a": "Celsius",
+      "b": "Kelvin",
+      "c": "Fahrenheit",
+      "d": "Reaumur",
+      "exp": "The Kelvin scale starts at Absolute Zero (0 K), making negative values physically impossible."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 158,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'পথের পাঁচালী' উপন্যাসটি কার রচনা?",
+      "a": "তারাশঙ্কর বন্দ্যোপাধ্যায়",
+      "b": "বিভূতিভূষণ বন্দ্যোপাধ্যায়",
+      "c": "মানিক বন্দ্যোপাধ্যায়",
+      "d": "শরৎচন্দ্র চট্টোপাধ্যায়",
+      "exp": "বিভূতিভূষণ বন্দ্যোপাধ্যায়ের রচিত 'পথের পাঁচালী' উপন্যাস অবলম্বনে সত্যজিৎ রায় কালজয়ী চলচ্চিত্র নির্মাণ করেছিলেন।"
+    },
+    "en": {
+      "q": "Who wrote the classic Bengali novel 'Pather Panchali'?",
+      "a": "Tarashankar Bandyopadhyay",
+      "b": "Bibhutibhushan Bandyopadhyay",
+      "c": "Manik Bandyopadhyay",
+      "d": "Sharat Chandra Chattopadhyay",
+      "exp": "Bibhutibhushan Bandyopadhyay wrote 'Pather Panchali', which was later adapted into a film by Satyajit Ray."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 159,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "দুধকে দধিতে পরিণত করতে সাহায্য করে কোন ব্যাকটেরিয়া?",
+      "a": "ই. কোলাই",
+      "b": "ল্যাকটোব্যাসিলাস (Lactobacillus)",
+      "c": "স্ট্যাফাইলোককাস",
+      "d": "রাইজোবিয়াম",
+      "exp": "ল্যাকটোব্যাসিলাস ব্যাকটেরিয়া দুধের ল্যাকটোজকে ল্যাকটিক অ্যাসিডে রূপান্তরিত করে দই বানায়।"
+    },
+    "en": {
+      "q": "Which bacteria is responsible for converting milk into curd?",
+      "a": "E. coli",
+      "b": "Lactobacillus",
+      "c": "Staphylococcus",
+      "d": "Rhizobium",
+      "exp": "Lactobacillus bacteria ferment milk sugars (lactose) into lactic acid, forming curd."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 160,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্ব নোবেল পুরস্কার প্রবর্তনকারী অ্যালফ্রেড নোবেল কিসের আবিষ্কারক ছিলেন?",
+      "a": "টেলিফোন",
+      "b": "ডায়নামাইট",
+      "c": "পেনিসিলিন",
+      "d": "বাষ্পীয় ইঞ্জিন",
+      "exp": "সুইডিশ বিজ্ঞানী অ্যালফ্রেড নোবেল ১৮৬৭ সালে ডায়নামাইট আবিষ্কার করেছিলেন।"
+    },
+    "en": {
+      "q": "Alfred Nobel, the founder of the Nobel Prizes, invented which explosive?",
+      "a": "Telephone",
+      "b": "Dynamite",
+      "c": "Penicillin",
+      "d": "Steam Engine",
+      "exp": "Swedish chemist Alfred Nobel invented Dynamite in 1867."
+    },
+    "correct": "b"
+  }
+]
+[
+  {
+    "id": 161,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "শূন্যস্থানে আলোর বেগ প্রতি সেকেন্ডে কত?",
+      "a": "৩ × ১০^৮ মিটার",
+      "b": "৩ × ১০^৬ মিটার",
+      "c": "৩ × ১০^১০ মিটার",
+      "d": "৩ × ১০^৫ মিটার",
+      "exp": "শূন্যস্থানে আলোর গতিবেগ হলো প্রতি সেকেন্ডে প্রায় ৩ লক্ষ কিলোমিটার বা ৩ × ১০^৮ মিটার।"
+    },
+    "en": {
+      "q": "What is the speed of light in a vacuum?",
+      "a": "3 × 10^8 m/s",
+      "b": "3 × 10^6 m/s",
+      "c": "3 × 10^10 m/s",
+      "d": "3 × 10^5 m/s",
+      "exp": "The speed of light in a vacuum is approximately 3 × 10^8 meters per second."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 162,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের সর্বোচ্চ পর্বতশৃঙ্গ কোনটি?",
+      "a": "মাউন্ট এভারেস্ট",
+      "b": "কাঞ্চনজঙ্ঘা",
+      "c": "গডউইন অস্টিন (K2)",
+      "d": "নন্দা দেবী",
+      "exp": "ভারতের সর্বাধিক স্বীকৃত সর্বোচ্চ পর্বতশৃঙ্গ হলো কাঞ্চনজঙ্ঘা (অথবা POK সহ গণনা করলে K2)।"
+    },
+    "en": {
+      "q": "Which is the highest mountain peak located in India?",
+      "a": "Mount Everest",
+      "b": "Kangchenjunga",
+      "c": "Godwin Austen (K2)",
+      "d": "Nanda Devi",
+      "exp": "Kangchenjunga is the highest peak located within the undisputed boundaries of India."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 163,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "সিন্ধু সভ্যতার 'হরপ্পা' কেন্দ্রটি কে আবিষ্কার করেন?",
+      "a": "রাখালদাস বন্দ্যোপাধ্যায়",
+      "b": "দয়ারাম সাহানি",
+      "c": "স্যার জন মার্শাল",
+      "d": "আলেকজান্ডার কানিংহাম",
+      "exp": "১৯২১ সালে প্রত্নতাত্ত্বিক দয়ারাম সাহানি প্রথম হরপ্পা স্থানটি আবিষ্কার করেন।"
+    },
+    "en": {
+      "q": "Who discovered the Indus Valley site 'Harappa'?",
+      "a": "Rakhaldas Bandyopadhyay",
+      "b": "Daya Ram Sahni",
+      "c": "Sir John Marshall",
+      "d": "Alexander Cunningham",
+      "exp": "Daya Ram Sahni excavated and discovered Harappa in 1921."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 164,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "রক্তের লাল রঙের জন্য দায়ী কোন উপাদান?",
+      "a": "প্লাজমা",
+      "b": "হিমোগ্লোবিন",
+      "c": "শ্বেত রক্তকণিকা",
+      "d": "অণুচক্রিকা",
+      "exp": "লোহিত রক্তকণিকায় বিদ্যমান লোহাসমৃদ্ধ প্রোটিন হিমোগ্লোবিনের কারণে রক্তের রং লাল হয়।"
+    },
+    "en": {
+      "q": "Which component is responsible for the red color of human blood?",
+      "a": "Plasma",
+      "b": "Hemoglobin",
+      "c": "White Blood Cells",
+      "d": "Platelets",
+      "exp": "Hemoglobin, an iron-rich protein in red blood cells, gives blood its red color."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 165,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "ওয়ার্ল্ড ওয়াইড ওয়েব (World Wide Web - WWW) এর উদ্ভাবক কে?",
+      "a": "বিল গেটস",
+      "b": "টিন বার্নার্স-লি (Tim Berners-Lee)",
+      "c": "স্টীভ জবস",
+      "d": "মার্ক জাকারবার্গ",
+      "exp": "১৯৮৯ সালে ব্রিটিশ বিজ্ঞানী টিম বার্নার্স-লি ওয়ার্ল্ড ওয়াইড ওয়েব উদ্ভাবন করেন।"
+    },
+    "en": {
+      "q": "Who is credited with inventing the World Wide Web (WWW)?",
+      "a": "Bill Gates",
+      "b": "Tim Berners-Lee",
+      "c": "Steve Jobs",
+      "d": "Mark Zuckerberg",
+      "exp": "Tim Berners-Lee invented the World Wide Web in 1989 while working at CERN."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 166,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "রবীন্দ্রনাথ ঠাকুর কত সালে সাহিত্য নোবেল পুরস্কার পান?",
+      "a": "১৯১১",
+      "b": "১৯১৩",
+      "c": "১৯১৫",
+      "d": "১৯২১",
+      "exp": "'গীতাঞ্জলি' কাব্যগ্রন্থের জন্য ১৯১৩ সালে রবীন্দ্রনাথ ঠাকুর প্রথম এশীয় হিসেবে নোবেল পান।"
+    },
+    "en": {
+      "q": "In which year did Rabindranath Tagore win the Nobel Prize in Literature?",
+      "a": "1911",
+      "b": "1913",
+      "c": "1915",
+      "d": "1921",
+      "exp": "Tagore was awarded the Nobel Prize in Literature in 1913 for 'Gitanjali'."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 167,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "তড়িৎ প্রবাহমাত্রার (Electric Current) SI একক কী?",
+      "a": "ভোল্ট",
+      "b": "অ্যাম্পিয়ার (Ampere)",
+      "c": "ওহম",
+      "d": "ওয়াট",
+      "exp": "আন্তর্জাতিক একক পদ্ধতিতে তড়িৎ প্রবাহমাত্রার একক হলো অ্যাম্পিয়ার (A)।"
+    },
+    "en": {
+      "q": "What is the SI unit of Electric Current?",
+      "a": "Volt",
+      "b": "Ampere",
+      "c": "Ohm",
+      "d": "Watt",
+      "exp": "The SI unit of electric current is the Ampere (A)."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 168,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "সবচেয়ে ছোট মৌলিক সংখ্যা (Prime Number) কোনটি?",
+      "a": "০",
+      "b": "১",
+      "c": "২",
+      "d": "৩",
+      "exp": "২ হলো একমাত্র জোড় মৌলিক সংখ্যা এবং এটিই সর্বনিম্ন মৌলিক সংখ্যা।"
+    },
+    "en": {
+      "q": "Which is the smallest prime number?",
+      "a": "0",
+      "b": "1",
+      "c": "2",
+      "d": "3",
+      "exp": "2 is the smallest prime number and the only even prime number."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 169,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্ব পরিবেশ দিবস (World Environment Day) কবে উদযাপিত হয়?",
+      "a": "২২শে এপ্রিল",
+      "b": "৫ই জুন",
+      "c": "১৬ই সেপ্টেম্বর",
+      "d": "১লা ডিসেম্বর",
+      "exp": "পরিবেশ সুরক্ষায় সচেতনতা বাড়াতে প্রতি বছর ৫ই জুন বিশ্ব পরিবেশ দিবস পালিত হয়।"
+    },
+    "en": {
+      "q": "When is World Environment Day celebrated globally?",
+      "a": "22nd April",
+      "b": "5th June",
+      "c": "16th September",
+      "d": "1st December",
+      "exp": "World Environment Day is celebrated on June 5 every year to promote environmental protection."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 170,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্বের বৃহত্তম ম্যানগ্রোভ অরণ্য কোনটি?",
+      "a": "আমাজন বন",
+      "b": "সুন্দরবন",
+      "c": "কঙ্গো বেসিন",
+      "d": "তাইগা",
+      "exp": "ভারত ও বাংলাদেশ সীমান্তজুড়ে বিস্তৃত সুন্দরবন হলো বিশ্বের বৃহত্তম ম্যানগ্রোভ বন।"
+    },
+    "en": {
+      "q": "Which is the largest mangrove forest in the world?",
+      "a": "Amazon Rainforest",
+      "b": "Sundarbans",
+      "c": "Congo Basin",
+      "d": "Taiga",
+      "exp": "The Sundarbans, spanning India and Bangladesh, is the world's largest contiguous mangrove forest."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 171,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের 'মহাবিদ্রোহ' বা সিপাহী বিদ্রোহ কত সালে শুরু হয়েছিল?",
+      "a": "১৮৫৭",
+      "b": "১৮৮৫",
+      "c": "১৯০৫",
+      "d": "১৭৫৭",
+      "exp": "১৮৫৭ সালে বারাকপুর ও মিরাটে সিপাহী বিদ্রোহের মাধ্যমে ভারতের প্রথম স্বাধীনতা সংগ্রাম শুরু হয়।"
+    },
+    "en": {
+      "q": "In which year did the Indian Rebellion (Sepoy Mutiny) start?",
+      "a": "1857",
+      "b": "1885",
+      "c": "1905",
+      "d": "1757",
+      "exp": "The Indian Rebellion began in May 1857 in Meerut and quickly spread across northern India."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 172,
+    "subject": "science",
+    "level": "junior",
+    "bn": {
+      "q": "খাবার লবণের রাসায়নিক নাম কী?",
+      "a": "ক্যালসিয়াম কার্বোনেট",
+      "b": "সোডিয়াম ক্লোরাইড",
+      "c": "পটাশিয়াম নাইট্রেট",
+      "d": "সোডিয়াম বাইকার্বোনেট",
+      "exp": "খাবার লবণের রাসায়নিক সংকেত NaCl, যার রাসায়নিক নাম সোডিয়াম ক্লোরাইড।"
+    },
+    "en": {
+      "q": "What is the chemical name of common table salt?",
+      "a": "Calcium Carbonate",
+      "b": "Sodium Chloride",
+      "c": "Potassium Nitrate",
+      "d": "Sodium Bicarbonate",
+      "exp": "Common table salt consists of sodium chloride (NaCl)."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 173,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানুষের লোহিত রক্তকণিকার (RBC) গড় আয়ু কত দিন?",
+      "a": "৬০ দিন",
+      "b": "১২০ দিন",
+      "c": "১৮০ দিন",
+      "d": "২৪০ দিন",
+      "exp": "মানবদেহে উৎপন্ন লোহিত রক্তকণিকা প্রায় ১২০ দিন জীবিত থাকে।"
+    },
+    "en": {
+      "q": "What is the average lifespan of a human Red Blood Cell (RBC)?",
+      "a": "60 days",
+      "b": "120 days",
+      "c": "180 days",
+      "d": "240 days",
+      "exp": "Human red blood cells have an average lifespan of about 120 days."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 174,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের প্রসেসরকে অনেক সময় কী নামে ডাকা হয়?",
+      "a": "কম্পিউটারের ব্রেইন (Brain)",
+      "b": "কম্পিউটারের হার্ট (Heart)",
+      "c": "কম্পিউটারের চোখ (Eye)",
+      "d": "কম্পিউটারের হাত (Hand)",
+      "exp": "CPU বা প্রসেসর সমস্ত নির্দেশাবলী প্রক্রিয়াভুক্ত করে বলে একে মস্তিষ্কের সাথে তুলনা করা হয়।"
+    },
+    "en": {
+      "q": "The processor of a computer is often metaphorically called its?",
+      "a": "Brain",
+      "b": "Heart",
+      "c": "Eye",
+      "d": "Hand",
+      "exp": "The CPU is commonly called the 'brain' of the computer as it processes all instructions."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 175,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "মুঘল সাম্রাজ্যের শ্রেষ্ঠ সম্রাট আকবরের আত্মজীবনী 'আইন-ই-আকবরী' কার লেখা?",
+      "a": "আকবর",
+      "b": "আবুল ফজল",
+      "c": "বীরবল",
+      "d": "গুলবদন বেগম",
+      "exp": "আকবরের নবরত্ন সভার বিখ্যাত পন্ডিত আবুল ফজল 'আইন-ই-আকবরী' ও 'আকবরনামা' রচনা করেন।"
+    },
+    "en": {
+      "q": "Who wrote 'Ain-i-Akbari', the detailed account of Emperor Akbar's reign?",
+      "a": "Akbar",
+      "b": "Abu'l-Fazl",
+      "c": "Birbal",
+      "d": "Gulbadan Begum",
+      "exp": "Abu'l-Fazl ibn Mubarak, Akbar's grand vizier, wrote Ain-i-Akbari."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 176,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের দীর্ঘতম নদী বাঁধ (Dam) কোনটি?",
+      "a": "ভাখরা নাঙ্গাল বাঁধ",
+      "b": "হীরাকুদ বাঁধ",
+      "c": "টিহরি বাঁধ",
+      "d": "নাগার্জুন সাগর বাঁধ",
+      "exp": "ওড়িশার মহানদীর ওপর নির্মিত হীরাকুদ বাঁধ ভারতের দীর্ঘতম নদী বাঁধ।"
+    },
+    "en": {
+      "q": "Which is the longest dam in India?",
+      "a": "Bhakra Nangal Dam",
+      "b": "Hirakud Dam",
+      "c": "Tehri Dam",
+      "d": "Nagarjuna Sagar Dam",
+      "exp": "Hirakud Dam, built across the Mahanadi River in Odisha, is the longest dam in India."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 177,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "শব্দের গতিবেগ কোন মাধ্যমে সবচেয়ে বেশি?",
+      "a": "গ্যাসীয়",
+      "b": "তরল",
+      "c": "কঠিন",
+      "d": "শূন্যস্থান",
+      "exp": "ঘনত্ব বেশি হওয়ায় কঠিন মাধ্যমে শব্দের গতিবেগ সবচেয়ে বেশি হয় (শূন্যস্থানে শব্দ চলতে পারে না)।"
+    },
+    "en": {
+      "q": "Through which medium does sound travel the fastest?",
+      "a": "Gas",
+      "b": "Liquid",
+      "c": "Solid",
+      "d": "Vacuum",
+      "exp": "Sound travels fastest through solid materials because molecules are tightly packed."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 178,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'মেঘনিল কাব্যের' মহাকাব্য 'মেঘনাদবধ কাব্য' কার রচনা?",
+      "a": "মাইকেল মধুসূদন দত্ত",
+      "b": "হেমচন্দ্র বন্দ্যোপাধ্যায়",
+      "c": "নবীনচন্দ্র সেন",
+      "d": "রঙ্গলাল বন্দ্যোপাধ্যায়",
+      "exp": "১৮৬১ সালে মাইকেল মধুসূদন দত্ত বিখ্যাত অমিত্রাক্ষর ছন্দে 'মেঘনাদবধ কাব্য' প্রকাশ করেন।"
+    },
+    "en": {
+      "q": "Who is the author of the epic epic Bengali poem 'Meghnad Badh Kavya'?",
+      "a": "Michael Madhusudan Dutt",
+      "b": "Hemchandra Banerjee",
+      "c": "Nabinchandra Sen",
+      "d": "Rangalal Banerjee",
+      "exp": "Michael Madhusudan Dutt composed the epic poem 'Meghnad Badh Kavya' in blank verse in 1861."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 179,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "কোষের 'শক্তিঘর' (Powerhouse of the Cell) কাকে বলা হয়?",
+      "a": "গলগি বডি",
+      "b": "মাইটোকন্ড্রিয়া",
+      "c": "লাইসোজোম",
+      "d": "রাইবোজোম",
+      "exp": "মাইটোকন্ড্রিয়ায় খাদ্য জারণের মাধ্যমে শক্তি (ATP) উৎপন্ন হয় বলে একে শক্তিঘর বলা হয়।"
+    },
+    "en": {
+      "q": "Which organelle is known as the 'Powerhouse of the Cell'?",
+      "a": "Golgi Body",
+      "b": "Mitochondria",
+      "c": "Lysosome",
+      "d": "Ribosome",
+      "exp": "Mitochondria produce ATP through cellular respiration, earning them the nickname 'Powerhouse'."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 180,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "জাতিসংঘ (United Nations - UN) কত সালে প্রতিষ্ঠিত হয়?",
+      "a": "১৯৩৯",
+      "b": "১৯৪৫",
+      "c": "১৯৪৭",
+      "d": "১৯৫০",
+      "exp": "দ্বিতীয় বিশ্বযুদ্ধের অবসান ঘটিয়ে বিশ্বশান্তি প্রতিষ্ঠার লক্ষ্যে ১৯৪৫ সালের ২৪শে অক্টোবর জাতিসংঘ প্রতিষ্ঠিত হয়।"
+    },
+    "en": {
+      "q": "In which year was the United Nations (UN) established?",
+      "a": "1939",
+      "b": "1945",
+      "c": "1947",
+      "d": "1950",
+      "exp": "The United Nations was officially founded on October 24, 1945, after World War II."
+    },
+    "correct": "b"
+  }
+]
+[
+  {
+    "id": 181,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন বলের কারণে জলপ্রপাতের জল উপর থেকে নিচে নেমে আসে?",
+      "a": "ঘর্ষণ বল",
+      "b": "অভিকর্ষ বল",
+      "c": "কেন্দ্রমুখী বল",
+      "d": "চৌম্বক বল",
+      "exp": "পৃথিবীর কেন্দ্র অভিমুখে পৃথিবীর আকর্ষণ বা অভিকর্ষ বলের প্রভাবেই জল উপর থেকে নিচের দিকে প্রবাহিত হয়।"
+    },
+    "en": {
+      "q": "Which force causes water in a waterfall to flow downwards?",
+      "a": "Frictional Force",
+      "b": "Gravitational Force",
+      "c": "Centripetal Force",
+      "d": "Magnetic Force",
+      "exp": "Water flows downward in a waterfall due to Earth's gravitational attraction pulling it toward the center."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 182,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন কাল্পনিক রেখাটি ভারতের প্রায় মধ্যভাগ দিয়ে অতিক্রম করেছে?",
+      "a": "নিরক্ষরেখা",
+      "b": "করকটক্রান্তি রেখা",
+      "c": "মকরক্রান্তি রেখা",
+      "d": "মূল মধ্যরেখা",
+      "exp": "করকটক্রান্তি রেখা (23.5° N) ভারতের আটটি রাজ্যের ওপর দিয়ে প্রায় মাঝখান দিয়ে প্রবাহিত হয়েছে।"
+    },
+    "en": {
+      "q": "Which latitude line passes almost through the middle of India?",
+      "a": "Equator",
+      "b": "Tropic of Cancer",
+      "c": "Tropic of Capricorn",
+      "d": "Prime Meridian",
+      "exp": "The Tropic of Cancer (23.5° N) passes through the center of India across eight states."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 183,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের জাতীয় কংগ্রেসের প্রথম সভাপতি কে ছিলেন?",
+      "a": "উমেশচন্দ্র বন্দ্যোপাধ্যায়",
+      "b": "সুরেন্দ্রনাথ বন্দ্যোপাধ্যায়",
+      "c": "দাদাভাবাই নওরোজী",
+      "d": "অ্যালান অক্টাভিয়ান হিউম",
+      "exp": "১৮৮৫ সালে বোম্বেতে অনুষ্ঠিত ভারতীয় জাতীয় কংগ্রেসের প্রথম অধিবেশনে উমেশচন্দ্র বন্দ্যোপাধ্যায় সভাপতি হন।"
+    },
+    "en": {
+      "q": "Who was the first president of the Indian National Congress?",
+      "a": "Womesh Chandra Bonnerjee",
+      "b": "Surendranath Banerjee",
+      "c": "Dadabhai Naoroji",
+      "d": "Allan Octavian Hume",
+      "exp": "Womesh Chandra Bonnerjee presided over the first session of the Indian National Congress in 1885."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 184,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "উদ্ভিদের পাতার সবুজ রঙের জন্য কোনটি দায়ী?",
+      "a": "ক্যারোটিন",
+      "b": "ক্লোরোফিল",
+      "c": "জ্যান্থোফিল",
+      "d": "অ্যান্থোসায়ানিন",
+      "exp": "ক্লোরোফিল নামক রঞ্জকের উপস্থিতির কারণে উদ্ভিদের পাতা সবুজ দেখায়।"
+    },
+    "en": {
+      "q": "Which pigment is responsible for the green color of plant leaves?",
+      "a": "Carotene",
+      "b": "Chlorophyll",
+      "c": "Xanthophyll",
+      "d": "Anthocyanin",
+      "exp": "Chlorophyll is the green pigment in plants that absorbs light for photosynthesis."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 185,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারে ডাটা স্থায়ীভাবে সংরক্ষণের জন্য সাধারণত কোন ডিভাইসটি ব্যবহার করা হয়?",
+      "a": "RAM",
+      "b": "Hard Disk Drive (HDD)",
+      "c": "Cache Memory",
+      "d": "Register",
+      "exp": "হার্ডডিস্ক (HDD/SSD) হলো একটি সেকেন্ডারি বা স্থায়ী মেমোরি যেখানে ডাটা চিরতরে সংরক্ষিত থাকে।"
+    },
+    "en": {
+      "q": "Which device is primarily used for permanent data storage in computers?",
+      "a": "RAM",
+      "b": "Hard Disk Drive (HDD)",
+      "c": "Cache Memory",
+      "d": "Register",
+      "exp": "A Hard Disk Drive (or SSD) acts as secondary non-volatile storage to save data permanently."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 186,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "বাংলা সাহিত্যের প্রথম সার্থক উপন্যাস কোনটি?",
+      "a": "আলালের ঘরের দুলাল",
+      "b": "দুর্গেশনন্দিনী",
+      "c": "বিষবৃক্ষ",
+      "d": "চখের বালি",
+      "exp": "১৮৬৫ সালে বঙ্কিমচন্দ্র চট্টোপাধ্যায় রচিত 'দুর্গেশনন্দিনী' বাংলা সাহিত্যের প্রথম সার্থক উপন্যাস।"
+    },
+    "en": {
+      "q": "Which is considered the first successful Bengali novel?",
+      "a": "Alaler Gharer Dulal",
+      "b": "Durgeshnondini",
+      "c": "Bishabriksha",
+      "d": "Chokher Bali",
+      "exp": "Bankim Chandra Chattopadhyay's 'Durgeshnondini' (1865) is widely regarded as the first major Bengali novel."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 187,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কাচের পাত্রে পারদ রাখলে তার উপরিভাগ কেমন আকৃতি নেয়?",
+      "a": "অবতল (Concave)",
+      "b": "উত্তল (Convex)",
+      "c": "সমতল (Flat)",
+      "d": "কোনোটিই নয়",
+      "exp": "পারদের সংশক্তি বল কাচের সাথে সংশক্তি বলের চেয়ে বেশি হওয়ায় কাচের পাত্রে পারদের তল উত্তল আকৃতির হয়।"
+    },
+    "en": {
+      "q": "What shape does the surface of mercury form in a glass tube?",
+      "a": "Concave",
+      "b": "Convex",
+      "c": "Flat",
+      "d": "None of these",
+      "exp": "Mercury forms a convex meniscus in glass because its cohesive forces exceed adhesive forces."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 188,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "পাই (π)-এর মান প্রায় কত ধরা হয়?",
+      "a": "৩.১৪",
+      "b": "২.১৪",
+      "c": "৪.১৪",
+      "d": "১.৪১",
+      "exp": "গণিতে পাই (π)-এর মান প্রায় ২২/৭ বা ৩.১৪১৫৯... হিসেবে ধরা হয়।"
+    },
+    "en": {
+      "q": "What is the approximate decimal value of Pi (π)?",
+      "a": "3.14",
+      "b": "2.14",
+      "c": "4.14",
+      "d": "1.41",
+      "exp": "Pi (π) is an irrational mathematical constant approximately equal to 3.14."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 189,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "নোবেল পুরস্কার কয়টি ক্ষেত্রে দেওয়া হয়?",
+      "a": "৫টি",
+      "b": "৬টি",
+      "c": "৭টি",
+      "d": "৪টি",
+      "exp": "পদার্থবিজ্ঞান, রসায়ন, চিকিৎসা, সাহিত্য, শান্তি এবং অর্থনীতি—এই ৬টি ক্ষেত্রে নোবেল পুরস্কার দেওয়া হয়।"
+    },
+    "en": {
+      "q": "In how many categories are Nobel Prizes awarded?",
+      "a": "5",
+      "b": "6",
+      "c": "7",
+      "d": "4",
+      "exp": "Nobel Prizes are awarded in 6 fields: Physics, Chemistry, Medicine, Literature, Peace, and Economics."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 190,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন মহাসাগরকে 'অন্ধকারাচ্ছন্ন মহাসাগর' বা গভীরতার কারণে 'Dark Ocean' বলা হয়ে থাকে?",
+      "a": "প্রশান্ত মহাসাগর",
+      "b": "আটলান্টিক মহাসাগর",
+      "c": "ভারত মহাসাগর",
+      "d": "উত্তর মহাসাগর",
+      "exp": "আটলান্টিক মহাসাগর প্রাচীনকাল থেকে বাণিজ্যের অন্যতম মূল পথ হলেও এর রহস্য ও গভীরতার জন্য প্রাচীন ভূগোলে বিশেষ পরিচিতি ছিল।"
+    },
+    "en": {
+      "q": "Which ocean is historical/geographically referred to as the S-shaped ocean?",
+      "a": "Pacific Ocean",
+      "b": "Atlantic Ocean",
+      "c": "Indian Ocean",
+      "d": "Arctic Ocean",
+      "exp": "The Atlantic Ocean is known for its distinct 'S' shape between the Americas, Europe, and Africa."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 191,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "পানিপথের প্রথম যুদ্ধ কত সালে অনুষ্ঠিত হয়েছিল?",
+      "a": "১৫২৬",
+      "b": "১৫৫৬",
+      "c": "১৭৬১",
+      "d": "১৫৩৯",
+      "exp": "১৫২৬ সালে বাবরের সাথে ইব্রাহিম লোদির পানিপথের প্রথম যুদ্ধ হয় এবং মুঘল বংশ প্রতিষ্ঠিত হয়।"
+    },
+    "en": {
+      "q": "In which year took place the First Battle of Panipat?",
+      "a": "1526",
+      "b": "1556",
+      "c": "1761",
+      "d": "1539",
+      "exp": "The First Battle of Panipat was fought on April 21, 1526, between Babur and Ibrahim Lodi."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 192,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "বায়ুমণ্ডলের কোন স্তরে বিমান বা এরোপ্লেন নিরাপদে চলাচল করে?",
+      "a": "ট্রোপোস্ফিয়ার",
+      "b": "স্ট্র্যাটোস্ফিয়ার",
+      "c": "মেসোস্ফিয়ার",
+      "d": "থার্মোস্ফিয়ার",
+      "exp": "স্ট্র্যাটোস্ফিয়ার স্তরে মেঘ, ঝড় বা বায়ুপ্রবাহ না থাকায় বিমান চলাচলের জন্য এটি আদর্শ।"
+    },
+    "en": {
+      "q": "In which atmospheric layer do commercial jet airplanes usually fly?",
+      "a": "Troposphere",
+      "b": "Stratosphere",
+      "c": "Mesosphere",
+      "d": "Thermosphere",
+      "exp": "Jet airplanes fly in the Stratosphere to avoid turbulence caused by weather in the troposphere."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 193,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "ডিএনএ (DNA)-এর দ্বিসূত্রক কাঠামো (Double Helix) কে আবিষ্কার করেন?",
+      "a": "রবার্ট হুক",
+      "b": "ওয়াটসন ও ক্রিক",
+      "c": "গ্রেগর জোহান মেন্ডেল",
+      "d": "লুই পাস্তুর",
+      "exp": "১৯৫৩ সালে জেমস ওয়াটসন এবং ফ্রান্সিস ক্রিক ডিএনএ-এর ডাবল হেলিক্স গঠন প্রকাশ করেন।"
+    },
+    "en": {
+      "q": "Who proposed the Double Helix structure of DNA?",
+      "a": "Robert Hooke",
+      "b": "Watson and Crick",
+      "c": "Gregor Mendel",
+      "d": "Louis Pasteur",
+      "exp": "James Watson and Francis Crick discovered the double-helix structure of DNA in 1953."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 194,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "ইন্টারনেটে ডাটা স্থানান্তরের জন্য ব্যবহৃত 'HTTP' এর পূর্ণরূপ কী?",
+      "a": "HyperText Transfer Protocol",
+      "b": "Hyper Text Technical Protocol",
+      "c": "High Transfer Text Protocol",
+      "d": "Hyper Transfer Text Path",
+      "exp": "HTTP এর পূর্ণরূপ হলো HyperText Transfer Protocol, যা ওয়েব ব্রাউজারে তথ্য আদান-প্রদান করে।"
+    },
+    "en": {
+      "q": "What is the full form of 'HTTP' in web browsing?",
+      "a": "HyperText Transfer Protocol",
+      "b": "Hyper Text Technical Protocol",
+      "c": "High Transfer Text Protocol",
+      "d": "Hyper Transfer Text Path",
+      "exp": "HTTP stands for HyperText Transfer Protocol, an application protocol for distributed media systems."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 195,
+    "subject": "history",
+    "level": "advanced",
+    "bn": {
+      "q": "ফ্রান্সের মহান বিপ্লব (French Revolution) কত সালে শুরু হয়েছিল?",
+      "a": "১৭৭৬",
+      "b": "১৭৮৯",
+      "c": "১৮১৫",
+      "d": "১৭৯৯",
+      "exp": "১৭৮৯ সালে বাস্সিল দুর্গের পতনের মাধ্যমে ফরাসি বিপ্লব সূচিত হয়।"
+    },
+    "en": {
+      "q": "In which year did the French Revolution begin?",
+      "a": "1776",
+      "b": "1789",
+      "c": "1815",
+      "d": "1799",
+      "exp": "The French Revolution began in 1789 with the storming of the Bastille."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 196,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "আয়তনের দিক থেকে ভারতের বৃহত্তম রাজ্য কোনটি?",
+      "a": "উত্তর প্রদেশ",
+      "b": "রাজস্থান",
+      "c": "মহারাষ্ট্র",
+      "d": "মধ্য প্রদেশ",
+      "exp": "রাজস্থান হলো ভারতের মোট ক্ষেত্রফলের বিচারে বৃহত্তম অঙ্গরাজ্য।"
+    },
+    "en": {
+      "q": "Which is the largest state in India by total geographical area?",
+      "a": "Uttar Pradesh",
+      "b": "Rajasthan",
+      "c": "Maharashtra",
+      "d": "Madhya Pradesh",
+      "exp": "Rajasthan is the largest Indian state by land area."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 197,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোনটি একটি নোবেল বা নিষ্ক্রিয় গ্যাস (Inert Gas)?",
+      "a": "অক্সিজেন",
+      "b": "হিলিয়াম",
+      "c": "হাইড্রোজেন",
+      "d": "নাইট্রোজেন",
+      "exp": "পর্যায় সারণীর ১৮ নম্বর গ্রুপের মৌল যেমন হিলিয়াম, নিয়ন, আর্গন ইত্যাদি হলো নিষ্ক্রিয় গ্যাস।"
+    },
+    "en": {
+      "q": "Which of the following is a noble/inert gas?",
+      "a": "Oxygen",
+      "b": "Helium",
+      "c": "Hydrogen",
+      "d": "Nitrogen",
+      "exp": "Helium belongs to Group 18 of the periodic table, containing non-reactive noble gases."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 198,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "রবীন্দ্রনাথ ঠাকুরের একমাত্র উপন্যাস কোনটি যা রাজপরিবারের কাহিনি নিয়ে রচিত?",
+      "a": "গোরা",
+      "b": "রাজর্ষি",
+      "c": "চোখের বালি",
+      "d": "যোগাযোগ",
+      "exp": "ত্রিপুরা রাজপরিবারের ইতিহাসকে অবলম্বন করে রবীন্দ্রনাথ 'রাজর্ষি' উপন্যাস রচনা করেন।"
+    },
+    "en": {
+      "q": "Which Tagore novel is based on the royal family history of Tripura?",
+      "a": "Gora",
+      "b": "Rajarshi",
+      "c": "Chokher Bali",
+      "d": "Jogajog",
+      "exp": "Tagore wrote 'Rajarshi' based on historical events of the royal kingdom of Tripura."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 199,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন ভিটামিনের অভাবে রক্ত তঞ্চন (Blood Clotting) ব্যাহত হয়?",
+      "a": "ভিটামিন A",
+      "b": "ভিটামিন K",
+      "c": "ভিটামিন C",
+      "d": "ভিটামিন D",
+      "exp": "ভিটামিন K রক্ত জমাট বাঁধতে প্রথ্রোম্বিন তৈরিতে মূল ভূমিকা পালন করে।"
+    },
+    "en": {
+      "q": "Deficiency of which vitamin impairs blood clotting?",
+      "a": "Vitamin A",
+      "b": "Vitamin K",
+      "c": "Vitamin C",
+      "d": "Vitamin D",
+      "exp": "Vitamin K is essential for synthesizing proteins required for blood coagulation."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 200,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "অলিম্পিক পতাকায় কয়টি বলয় বা রিং (Rings) থাকে?",
+      "a": "৪টি",
+      "b": "৫টি",
+      "c": "৬টি",
+      "d": "৭টি",
+      "exp": "অলিম্পিক পতাকায় ৫টি ভিন্ন রঙের রিং বিশ্বের ৫টি মহাদেশের সংহতির প্রতীক।"
+    },
+    "en": {
+      "q": "How many rings are there on the official Olympic flag?",
+      "a": "4",
+      "b": "5",
+      "c": "6",
+      "d": "7",
+      "exp": "The five interlocking rings represent the five inhabited continents of the world."
+    },
+    "correct": "b"
+  }
+]
+[
+  {
+    "id": 201,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন বলের কারণে মহাশূন্যে নভোচারীরা ওজনহীনতা অনুভব করেন?",
+      "a": "মহাকর্ষ বলের অভাব",
+      "b": "অভিকর্ষজ ত্বরণের অভাব (মুক্ত পতন)",
+      "c": "বায়ুমণ্ডলীয় চাপ",
+      "d": "ঘর্ষণ বল",
+      "exp": "নভোচারীরা পৃথিবীর চারদিকে মুক্তভাবে পতনের (Free Fall) অবস্থায় থাকেন বলে প্রতিক্রিয়া বল শূন্য হয় এবং ওজনহীনতা অনুভব করেন।"
+    },
+    "en": {
+      "q": "Why do astronauts experience weightlessness in space orbit?",
+      "a": "Lack of gravity",
+      "b": "State of free fall (Zero normal force)",
+      "c": "Atmospheric pressure",
+      "d": "Frictional force",
+      "exp": "Astronauts in orbit are in a continuous state of free fall, causing a reaction force of zero."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 202,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের কোন রাজ্যে 'লোকটাক হ্রদ' (Loktak Lake) অবস্থিত?",
+      "a": "অসাম",
+      "b": "মণিপুর",
+      "c": "মেঘালয়",
+      "d": "মিজোরাম",
+      "exp": "মণিপুরে অবস্থিত লোকটাক হ্রদ হলো উত্তর-পূর্ব ভারতের বৃহত্তম স্বাদু জলের হ্রদ, যা ভাসমান দ্বীপ বা 'ফুmdi'-র জন্য বিখ্যাত।"
+    },
+    "en": {
+      "q": "In which Indian state is the 'Loktak Lake' located?",
+      "a": "Assam",
+      "b": "Manipur",
+      "c": "Meghalaya",
+      "d": "Mizoram",
+      "exp": "Loktak Lake, famous for its floating phumdis, is located in Manipur."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 203,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "দ্বীন-ই- ইলাহি (Din-i-Ilahi) ধর্মমত কে প্রবর্তন করেন?",
+      "a": "বা বর",
+      "b": "আকবর",
+      "c": "শাহজাহান",
+      "d": "ঔরঙ্গজেব",
+      "exp": "১৫৮২ সালে মুঘল সম্রাট আকবর সর্বধর্ম সমন্বয়ের লক্ষ্যে 'দ্বীন-ই-ইলাহি' প্রবর্তন করেন।"
+    },
+    "en": {
+      "q": "Who introduced the religious syncretism concept 'Din-i-Ilahi'?",
+      "a": "Babur",
+      "b": "Akbar",
+      "c": "Shah Jahan",
+      "d": "Aurangzeb",
+      "exp": "Mughal Emperor Akbar introduced Din-i-Ilahi in 1582 AD."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 204,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন ভিটামিনের রাসায়নিক নাম 'অ্যাসকরবিক অ্যাসিড' (Ascorbic Acid)?",
+      "a": "ভিটামিন A",
+      "b": "ভিটামিন C",
+      "c": "ভিটামিন D",
+      "d": "ভিটামিন B12",
+      "exp": "ভিটামিন C-এর রাসায়নিক নাম হলো অ্যাসকরবিক অ্যাসিড।"
+    },
+    "en": {
+      "q": "What is the chemical name of Vitamin C?",
+      "a": "Vitamin A",
+      "b": "Ascorbic Acid",
+      "c": "Calciferol",
+      "d": "Tocopherol",
+      "exp": "Ascorbic acid is the chemical name for Vitamin C."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 205,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের প্রসেসরের গতি বাড়ানোর জন্য প্রসেসরের ভেতরেই থাকা অতি দ্রুত মেমোরি কোনটি?",
+      "a": "RAM",
+      "b": "Cache Memory",
+      "c": "ROM",
+      "d": "Virtual Memory",
+      "exp": "ক্যাশ মেমোরি (Cache Memory) প্রসেসর ও RAM-এর মাঝে কাজ করে দ্রুত ডাটা সরবরাহের জন্য।"
+    },
+    "en": {
+      "q": "Which extremely high-speed memory is built directly into or near the CPU?",
+      "a": "RAM",
+      "b": "Cache Memory",
+      "c": "ROM",
+      "d": "Virtual Memory",
+      "exp": "Cache memory acts as a high-speed buffer between the CPU and main memory."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 206,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "বাংলা উপন্যাস 'অরণ্যের অধিকার' কার রচনা?",
+      "a": "মহাশ্বেতা দেবী",
+      "b": "আশাপূর্ণা দেবী",
+      "c": "লীলা মজুমদার",
+      "d": "নবনীতা দেবসেন",
+      "exp": "বিরসা মুণ্ডার জীবন ও সাঁওতাল বিদ্রোহের পটভূমিতে মহাশ্বেতা দেবী এটি রচনা করেন।"
+    },
+    "en": {
+      "q": "Who wrote the famous Bengali novel 'Aranyer Adhikar'?",
+      "a": "Mahasweta Devi",
+      "b": "Ashapurna Devi",
+      "c": "Lila Majumdar",
+      "d": "Nabaneeta Dev Sen",
+      "exp": "Mahasweta Devi wrote 'Aranyer Adhikar', based on the life of Birsa Munda."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 207,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "নিউক্লিয়াসে কোনটি থাকে না?",
+      "a": "প্রোটন",
+      "b": "নিউট্রন",
+      "c": "ইলেকট্রন",
+      "d": "কোনোটিই নয়",
+      "exp": "পরমাণুর কেন্দ্রে নিউক্লিয়াসে প্রোটন ও নিউট্রন থাকে, আর ইলেকট্রনগুলো বাইরে ঘুরতে থাকে।"
+    },
+    "en": {
+      "q": "Which subatomic particle is NOT found inside the nucleus of an atom?",
+      "a": "Proton",
+      "b": "Neutron",
+      "c": "Electron",
+      "d": "None of these",
+      "exp": "Electrons orbit around the nucleus, whereas protons and neutrons reside inside it."
+    },
+    "correct": "c"
+  },
+  {
+    "id": 208,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "বৃত্তের পরিধি ও ব্যাসের অনুপাতকে কী বলা হয়?",
+      "a": "পাই (π)",
+      "b": "ব্যাসার্ধ",
+      "c": "জ্যা",
+      "d": "ক্ষেত্রফল",
+      "exp": "যেকোনো বৃত্তের পরিধিকে তার ব্যাস দিয়ে ভাগ করলে ধ্রুবক সংখ্যা 'পাই' (π) পাওয়া যায়।"
+    },
+    "en": {
+      "q": "The ratio of the circumference of a circle to its diameter is called?",
+      "a": "Pi (π)",
+      "b": "Radius",
+      "c": "Chord",
+      "d": "Area",
+      "exp": "Pi (π) is defined as the ratio of a circle's circumference to its diameter."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 209,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "আন্তর্জাতিক ন্যায়বিচার আদালত (ICJ) কোথায় অবস্থিত?",
+      "a": "নিউ ইয়র্ক",
+      "b": "হেগ (নেদারল্যান্ডস)",
+      "c": "জেনেভা",
+      "d": "প্যারিস",
+      "exp": "আন্তর্জাতিক বিচারালয় নেদারল্যান্ডসের দ্য হেগ শহরে অবস্থিত।"
+    },
+    "en": {
+      "q": "Where is the International Court of Justice (ICJ) headquartered?",
+      "a": "New York",
+      "b": "The Hague (Netherlands)",
+      "c": "Geneva",
+      "d": "Paris",
+      "exp": "The ICJ is located at the Peace Palace in The Hague, Netherlands."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 210,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন বায়ুমণ্ডলীয় স্তরে ওজোন স্তর (Ozone Layer) অবস্থান করে?",
+      "a": "ট্রোপোস্ফিয়ার",
+      "b": "স্ট্র্যাটোস্ফিয়ার",
+      "c": "মেসোস্ফিয়ার",
+      "d": "থার্মোস্ফিয়ার",
+      "exp": "স্ট্র্যাটোস্ফিয়ারে ওজোন গ্যাসের পাতলা আস্তরণ সূর্যরশ্মির ক্ষতিকর অতিবেগুনি রশ্মি শোষণ করে।"
+    },
+    "en": {
+      "q": "In which atmospheric layer is the Ozone Layer located?",
+      "a": "Troposphere",
+      "b": "Stratosphere",
+      "c": "Mesosphere",
+      "d": "Thermosphere",
+      "exp": "The ozone layer is located in the lower region of the Stratosphere."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 211,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "প্রাচীন ভারতের চিকিৎসাবিজ্ঞানের জনক কাকে বলা হয়?",
+      "a": "চরক",
+      "b": "সুশ্রুত",
+      "c": "ধনবন্তরী",
+      "d": "জীবক",
+      "exp": "মহর্ষি চরক প্রাচীন ভারতে আয়ুর্বেদ চিকিৎসাশাস্ত্র ও 'চরক সংহিতা' রচনার জন্য খ্যাত।"
+    },
+    "en": {
+      "q": "Who is known as the 'Father of Ancient Indian Medicine'?",
+      "a": "Charaka",
+      "b": "Sushruta",
+      "c": "Dhanvantari",
+      "d": "Jivaka",
+      "exp": "Charaka was one of the principal contributors to Ayurveda and wrote Charaka Samhita."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 212,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "শব্দের তীব্রতা (Sound Intensity) পরিমাপের একক কী?",
+      "a": "হার্টজ",
+      "b": "ডেসিবেল (dB)",
+      "c": "পাসকাল",
+      "d": "জুল",
+      "exp": "শব্দের প্রাবল্য বা উচ্চতা প্রকাশ করতে ডেসিবেল স্কেল ব্যবহার করা হয়।"
+    },
+    "en": {
+      "q": "What is the unit used to measure the intensity of sound?",
+      "a": "Hertz",
+      "b": "Decibel (dB)",
+      "c": "Pascal",
+      "d": "Joule",
+      "exp": "The decibel (dB) is a logarithmic unit used to measure sound intensity level."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 213,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানবদেহে অগ্ন্যাশয় (Pancreas) থেকে নিঃসৃত কোন হরমোন শর্করা বা গ্লুকোজ নিয়ন্ত্রণ করে?",
+      "a": "অ্যাড্রেনালিন",
+      "b": "ইনসুলিন",
+      "c": "থাইরক্সিন",
+      "d": "ইস্টোজেন",
+      "exp": "অগ্ন্যাশয়ের বিটা কোষ থেকে ইনসুলিন নিঃসৃত হয় যা রক্তের গ্লুকোজের মাত্রা কমায়।"
+    },
+    "en": {
+      "q": "Which hormone secreted by the pancreas regulates blood glucose levels?",
+      "a": "Adrenaline",
+      "b": "Insulin",
+      "c": "Thyroxine",
+      "d": "Estrogen",
+      "exp": "Insulin is secreted by the beta cells of the pancreas to regulate blood sugar levels."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 214,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটার নেটওয়ার্কে 'IP' এর পূর্ণরূপ কী?",
+      "a": "Internet Path",
+      "b": "Internet Protocol",
+      "c": "Internal Process",
+      "d": "Information Provider",
+      "exp": "IP কথাটির অর্থ হলো Internet Protocol, যা ডিভাইসের নির্দিষ্ট পরিচয় নির্দেশ করে।"
+    },
+    "en": {
+      "q": "What does 'IP' stand for in computer networking?",
+      "a": "Internet Path",
+      "b": "Internet Protocol",
+      "c": "Internal Process",
+      "d": "Information Provider",
+      "exp": "IP stands for Internet Protocol, which routes data across computer networks."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 215,
+    "subject": "history",
+    "level": "advanced",
+    "bn": {
+      "q": "ফরাসি ইস্ট ইন্ডিয়া কোম্পানি কত সালে প্রতিষ্ঠিত হয়েছিল?",
+      "a": "১৬০০",
+      "b": "১৬৬৪",
+      "c": "১৬০২",
+      "d": "১৬৯৮",
+      "exp": "১৬৬৪ সালে জঁ-ব্যাপটিস্ট কলবার্টের উদ্যোগে ফরাসি ইস্ট ইন্ডিয়া কোম্পানি গঠিত হয়।"
+    },
+    "en": {
+      "q": "In which year was the French East India Company founded?",
+      "a": "1600",
+      "b": "1664",
+      "c": "1602",
+      "d": "1698",
+      "exp": "The French East India Company was established in 1664 to trade in the Eastern Hemisphere."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 216,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের কোন রাজ্যে সূর্য প্রথম উদিত হয়?",
+      "a": "অসাম",
+      "b": "অরুণাচল প্রদেশ",
+      "c": "সিকিম",
+      "d": "নাগাল্যান্ড",
+      "exp": "ভারতের সর্বপূর্বে অবস্থিত অরুণাচল প্রদেশের 'দং' গ্রামে সবচেয়ে আগে সূর্যোদয় ঘটে।"
+    },
+    "en": {
+      "q": "In which state of India does the Sun rise first?",
+      "a": "Assam",
+      "b": "Arunachal Pradesh",
+      "c": "Sikkim",
+      "d": "Nagaland",
+      "exp": "Arunachal Pradesh, being India's easternmost state, witnesses the earliest sunrise."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 217,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সূর্যের ভেতরে শক্তির প্রধান উৎস কোনটি?",
+      "a": "নিউক্লীয় বিভাজন (Fission)",
+      "b": "নিউক্লীয় সংযোজন (Fusion)",
+      "c": "রাসায়নিক দহন",
+      "d": "তেজস্ক্রিয় ক্ষয়",
+      "exp": "সূর্যে হাইড্রোজেন পরমাণুগুলো যুক্ত হয়ে হিলিয়াম তৈরির মাধ্যমে (নিউক্লীয় সংযোজন) বিপুল শক্তি উৎপন্ন হয়।"
+    },
+    "en": {
+      "q": "What is the primary source of energy inside the Sun?",
+      "a": "Nuclear Fission",
+      "b": "Nuclear Fusion",
+      "c": "Chemical Combustion",
+      "d": "Radioactive Decay",
+      "exp": "Nuclear Fusion, where hydrogen atoms fuse into helium, powers the Sun."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 218,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'শ্রীকান্ত' উপন্যাসটি কার রচনা?",
+      "a": "রবীন্দ্রনাথ ঠাকুর",
+      "b": "শরৎচন্দ্র চট্টোপাধ্যায়",
+      "c": "বঙ্কিমচন্দ্র চট্টোপাধ্যায়",
+      "d": "তপন সিংহ",
+      "exp": "শরৎচন্দ্র চট্টোপাধ্যায়ের চার খণ্ডে রচিত আত্মজৈবনিক উপন্যাস হলো 'শ্রীকান্ত'।"
+    },
+    "en": {
+      "q": "Who is the author of the Bengali novel 'Srikanta'?",
+      "a": "Rabindranath Tagore",
+      "b": "Sharat Chandra Chattopadhyay",
+      "c": "Bankim Chandra Chattopadhyay",
+      "d": "Tapan Sinha",
+      "exp": "Sharat Chandra Chattopadhyay wrote the four-part episodic novel 'Srikanta'."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 219,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "উদ্ভিদদেহে জল ও খনিজ লবণ পরিবহনের জন্য দায়ী কলা (Tissue) কোনটি?",
+      "a": "ফ্লোয়েম",
+      "b": "জাইলেম",
+      "c": "প্যারেনকাইমা",
+      "d": "ক্লেরেনকাইমা",
+      "exp": "জাইলেম কলার মাধ্যমে মূল থেকে পাতায় জল ও খনিজ লবণ পরিবাহিত হয়।"
+    },
+    "en": {
+      "q": "Which plant tissue transports water and minerals from roots to leaves?",
+      "a": "Phloem",
+      "b": "Xylem",
+      "c": "Parenchyma",
+      "d": "Sclerenchyma",
+      "exp": "Xylem tissue is responsible for transporting water and dissolved nutrients upward."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 220,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "বিশ্ব স্বাস্থ্য সংস্থার (WHO) সদর দপ্তর কোথায় অবস্থিত?",
+      "a": "নিউ ইয়র্ক",
+      "b": "জেনেভা (সুইজারল্যান্ড)",
+      "c": "প্যারিস",
+      "d": "লন্ডন",
+      "exp": "ডব্লিউএইচও (WHO)-এর সদর দপ্তর সুইজারল্যান্ডের জেনেভা শহরে অবস্থিত।"
+    },
+    "en": {
+      "q": "Where is the headquarters of the World Health Organization (WHO)?",
+      "a": "New York",
+      "b": "Geneva (Switzerland)",
+      "c": "Paris",
+      "d": "London",
+      "exp": "The World Health Organization (WHO) is headquartered in Geneva, Switzerland."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 221,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন যন্ত্রের সাহায্যে বায়ুর আর্দ্রতা (Humidity) পরিমাপ করা হয়?",
+      "a": "ব্যারোমিটার",
+      "b": "হাইগ্রোমিটার",
+      "c": "হাইড্রমিটার",
+      "d": "অ্যানিমোমিটার",
+      "exp": "বায়ুমণ্ডলের জলীয় বাষ্পের পরিমাণ বা আর্দ্রতা মাপতে হাইগ্রোমিটার ব্যবহার করা হয়।"
+    },
+    "en": {
+      "q": "Which instrument is used to measure atmospheric humidity?",
+      "a": "Barometer",
+      "b": "Hygrometer",
+      "c": "Hydrometer",
+      "d": "Anemometer",
+      "exp": "A hygrometer is an instrument used to measure relative humidity."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 222,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন প্রণালী ভারত ও শ্রীলঙ্কাকে পৃথক করেছে?",
+      "a": "মালাক্কা প্রণালী",
+      "b": "পাক প্রণালী (Palk Strait)",
+      "c": "জিব্রাল্টার প্রণালী",
+      "d": "বেরিং প্রণালী",
+      "exp": "পাক প্রণালী ভারত মহাসাগর সংলগ্ন বঙ্গোপসাগর অঞ্চলে ভারত ও শ্রীলঙ্কাকে পৃথক করেছে।"
+    },
+    "en": {
+      "q": "Which strait separates India from Sri Lanka?",
+      "a": "Strait of Malacca",
+      "b": "Palk Strait",
+      "c": "Strait of Gibraltar",
+      "d": "Bering Strait",
+      "exp": "The Palk Strait lies between Tamil Nadu state in India and Northern Province of Sri Lanka."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 223,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "১৯০৫ সালে 'বঙ্গভঙ্গ' কার শাসনকালে ঘোষিত হয়েছিল?",
+      "a": "লর্ড রিপন",
+      "b": "লর্ড কার্জন",
+      "c": "লর্ড ডালহৌসি",
+      "d": "লর্ড ক্যানিং",
+      "exp": "১৯০৫ সালে লর্ড কার্জন প্রশাসনিক অজুহাতে বাংলা ভাগ বা বঙ্গভঙ্গ ঘোষণা করেন।"
+    },
+    "en": {
+      "q": "Under whose viceroyalty was the Partition of Bengal declared in 1905?",
+      "a": "Lord Ripon",
+      "b": "Lord Curzon",
+      "c": "Lord Dalhousie",
+      "d": "Lord Canning",
+      "exp": "Lord Curzon announced the Partition of Bengal in July 1905."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 224,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "কোনটি একটি প্রোটিন পরিপাককারী এনজাইম (Enzyme)?",
+      "a": "অ্যামাইলেজ",
+      "b": "পেপসিন",
+      "c": "লাইপেজ",
+      "d": "মাল্টেজ",
+      "exp": "পাকস্থলীতে ক্ষরিত পেপসিন প্রোটিনকে ভেঙ্গে পেপটনে পরিণত করে।"
+    },
+    "en": {
+      "q": "Which enzyme breaks down proteins into peptides in the stomach?",
+      "a": "Amylase",
+      "b": "Pepsin",
+      "c": "Lipase",
+      "d": "Maltase",
+      "exp": "Pepsin is an endopeptidase that breaks down proteins into smaller peptides."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 225,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারে ব্যবহৃত 'PDF' এর পূর্ণরূপ কী?",
+      "a": "Print Document Format",
+      "b": "Portable Document Format",
+      "c": "Program Data File",
+      "d": "Public Document File",
+      "exp": "PDF কথাটির পুরো নাম Portable Document Format।"
+    },
+    "en": {
+      "q": "What does 'PDF' stand for in computer file formats?",
+      "a": "Print Document Format",
+      "b": "Portable Document Format",
+      "c": "Program Data File",
+      "d": "Public Document File",
+      "exp": "PDF stands for Portable Document Format developed by Adobe."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 226,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'আরণ্যক' উপন্যাসটির লেখক কে?",
+      "a": "বিভূতিভূষণ বন্দ্যোপাধ্যায়",
+      "b": "তারাশঙ্কর বন্দ্যোপাধ্যায়",
+      "c": "মানিক বন্দ্যোপাধ্যায়",
+      "d": "শরদিন্দু বন্দ্যোপাধ্যায়",
+      "exp": "বিহারের বনাঞ্চলের প্রাকৃতিক পরিবেশ ও মানুষের জীবন নিয়ে বিভূতিভূষণ এটি লেখেন।"
+    },
+    "en": {
+      "q": "Who wrote the classic novel 'Aranyak'?",
+      "a": "Bibhutibhushan Bandyopadhyay",
+      "b": "Tarashankar Bandyopadhyay",
+      "c": "Manik Bandyopadhyay",
+      "d": "Sharadindu Bandyopadhyay",
+      "exp": "Bibhutibhushan Bandyopadhyay wrote 'Aranyak' based on his experiences in Bihar forests."
+    },
+    "correct": "a"
+  },
+  {
+    "id": 227,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "শব্দ কোন ধরনের তরঙ্গ (Wave)?",
+      "a": "তড়িৎ-চৌম্বকীয় তরঙ্গ",
+      "b": "অনুদৈর্ঘ্য যান্ত্রিক তরঙ্গ (Longitudinal Wave)",
+      "c": "অনুপ্ৰস্থ তরঙ্গ",
+      "d": "কোনোটিই নয়",
+      "exp": "শব্দ তরঙ্গ চলাচলের সময় মাধ্যমের কণাগুলো কম্পনের অভিমুখে সংকুচিত ও প্রসারিত হয়।"
+    },
+    "en": {
+      "q": "Sound wave is an example of which type of wave?",
+      "a": "Electromagnetic Wave",
+      "b": "Longitudinal Mechanical Wave",
+      "c": "Transverse Wave",
+      "d": "None of these",
+      "exp": "Sound waves require a medium and travel as longitudinal mechanical waves."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 228,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "যে ত্রিভুজের তিনটি বাহুর দৈর্ঘ্যই সমান, তাকে কী ত্রিভুজ বলা হয়?",
+      "a": "সমদ্বিবাহু ত্রিভুজ",
+      "b": "সমবাহু ত্রিভুজ",
+      "c": "বিষমবাহু ত্রিভুজ",
+      "d": "সমকোণী ত্রিভুজ",
+      "exp": "যে ত্রিভুজের ৩টি বাহু সমান তাকে সমবাহু ত্রিভুজ বলে এবং এর প্রতিটি কোণ ৬০°।"
+    },
+    "en": {
+      "q": "A triangle with all three sides of equal length is called an?",
+      "a": "Isosceles Triangle",
+      "b": "Equilateral Triangle",
+      "c": "Scalene Triangle",
+      "d": "Right-Angled Triangle",
+      "exp": "An Equilateral Triangle has all three sides and interior angles equal (60° each)."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 229,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "ভারতের কেন্দ্রীয় ব্যাংক কোনটি?",
+      "a": "State Bank of India (SBI)",
+      "b": "Reserve Bank of India (RBI)",
+      "c": "Punjab National Bank (PNB)",
+      "d": "Union Bank of India",
+      "exp": "১৯৩৫ সালে প্রতিষ্ঠিত রিজার্ভ ব্যাংক অব ইন্ডিয়া (RBI) ভারতের আর্থিক ব্যবস্থা নিয়ন্ত্রণ করে।"
+    },
+    "en": {
+      "q": "Which is the central banking institution of India?",
+      "a": "State Bank of India (SBI)",
+      "b": "Reserve Bank of India (RBI)",
+      "c": "Punjab National Bank (PNB)",
+      "d": "Union Bank of India",
+      "exp": "The Reserve Bank of India (RBI) controls the monetary policy of the Indian rupee."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 230,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন শৈলশিরা বা পর্বতশ্রেণীকে 'ভারতের রুড়' বা 'খনিজ ভাণ্ডার' বলা হয়?",
+      "a": "ডেকান ট্র্যাপ",
+      "b": "ছোটনাগপুর মালভূমি",
+      "c": "পশ্চিমঘাট পর্বতমালা",
+      "d": "আরাবল্লী পর্বত",
+      "exp": "প্রচুর পরিমাণে কয়লা, আকরিক লোহা ইত্যাদি খনিজ মেলায় ছোটনাগপুর মালভূমিকে ভারতের রুড় বলা হয়।"
+    },
+    "en": {
+      "q": "Which region is known as the 'Mineral Storehouse of India'?",
+      "a": "Deccan Trap",
+      "b": "Chota Nagpur Plateau",
+      "c": "Western Ghats",
+      "d": "Aravalli Range",
+      "exp": "Chota Nagpur Plateau is rich in mineral resources like coal, iron ore, and mica."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 231,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "আজাদ হিন্দ ফৌজ (Azad Hind Fauj) পুনর্গঠনে প্রধান ভূমিকা কার ছিল?",
+      "a": "রাসবিহারী বসু",
+      "b": "নেতাজি সুভাষচন্দ্র বসু",
+      "c": "ক্যাপ্টেন মোহন সিং",
+      "d": "লালা লাজপত রায়",
+      "exp": "সিংগাপুরে পৌঁছানোর পর নেতাজি সুভাষচন্দ্র বসু আজাদ হিন্দ ফৌজের কমান্ড গ্রহণ ও সর্বোচ্চ নেতৃত্ব দেন।"
+    },
+    "en": {
+      "q": "Who led and revitalized the Indian National Army (Azad Hind Fauj) in Singapore?",
+      "a": "Rash Behari Bose",
+      "b": "Netaji Subhash Chandra Bose",
+      "c": "Captain Mohan Singh",
+      "d": "Lala Lajpat Rai",
+      "exp": "Netaji Subhash Chandra Bose assumed leadership of the Azad Hind Fauj in 1943."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 232,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "হীরক (Diamond) কিসের একটি রূপভেদ?",
+      "a": "সালফার",
+      "b": "কার্বন",
+      "c": "ফসফরাস",
+      "d": "সিলিকন",
+      "exp": "হীরক ও গ্রাফাইট হলো কার্বনের দুটি ভিন্ন বহুরূপ বা রূপভেদ (Allotropes)।"
+    },
+    "en": {
+      "q": "Diamond is an allotrope of which element?",
+      "a": "Sulfur",
+      "b": "Carbon",
+      "c": "Phosphorus",
+      "d": "Silicon",
+      "exp": "Diamond is a solid form of pure carbon with its atoms arranged in a crystal structure."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 233,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানুষের মস্তিষ্কের সবচেয়ে বড় অংশ কোনটি?",
+      "a": "সেরিবেলাম",
+      "b": "সেরিব্রাম (Cerebrum)",
+      "c": "মেডুলা অবলংগাটা",
+      "d": "পনস",
+      "exp": "গুরুমস্তিষ্ক বা সেরিব্রাম হলো মানব মস্তিষ্কের সর্ববৃহৎ অংশ যা চিন্তা ও স্মৃতি নিয়ন্ত্রণ করে।"
+    },
+    "en": {
+      "q": "Which is the largest part of the human brain?",
+      "a": "Cerebellum",
+      "b": "Cerebrum",
+      "c": "Medulla Oblongata",
+      "d": "Pons",
+      "exp": "The Cerebrum makes up the largest part of the brain and controls higher cognitive functions."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 234,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটার ডেটা পরিমাপের সবচেয়ে ক্ষুদ্রতম একক কোনটি?",
+      "a": "Byte",
+      "b": "Bit",
+      "c": "Nibble",
+      "d": "Kilobyte",
+      "exp": "বাইনারি ডিজিটের সংক্ষিপ্ত রূপ 'Bit' (0 বা 1) হলো ডেটার সর্বনিম্ন একক।"
+    },
+    "en": {
+      "q": "What is the smallest unit of data in a computer system?",
+      "a": "Byte",
+      "b": "Bit",
+      "c": "Nibble",
+      "d": "Kilobyte",
+      "exp": "A Bit (binary digit) is the most basic and smallest unit of data in computing."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 235,
+    "subject": "history",
+    "level": "advanced",
+    "bn": {
+      "q": "ভারতের সংবিধান সভার (Constituent Assembly) স্থায়ী সভাপতি কে ছিলেন?",
+      "a": "ড. বি. আর. আম্বেদকর",
+      "b": "ড. রাজেন্দ্র প্রসাদ",
+      "c": "জওহরলাল নেহরু",
+      "d": "ড. সচ্চিদানন্দ সিনহা",
+      "exp": "১৯৪৬ সালের ১১ই ডিসেম্বর ড. রাজেন্দ্র প্রসাদ গণপরিষদের স্থায়ী সভাপতি নির্বাচিত হন।"
+    },
+    "en": {
+      "q": "Who was the permanent President of the Constituent Assembly of India?",
+      "a": "Dr. B. R. Ambedkar",
+      "b": "Dr. Rajendra Prasad",
+      "c": "Jawaharlal Nehru",
+      "d": "Dr. Sachchidananda Sinha",
+      "exp": "Dr. Rajendra Prasad was elected as the permanent President of the Constituent Assembly."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 236,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন জলবায়ু অঞ্চলকে 'পৃথিবীর ফলের ঝুড়ি' বলা হয়?",
+      "a": "নিরক্ষীয় জলবায়ু",
+      "b": "ভূমধ্যসাগরীয় জলবায়ু",
+      "c": "মৌসুমী জলবায়ু",
+      "d": "তুন্দ্রা জলবায়ু",
+      "exp": "প্রচুর পরিমাণে লেবুজাতীয় ও রসালো ফল উৎপাদিত হওয়ায় ভূমধ্যসাগরীয় অঞ্চলকে পৃথিবীর ফলের ঝুড়ি বলে।"
+    },
+    "en": {
+      "q": "Which climate region is known as the 'Orchard of the World'?",
+      "a": "Equatorial Region",
+      "b": "Mediterranean Region",
+      "c": "Monsoon Region",
+      "d": "Tundra Region",
+      "exp": "The Mediterranean region is famous for citrus fruit orchards, earning this title."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 237,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "শব্দোত্তর তরঙ্গ (Ultrasonic Sound) কার দ্বারা ব্যবহৃত হয়?",
+      "a": "বাদুড়",
+      "b": "কুকুর",
+      "c": "ডলফিন",
+      "d": "সবকটিই সঠিক",
+      "exp": "বাদুড় ও ডলফিন উভয়ই শিকার বা দিক নির্ধারণের জন্য ২০,০০০ হার্টজের বেশি কম্পাঙ্কের আল্ট্রাসনিক শব্দ ব্যবহার করে।"
+    },
+    "en": {
+      "q": "Which animal uses Ultrasonic Waves for navigation and hunting?",
+      "a": "Bat",
+      "b": "Dog",
+      "c": "Dolphin",
+      "d": "All of the above",
+      "exp": "Bats and dolphins use echolocation via ultrasonic sound frequencies to locate objects."
+    },
+    "correct": "d"
+  },
+  {
+    "id": 238,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'বুলবুলি' ও 'ধুমকেতু' পত্রিকা দুটির সম্পাদক কে ছিলেন?",
+      "a": "রবীন্দ্রনাথ ঠাকুর",
+      "b": "কাজী নজরুল ইসলাম",
+      "c": "শরৎচন্দ্র চট্টোপাধ্যায়",
+      "d": "সুকান্ত ভট্টাচার্য",
+      "exp": "বিদ্রোহী কবি কাজী নজরুল ইসলাম ১৯২২ সালে 'ধূমকেতু' পত্রিকা প্রকাশ করেন।"
+    },
+    "en": {
+      "q": "Who was the editor of the revolutionary Bengali magazine 'Dhumketu'?",
+      "a": "Rabindranath Tagore",
+      "b": "Kazi Nazrul Islam",
+      "c": "Sharat Chandra Chattopadhyay",
+      "d": "Sukanta Bhattacharya",
+      "exp": "National Poet Kazi Nazrul Islam started editing the semi-weekly journal 'Dhumketu' in 1922."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 239,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "মানুষের রক্তে অক্সিজেন পরিবহনের প্রধান কাজ কে করে?",
+      "a": "শ্বেত রক্তকণিকা",
+      "b": "লোহিত রক্তকণিকা (RBC)",
+      "c": "অনুচক্রিকা",
+      "d": "প্লাজমা",
+      "exp": "লোহিত রক্তকণিকার হিমোগ্লোবিন ফুসফুস থেকে টিস্যুতে অক্সিজেন বহন করে নিয়ে যায়।"
+    },
+    "en": {
+      "q": "Which component of blood carries oxygen throughout the body?",
+      "a": "White Blood Cells",
+      "b": "Red Blood Cells (RBC)",
+      "c": "Platelets",
+      "d": "Plasma",
+      "exp": "Red blood cells contain hemoglobin, which binds and transports oxygen."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 240,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "অর্থনীতির জনক (Father of Economics) কাকে বলা হয়?",
+      "a": "কার্ল মার্ক্স",
+      "b": "অ্যাডাম স্মিথ",
+      "c": "জন মেনার্ড কেইনস",
+      "d": "অ্যালফ্রেড মার্শাল",
+      "exp": "১৭৭৬ সালে 'The Wealth of Nations' গ্রন্থটি রচনার মাধ্যমে অ্যাডাম স্মিথ আধুনিক অর্থনীতির ভিত্তি স্থাপন করেন।"
+    },
+    "en": {
+      "q": "Who is universally regarded as the 'Father of Economics'?",
+      "a": "Karl Marx",
+      "b": "Adam Smith",
+      "c": "John Maynard Keynes",
+      "d": "Alfred Marshall",
+      "exp": "Adam Smith is considered the father of modern economics for his work 'The Wealth of Nations'."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 241,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "কোনটি একটি ভৌত পরিবর্তন (Physical Change)-এর উদাহরণ?",
+      "a": "লোহায় মরিচা ধরা",
+      "b": "বরফ গলে জল হওয়া",
+      "c": "দুধ জমে দই হওয়া",
+      "d": "কাগজ পোড়ানো",
+      "exp": "বরফ গলে জল হলে এর অভ্যন্তরীণ রাসায়নিক উপাদানের কোনো পরিবর্তন হয় না, কেবল অবস্থার পরিবর্তন ঘটে।"
+    },
+    "en": {
+      "q": "Which of the following is an example of a physical change?",
+      "a": "Rusting of iron",
+      "b": "Melting of ice into water",
+      "c": "Souring of milk",
+      "d": "Burning of paper",
+      "exp": "Melting ice changes its state of matter without changing its underlying chemical composition."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 242,
+    "subject": "geography",
+    "level": "secondary",
+    "bn": {
+      "q": "কোন প্রণালী উত্তর আমেরিকা মহাদেশকে দক্ষিণ আমেরিকা মহাদেশের থেকে পৃথক করেছে?",
+      "a": "সুয়েজ খাল",
+      "b": "পানামা যোজক (Panama Canal)",
+      "c": "জিব্রাল্টার",
+      "d": "বেরিং",
+      "exp": "পানামা যোজক উত্তর ও দক্ষিণ আমেরিকা মহাদেশ দুটিকে বিভক্ত করেছে।"
+    },
+    "en": {
+      "q": "Which canal or isthmus separates North America from South America?",
+      "a": "Suez Canal",
+      "b": "Panama Canal / Isthmus",
+      "c": "Gibraltar",
+      "d": "Bering",
+      "exp": "The Isthmus of Panama links the two continents and the Panama Canal cuts across it."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 243,
+    "subject": "history",
+    "level": "secondary",
+    "bn": {
+      "q": "'ভারতের রক্ষাকর্তা' কাকে বলা হয়?",
+      "a": "সমুদ্রগুপ্ত",
+      "b": "স্কন্দগুপ্ত",
+      "c": "দ্বিতীয় চন্দ্রগুপ্ত",
+      "d": "কণিষ্ক",
+      "exp": "হূণ আক্রমণ প্রতিহত করে ভারতকে ধ্বংসের হাত থেকে রক্ষা করায় স্কন্দগুপ্তকে ভারতের রক্ষাকর্তা বলা হয়।"
+    },
+    "en": {
+      "q": "Which ruler is known as the 'Savior of India'?",
+      "a": "Samudragupta",
+      "b": "Skandagupta",
+      "c": "Chandragupta II",
+      "d": "Kanishka",
+      "exp": "Skandagupta is called the Savior of India for successfully repelling the ferocious Huna invasions."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 244,
+    "subject": "biology",
+    "level": "secondary",
+    "bn": {
+      "q": "পেনিসিলিন ওষুধটি কোন অণুজীব থেকে তৈরি করা হয়?",
+      "a": "ব্যাকটেরিয়া",
+      "b": "ছত্রাক (Fungus)",
+      "c": "ভাইরাস",
+      "d": "শেওলা",
+      "exp": "পেনিসিলিন হলো পেনিসিলিয়াম নোটেটাম নামক ছত্রাক থেকে তৈরি একটি জীবন রক্ষাকারী অ্যান্টিবায়োটিক।"
+    },
+    "en": {
+      "q": "Penicillin is derived from which type of microorganism?",
+      "a": "Bacteria",
+      "b": "Fungus",
+      "c": "Virus",
+      "d": "Algae",
+      "exp": "Penicillin is produced from Penicillium fungi."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 245,
+    "subject": "tech",
+    "level": "secondary",
+    "bn": {
+      "q": "কম্পিউটারের প্রধান মেমোরি (Primary Memory) কোনটি?",
+      "a": "Hard Disk",
+      "b": "RAM",
+      "c": "Pen Drive",
+      "d": "DVD",
+      "exp": "RAM (Random Access Memory) হলো কম্পিউটারের মূল মেমোরি যা প্রসেসর সরাসরি ব্যবহার করে।"
+    },
+    "en": {
+      "q": "Which of the following serves as the primary memory of a computer?",
+      "a": "Hard Disk",
+      "b": "RAM",
+      "c": "Pen Drive",
+      "d": "DVD",
+      "exp": "RAM (Random Access Memory) is the primary volatile memory accessed directly by the CPU."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 246,
+    "subject": "literature",
+    "level": "secondary",
+    "bn": {
+      "q": "'হাঁসুলি বাঁকের উপকথা' উপন্যাসটি কার রচনা?",
+      "a": "বিভূতিভূষণ বন্দ্যোপাধ্যায়",
+      "b": "তারাশঙ্কর বন্দ্যোপাধ্যায়",
+      "c": "মানিক বন্দ্যোপাধ্যায়",
+      "d": "বনফুল",
+      "exp": "কোপাই নদীর বাঁকে রাঢ় অঞ্চলের বাউড়ি ও কাহার সম্প্রদায়ের জীবন নিয়ে তারাশঙ্কর এটি লেখেন।"
+    },
+    "en": {
+      "q": "Who wrote the acclaimed novel 'Hansuli Banker Upakatha'?",
+      "a": "Bibhutibhushan Bandyopadhyay",
+      "b": "Tarashankar Bandyopadhyay",
+      "c": "Manik Bandyopadhyay",
+      "d": "Banaphul",
+      "exp": "Tarashankar Bandyopadhyay authored 'Hansuli Banker Upakatha'."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 247,
+    "subject": "science",
+    "level": "secondary",
+    "bn": {
+      "q": "সূর্যের আলোতে কোন ভিটামিন সংশ্লেষিত হয়?",
+      "a": "ভিটামিন A",
+      "b": "ভিটামিন D",
+      "c": "ভিটামিন E",
+      "d": "ভিটামিন K",
+      "exp": "সূর্যের অতিবেগুনি রশ্মির উপস্থিতিতে মানুষের ত্বকে ভিটামিন D তৈরি হয়।"
+    },
+    "en": {
+      "q": "Which vitamin is synthesized in human skin upon exposure to sunlight?",
+      "a": "Vitamin A",
+      "b": "Vitamin D",
+      "c": "Vitamin E",
+      "d": "Vitamin K",
+      "exp": "Sunlight exposure triggers Vitamin D synthesis in human skin cells."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 248,
+    "subject": "math",
+    "level": "junior",
+    "bn": {
+      "q": "দুটি সংখ্যার গসাগু ১ হলে, সংখ্যা দুটিকে কী বলা হয়?",
+      "a": "মৌলিক সংখ্যা",
+      "b": "পারস্পরিক সহ-মৌলিক (Co-prime)",
+      "c": "জটিল সংখ্যা",
+      "d": "যৌগিক সংখ্যা",
+      "exp": "দুটি সংখ্যার সাধারণ গুণনীয়ক ১ ছাড়া অন্য কিছু না থাকলে তাদেরকে পরস্পর সহ-মৌলিক বলে।"
+    },
+    "en": {
+      "q": "If the Highest Common Factor (HCF) of two numbers is 1, they are called?",
+      "a": "Prime Numbers",
+      "b": "Co-prime Numbers",
+      "c": "Complex Numbers",
+      "d": "Composite Numbers",
+      "exp": "Two numbers are co-prime if they share no common positive factors other than 1."
+    },
+    "correct": "b"
+  },
+  {
+    "id": 250,
+    "subject": "general",
+    "level": "secondary",
+    "bn": {
+      "q": "আন্তর্জাতিক নারী দিবস (International Women's Day) কবে উদযাপিত হয়?",
+      "a": "৮ই মার্চ",
+      "b": "১লা মে",
+      "c": "১০ই ডিসেম্বর",
+      "d": "৫ই সেপ্টেম্বর",
+      "exp": "নারীদের সামাজিক ও অর্থনৈতিক অধিকার প্রতিষ্ঠার স্মরণে প্রতি বছর ৮ই মার্চ আন্তর্জাতিক নারী দিবস পালিত হয়।"
+    },
+    "en": {
+      "q": "When is International Women's Day observed annually?",
+      "a": "8th March",
+      "b": "1st May",
+      "c": "10th December",
+      "d": "5th September",
+      "exp": "International Women's Day is celebrated every year on March 8."
+    },
+    "correct": "a"
+  }
+]

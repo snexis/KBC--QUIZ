@@ -640,11 +640,26 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Auto load JSON and initialize on window load
+// Auto load JSON and initialize on window load with Auto-Login and Expiry check
 window.onload = async () => {
     await loadQuestionBank();
     initVoice();
-    if (localStorage.getItem('kbc_login_session') === 'active') {
-        show('scr-lang');
+
+    const currentSession = localStorage.getItem('kbc_login_session');
+    const currentUser = localStorage.getItem('kbc_current_user');
+
+    if (currentSession === 'active' && currentUser) {
+        if (currentUser === 'ADMIN') {
+            show('scr-lang');
+        } else {
+            const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
+            if (savedUserRaw) {
+                checkUserTrialAndProceed(JSON.parse(savedUserRaw));
+            } else {
+                show('scr-login');
+            }
+        }
+    } else {
+        show('scr-login');
     }
 };

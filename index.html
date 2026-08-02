@@ -31,13 +31,17 @@
             <button id="btn-invite" class="nav-btn invite-btn" onclick="invitePlayer()" title="Invite Player">
                 📩 <span class="invite-label">Invite</span>
             </button>
-            <!-- Exit Game Button -->
-            <button id="btn-exit" class="nav-btn exit-btn" onclick="confirmExitGame()" title="Exit Game">
-                🚪 <span class="exit-label">Exit</span>
-            </button>
-        </div>
-    </header>
+         <!-- Exit Game Button -->
+        <button id="btn-exit" class="nav-btn exit-btn" onclick="confirmExitGame()">
+            <span class="exit-label">Exit</span>
+        </button>
 
+        <!-- Logout Button (নতুন যুক্ত) -->
+        <button id="btn-logout" class="nav-btn logout-btn" onclick="logoutUser()">
+            <span class="logout-label">Logout</span>
+        </button>
+    </div>
+</header>
     <div class="container" id="app">
         
         <!-- Screen 1: Global Standard Login & Authentication Portal -->
@@ -52,18 +56,22 @@
                     <button id="tab-signup-btn" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
                 </div>
 
-                <!-- Login Form -->
-                <div id="form-login" class="auth-form active">
-                    <div class="input-group">
-                        <label for="login-phone">Mobile Number / User ID</label>
-                        <input type="text" id="login-phone" placeholder="Enter 10-digit mobile number" maxlength="10">
-                    </div>
-                    <div class="input-group">
-                        <label for="login-pass">Password</label>
-                        <input type="password" id="login-pass" placeholder="Enter your password">
-                    </div>
-                    <button class="btn btn-primary" onclick="loginUser()">LOGIN</button>
-                </div>
+     <!-- Login Form -->
+    <div id="form-login" class="auth-form active">
+        <div class="input-group">
+            <label for="login-phone">Mobile Number / User ID</label>
+            <input type="text" id="login-phone" placeholder="Enter 10-digit Phone or User ID">
+        </div>
+        <div class="input-group">
+            <label for="login-pass">Password</label>
+            <input type="password" id="login-pass" placeholder="Enter your Password">
+        </div>
+        <div class="remember-group" style="display: flex; align-items: center; gap: 8px; margin: 10px 0;">
+            <input type="checkbox" id="remember-me" style="width: auto; cursor: pointer;">
+            <label for="remember-me" style="font-size: 14px; cursor: pointer; margin: 0;">Remember Me / Save Credentials</label>
+        </div>
+        <button class="btn btn-primary" onclick="loginUser()">LOGIN</button>
+    </div>
                 <!-- Sign Up / Registration Form -->
                 <div id="form-signup" class="auth-form" style="display:none;">
                     <div class="input-group">

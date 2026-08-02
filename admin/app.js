@@ -1,5 +1,8 @@
 // Admin Add Question Functionality
 function addNewQuestionFromAdmin() {
+    const authorElem = document.getElementById('admin-q-author');
+    const authorName = authorElem ? authorElem.value.trim() : "";
+
     const lang = document.getElementById('admin-q-lang').value;
     const subj = document.getElementById('admin-q-subj').value;
     const level = document.getElementById('admin-q-level').value;
@@ -14,6 +17,13 @@ function addNewQuestionFromAdmin() {
     const expElement = document.getElementById('admin-q-exp');
     const qExp = expElement ? expElement.value.trim() : "";
 
+    // Mandatory Field Checks
+    if (!authorName) {
+        alert("দয়া করে এডমিনের নাম (Created By) ইনপুট দিন!");
+        if (authorElem) authorElem.focus();
+        return;
+    }
+
     if (!qText || !optA || !optB || !optC || !optD) {
         alert("দয়া করে প্রশ্ন এবং ৪টি অপশন সঠিকভাবে পূরণ করুন!");
         return;
@@ -22,6 +32,7 @@ function addNewQuestionFromAdmin() {
     // Question Object Structure matching questions.json exactly
     const newQ = {
         id: "custom_" + Date.now(),
+        author: authorName,
         subject: subj,
         level: level,
         correct: correct,
@@ -48,6 +59,21 @@ function addNewQuestionFromAdmin() {
     customQuestions.push(newQ);
     localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
 
+    // Log Creation into Admin Audit History Log
+    const now = new Date();
+    const timeFormatted = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+    
+    const logEntry = {
+        author: authorName,
+        timestamp: timeFormatted,
+        status: "✔️ Success",
+        questionSnippet: qText.length > 45 ? qText.substring(0, 45) + "..." : qText
+    };
+
+    let auditLogs = JSON.parse(localStorage.getItem('kbc_admin_audit_log') || '[]');
+    auditLogs.unshift(logEntry); // Save newest log first
+    localStorage.setItem('kbc_admin_audit_log', JSON.stringify(auditLogs));
+
     alert("প্রশ্ন ও ব্যাখ্যা সফলভাবে সেভ হয়েছে! গেমে নতুন প্রশ্ন যুক্ত হয়ে গেছে।");
 
     // Clear All Form Fields Completely
@@ -59,6 +85,47 @@ function addNewQuestionFromAdmin() {
     if (expElement) {
         expElement.value = '';
     }
+}
+
+// Audit Log Modal Operations
+function openAuditLogModal() {
+    loadAuditLogs();
+    const modal = document.getElementById('audit-log-modal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeAuditLogModal() {
+    const modal = document.getElementById('audit-log-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function loadAuditLogs() {
+    const logTbody = document.getElementById('audit-log-tbody');
+    if (!logTbody) return;
+
+    const auditLogs = JSON.parse(localStorage.getItem('kbc_admin_audit_log') || '[]');
+
+    if (auditLogs.length === 0) {
+        logTbody.innerHTML = `
+            <tr>
+                <td colspan="4" style="text-align: center; color: #aaa;">কোনো হিস্ট্রি বা লগ পাওয়া যায়নি</td>
+            </tr>
+        `;
+        return;
+    }
+
+    let html = '';
+    auditLogs.forEach(log => {
+        html += `
+            <tr>
+                <td style="color: #66fcf1; font-weight: bold;">${log.author || 'Unknown Admin'}</td>
+                <td>${log.timestamp}</td>
+                <td><span style="color: #2ecc71;">${log.status}</span></td>
+                <td>${log.questionSnippet}</td>
+            </tr>
+        `;
+    });
+    logTbody.innerHTML = html;
 }
 
 // Function to Load Real Players List

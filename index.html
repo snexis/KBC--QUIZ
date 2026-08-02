@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KBC Premium 2026 - Educational Quiz</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body oncontextmenu="return false;">
-
-    <!-- Top Global Navigation Control Bar -->
-    <header class="top-nav-bar">
+  <!-- Top Global Navigation Control Bar (Initially Hidden Until Authenticated) -->
+    <header class="top-nav-bar" id="top-nav-bar" style="display: none;">
         <div class="nav-brand">
             <span class="brand-logo">🏆</span>
             <span class="brand-title">KBC PREMIUM</span>
@@ -17,73 +10,85 @@
         <div class="nav-controls">
             <!-- Audio Mute / Unmute Button -->
             <button id="btn-mute" class="nav-btn" onclick="toggleMute()" title="Mute/Unmute Audio">
-                🔊 <span id="mute-label">সাউন্ড</span>
+                🔊 <span id="mute-label">Audio</span>
             </button>
-            <!-- Voice Indicator -->
-            <div class="voice-indicator" id="voice-btn" onclick="toggleVoice()" title="Toggle Voice Commands">🎤</div>
+            <!-- 3D Animated Glowing Voice Indicator -->
+            <div class="voice-indicator mic-3d-pulse" id="voice-btn" onclick="toggleVoice()" title="Toggle Voice Assistance">
+                <span class="mic-icon">🎤</span>
+                <span class="mic-pulse-ring"></span>
+            </div>
             <!-- Admin Login Trigger -->
             <button id="btn-admin-trigger" class="nav-btn admin-btn" onclick="openAdminModal()" title="Admin Test Mode">
-                🔑 <span class="admin-label">এডমিন</span>
+                🔑 <span class="admin-label">Admin</span>
             </button>
-           <!-- Invite Player Button (For Firebase/Multiplayer Setup) -->
+           <!-- Invite Player Button -->
             <button id="btn-invite" class="nav-btn invite-btn" onclick="invitePlayer()" title="Invite Player">
-                📩 <span class="invite-label">ইনভাইট</span>
+                📩 <span class="invite-label">Invite</span>
             </button>
             <!-- Exit Game Button -->
             <button id="btn-exit" class="nav-btn exit-btn" onclick="confirmExitGame()" title="Exit Game">
-                🚪 <span class="exit-label">প্রস্থান</span>
+                🚪 <span class="exit-label">Exit</span>
             </button>
         </div>
     </header>
 
     <div class="container" id="app">
         
-        <!-- Screen 1: Login & Authentication System -->
+        <!-- Screen 1: Global Standard Login & Authentication Portal -->
         <div id="scr-login" class="screen active">
             <div class="auth-card">
                 <h1>KBC PREMIUM 2026</h1>
-                <p class="subtitle">শিক্ষা ও জ্ঞানভিত্তিক কুইজ প্ল্যাটফর্ম</p>
+                <p class="subtitle">Educational & Knowledge Quiz Platform</p>
                 
                 <!-- Authentication Tabs Switcher -->
                 <div class="auth-tabs">
-                    <button id="tab-login-btn" class="auth-tab active" onclick="switchAuthTab('login')">লগইন (Login)</button>
-                    <button id="tab-signup-btn" class="auth-tab" onclick="switchAuthTab('signup')">রেজিস্টার (Sign Up)</button>
+                    <button id="tab-login-btn" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                    <button id="tab-signup-btn" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+                </div>
+<!-- Screen 1: Global Standard Login & Authentication Portal -->
+        <div id="scr-login" class="screen active">
+            <div class="auth-card">
+                <h1>KBC PREMIUM 2026</h1>
+                <p class="subtitle">Educational & Knowledge Quiz Platform</p>
+                
+                <!-- Authentication Tabs Switcher -->
+                <div class="auth-tabs">
+                    <button id="tab-login-btn" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                    <button id="tab-signup-btn" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
                 </div>
 
                 <!-- Login Form -->
                 <div id="form-login" class="auth-form active">
                     <div class="input-group">
-                        <label for="login-phone">মোবাইল নম্বর / ইউজার আইডি:</label>
-                        <input type="text" id="login-phone" placeholder="১০ ডিজিটের মোবাইল নম্বর দিন" maxlength="10">
+                        <label for="login-phone">Mobile Number / User ID</label>
+                        <input type="text" id="login-phone" placeholder="Enter 10-digit mobile number" maxlength="10">
                     </div>
                     <div class="input-group">
-                        <label for="login-pass">পাসওয়ার্ড:</label>
-                        <input type="password" id="login-pass" placeholder="পাসওয়ার্ড লিখুন">
+                        <label for="login-pass">Password</label>
+                        <input type="password" id="login-pass" placeholder="Enter your password">
                     </div>
-                    <button class="btn btn-primary" onclick="loginUser()">LOGIN / প্রবেশ করুন</button>
+                    <button class="btn btn-primary" onclick="loginUser()">LOGIN</button>
                 </div>
-
                 <!-- Sign Up / Registration Form -->
                 <div id="form-signup" class="auth-form" style="display:none;">
                     <div class="input-group">
-                        <label for="signup-name">পূর্ণ নাম (Full Name):</label>
-                        <input type="text" id="signup-name" placeholder="আপনার নাম লিখুন">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="Enter full name">
                     </div>
                     <div class="input-group">
-                        <label for="signup-phone">মোবাইল নম্বর (Mobile Number):</label>
-                        <input type="tel" id="signup-phone" placeholder="১০ ডিজিটের সঠিক নম্বর" maxlength="10">
+                        <label for="signup-phone">Mobile Number</label>
+                        <input type="tel" id="signup-phone" placeholder="Enter 10-digit number" maxlength="10">
                     </div>
                     <div class="input-group">
-                        <label for="signup-username">পছন্দের ইউজার আইডি (Player Username):</label>
-                        <input type="text" id="signup-username" placeholder="যেমন: QuizMaster99">
+                        <label for="signup-username">Username</label>
+                        <input type="text" id="signup-username" placeholder="e.g. QuizMaster99">
                     </div>
                     <div class="input-group">
-                        <label for="signup-pass">পাসওয়ার্ড (Password):</label>
-                        <input type="password" id="signup-pass" placeholder="নতুন পাসওয়ার্ড দিন">
+                        <label for="signup-pass">Password</label>
+                        <input type="password" id="signup-pass" placeholder="Create password">
                     </div>
-                    <button class="btn btn-success" onclick="registerUser()">ACCOUNT তৈরি করুন</button>
+                    <button class="btn btn-success" onclick="registerUser()">CREATE ACCOUNT</button>
                 </div>
-
               <!-- Top Integrated Promo Code Card (Initially Hidden, Visible upon 5-day Trial Expiry) -->
                 <div id="promo-section" class="promo-card" style="display: none;">
                     <span class="promo-title">⚠️ আপনার ৫ দিনের ট্রায়াল শেষ হয়েছে! প্রোমো কোড দিন:</span>

@@ -12,6 +12,7 @@ let timerInt;
 let activeQuestions = [];
 let canAnswer = false;
 let voiceEnabled = false;
+let isMuted = false;
 let recognition;
 let currentSlabCount = 0;
 let fullQuestionPool = [];
@@ -122,13 +123,17 @@ function toggleVoice() {
     voiceEnabled = !voiceEnabled;
     const btn = document.getElementById('voice-btn');
     if (voiceEnabled) {
-        btn.classList.add('active');
-        btn.innerHTML = '🔴';
+        if (btn) {
+            btn.classList.add('active');
+            btn.innerHTML = '🔴';
+        }
         if (!recognition) initVoice();
         startListening();
     } else {
-        btn.classList.remove('active');
-        btn.innerHTML = '🎤';
+        if (btn) {
+            btn.classList.remove('active');
+            btn.innerHTML = '🎤';
+        }
         if (recognition) recognition.stop();
     }
 }
@@ -161,14 +166,112 @@ function processVoiceCommand(cmd) {
     }
 }
 
+// Global Audio & Navigation Controls
+function toggleMute() {
+    isMuted = !isMuted;
+    const muteBtn = document.getElementById('mute-btn');
+    const bg = document.getElementById('bg-music');
+    
+    if (isMuted) {
+        if (bg) bg.pause();
+        if (muteBtn) muteBtn.innerText = '🔇';
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+    } else {
+        if (bg && document.getElementById('scr-game').classList.contains('active')) {
+            bg.play().catch(e => console.log("Audio play blocked"));
+        }
+        if (muteBtn) muteBtn.innerText = '🔊';
+    }
+}
+
+function exitGame() {
+    if (confirm(curLang === 'bn' ? "আপনি কি খেলা ছেড়ে বাইরে যেতে চান?" : "Are you sure you want to exit the game?")) {
+        clearInterval(timerInt);
+        const bg = document.getElementById('bg-music');
+        if (bg) bg.pause();
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        if (recognition) recognition.stop();
+        show('scr-lang');
+    }
+}
+
+function toggleAdminModal(showModal) {
+    const modal = document.getElementById('admin-modal');
+    if (modal) {
+        modal.style.display = showModal ? 'flex' : 'none';
+    }
+}
+
+function verifyAdminPasscode() {
+    const input = document.getElementById('admin-passcode-input');
+    if (input && input.value === '1234') {
+        alert(curLang === 'bn' ? "অ্যাডমিন অ্যাক্সেস সফল হয়েছে!" : "Admin Access Granted!");
+        toggleAdminModal(false);
+        input.value = '';
+    } else {
+        alert(curLang === 'bn' ? "ভুল পাসকোড!" : "Invalid Passcode!");
+    }
+}
+
+// Authentication Handlers
+function switchAuthTab(type) {
+    const loginTab = document.getElementById('tab-login');
+    const regTab = document.getElementById('tab-register');
+    const loginForm = document.getElementById('form-login');
+    const regForm = document.getElementById('form-register');
+
+    if (type === 'login') {
+        if (loginTab) loginTab.classList.add('active');
+        if (regTab) regTab.classList.remove('active');
+        if (loginForm) loginForm.style.display = 'flex';
+        if (regForm) regForm.style.display = 'none';
+    } else {
+        if (regTab) regTab.classList.add('active');
+        if (loginTab) loginTab.classList.remove('active');
+        if (regForm) regForm.style.display = 'flex';
+        if (loginForm) loginForm.style.display = 'none';
+    }
+}
+
 function login() {
-    const p = document.getElementById('phone').value;
-    if(/^\d{10}$/.test(p)) {
+    const p = document.getElementById('phone') ? document.getElementById('phone').value : '';
+    if (/^\d{10}$/.test(p)) {
         localStorage.setItem('kbc_login_session', 'active');
         show('scr-lang');
         playSound('alert');
     } else {
         alert("PLEASE ENTER A VALID 10 DIGIT MOBILE NUMBER");
+    }
+}
+
+function registerUser() {
+    const name = document.getElementById('reg-name') ? document.getElementById('reg-name').value : '';
+    const phone = document.getElementById('reg-phone') ? document.getElementById('reg-phone').value : '';
+    
+    if (name.trim() === '') {
+        alert("PLEASE ENTER YOUR NAME");
+        return;
+    }
+    if (!/^\d{10}$/.test(phone)) {
+        alert("PLEASE ENTER A VALID 10 DIGIT MOBILE NUMBER");
+        return;
+    }
+
+    localStorage.setItem('kbc_login_session', 'active');
+    localStorage.setItem('kbc_user_name', name);
+    show('scr-lang');
+    playSound('alert');
+}
+
+function applyPromoCode() {
+    const codeInput = document.getElementById('promo-code-input');
+    if (!codeInput) return;
+    const code = codeInput.value.trim().toUpperCase();
+
+    if (code === 'KBC2026' || code === 'FREE') {
+        alert(curLang === 'bn' ? "প্রোমো কোড সফলভাবে প্রয়োগ করা হয়েছে!" : "Promo code applied successfully!");
+    } else {
+        alert(curLang === 'bn' ? "অবৈধ প্রোমো কোড!" : "Invalid Promo Code!");
     }
 }
 
@@ -216,7 +319,7 @@ function startGameWithLevel(lvl) {
     show('scr-game');
 
     const bg = document.getElementById('bg-music');
-    if (bg) {
+    if (bg && !isMuted) {
         bg.volume = 0.3;
         bg.play().catch(e => console.log("Audio play blocked until interaction"));
     }
@@ -235,10 +338,14 @@ function loadQ() {
     // Check for 5-Round Slab Intermission
     if (curIdx > 0 && curIdx % 5 === 0 && currentSlabCount !== curIdx) {
         currentSlabCount = curIdx;
-        document.getElementById('slab-score').innerText = score;
-        document.getElementById('slab-msg').innerText = curLang === 'bn' 
-            ? `আপনি সফলভাবে ${curIdx}টি প্রশ্ন সম্পন্ন করেছেন!` 
-            : `You have successfully completed ${curIdx} questions!`;
+        const slabScore = document.getElementById('slab-score');
+        const slabMsg = document.getElementById('slab-msg');
+        if (slabScore) slabScore.innerText = score;
+        if (slabMsg) {
+            slabMsg.innerText = curLang === 'bn' 
+                ? `আপনি সফলভাবে ${curIdx}টি প্রশ্ন সম্পন্ন করেছেন!` 
+                : `You have successfully completed ${curIdx} questions!`;
+        }
         show('scr-slab-cleared');
         return;
     }
@@ -262,35 +369,43 @@ function loadQ() {
         timerVal = 15;
     }
 
-    document.getElementById('st-count').innerText = `Q: ${curIdx + 1}/${activeQuestions.length}`;
-    document.getElementById('st-score').innerText = `SCORE: ${score}`;
+    const stCount = document.getElementById('st-count');
+    const stScore = document.getElementById('st-score');
+    if (stCount) stCount.innerText = `Q: ${curIdx + 1}/${activeQuestions.length}`;
+    if (stScore) stScore.innerText = `SCORE: ${score}`;
 
     const txt = (curLang === 'bn') ? q.qb : q.qe;
     const opts = (curLang === 'bn') ? q.ab : q.ae;
 
-    document.getElementById('q-text').innerText = txt;
-    const container = document.getElementById('opt-container');
-    container.innerHTML = '';
+    const qText = document.getElementById('q-text');
+    if (qText) qText.innerText = txt;
 
-    if (opts && opts.length > 0) {
-        opts.forEach((o, i) => {
-            const div = document.createElement('div');
-            div.className = 'option';
-            div.innerHTML = `<strong>${String.fromCharCode(65 + i)}:</strong> ${o}`;
-            div.onclick = () => check(i);
-            container.appendChild(div);
-        });
+    const container = document.getElementById('opt-container');
+    if (container) {
+        container.innerHTML = '';
+        if (opts && opts.length > 0) {
+            opts.forEach((o, i) => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.innerHTML = `<strong>${String.fromCharCode(65 + i)}:</strong> ${o}`;
+                div.onclick = () => check(i);
+                container.appendChild(div);
+            });
+        }
     }
 
-    document.getElementById('timer').innerText = timerVal;
-    document.getElementById('timer').classList.remove('critical');
+    const timerElem = document.getElementById('timer');
+    if (timerElem) {
+        timerElem.innerText = timerVal;
+        timerElem.classList.remove('critical');
+    }
 
     timerInt = setInterval(() => {
         timerVal--;
-        document.getElementById('timer').innerText = timerVal;
+        if (timerElem) timerElem.innerText = timerVal;
 
         if (timerVal <= 5) {
-            document.getElementById('timer').classList.add('critical');
+            if (timerElem) timerElem.classList.add('critical');
             playSound('tick');
         }
 
@@ -334,20 +449,33 @@ function check(idx) {
     }
 
     const explanation = curLang === "bn" ? (q.expb || "ব্যাখ্যা উপলব্ধ নেই।") : (q.expe || "Explanation not available.");
+    const modal = document.getElementById("exp-modal");
+    const modalBody = document.getElementById("exp-modal-body");
     const box = document.getElementById("exp-box");
-    if (box) {
+
+    if (modal && modalBody) {
+        modalBody.innerHTML = "<b>" + (curLang === "bn" ? "ব্যাখ্যা" : "Explanation") + ":</b><br>" + explanation;
+        modal.style.display = "flex";
+    } else if (box) {
         box.style.display = "block";
-        box.innerHTML = "<b>" + (curLang == "bn" ? "ব্যাখ্যা" : "Explanation") + ":</b><br>" + explanation;
+        box.innerHTML = "<b>" + (curLang === "bn" ? "ব্যাখ্যা" : "Explanation") + ":</b><br>" + explanation;
     }
 
     setTimeout(() => {
+        if (modal) modal.style.display = "none";
         if (box) box.style.display = "none";
         curIdx++;
         loadQ();
     }, 3500);
 }
 
+function closeExpModal() {
+    const modal = document.getElementById("exp-modal");
+    if (modal) modal.style.display = "none";
+}
+
 function playSound(type) {
+    if (isMuted) return;
     const sounds = {
         'cor': document.getElementById('snd-cor'),
         'wr': document.getElementById('snd-wr'),
@@ -363,7 +491,7 @@ function playSound(type) {
 }
 
 function speak(t) {
-    if (!window.speechSynthesis || !t) return;
+    if (isMuted || !window.speechSynthesis || !t) return;
     window.speechSynthesis.cancel();
     const m = new SpeechSynthesisUtterance(t);
     m.lang = (curLang === 'bn') ? 'bn-IN' : 'en-IN';
@@ -374,12 +502,16 @@ function speak(t) {
 
 function end() {
     show('scr-res');
-    document.getElementById('res-score').innerText = score;
-    document.getElementById('res-cor').innerText = cor;
-    document.getElementById('res-wr').innerText = wr;
+    const resScore = document.getElementById('res-score');
+    const resCor = document.getElementById('res-cor');
+    const resWr = document.getElementById('res-wr');
+
+    if (resScore) resScore.innerText = score;
+    if (resCor) resCor.innerText = cor;
+    if (resWr) resWr.innerText = wr;
     
     const bg = document.getElementById('bg-music');
-    if(bg) bg.pause();
+    if (bg) bg.pause();
     
     if (window.speechSynthesis) window.speechSynthesis.cancel();
     if (recognition) recognition.stop();
@@ -388,7 +520,7 @@ function end() {
 function show(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(id);
-    if(target) target.classList.add('active');
+    if (target) target.classList.add('active');
 }
 
 // Anti-Cheat: Resets game if user switches tabs

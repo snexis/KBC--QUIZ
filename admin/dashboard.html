@@ -139,8 +139,7 @@
         <p style="color: #ccc; margin-bottom: 10px;">প্লেয়ারদের গেম ইন্টারফেস সরাসরি টেস্ট করতে বা প্লেয়ার হিসেবে গেমটি দেখতে নিচের বাটনে ক্লিক করুন:</p>
        <a href="../index.html?mode=admin_test" target="_blank" class="btn-test">Launch Player View (New Tab) 🚀</a>
     </div>
-
-    <!-- Registered Players Table -->
+<!-- Registered Players Table -->
     <div class="section-box">
         <h2>👥 Registered Players List</h2>
         <table>
@@ -154,17 +153,57 @@
                 </tr>
             </thead>
             <tbody id="player-table-body">
+                <!-- Real Players List will load here dynamically -->
                 <tr>
-                    <td>9876543210</td>
-                    <td>Demo Player</td>
-                    <td>1500 Points</td>
-                    <span style="color: #2ecc71;">Active</span>
-                    <td>
-                        <button class="btn-action" onclick="alert('Player reset successfully')">Reset</button>
-                    </td>
+                    <td colspan="5" style="text-align: center; color: #aaa;">কোনো প্লেয়ার পাওয়া যায়নি</td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <!-- Add New Question Section -->
+    <div class="section-box" style="margin-top: 20px;">
+        <h2>➕ Add New Question to Bank</h2>
+        <div style="display: flex; flex-direction: column; gap: 12px; max-width: 650px; margin-top: 15px;">
+            
+            <div style="display: flex; gap: 10px;">
+                <select id="admin-q-lang" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+                    <option value="bn">Bengali (বাংলা)</option>
+                    <option value="en">English</option>
+                </select>
+                <select id="admin-q-subj" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+                    <option value="all">General / All</option>
+                    <option value="gk">General Knowledge</option>
+                    <option value="science">Science</option>
+                    <option value="history">History</option>
+                </select>
+                <select id="admin-q-level" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+                    <option value="junior">Junior</option>
+                    <option value="senior">Senior</option>
+                </select>
+            </div>
+
+            <textarea id="admin-q-text" placeholder="এখানে মূল প্রশ্নটি লিখুন..." rows="3" style="padding: 10px; width: 100%; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444; resize: vertical;"></textarea>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <input type="text" id="admin-opt-a" placeholder="Option A (ক)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+                <input type="text" id="admin-opt-b" placeholder="Option B (খ)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+                <input type="text" id="admin-opt-c" placeholder="Option C (গ)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+                <input type="text" id="admin-opt-d" placeholder="Option D (ঘ)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <label style="color: #fff; font-weight: bold;">সঠিক উত্তর:</label>
+                <select id="admin-correct-opt" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+                    <option value="a">Option A (ক)</option>
+                    <option value="b">Option B (খ)</option>
+                    <option value="c">Option C (গ)</option>
+                    <option value="d">Option D (ঘ)</option>
+                </select>
+            </div>
+
+            <button onclick="addNewQuestionFromAdmin()" class="btn-action" style="padding: 12px; background-color: #27ae60; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 15px; margin-top: 5px;">💾 Save Question to Game</button>
+        </div>
     </div>
 
     <script>

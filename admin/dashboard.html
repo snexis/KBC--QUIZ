@@ -121,11 +121,11 @@
     <div class="stats-grid">
         <div class="stat-card">
             <h3>TOTAL REGISTERED PLAYERS</h3>
-            <p id="total-players">1</p>
+            <p id="total-players">0</p>
         </div>
         <div class="stat-card">
             <h3>ACTIVE SESSIONS</h3>
-            <p id="active-sessions">1</p>
+            <p id="active-sessions">0</p>
         </div>
         <div class="stat-card">
             <h3>TOTAL QUESTIONS IN BANK</h3>
@@ -136,10 +136,11 @@
     <!-- Live Test Player Section -->
     <div class="section-box">
         <h2>🎮 Live Player View & Testing</h2>
-        <p style="color: #ccc; margin-bottom: 10px;">প্লেয়ারদের গেম ইন্টারফেস সরাসরি টেস্ট করতে বা প্লেয়ার হিসেবে গেমটি দেখতে নিচের বাটনে ক্লিক করুন:</p>
-       <a href="../index.html?mode=admin_test" target="_blank" class="btn-test">Launch Player View (New Tab) 🚀</a>
+        <p style="color: #ccc; margin-bottom: 10px;">প্লেয়ারদের গেম ইন্টারফেস সরাসরি টেস্ট করতে বা প্লেয়ার হিসেবে গেমটি দেখতে নিচের বাটনে ক্লিক করুন:</p>
+        <a href="../index.html?mode=admin_test" target="_blank" class="btn-test">Launch Player View (New Tab) 🚀</a>
     </div>
-<!-- Registered Players Table -->
+
+    <!-- Registered Players Table -->
     <div class="section-box">
         <h2>👥 Registered Players List</h2>
         <table>
@@ -172,10 +173,11 @@
                     <option value="en">English</option>
                 </select>
                 <select id="admin-q-subj" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
-                    <option value="all">General / All</option>
+                    <option value="general">General / All</option>
                     <option value="gk">General Knowledge</option>
                     <option value="science">Science</option>
                     <option value="history">History</option>
+                    <option value="math">Mathematics</option>
                 </select>
                 <select id="admin-q-level" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
                     <option value="junior">Junior</option>
@@ -202,6 +204,8 @@
                 </select>
             </div>
 
+            <textarea id="admin-q-exp" placeholder="উত্তরের সঠিক ব্যাখ্যা বা কারণ লিখুন (Explanation)..." rows="2" style="padding: 10px; width: 100%; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444; resize: vertical;"></textarea>
+
             <button onclick="addNewQuestionFromAdmin()" class="btn-action" style="padding: 12px; background-color: #27ae60; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 15px; margin-top: 5px;">💾 Save Question to Game</button>
         </div>
     </div>
@@ -209,13 +213,12 @@
     <script>
         // Check if admin is logged in
         if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
-            // Uncomment line below to restrict direct URL access
             // window.location.href = 'index.html';
         }
 
         function logoutAdmin() {
             sessionStorage.removeItem('adminLoggedIn');
-            alert('অ্যাডমিন প্যানেল থেকে লগআউট করা হয়েছে।');
+            alert('অ্যাডমিন প্যানেল থেকে লগআউট করা হয়েছে।');
             window.location.href = 'index.html';
         }
     </script>

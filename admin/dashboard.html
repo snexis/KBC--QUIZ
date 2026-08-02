@@ -108,6 +108,30 @@
             display: inline-block;
             margin-top: 10px;
         }
+        /* Modal Popup Styling */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .modal-content {
+            background: #1f2833;
+            width: 90%;
+            max-width: 850px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #c5a059;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -165,28 +189,45 @@
     <!-- Add New Question Section -->
     <div class="section-box" style="margin-top: 20px;">
         <h2>➕ Add New Question to Bank</h2>
-        <div style="display: flex; flex-direction: column; gap: 12px; max-width: 650px; margin-top: 15px;">
+        <div style="display: flex; flex-direction: column; gap: 12px; max-width: 750px; margin-top: 15px;">
             
-            <div style="display: flex; gap: 10px;">
-                <select id="admin-q-lang" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+            <!-- Created By / Author Name (Mandatory Field) -->
+            <div>
+                <label style="color: #66fcf1; font-weight: bold; font-size: 14px; display: block; margin-bottom: 5px;">
+                    👤 Created By / এডমিনের নাম (বাধ্যতামূলক):
+                </label>
+                <input type="text" id="admin-q-author" placeholder="আপনার নাম লিখুন..." style="padding: 10px; width: 100%; border-radius: 4px; background: #222; color: #fff; border: 1px solid #45a29e;">
+            </div>
+
+            <!-- Language, Subject, Level Mapped Dropdowns -->
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <select id="admin-q-lang" style="padding: 10px; flex: 1; min-width: 140px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
                     <option value="bn">Bengali (বাংলা)</option>
                     <option value="en">English</option>
                 </select>
-                <select id="admin-q-subj" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
-                    <option value="general">General / All</option>
-                    <option value="gk">General Knowledge</option>
-                    <option value="science">Science</option>
-                    <option value="history">History</option>
-                    <option value="math">Mathematics</option>
+                
+                <select id="admin-q-subj" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+                    <option value="all">ALL MIXED / সব বিষয়</option>
+                    <option value="science">SCIENCE / বিজ্ঞান</option>
+                    <option value="history">HISTORY / ইতিহাস</option>
+                    <option value="philosophy">PHILOSOPHY / দর্শন</option>
+                    <option value="math">MATH / গণিত</option>
+                    <option value="business">BUSINESS / ব্যবসা ও অর্থনীতি</option>
+                    <option value="coding">CODING & TECH / কম্পিউটার</option>
                 </select>
-                <select id="admin-q-level" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
-                    <option value="junior">Junior</option>
-                    <option value="senior">Senior</option>
+                
+                <select id="admin-q-level" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
+                    <option value="junior">JUNIOR (CLASS 5 - 8)</option>
+                    <option value="secondary">SECONDARY (CLASS 9 - 10)</option>
+                    <option value="hs">HIGHER SECONDARY (CLASS 11 - 12)</option>
+                    <option value="advanced">ADVANCED / DEGREE / TECH</option>
                 </select>
             </div>
 
+            <!-- Question Text Area -->
             <textarea id="admin-q-text" placeholder="এখানে মূল প্রশ্নটি লিখুন..." rows="3" style="padding: 10px; width: 100%; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444; resize: vertical;"></textarea>
             
+            <!-- Options Grid -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
                 <input type="text" id="admin-opt-a" placeholder="Option A (ক)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
                 <input type="text" id="admin-opt-b" placeholder="Option B (খ)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
@@ -194,6 +235,7 @@
                 <input type="text" id="admin-opt-d" placeholder="Option D (ঘ)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
             </div>
 
+            <!-- Correct Option Dropdown -->
             <div style="display: flex; gap: 10px; align-items: center;">
                 <label style="color: #fff; font-weight: bold;">সঠিক উত্তর:</label>
                 <select id="admin-correct-opt" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
@@ -204,9 +246,37 @@
                 </select>
             </div>
 
+            <!-- Explanation Text Area -->
             <textarea id="admin-q-exp" placeholder="উত্তরের সঠিক ব্যাখ্যা বা কারণ লিখুন (Explanation)..." rows="2" style="padding: 10px; width: 100%; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444; resize: vertical;"></textarea>
 
-            <button onclick="addNewQuestionFromAdmin()" class="btn-action" style="padding: 12px; background-color: #27ae60; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 15px; margin-top: 5px;">💾 Save Question to Game</button>
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                <button onclick="addNewQuestionFromAdmin()" class="btn-action" style="flex: 2; padding: 12px; background-color: #27ae60; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 15px;">💾 Save Question to Game</button>
+                <button onclick="openAuditLogModal()" class="btn-action" style="flex: 1; padding: 12px; background-color: #45a29e; color: #000; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 15px;">📋 View History Log</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Secret Admin Audit Log Modal Popup -->
+    <div id="audit-log-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #45a29e; padding-bottom: 10px;">
+                <h3 style="color: #c5a059; margin: 0; font-size: 20px;">📋 Admin Question Log & Audit History</h3>
+                <button onclick="closeAuditLogModal()" style="background: #e74c3c; color: #fff; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">✕ Close</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Author Name</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th>Question Preview</th>
+                    </tr>
+                </thead>
+                <tbody id="audit-log-tbody">
+                    <!-- Dynamic Log Data Will Load Here -->
+                </tbody>
+            </table>
         </div>
     </div>
 

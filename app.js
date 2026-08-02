@@ -17,6 +17,35 @@ let recognition;
 let currentSlabCount = 0;
 let fullQuestionPool = [];
 
+// Helper Function: Merge Custom Admin Questions into Main Question Pool
+function loadCustomAdminQuestions() {
+    try {
+        const savedCustom = localStorage.getItem('kbc_custom_questions');
+        if (savedCustom) {
+            const customList = JSON.parse(savedCustom);
+            if (Array.isArray(customList) && customList.length > 0) {
+                // Remove existing custom questions to prevent duplicate entries
+                fullQuestionPool = fullQuestionPool.filter(q => !q.id || !q.id.toString().startsWith('custom_'));
+                
+                // Format subject naming inconsistencies (e.g. math/mathematics)
+                const formattedCustoms = customList.map(cQ => {
+                    let sub = cQ.subject ? cQ.subject.toLowerCase() : '';
+                    if (sub === 'mathematics' || sub === 'math') {
+                        cQ.subject = 'math';
+                    }
+                    return cQ;
+                });
+
+                // Unshift to place custom questions at the top of the pool
+                fullQuestionPool.unshift(...formattedCustoms);
+                console.log(`Successfully merged ${formattedCustoms.length} custom admin questions into pool.`);
+            }
+        }
+    } catch (e) {
+        console.error("Error loading custom admin questions:", e);
+    }
+}
+
 // Automatic Syntax Recovery & Robust JSON Parser
 function autoFixAndParseObj(rawText) {
     let cleanText = rawText.trim();
@@ -48,6 +77,7 @@ async function loadQuestionBank() {
         try {
             fullQuestionPool = JSON.parse(cleanData);
             console.log("Successfully loaded " + fullQuestionPool.length + " questions instantly.");
+            loadCustomAdminQuestions();
             return;
         } catch (e) {
             console.warn("Direct JSON parsing failed. Activating Safe Chunking Processor...");
@@ -89,9 +119,11 @@ async function loadQuestionBank() {
         }
 
         console.log(`Loaded ${fullQuestionPool.length} valid questions successfully. Skipped corrupted entries: ${errorCount}`);
+        loadCustomAdminQuestions();
 
     } catch (error) {
         console.error("Error loading JSON, falling back to default pool:", error);
+        loadCustomAdminQuestions();
     }
 }
 
@@ -387,8 +419,14 @@ function startGameWithLevel(lvl) {
     wr = 0;
     currentSlabCount = 0;
 
+    // Refresh custom questions from LocalStorage before filtering
+    loadCustomAdminQuestions();
+
     let filtered = fullQuestionPool.filter(q => {
-        let matchSubj = (curSubject === 'all') || (q.subject === curSubject);
+        let qSub = q.subject ? q.subject.toLowerCase() : '';
+        let cSub = curSubject.toLowerCase();
+        
+        let matchSubj = (cSub === 'all') || (qSub === cSub) || (cSub === 'math' && qSub === 'mathematics') || (cSub === 'mathematics' && qSub === 'math');
         let matchLvl = (q.level === curLevel);
         return matchSubj && matchLvl;
     });
@@ -466,8 +504,8 @@ function loadQ() {
     if (stCount) stCount.innerText = `Q: ${curIdx + 1}/${activeQuestions.length}`;
     if (stScore) stScore.innerText = `SCORE: ${score}`;
 
-    const txt = (curLang === 'bn') ? q.qb : q.qe;
-    const opts = (curLang === 'bn') ? q.ab : q.ae;
+    const txt = (curLang === 'bn') ? (q.qb || q.qe) : (q.qe || q.qb);
+    const opts = (curLang === 'bn') ? (q.ab && q.ab[0] ? q.ab : q.ae) : (q.ae && q.ae[0] ? q.ae : q.ab);
 
     const qText = document.getElementById('q-text');
     if (qText) qText.innerText = txt;
@@ -540,7 +578,7 @@ function check(idx) {
         if (opts[q.ans]) opts[q.ans].classList.add('correct');
     }
 
-    const explanation = curLang === "bn" ? (q.expb || "ব্যাখ্যা উপলব্ধ নেই।") : (q.expe || "Explanation not available.");
+    const explanation = curLang === "bn" ? (q.expb || q.expe || "ব্যাখ্যা উপলব্ধ নেই।") : (q.expe || q.expb || "Explanation not available.");
     const modal = document.getElementById("exp-modal");
     const modalBody = document.getElementById("exp-modal-body");
     const box = document.getElementById("exp-box");
@@ -576,7 +614,7 @@ function playSound(type) {
     };
     if (sounds[type] && typeof sounds[type].play === 'function') {
         sounds[type].currentTime = 0;
-        sounds[type].volume = 10.0;
+        sounds[type].volume = 1.0; // Fixed DOMException range bug (max allowed is 1.0)
         sounds[type].play().catch(e => console.warn("Audio error:", e));
     }
 }

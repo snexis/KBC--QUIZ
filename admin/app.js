@@ -50,13 +50,15 @@ function addNewQuestionFromAdmin() {
 
     alert("প্রশ্ন ও ব্যাখ্যা সফলভাবে সেভ হয়েছে! গেমে নতুন প্রশ্ন যুক্ত হয়ে গেছে।");
 
-    // Clear Form Fields
+    // Clear All Form Fields Completely
     document.getElementById('admin-q-text').value = '';
     document.getElementById('admin-opt-a').value = '';
     document.getElementById('admin-opt-b').value = '';
     document.getElementById('admin-opt-c').value = '';
     document.getElementById('admin-opt-d').value = '';
-    if (expElement) expElement.value = '';
+    if (expElement) {
+        expElement.value = '';
+    }
 }
 
 // Function to Load Real Players List

@@ -195,48 +195,22 @@ function confirmExitGame() {
     }
 }
 
-// Modal Handlers for Admin & Invite System
-function openAdminModal() {
-    const modal = document.getElementById('modal-admin');
-    if (modal) modal.style.display = 'flex';
-}
-
-function closeAdminModal() {
-    const modal = document.getElementById('modal-admin');
-    if (modal) modal.style.display = 'none';
-}
-
-function verifyAdminAccess() {
-    const input = document.getElementById('admin-passcode-input');
-    if (input && (input.value === 'ADMIN2026' || input.value === '1234')) {
-        alert(curLang === 'bn' ? "এডমিন টেস্ট অ্যাক্সেস সফল হয়েছে!" : "Admin Access Granted!");
-        closeAdminModal();
-        input.value = '';
-        show('scr-lang');
+function toggleVoice() {
+    voiceEnabled = !voiceEnabled;
+    const btn = document.getElementById('voice-btn');
+    if (voiceEnabled) {
+        if (btn) {
+            btn.classList.add('active', 'listening');
+        }
+        if (!recognition) initVoice();
+        startListening();
     } else {
-        alert(curLang === 'bn' ? "ভুল মাস্টার পাসকোড!" : "Invalid Passcode!");
+        if (btn) {
+            btn.classList.remove('active', 'listening');
+        }
+        if (recognition) recognition.stop();
     }
 }
-
-function invitePlayer() {
-    const modal = document.getElementById('modal-invite');
-    if (modal) modal.style.display = 'flex';
-}
-
-function closeInviteModal() {
-    const modal = document.getElementById('modal-invite');
-    if (modal) modal.style.display = 'none';
-}
-
-function copyInviteCode() {
-    const input = document.getElementById('invite-code-input');
-    if (input) {
-        input.select();
-        document.execCommand('copy');
-        alert(curLang === 'bn' ? "ইনভাইট কোড কপি করা হয়েছে!" : "Invite code copied to clipboard!");
-    }
-}
-
 // Authentication Handlers
 function switchAuthTab(type) {
     const loginTab = document.getElementById('tab-login');
@@ -628,8 +602,17 @@ function show(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     const target = document.getElementById(id);
     if (target) target.classList.add('active');
-}
 
+    // Secure Top Navigation Bar Visibility Logic
+    const topNav = document.getElementById('top-nav-bar');
+    if (topNav) {
+        if (id === 'scr-login') {
+            topNav.style.display = 'none';
+        } else {
+            topNav.style.display = 'flex';
+        }
+    }
+}
 // Anti-Cheat: Resets game if user switches tabs
 document.addEventListener('visibilitychange', () => {
     if (document.hidden && curIdx > 0 && curIdx < activeQuestions.length) {

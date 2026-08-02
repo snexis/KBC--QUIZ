@@ -592,9 +592,8 @@ function playSound(type) {
     };
     if (sounds[type] && typeof sounds[type].play === 'function') {
         sounds[type].currentTime = 0;
-        sounds[type].play().catch(e => {
-            console.warn("Audio play prevented or file missing for: " + type);
-        });
+        sounds[type].volume = 10.0; // ফুল সাউন্ড ভলিউম
+        sounds[type].play().catch(e => console.warn("Audio error:", e));
     }
 }
 

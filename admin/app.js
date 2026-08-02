@@ -10,20 +10,37 @@ function addNewQuestionFromAdmin() {
     const optC = document.getElementById('admin-opt-c').value.trim();
     const optD = document.getElementById('admin-opt-d').value.trim();
     const correct = document.getElementById('admin-correct-opt').value;
+    
+    const expElement = document.getElementById('admin-q-exp');
+    const qExp = expElement ? expElement.value.trim() : "";
 
     if (!qText || !optA || !optB || !optC || !optD) {
         alert("দয়া করে প্রশ্ন এবং ৪টি অপশন সঠিকভাবে পূরণ করুন!");
         return;
     }
 
-    // Question Object Structure
+    // Question Object Structure matching questions.json exactly
     const newQ = {
         id: "custom_" + Date.now(),
         subject: subj,
         level: level,
         correct: correct,
-        bn: (lang === 'bn') ? { q: qText, a: optA, b: optB, c: optC, d: optD } : null,
-        en: (lang === 'en') ? { q: qText, a: optA, b: optB, c: optC, d: optD } : null
+        bn: {
+            q: (lang === 'bn') ? qText : "",
+            a: (lang === 'bn') ? optA : "",
+            b: (lang === 'bn') ? optB : "",
+            c: (lang === 'bn') ? optC : "",
+            d: (lang === 'bn') ? optD : "",
+            exp: (lang === 'bn') ? qExp : ""
+        },
+        en: {
+            q: (lang === 'en') ? qText : "",
+            a: (lang === 'en') ? optA : "",
+            b: (lang === 'en') ? optB : "",
+            c: (lang === 'en') ? optC : "",
+            d: (lang === 'en') ? optD : "",
+            exp: (lang === 'en') ? qExp : ""
+        }
     };
 
     // Save Custom Questions to LocalStorage
@@ -31,7 +48,7 @@ function addNewQuestionFromAdmin() {
     customQuestions.push(newQ);
     localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
 
-    alert("প্রশ্ন সফলভাবে সেভ হয়েছে! গেমে নতুন প্রশ্ন যুক্ত হয়ে গেছে।");
+    alert("প্রশ্ন ও ব্যাখ্যা সফলভাবে সেভ হয়েছে! গেমে নতুন প্রশ্ন যুক্ত হয়ে গেছে।");
 
     // Clear Form Fields
     document.getElementById('admin-q-text').value = '';
@@ -39,9 +56,10 @@ function addNewQuestionFromAdmin() {
     document.getElementById('admin-opt-b').value = '';
     document.getElementById('admin-opt-c').value = '';
     document.getElementById('admin-opt-d').value = '';
+    if (expElement) expElement.value = '';
 }
 
-// Function to Load Real Players List (Will be integrated with Cloud Backend in Step 3)
+// Function to Load Real Players List
 function loadRealPlayersList() {
     const tableBody = document.getElementById('player-table-body');
     const savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
@@ -76,25 +94,20 @@ function loadRealPlayersList() {
     tableBody.innerHTML = html;
 }
 
+// Block/Unblock Toggle Functionality
+function toggleBlockPlayer(playerId) {
+    let savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
+    savedPlayers = savedPlayers.map(player => {
+        if (player.id === playerId) {
+            player.status = (player.status === 'Blocked') ? 'Active' : 'Blocked';
+        }
+        return player;
+    });
+    localStorage.setItem('kbc_real_players', JSON.stringify(savedPlayers));
+    loadRealPlayersList();
+}
+
 // Window load trigger
 window.addEventListener('DOMContentLoaded', () => {
     loadRealPlayersList();
 });
-// Function to load admin-added custom questions into the game
-function loadCustomAdminQuestions() {
-    try {
-        const savedCustom = localStorage.getItem('kbc_custom_questions');
-        if (savedCustom) {
-            const customList = JSON.parse(savedCustom);
-            if (Array.isArray(customList) && customList.length > 0) {
-                // Combine custom questions with existing question bank
-                if (typeof fullQuestionPool !== 'undefined' && Array.isArray(fullQuestionPool)) {
-                    fullQuestionPool.push(...customList);
-                    console.log(`Successfully loaded ${customList.length} custom admin questions!`);
-                }
-            }
-        }
-    } catch (e) {
-        console.error("Error loading custom admin questions:", e);
-    }
-}

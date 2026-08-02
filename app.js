@@ -124,15 +124,13 @@ function toggleVoice() {
     const btn = document.getElementById('voice-btn');
     if (voiceEnabled) {
         if (btn) {
-            btn.classList.add('active');
-            btn.innerHTML = '🔴';
+            btn.classList.add('active', 'listening');
         }
         if (!recognition) initVoice();
         startListening();
     } else {
         if (btn) {
-            btn.classList.remove('active');
-            btn.innerHTML = '🎤';
+            btn.classList.remove('active', 'listening');
         }
         if (recognition) recognition.stop();
     }
@@ -195,22 +193,6 @@ function confirmExitGame() {
     }
 }
 
-function toggleVoice() {
-    voiceEnabled = !voiceEnabled;
-    const btn = document.getElementById('voice-btn');
-    if (voiceEnabled) {
-        if (btn) {
-            btn.classList.add('active', 'listening');
-        }
-        if (!recognition) initVoice();
-        startListening();
-    } else {
-        if (btn) {
-            btn.classList.remove('active', 'listening');
-        }
-        if (recognition) recognition.stop();
-    }
-}
 // Authentication Handlers
 function switchAuthTab(type) {
     const loginTab = document.getElementById('tab-login');
@@ -237,17 +219,6 @@ function loginUser() {
 
     if (!userOrPhone || !pass) {
         alert(curLang === 'bn' ? "ইউজার আইডি এবং পাসওয়ার্ড সঠিকভাবে দিন!" : "Please enter valid credentials!");
-        return;
-    }
-
-    // Fixed Admin Login Logic (No Trial Limits, Permanent Access)
-    if ((userOrPhone === 'ADMIN2026' || userOrPhone === 'admin') && pass === 'admin123') {
-        const adminData = { username: 'ADMIN', role: 'admin' };
-        localStorage.setItem('kbc_current_user', 'ADMIN');
-        localStorage.setItem('kbc_login_session', 'active');
-        alert(curLang === 'bn' ? "এডমিন লগইন সফল হয়েছে!" : "Admin Login Successful!");
-        playSound('alert');
-        show('scr-lang');
         return;
     }
 
@@ -285,7 +256,7 @@ function checkUserTrialAndProceed(userData) {
         // Trial Expired - Show Promo Code Input Section
         if (promoSec) promoSec.style.display = 'block';
         alert(curLang === 'bn' 
-            ? "আপনার " + allowedDays + " দিনের মেয়াদের ট্রায়াল শেষ হয়ে গেছে! অনুগ্রহ করে প্রমো কোড ব্যবহার করুন।" 
+            ? "আপনার " + allowedDays + " দিনের মেয়াদের ট্রায়াল শেষ হয়ে গেছে! অনুগ্রহ করে প্রমো কোড ব্যবহার করুন।" 
             : "Your " + allowedDays + "-day trial has expired! Please enter a promo code.");
         show('scr-login');
     } else {
@@ -307,7 +278,7 @@ function registerUser() {
     const pass = passElem ? passElem.value.trim() : '';
 
     if (!name || !username || !pass) {
-        alert(curLang === 'bn' ? "দয়া করে সমস্ত ফিল্ড পূরণ করুন!" : "Please fill in all fields!");
+        alert(curLang === 'bn' ? "দয়া করে সমস্ত ফিল্ড পূরণ করুন!" : "Please fill in all fields!");
         return;
     }
 
@@ -329,6 +300,7 @@ function registerUser() {
     playSound('alert');
     checkUserTrialAndProceed(userData);
 }
+
 function handlePromoSubmit() {
     const codeInput = document.getElementById('promoInput');
     if (!codeInput) return;
@@ -347,7 +319,7 @@ function handlePromoSubmit() {
             userData.trialDays = (userData.trialDays || 5) + 15; // Extends trial by 15 days
             localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
             
-            alert(curLang === 'bn' ? "প্রোমো কোড সফল হয়েছে! আপনার মেয়াদ আরও ১৫ দিন বাড়ানো হলো।" : "Promo code applied! Trial extended by 15 days.");
+            alert(curLang === 'bn' ? "প্রোমো কোড সফল হয়েছে! আপনার মেয়াদ আরও ১৫ দিন বাড়ানো হলো।" : "Promo code applied! Trial extended by 15 days.");
             
             const promoSec = document.getElementById('promo-section');
             if (promoSec) promoSec.style.display = 'none';
@@ -357,6 +329,7 @@ function handlePromoSubmit() {
         alert(curLang === 'bn' ? "অবৈধ প্রোমো কোড!" : "Invalid Promo Code!");
     }
 }
+
 function selectLanguage(l) {
     curLang = l;
     show('scr-subject');
@@ -566,7 +539,7 @@ function playSound(type) {
     };
     if (sounds[type] && typeof sounds[type].play === 'function') {
         sounds[type].currentTime = 0;
-        sounds[type].volume = 10.0; // ফুল সাউন্ড ভলিউম
+        sounds[type].volume = 10.0;
         sounds[type].play().catch(e => console.warn("Audio error:", e));
     }
 }
@@ -613,6 +586,7 @@ function show(id) {
         }
     }
 }
+
 // Anti-Cheat: Resets game if user switches tabs
 document.addEventListener('visibilitychange', () => {
     if (document.hidden && curIdx > 0 && curIdx < activeQuestions.length) {
@@ -622,24 +596,28 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Auto load JSON and initialize on window load with Auto-Login and Expiry check
+// Auto load JSON and initialize on window load with Auto-Login, Admin Bypass, and Expiry check
 window.onload = async () => {
     await loadQuestionBank();
     initVoice();
+
+    // Check for Admin Direct Test Bypass Parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('mode') === 'admin_test') {
+        console.log("Admin Test Bypass Activated.");
+        show('scr-lang');
+        return;
+    }
 
     const currentSession = localStorage.getItem('kbc_login_session');
     const currentUser = localStorage.getItem('kbc_current_user');
 
     if (currentSession === 'active' && currentUser) {
-        if (currentUser === 'ADMIN') {
-            show('scr-lang');
+        const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
+        if (savedUserRaw) {
+            checkUserTrialAndProceed(JSON.parse(savedUserRaw));
         } else {
-            const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
-            if (savedUserRaw) {
-                checkUserTrialAndProceed(JSON.parse(savedUserRaw));
-            } else {
-                show('scr-login');
-            }
+            show('scr-login');
         }
     } else {
         show('scr-login');

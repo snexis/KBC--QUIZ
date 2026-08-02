@@ -80,3 +80,21 @@ function loadRealPlayersList() {
 window.addEventListener('DOMContentLoaded', () => {
     loadRealPlayersList();
 });
+// Function to load admin-added custom questions into the game
+function loadCustomAdminQuestions() {
+    try {
+        const savedCustom = localStorage.getItem('kbc_custom_questions');
+        if (savedCustom) {
+            const customList = JSON.parse(savedCustom);
+            if (Array.isArray(customList) && customList.length > 0) {
+                // Combine custom questions with existing question bank
+                if (typeof fullQuestionPool !== 'undefined' && Array.isArray(fullQuestionPool)) {
+                    fullQuestionPool.push(...customList);
+                    console.log(`Successfully loaded ${customList.length} custom admin questions!`);
+                }
+            }
+        }
+    } catch (e) {
+        console.error("Error loading custom admin questions:", e);
+    }
+}

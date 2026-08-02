@@ -88,10 +88,10 @@
             const user = document.getElementById('admin-user').value;
             const pass = document.getElementById('admin-pass').value;
 
-            // প্রাথমিক সিম্পল চেকিং (পরে এটি ফায়ারবেসের সাথে যুক্ত হবে)
             if (user === "admin" && pass === "ADMIN2026") {
+                sessionStorage.setItem('adminLoggedIn', 'true');
                 alert("স্বাগতম অ্যাডমিন! ড্যাশবোর্ডে রিডাইরেক্ট করা হচ্ছে...");
-                // এখানে ড্যাশবোর্ডের কাজ হবে
+                window.location.href = "dashboard.html";
             } else {
                 alert("ভুল তথ্য দেওয়া হয়েছে! আবার চেষ্টা করুন।");
             }

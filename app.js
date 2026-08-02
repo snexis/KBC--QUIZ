@@ -28,7 +28,6 @@ function autoFixAndParseObj(rawText) {
         return JSON.parse(cleanText);
     } catch (e) {
         try {
-            // Fix missing quotes around keys or trailing syntax issues
             cleanText = cleanText.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2":');
             return JSON.parse(cleanText);
         } catch (innerErr) {
@@ -37,7 +36,7 @@ function autoFixAndParseObj(rawText) {
     }
 }
 
-// External JSON Question Bank Loader (With Chunking & Error Bypass)
+// External JSON Question Bank Loader
 async function loadQuestionBank() {
     try {
         const response = await fetch('questions.json');
@@ -46,23 +45,20 @@ async function loadQuestionBank() {
         const textData = await response.text();
         let cleanData = textData.trim();
 
-        // 1. Try standard JSON parse
         try {
             fullQuestionPool = JSON.parse(cleanData);
             console.log("Successfully loaded " + fullQuestionPool.length + " questions instantly.");
             return;
         } catch (e) {
-            console.warn("Direct JSON parsing failed at broken position. Activating Safe Chunking Processor...");
+            console.warn("Direct JSON parsing failed. Activating Safe Chunking Processor...");
         }
 
-        // 2. Fail-safe Chunking & Robust Regex Splitter
         fullQuestionPool = [];
         let items = [];
 
         if (cleanData.startsWith('[')) cleanData = cleanData.substring(1);
         if (cleanData.endsWith(']')) cleanData = cleanData.substring(0, cleanData.length - 1);
 
-        // Split data safely by JSON object boundaries
         const rawObjects = cleanData.split(/\},\s*\{/);
         const BATCH_SIZE = 300;
         let successCount = 0;
@@ -92,7 +88,7 @@ async function loadQuestionBank() {
             fullQuestionPool.push(...items);
         }
 
-        console.log(`Loaded ${fullQuestionPool.length} valid questions successfully. Skipped/Fixed corrupted entries: ${errorCount}`);
+        console.log(`Loaded ${fullQuestionPool.length} valid questions successfully. Skipped corrupted entries: ${errorCount}`);
 
     } catch (error) {
         console.error("Error loading JSON, falling back to default pool:", error);
@@ -123,15 +119,11 @@ function toggleVoice() {
     voiceEnabled = !voiceEnabled;
     const btn = document.getElementById('voice-btn');
     if (voiceEnabled) {
-        if (btn) {
-            btn.classList.add('active', 'listening');
-        }
+        if (btn) btn.classList.add('active', 'listening');
         if (!recognition) initVoice();
         startListening();
     } else {
-        if (btn) {
-            btn.classList.remove('active', 'listening');
-        }
+        if (btn) btn.classList.remove('active', 'listening');
         if (recognition) recognition.stop();
     }
 }
@@ -164,7 +156,7 @@ function processVoiceCommand(cmd) {
     }
 }
 
-// Global Audio & Navigation Controls
+// Audio Controls
 function toggleMute() {
     isMuted = !isMuted;
     const label = document.getElementById('mute-label');
@@ -182,6 +174,7 @@ function toggleMute() {
     }
 }
 
+// Game Exit
 function confirmExitGame() {
     if (confirm(curLang === 'bn' ? "আপনি কি খেলা ছেড়ে বাইরে যেতে চান?" : "Are you sure you want to exit the game?")) {
         clearInterval(timerInt);
@@ -190,6 +183,29 @@ function confirmExitGame() {
         if (window.speechSynthesis) window.speechSynthesis.cancel();
         if (recognition) recognition.stop();
         show('scr-lang');
+    }
+}
+
+// User Logout Logic
+function logoutUser() {
+    if (confirm(curLang === 'bn' ? "আপনি কি নিশ্চিত যে আপনি লগআউট করতে চান?" : "Are you sure you want to logout?")) {
+        clearInterval(timerInt);
+        const bg = document.getElementById('bg-music');
+        if (bg) bg.pause();
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        if (recognition) recognition.stop();
+
+        // Clear Session
+        localStorage.removeItem('kbc_login_session');
+        localStorage.removeItem('kbc_current_user');
+
+        // Clear URL Params if in test mode
+        if (window.location.search.includes('mode=admin_test')) {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+
+        show('scr-login');
+        loadSavedCredentials();
     }
 }
 
@@ -216,19 +232,30 @@ function switchAuthTab(type) {
 function loginUser() {
     const userOrPhone = document.getElementById('login-phone') ? document.getElementById('login-phone').value.trim() : '';
     const pass = document.getElementById('login-pass') ? document.getElementById('login-pass').value.trim() : '';
+    const rememberMe = document.getElementById('remember-me') ? document.getElementById('remember-me').checked : false;
 
     if (!userOrPhone || !pass) {
         alert(curLang === 'bn' ? "ইউজার আইডি এবং পাসওয়ার্ড সঠিকভাবে দিন!" : "Please enter valid credentials!");
         return;
     }
 
-    // Regular Player Search in Local Storage
     const savedUserRaw = localStorage.getItem('kbc_user_account_' + userOrPhone);
     if (savedUserRaw) {
         const userData = JSON.parse(savedUserRaw);
         if (userData.pass === pass) {
             localStorage.setItem('kbc_current_user', userOrPhone);
             localStorage.setItem('kbc_login_session', 'active');
+
+            if (rememberMe) {
+                localStorage.setItem('kbc_saved_username', userOrPhone);
+                localStorage.setItem('kbc_saved_password', pass);
+                localStorage.setItem('kbc_remember_flag', 'true');
+            } else {
+                localStorage.removeItem('kbc_saved_username');
+                localStorage.removeItem('kbc_saved_password');
+                localStorage.removeItem('kbc_remember_flag');
+            }
+
             playSound('alert');
             checkUserTrialAndProceed(userData);
             return;
@@ -238,7 +265,22 @@ function loginUser() {
     alert(curLang === 'bn' ? "ভুল আইডি বা পাসওয়ার্ড!" : "Invalid ID or Password!");
 }
 
-// Check 5-Day Trial Expiry Logic
+function loadSavedCredentials() {
+    const savedUser = localStorage.getItem('kbc_saved_username');
+    const savedPass = localStorage.getItem('kbc_saved_password');
+    const rememberFlag = localStorage.getItem('kbc_remember_flag');
+
+    const phoneInput = document.getElementById('login-phone');
+    const passInput = document.getElementById('login-pass');
+    const rememberCheckbox = document.getElementById('remember-me');
+
+    if (savedUser && savedPass && rememberFlag === 'true') {
+        if (phoneInput) phoneInput.value = savedUser;
+        if (passInput) passInput.value = savedPass;
+        if (rememberCheckbox) rememberCheckbox.checked = true;
+    }
+}
+
 function checkUserTrialAndProceed(userData) {
     if (userData.role === 'admin') {
         show('scr-lang');
@@ -253,14 +295,12 @@ function checkUserTrialAndProceed(userData) {
     const promoSec = document.getElementById('promo-section');
 
     if (elapsedDays > allowedDays) {
-        // Trial Expired - Show Promo Code Input Section
         if (promoSec) promoSec.style.display = 'block';
         alert(curLang === 'bn' 
             ? "আপনার " + allowedDays + " দিনের মেয়াদের ট্রায়াল শেষ হয়ে গেছে! অনুগ্রহ করে প্রমো কোড ব্যবহার করুন।" 
             : "Your " + allowedDays + "-day trial has expired! Please enter a promo code.");
         show('scr-login');
     } else {
-        // Active Trial - Hide Promo Code Box and proceed to Language Selection
         if (promoSec) promoSec.style.display = 'none';
         show('scr-lang');
     }
@@ -282,7 +322,6 @@ function registerUser() {
         return;
     }
 
-    // Save User Data and Record Registration Date for 5-Day Trial
     const userData = {
         name: name,
         phone: phone,
@@ -316,7 +355,7 @@ function handlePromoSubmit() {
         const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
         if (savedUserRaw) {
             let userData = JSON.parse(savedUserRaw);
-            userData.trialDays = (userData.trialDays || 5) + 15; // Extends trial by 15 days
+            userData.trialDays = (userData.trialDays || 5) + 15;
             localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
             
             alert(curLang === 'bn' ? "প্রোমো কোড সফল হয়েছে! আপনার মেয়াদ আরও ১৫ দিন বাড়ানো হলো।" : "Promo code applied! Trial extended by 15 days.");
@@ -348,7 +387,6 @@ function startGameWithLevel(lvl) {
     wr = 0;
     currentSlabCount = 0;
 
-    // Filter questions based on selection
     let filtered = fullQuestionPool.filter(q => {
         let matchSubj = (curSubject === 'all') || (q.subject === curSubject);
         let matchLvl = (q.level === curLevel);
@@ -356,7 +394,7 @@ function startGameWithLevel(lvl) {
     });
 
     if (filtered.length === 0) {
-        filtered = fullQuestionPool; // Fallback if no questions match strict filter
+        filtered = fullQuestionPool;
     }
 
     const charMap = { 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
@@ -390,7 +428,6 @@ function loadQ() {
         return end();
     }
 
-    // Check for 5-Round Slab Intermission
     if (curIdx > 0 && curIdx % 5 === 0 && currentSlabCount !== curIdx) {
         currentSlabCount = curIdx;
         const slabScore = document.getElementById('slab-score');
@@ -576,7 +613,6 @@ function show(id) {
     const target = document.getElementById(id);
     if (target) target.classList.add('active');
 
-    // Secure Top Navigation Bar Visibility Logic
     const topNav = document.getElementById('top-nav-bar');
     if (topNav) {
         if (id === 'scr-login') {
@@ -596,12 +632,12 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
-// Auto load JSON and initialize on window load with Auto-Login, Admin Bypass, and Expiry check
+// Auto load JSON and initialize on window load
 window.onload = async () => {
     await loadQuestionBank();
     initVoice();
+    loadSavedCredentials();
 
-    // Check for Admin Direct Test Bypass Parameter
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('mode') === 'admin_test') {
         console.log("Admin Test Bypass Activated.");

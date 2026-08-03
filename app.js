@@ -1,5 +1,5 @@
 // ==========================================
-// KBC PREMIUM 2026 - COMPLETE APP LOGIC
+// KBC PREMIUM 2026 - COMPLETE APP LOGIC (UPDATED & BUG-FIXED)
 // ==========================================
 
 let curLang = 'bn';
@@ -156,7 +156,9 @@ function toggleVoice() {
         startListening();
     } else {
         if (btn) btn.classList.remove('active', 'listening');
-        if (recognition) recognition.stop();
+        if (recognition) {
+            try { recognition.stop(); } catch(e) {}
+        }
     }
 }
 
@@ -165,7 +167,7 @@ function startListening() {
         try {
             recognition.start();
         } catch(e) {
-            console.log('Recognition already running');
+            console.log('Recognition already running or busy');
         }
     }
 }
@@ -174,10 +176,10 @@ function processVoiceCommand(cmd) {
     if (!canAnswer) return;
     
     const mappings = {
-        'a': 0, 'এ': 0, 'one': 0, 'প্রথম': 0, 'option a': 0,
-        'b': 1, 'বি': 1, 'two': 1, 'দ্বিতীয়': 1, 'option b': 1,
-        'c': 2, 'সি': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2,
-        'd': 3, 'ডি': 3, 'four': 3, 'চতুর্থ': 3, 'option d': 3
+        'a': 0, 'এ': 0, 'এক': 0, 'one': 0, 'প্রথম': 0, 'option a': 0, '১': 0, '1': 0, 'ক': 0,
+        'b': 1, 'বি': 1, 'দুই': 1, 'two': 1, 'দ্বিতীয়': 1, 'option b': 1, '২': 1, '2': 1, 'খ': 1,
+        'c': 2, 'সি': 2, 'তিন': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2, '৩': 2, '3': 2, 'গ': 2,
+        'd': 3, 'ডি': 3, 'চার': 3, 'four': 3, 'চতুর্থ': 3, 'option d': 3, '৪': 3, '4': 3, 'ঘ': 3
     };
     
     for (let key in mappings) {
@@ -199,7 +201,7 @@ function toggleMute() {
         if (label) label.innerText = curLang === 'bn' ? 'আনমিউট' : 'Unmute';
         if (window.speechSynthesis) window.speechSynthesis.cancel();
     } else {
-        if (bg && document.getElementById('scr-game').classList.contains('active')) {
+        if (bg && document.getElementById('scr-game') && document.getElementById('scr-game').classList.contains('active')) {
             bg.play().catch(e => console.log("Audio play blocked"));
         }
         if (label) label.innerText = curLang === 'bn' ? 'সাউন্ড' : 'Mute';
@@ -213,7 +215,7 @@ function confirmExitGame() {
         const bg = document.getElementById('bg-music');
         if (bg) bg.pause();
         if (window.speechSynthesis) window.speechSynthesis.cancel();
-        if (recognition) recognition.stop();
+        if (recognition) { try { recognition.stop(); } catch(e) {} }
         show('scr-lang');
     }
 }
@@ -225,7 +227,7 @@ function logoutUser() {
         const bg = document.getElementById('bg-music');
         if (bg) bg.pause();
         if (window.speechSynthesis) window.speechSynthesis.cancel();
-        if (recognition) recognition.stop();
+        if (recognition) { try { recognition.stop(); } catch(e) {} }
 
         // Clear Session
         localStorage.removeItem('kbc_login_session');
@@ -561,8 +563,9 @@ function check(idx) {
 
     const q = activeQuestions[curIdx];
     const opts = document.querySelectorAll('.option');
+    let isCorrect = (idx === q.ans);
 
-    if (idx === q.ans) {
+    if (isCorrect) {
         let points = 10;
         if (curIdx >= 10) points = 20;
         if (curIdx >= 25) points = 50;
@@ -578,17 +581,32 @@ function check(idx) {
         if (opts[q.ans]) opts[q.ans].classList.add('correct');
     }
 
-    const explanation = curLang === "bn" ? (q.expb || q.expe || "ব্যাখ্যা উপলব্ধ নেই।") : (q.expe || q.expb || "Explanation not available.");
+    const explanationText = curLang === "bn" ? (q.expb || q.expe || "ব্যাখ্যা উপলব্ধ নেই।") : (q.expe || q.expb || "Explanation not available.");
+    const correctLetter = String.fromCharCode(65 + q.ans);
+
+    let statusHeader = "";
+    if (isCorrect) {
+        statusHeader = curLang === "bn" 
+            ? `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✓ চমৎকার! আপনার উত্তর সঠিক হয়েছে।</div>`
+            : `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✓ Correct Answer! Well done.</div>`;
+    } else {
+        statusHeader = curLang === "bn" 
+            ? `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✗ ভুল উত্তর! সঠিক উত্তর: Option ${correctLetter}</div>`
+            : `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✗ Incorrect! Correct Answer: Option ${correctLetter}</div>`;
+    }
+
     const modal = document.getElementById("exp-modal");
     const modalBody = document.getElementById("exp-modal-body");
     const box = document.getElementById("exp-box");
 
+    const fullHTML = statusHeader + "<hr style='margin: 8px 0; border: 0; border-top: 1px solid #ccc;'>" + "<b>" + (curLang === "bn" ? "ব্যাখ্যা" : "Explanation") + ":</b><br>" + explanationText;
+
     if (modal && modalBody) {
-        modalBody.innerHTML = "<b>" + (curLang === "bn" ? "ব্যাখ্যা" : "Explanation") + ":</b><br>" + explanation;
+        modalBody.innerHTML = fullHTML;
         modal.style.display = "flex";
     } else if (box) {
         box.style.display = "block";
-        box.innerHTML = "<b>" + (curLang === "bn" ? "ব্যাখ্যা" : "Explanation") + ":</b><br>" + explanation;
+        box.innerHTML = fullHTML;
     }
 
     setTimeout(() => {
@@ -596,7 +614,7 @@ function check(idx) {
         if (box) box.style.display = "none";
         curIdx++;
         loadQ();
-    }, 3500);
+    }, 4500);
 }
 
 function closeExpModal() {
@@ -613,23 +631,32 @@ function playSound(type) {
         'alert': document.getElementById('snd-alert')
     };
     if (sounds[type] && typeof sounds[type].play === 'function') {
-        sounds[type].currentTime = 0;
-        sounds[type].volume = 1.0; // Fixed DOMException range bug (max allowed is 1.0)
-        sounds[type].play().catch(e => console.warn("Audio error:", e));
+        try {
+            sounds[type].currentTime = 0;
+            sounds[type].volume = 1.0; 
+            sounds[type].play().catch(e => console.warn("Audio play prevented:", e));
+        } catch(e) {
+            console.warn("Audio exception:", e);
+        }
     }
 }
 
 function speak(t) {
     if (isMuted || !window.speechSynthesis || !t) return;
-    window.speechSynthesis.cancel();
-    const m = new SpeechSynthesisUtterance(t);
-    m.lang = (curLang === 'bn') ? 'bn-IN' : 'en-IN';
-    m.pitch = 1.0;
-    m.rate = 0.9;
-    window.speechSynthesis.speak(m);
+    try {
+        window.speechSynthesis.cancel();
+        const m = new SpeechSynthesisUtterance(t);
+        m.lang = (curLang === 'bn') ? 'bn-IN' : 'en-IN';
+        m.pitch = 1.0;
+        m.rate = 0.9;
+        window.speechSynthesis.speak(m);
+    } catch(e) {
+        console.warn("TTS Error:", e);
+    }
 }
 
 function end() {
+    clearInterval(timerInt);
     show('scr-res');
     const resScore = document.getElementById('res-score');
     const resCor = document.getElementById('res-cor');
@@ -643,7 +670,7 @@ function end() {
     if (bg) bg.pause();
     
     if (window.speechSynthesis) window.speechSynthesis.cancel();
-    if (recognition) recognition.stop();
+    if (recognition) { try { recognition.stop(); } catch(e) {} }
 }
 
 function show(id) {

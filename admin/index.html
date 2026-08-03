@@ -8,8 +8,18 @@
 </head>
 <body>
 
+    <!-- ADMIN LOGIN MODAL / CARD -->
+    <div id="admin-login-screen" style="display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0f172a; z-index: 999999; justify-content: center; align-items: center;">
+        <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 2px solid #ffd700; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);">
+            <h2 style="color: #ffd700; margin-bottom: 20px;">🔑 Admin Login</h2>
+            <input type="text" id="admin-user-id" placeholder="Admin ID" class="styled-input" style="width: 100%; margin-bottom: 12px; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+            <input type="password" id="admin-user-pass" placeholder="Password" class="styled-input" style="width: 100%; margin-bottom: 20px; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff;">
+            <button onclick="loginAdminCheck()" class="btn-primary" style="width: 100%; padding: 10px; background: #3b82f6; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Login Dashboard</button>
+        </div>
+    </div>
+
     <!-- Sidebar Navigation -->
-    <aside class="admin-sidebar">
+    <aside class="admin-sidebar" id="admin-sidebar" style="display: none;">
         <div class="brand-header">
             <span>🏆</span> KBC ADMIN
         </div>
@@ -30,7 +40,7 @@
     </aside>
 
     <!-- Main Content Area -->
-    <main class="admin-main">
+    <main class="admin-main" id="admin-main-content" style="display: none;">
         
         <!-- Header -->
         <header class="top-header">
@@ -182,17 +192,47 @@
 
     <!-- UI Logic Scripts -->
     <script>
-        // Tab Switcher Function
+        // Check session on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                showDashboardUI();
+            } else {
+                showLoginUI();
+            }
+        });
+
+        function loginAdminCheck() {
+            const user = document.getElementById('admin-user-id').value;
+            const pass = document.getElementById('admin-user-pass').value;
+
+            // Default credentials (admin / admin123) - Change if needed
+            if (user === 'admin' && pass === 'admin123') {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                showDashboardUI();
+            } else {
+                alert('ভুল অ্যাডমিন আইডি বা পাসওয়ার্ড!');
+            }
+        }
+
+        function showDashboardUI() {
+            document.getElementById('admin-login-screen').style.display = 'none';
+            document.getElementById('admin-sidebar').style.display = 'block';
+            document.getElementById('admin-main-content').style.display = 'block';
+        }
+
+        function showLoginUI() {
+            document.getElementById('admin-login-screen').style.display = 'flex';
+            document.getElementById('admin-sidebar').style.display = 'none';
+            document.getElementById('admin-main-content').style.display = 'none';
+        }
+
         function switchTab(tabName, element) {
-            // Hide all tab contents
             const tabs = document.querySelectorAll('.tab-content');
             tabs.forEach(tab => tab.style.display = 'none');
 
-            // Remove active class from all nav items
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => item.classList.remove('active'));
 
-            // Show selected tab & set active navigation
             const targetTab = document.getElementById('sec-' + tabName);
             if (targetTab) {
                 targetTab.style.display = 'block';
@@ -203,11 +243,10 @@
         }
 
         function logoutAdmin() {
-            sessionStorage.removeItem('adminLoggedIn');
-            localStorage.removeItem('adminLoggedIn');
             sessionStorage.clear();
+            localStorage.clear();
             alert('অ্যাডমিন প্যানেল থেকে সফলভাবে লগআউট করা হয়েছে।');
-            window.location.replace('index.html?mode=login');
+            showLoginUI();
         }
 
         function openAuditLogModal() {
@@ -226,7 +265,6 @@
             }
         }
 
-        // Toggle Player Block / Unblock Demo Action
         function togglePlayerBlock(btn) {
             const row = btn.closest('tr');
             const badge = row.querySelector('.badge');

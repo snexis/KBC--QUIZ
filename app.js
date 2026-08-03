@@ -336,7 +336,7 @@ function loginUser() {
 
     if (failedLoginAttempts[userOrPhone] >= 3) {
         alert(curLang === 'bn' 
-            ? "পরপর ৩ বার ভুল পাসওয়ার্ড দেওয়া হয়েছে! অ্যাকাউন্ট সুরক্ষায় পাসওয়ার্ড রিকভারি পেজে পাঠানো হচ্ছে।" 
+            ? "পরপর ৩ বার ভুল পাসওয়ার্ড দেওয়া হয়েছে! অ্যাকাউন্ট সুরক্ষায় পাসওয়ার্ড রিকভারি পেজে পাঠানো হচ্ছে।" 
             : "3 consecutive incorrect password attempts! Redirecting to password recovery.");
         failedLoginAttempts[userOrPhone] = 0;
         openForgotPassModal();
@@ -462,7 +462,7 @@ function handlePromoSubmit() {
             userData.trialDays = (userData.trialDays || 5) + 15;
             localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
             
-            alert(curLang === 'bn' ? "প্রোমো কোড সফল হয়েছে! আপনার মেয়াদ আরও ১৫ দিন বাড়ানো হলো।" : "Promo code applied! Trial extended by 15 days.");
+            alert(curLang === 'bn' ? "প্রোমো কোড সফল হয়েছে! আপনার মেয়াদ আরও ১৫ দিন বাড়ানো হলো。" : "Promo code applied! Trial extended by 15 days.");
             
             const promoSec = document.getElementById('promo-section');
             if (promoSec) promoSec.style.display = 'none';
@@ -619,7 +619,6 @@ function loadQ() {
         }
     }, 1000);
 
-    // Read Question and Options sequentially
     let speechText = txt;
     if (opts && opts.length > 0) {
         opts.forEach((o, i) => {
@@ -668,11 +667,11 @@ function check(idx) {
     let statusHeader = "";
     if (isCorrect) {
         statusHeader = curLang === "bn" 
-            ? `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✓ চমৎকার! আপনার উত্তর সঠিক হয়েছে।</div>`
+            ? `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✓ চমৎকার! আপনার উত্তর সঠিক হয়েছে।</div>` 
             : `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✓ Correct Answer! Well done.</div>`;
     } else {
         statusHeader = curLang === "bn" 
-            ? `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✗ ভুল উত্তর! সঠিক উত্তর: Option ${correctLetter}</div>`
+            ? `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✗ ভুল উত্তর! সঠিক উত্তর: Option ${correctLetter}</div>` 
             : `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✗ Incorrect! Correct Answer: Option ${correctLetter}</div>`;
     }
 
@@ -705,7 +704,6 @@ function closeExplanationModal() {
     }
 }
 
-// Modal Admin Control Functions
 function openAdminModal() {
     const modal = document.getElementById('modal-admin');
     if (modal) modal.style.display = 'flex';
@@ -728,7 +726,6 @@ function verifyAdminAccess() {
     }
 }
 
-// Player Invite Control Functions
 function invitePlayer() {
     const modal = document.getElementById('modal-invite');
     if (modal) modal.style.display = 'flex';
@@ -749,7 +746,6 @@ function copyInviteCode() {
     }
 }
 
-// Forgot Password / Recovery Modals Controllers
 function openForgotPassModal() {
     const modal = document.getElementById('modal-forgot');
     if (modal) modal.style.display = 'flex';
@@ -788,7 +784,7 @@ function verifyAndResetPassword() {
 
     const savedUserRaw = localStorage.getItem('kbc_user_account_' + username);
     if (!savedUserRaw) {
-        alert(curLang === 'bn' ? "এই ইউজারনেম দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি!" : "No account found with this username!");
+        alert(curLang === 'bn' ? "এই ইউজারনেম দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি!" : "No account found with this username!");
         return;
     }
 
@@ -796,7 +792,7 @@ function verifyAndResetPassword() {
 
     if (newPassGroup && newPassGroup.style.display === 'none') {
         if (userData.phone && userData.phone !== phone) {
-            alert(curLang === 'bn' ? "মোবাইল নম্বরটি সঠিক নয়!" : "Registered mobile number does not match!");
+            alert(curLang === 'bn' ? "মোবাইল নম্বরটি সঠিক নয়!" : "Registered mobile number does not match!");
             return;
         }
         newPassGroup.style.display = 'block';
@@ -821,7 +817,7 @@ function verifyAndResetPassword() {
         localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
     }
 
-    alert(curLang === 'bn' ? "পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে! এখন লগইন করুন।" : "Password successfully updated! Please login now.");
+    alert(curLang === 'bn' ? "পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে! এখন লগইন করুন।" : "Password successfully updated! Please login now.");
     closeForgotPassModal();
 }
 
@@ -896,72 +892,12 @@ function show(id) {
 
 // Anti-Cheat: Resets game if user switches tabs
 document.addEventListener('visibilitychange', () => {
-    if (document.hidden && curIdx > 0 && curIdx < activeQuestions.length) {
-        document.body.classList.add('blur');
-        alert("GAME ABORTED DUE TO TAB SWITCHING (CHEATING PREVENTION).");
-        location.reload();
-    }
-});
-
-// Auto load JSON and initialize on window load
-window.onload = async () => {
-    await loadQuestionBank();
-    initVoice();
-    loadSavedCredentials();
-
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('mode') === 'admin_test') {
-        console.log("Admin Test Bypass Activated.");
-        show('scr-lang');
-        return;
-    }
-
-    const currentSession = localStorage.getItem('kbc_login_session');
-    const currentUser = localStorage.getItem('kbc_current_user');
-
-    if (currentSession === 'active' && currentUser) {
-        const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
-        if (savedUserRaw) {
-            checkUserTrialAndProceed(JSON.parse(savedUserRaw));
-        } else {
-            show('scr-login');
-        }
-    } else {
-        show('scr-login');
-    }
-};
-// Anti-Cheat: Resets game if user switches tabs
-document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
-        const gameScreen = document.getElementById('scr-game');
-        if (gameScreen && gameScreen.classList.contains('active')) {
-            alert(curLang === 'bn' ? "সতর্কতা! ট্যাব পরিবর্তন করার কারণে গেমটি রিসেট করা হলো।" : "Warning! Game reset due to tab switching.");
-            end();
-        }
+        clearInterval(timerInt);
+        if (explanationTimer) clearTimeout(explanationTimer);
+        const bg = document.getElementById('bg-music');
+        if (bg) bg.pause();
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        if (recognition) { try { recognition.stop(); } catch(e) {} }
     }
 });
-
-// Sync registration data with both storage keys to fix Admin Panel visibility permanently
-function syncPlayerToAdmin(userData) {
-    try {
-        let adminPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
-        const index = adminPlayers.findIndex(p => p.id === userData.username || p.id === userData.id);
-        
-        const formattedAdminPlayer = {
-            id: userData.username || userData.id,
-            name: userData.name,
-            password: userData.pass,
-            highScore: userData.highScore || 0,
-            status: userData.status || 'Active'
-        };
-
-        if (index >= 0) {
-            adminPlayers[index] = formattedAdminPlayer;
-        } else {
-            adminPlayers.push(formattedAdminPlayer);
-        }
-        localStorage.setItem('kbc_players', JSON.stringify(adminPlayers));
-    } catch (e) {
-        console.error("Error syncing player to admin:", e);
-    }
-}

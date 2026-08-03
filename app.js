@@ -564,8 +564,17 @@ function loadQ() {
         }
     }, 1000);
 
-    speak(txt);
-    if (voiceEnabled) setTimeout(startListening, 1500);
+// Read Question and Options sequentially
+    let speechText = txt;
+    if (opts && opts.length > 0) {
+        opts.forEach((o, i) => {
+            const letter = String.fromCharCode(65 + i);
+            speechText += (curLang === 'bn') ? `. অপশন ${letter}: ${o}` : `. Option ${letter}: ${o}`;
+        });
+    }
+
+    speak(speechText);
+    if (voiceEnabled) setTimeout(startListening, 2000);
 }
 
 function proceedToNextSlab() {

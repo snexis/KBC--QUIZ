@@ -4,263 +4,150 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KBC Admin Dashboard</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #0b0c10;
-            color: #c5a059;
-            padding: 20px;
-        }
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #1f2833;
-            margin-bottom: 30px;
-        }
-        h1 {
-            color: #66fcf1;
-            font-size: 24px;
-        }
-        .btn-logout {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .stat-card {
-            background: #1f2833;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #c5a059;
-            text-align: center;
-        }
-        .stat-card h3 {
-            color: #c5a059;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-        .stat-card p {
-            color: #66fcf1;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .section-box {
-            background: #1f2833;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        .section-box h2 {
-            color: #66fcf1;
-            margin-bottom: 15px;
-            font-size: 18px;
-            border-bottom: 1px solid #45a29e;
-            padding-bottom: 8px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #45a29e;
-            color: #fff;
-        }
-        th {
-            background-color: #0b0c10;
-            color: #c5a059;
-        }
-        .btn-action {
-            background: #45a29e;
-            color: #000;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-right: 5px;
-        }
-        .btn-test {
-            background: #c5a059;
-            color: #000;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-        }
-        /* Modal Popup Styling */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        .modal-content {
-            background: #1f2833;
-            width: 90%;
-            max-width: 850px;
-            max-height: 80vh;
-            overflow-y: auto;
-            padding: 20px;
-            border-radius: 10px;
-            border: 2px solid #c5a059;
-            color: #fff;
-        }
-    </style>
+    <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
-    <header>
-        <h1>🏆 KBC PREMIUM - Admin Master Control</h1>
-        <button class="btn-logout" onclick="logoutAdmin()">Logout 🚪</button>
-    </header>
-
-    <!-- Top Statistics Overview -->
-    <div class="stats-grid">
-        <div class="stat-card">
-            <h3>TOTAL REGISTERED PLAYERS</h3>
-            <p id="total-players">0</p>
+    <!-- Modern Sidebar Navigation -->
+    <aside class="admin-sidebar">
+        <div class="brand-header">
+            <span>🏆</span> KBC ADMIN
         </div>
-        <div class="stat-card">
-            <h3>ACTIVE SESSIONS</h3>
-            <p id="active-sessions">0</p>
-        </div>
-        <div class="stat-card">
-            <h3>TOTAL QUESTIONS IN BANK</h3>
-            <p id="total-questions">150</p>
-        </div>
-    </div>
+        <ul class="nav-list">
+            <li class="nav-item active">📊 Dashboard</li>
+            <li class="nav-item" onclick="document.getElementById('players-section').scrollIntoView({behavior: 'smooth'})">👥 Players</li>
+            <li class="nav-item" onclick="document.getElementById('add-question-section').scrollIntoView({behavior: 'smooth'})">➕ Add Question</li>
+            <li class="nav-item" onclick="openAuditLogModal()">📋 Audit Log</li>
+        </ul>
+    </aside>
 
-    <!-- Live Test Player Section -->
-    <div class="section-box">
-        <h2>🎮 Live Player View & Testing</h2>
-        <p style="color: #ccc; margin-bottom: 10px;">প্লেয়ারদের গেম ইন্টারফেস সরাসরি টেস্ট করতে বা প্লেয়ার হিসেবে গেমটি দেখতে নিচের বাটনে ক্লিক করুন:</p>
-        <a href="../index.html?mode=admin_test" target="_blank" class="btn-test">Launch Player View (New Tab) 🚀</a>
-    </div>
+    <!-- Main Dashboard Area -->
+    <main class="admin-main">
+        <header>
+            <h1>🏆 KBC PREMIUM - Admin Master Control</h1>
+            <button class="btn-logout" onclick="logoutAdmin()">Logout 🚪</button>
+        </header>
 
-    <!-- Registered Players Table -->
-    <div class="section-box">
-        <h2>👥 Registered Players List</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>User ID / Phone</th>
-                    <th>Name</th>
-                    <th>High Score</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="player-table-body">
-                <!-- Real Players List will load here dynamically -->
-                <tr>
-                    <td colspan="5" style="text-align: center; color: #aaa;">কোনো প্লেয়ার পাওয়া যায়নি</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Add New Question Section -->
-    <div class="section-box" style="margin-top: 20px;">
-        <h2>➕ Add New Question to Bank</h2>
-        <div style="display: flex; flex-direction: column; gap: 12px; max-width: 750px; margin-top: 15px;">
-            
-            <!-- Created By / Author Name (Mandatory Field) -->
-            <div>
-                <label style="color: #66fcf1; font-weight: bold; font-size: 14px; display: block; margin-bottom: 5px;">
-                    👤 Created By / এডমিনের নাম (বাধ্যতামূলক):
-                </label>
-                <input type="text" id="admin-q-author" placeholder="আপনার নাম লিখুন..." style="padding: 10px; width: 100%; border-radius: 4px; background: #222; color: #fff; border: 1px solid #45a29e;">
+        <!-- Top Statistics Overview -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">TOTAL REGISTERED PLAYERS</div>
+                <div class="stat-value" id="total-players">0</div>
             </div>
+            <div class="stat-card">
+                <div class="stat-title">ACTIVE SESSIONS</div>
+                <div class="stat-value" id="active-sessions">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">TOTAL QUESTIONS IN BANK</div>
+                <div class="stat-value" id="total-questions">150</div>
+            </div>
+        </div>
 
-            <!-- Language, Subject, Level Mapped Dropdowns -->
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-               <!-- Language dropdown removed -->
-                <select id="admin-q-subj" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
-                    <option value="all">ALL MIXED / সব বিষয়</option>
-                    <option value="science">SCIENCE / বিজ্ঞান</option>
-                    <option value="history">HISTORY / ইতিহাস</option>
-                    <option value="philosophy">PHILOSOPHY / দর্শন</option>
-                    <option value="math">MATH / গণিত</option>
-                    <option value="business">BUSINESS / ব্যবসা ও অর্থনীতি</option>
-                    <option value="coding">CODING & TECH / কম্পিউটার</option>
-                </select>
+        <!-- Live Test Player Section -->
+        <div class="section-box">
+            <div class="section-title">🎮 Live Player View & Testing</div>
+            <p style="color: #94a3b8; margin-bottom: 12px;">প্লেয়ারদের গেম ইন্টারফেস সরাসরি টেস্ট করতে বা প্লেয়ার হিসেবে গেমটি দেখতে নিচের বাটনে ক্লিক করুন:</p>
+            <a href="../index.html?mode=admin_test" target="_blank" class="btn-test">Launch Player View (New Tab) 🚀</a>
+        </div>
+
+        <!-- Registered Players Table -->
+        <div class="section-box" id="players-section">
+            <div class="section-title">👥 Registered Players List</div>
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>User ID / Phone</th>
+                        <th>Name</th>
+                        <th>High Score</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="player-table-body">
+                    <!-- Real Players List will load here dynamically -->
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: #94a3b8;">কোনো প্লেয়ার পাওয়া যায়নি</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add New Question Section -->
+        <div class="section-box" id="add-question-section" style="margin-top: 20px;">
+            <div class="section-title">➕ Add New Question to Bank</div>
+            <div style="display: flex; flex-direction: column; gap: 12px; max-width: 750px; margin-top: 15px;">
                 
-                <select id="admin-q-level" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
-                    <option value="junior">JUNIOR (CLASS 5 - 8)</option>
-                    <option value="secondary">SECONDARY (CLASS 9 - 10)</option>
-                    <option value="hs">HIGHER SECONDARY (CLASS 11 - 12)</option>
-                    <option value="advanced">ADVANCED / DEGREE / TECH</option>
-                </select>
-            </div>
+                <!-- Created By / Author Name (Mandatory Field) -->
+                <div>
+                    <label style="color: var(--accent-cyan); font-weight: bold; font-size: 14px; display: block; margin-bottom: 5px;">
+                        👤 Created By / এডমিনের নাম (বাধ্যতামূলক):
+                    </label>
+                    <input type="text" id="admin-q-author" placeholder="আপনার নাম লিখুন..." style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid var(--gold-glow);">
+                </div>
 
-            <!-- Question Text Area -->
-            <textarea id="admin-q-text" placeholder="এখানে মূল প্রশ্নটি লিখুন..." rows="3" style="padding: 10px; width: 100%; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444; resize: vertical;"></textarea>
-            
-            <!-- Options Grid -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <input type="text" id="admin-opt-a" placeholder="Option A (ক)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
-                <input type="text" id="admin-opt-b" placeholder="Option B (খ)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
-                <input type="text" id="admin-opt-c" placeholder="Option C (গ)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
-                <input type="text" id="admin-opt-d" placeholder="Option D (ঘ)" style="padding: 10px; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
-            </div>
+                <!-- Subject & Level Dropdowns -->
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <select id="admin-q-subj" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                        <option value="all">ALL MIXED / সব বিষয়</option>
+                        <option value="science">SCIENCE / বিজ্ঞান</option>
+                        <option value="history">HISTORY / ইতিহাস</option>
+                        <option value="philosophy">PHILOSOPHY / দর্শন</option>
+                        <option value="math">MATH / গণিত</option>
+                        <option value="business">BUSINESS / ব্যবসা ও অর্থনীতি</option>
+                        <option value="coding">CODING & TECH / কম্পিউটার</option>
+                    </select>
+                    
+                    <select id="admin-q-level" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                        <option value="junior">JUNIOR (CLASS 5 - 8)</option>
+                        <option value="secondary">SECONDARY (CLASS 9 - 10)</option>
+                        <option value="hs">HIGHER SECONDARY (CLASS 11 - 12)</option>
+                        <option value="advanced">ADVANCED / DEGREE / TECH</option>
+                    </select>
+                </div>
 
-            <!-- Correct Option Dropdown -->
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <label style="color: #fff; font-weight: bold;">সঠিক উত্তর:</label>
-                <select id="admin-correct-opt" style="padding: 10px; flex: 1; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444;">
-                    <option value="a">Option A (ক)</option>
-                    <option value="b">Option B (খ)</option>
-                    <option value="c">Option C (গ)</option>
-                    <option value="d">Option D (ঘ)</option>
-                </select>
-            </div>
+                <!-- Question Text Area -->
+                <textarea id="admin-q-text" placeholder="এখানে মূল প্রশ্নটি লিখুন..." rows="3" style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); resize: vertical;"></textarea>
+                
+                <!-- Options Grid -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="text" id="admin-opt-a" placeholder="Option A (ক)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                    <input type="text" id="admin-opt-b" placeholder="Option B (খ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                    <input type="text" id="admin-opt-c" placeholder="Option C (গ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                    <input type="text" id="admin-opt-d" placeholder="Option D (ঘ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                </div>
 
-            <!-- Explanation Text Area -->
-            <textarea id="admin-q-exp" placeholder="উত্তরের সঠিক ব্যাখ্যা বা কারণ লিখুন (Explanation)..." rows="2" style="padding: 10px; width: 100%; border-radius: 4px; background: #222; color: #fff; border: 1px solid #444; resize: vertical;"></textarea>
+                <!-- Correct Option Dropdown -->
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <label style="color: #fff; font-weight: bold;">সঠিক উত্তর:</label>
+                    <select id="admin-correct-opt" style="padding: 10px; flex: 1; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                        <option value="a">Option A (ক)</option>
+                        <option value="b">Option B (খ)</option>
+                        <option value="c">Option C (গ)</option>
+                        <option value="d">Option D (ঘ)</option>
+                    </select>
+                </div>
 
-            <!-- Action Buttons -->
-            <div style="display: flex; gap: 10px; margin-top: 5px;">
-                <button onclick="addNewQuestionFromAdmin()" class="btn-action" style="flex: 2; padding: 12px; background-color: #27ae60; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 15px;">💾 Save Question to Game</button>
-                <button onclick="openAuditLogModal()" class="btn-action" style="flex: 1; padding: 12px; background-color: #45a29e; color: #000; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 15px;">📋 View History Log</button>
+                <!-- Explanation Text Area -->
+                <textarea id="admin-q-exp" placeholder="উত্তরের সঠিক ব্যাখ্যা বা কারণ লিখুন (Explanation)..." rows="2" style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); resize: vertical;"></textarea>
+
+                <!-- Action Buttons -->
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <button onclick="addNewQuestionFromAdmin()" class="btn-action" style="flex: 2; padding: 12px; background-color: var(--success); color: white; border: none; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 15px;">💾 Save Question to Game</button>
+                    <button onclick="openAuditLogModal()" class="btn-action" style="flex: 1; padding: 12px; background-color: var(--accent-blue); color: #000; border: none; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 15px;">📋 View History Log</button>
+                </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- Secret Admin Audit Log Modal Popup -->
-    <div id="audit-log-modal" class="modal-overlay">
-        <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #45a29e; padding-bottom: 10px;">
-                <h3 style="color: #c5a059; margin: 0; font-size: 20px;">📋 Admin Question Log & Audit History</h3>
-                <button onclick="closeAuditLogModal()" style="background: #e74c3c; color: #fff; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-weight: bold;">✕ Close</button>
+    <div id="audit-log-modal" class="admin-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 style="color: var(--border-gold); margin: 0; font-size: 20px;">📋 Admin Question Log & Audit History</h3>
+                <button onclick="closeAuditLogModal()" class="close-btn">✕ Close</button>
             </div>
-            <table>
+            <table class="custom-table">
                 <thead>
                     <tr>
                         <th>Author Name</th>
@@ -286,6 +173,16 @@
             sessionStorage.removeItem('adminLoggedIn');
             alert('অ্যাডমিন প্যানেল থেকে লগআউট করা হয়েছে।');
             window.location.href = 'index.html';
+        }
+
+        function openAuditLogModal() {
+            const modal = document.getElementById('audit-log-modal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeAuditLogModal() {
+            const modal = document.getElementById('audit-log-modal');
+            if (modal) modal.classList.remove('active');
         }
     </script>
     <script src="app.js"></script>

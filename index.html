@@ -56,7 +56,7 @@
                     <button id="tab-signup-btn" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
                 </div>
 
-                <!-- Login Form -->
+             <!-- Login Form -->
                 <div id="form-login" class="auth-form active">
                     <div class="input-group">
                         <label for="login-phone">Mobile Number / User ID</label>
@@ -64,13 +64,43 @@
                     </div>
                     <div class="input-group">
                         <label for="login-pass">Password</label>
-                        <input type="password" id="login-pass" placeholder="Enter your Password">
+                        <div class="password-wrapper" style="position: relative; display: flex; align-items: center;">
+                            <input type="password" id="login-pass" placeholder="Enter your Password" style="width: 100%; padding-right: 40px;">
+                            <span onclick="togglePasswordVisibility('login-pass', this)" style="position: absolute; right: 12px; cursor: pointer; font-size: 18px; user-select: none;">👁️</span>
+                        </div>
                     </div>
-                    <div class="remember-group" style="display: flex; align-items: center; gap: 8px; margin: 10px 0;">
-                        <input type="checkbox" id="remember-me" style="width: auto; cursor: pointer;">
-                        <label for="remember-me" style="font-size: 14px; cursor: pointer; margin: 0;">Remember Me / Save Credentials</label>
+                    <div class="remember-group" style="display: flex; align-items: center; justify-content: space-between; margin: 10px 0;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="remember-me" style="width: auto; cursor: pointer;">
+                            <label for="remember-me" style="font-size: 14px; cursor: pointer; margin: 0;">Remember Me</label>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openForgotPassModal()" style="font-size: 13px; color: var(--gold, #ffd700); text-decoration: underline;">Forgot Password?</a>
                     </div>
                     <button class="btn btn-primary" onclick="loginUser()">LOGIN</button>
+                </div>
+
+                <!-- Sign Up / Registration Form -->
+                <div id="form-signup" class="auth-form" style="display:none;">
+                    <div class="input-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="Enter full name">
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-phone">Mobile Number</label>
+                        <input type="tel" id="signup-phone" placeholder="Enter 10-digit number" maxlength="10">
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-username">Username</label>
+                        <input type="text" id="signup-username" placeholder="e.g. QuizMaster99">
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-pass">Password</label>
+                        <div class="password-wrapper" style="position: relative; display: flex; align-items: center;">
+                            <input type="password" id="signup-pass" placeholder="Create password" style="width: 100%; padding-right: 40px;">
+                            <span onclick="togglePasswordVisibility('signup-pass', this)" style="position: absolute; right: 12px; cursor: pointer; font-size: 18px; user-select: none;">👁️</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="registerUser()">CREATE ACCOUNT</button>
                 </div>
 
                 <!-- Sign Up / Registration Form -->

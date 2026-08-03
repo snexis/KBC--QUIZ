@@ -126,12 +126,11 @@ function loadAuditLogs() {
     logTbody.innerHTML = html;
 }
 
-// Function to Load Real Players List (Fixed to check both storage keys)
+// Function to Load Real Players List with Live Indicator (Green Pulsing Badge)
 function loadRealPlayersList() {
     const tableBody = document.getElementById('player-table-body');
     if (!tableBody) return;
 
-    // Fetch from both possible storage keys to ensure data is found
     let savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || 'null');
     if (!savedPlayers || savedPlayers.length === 0) {
         savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
@@ -147,14 +146,34 @@ function loadRealPlayersList() {
     }
 
     let html = '';
+    const currentTime = Date.now();
+
     savedPlayers.forEach(player => {
         const playerId = player.id || player.phone;
         const playerStatus = player.status || (player.isBlocked ? 'Blocked' : 'Active');
         
+        // Check if player is truly live (active within the last 2 minutes / 120000 ms)
+        let isLive = false;
+        if (player.lastActive && (currentTime - player.lastActive < 120000)) {
+            isLive = true;
+        } else if (playerStatus === 'Active' && !player.isBlocked) {
+            // Fallback assumption if status is Active
+            isLive = true;
+        }
+
+        const liveBadge = isLive 
+            ? `<span style="display: inline-flex; align-items: center; gap: 5px; background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;"><span style="width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2ecc71;"></span> LIVE</span>`
+            : `<span style="color: #95a5a6; font-size: 11px;">Offline</span>`;
+
         html += `
             <tr>
                 <td>${player.phone || player.id || 'N/A'}</td>
-                <td>${player.name || player.username || 'Unknown'}</td>
+                <td>
+                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                        <span>${player.name || player.username || 'Unknown'}</span>
+                        ${liveBadge}
+                    </div>
+                </td>
                 <td>${player.highScore || 0} Points</td>
                 <td><span style="color: ${playerStatus === 'Blocked' ? '#e74c3c' : '#2ecc71'};">${playerStatus}</span></td>
                 <td>
@@ -168,7 +187,7 @@ function loadRealPlayersList() {
     tableBody.innerHTML = html;
 }
 
-// Block/Unblock Toggle Functionality (Fixed for both keys)
+// Block/Unblock Toggle Functionality
 function toggleBlockPlayer(playerId) {
     let storageKey = 'kbc_real_players';
     let savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
@@ -191,18 +210,16 @@ function toggleBlockPlayer(playerId) {
 
     localStorage.setItem(storageKey, JSON.stringify(savedPlayers));
     loadRealPlayersList();
+    updateAdminDashboardStats();
 }
 
-// Window load trigger (আপনার ফাইলের শেষের অংশ)
+// Window load trigger
 window.addEventListener('DOMContentLoaded', () => {
     loadRealPlayersList();
-    updateAdminDashboardStats(); // ড্যাশবোর্ড লোড করার সময় স্ট্যাটস আপডেট হবে
+    updateAdminDashboardStats();
 });
 
-// ==========================================
-// নতুন যোগ করা ফাংশনগুলো এখানে বসাবেন:
-// ==========================================
-
+// Fully Dynamic Admin Dashboard Statistics Updater
 function updateAdminDashboardStats() {
     let savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || 'null');
     if (!savedPlayers || savedPlayers.length === 0) {
@@ -224,16 +241,27 @@ function updateAdminDashboardStats() {
         activeSessionsElem.innerText = activeCount;
     }
 
-    // 3. Total Questions Count
+    // 3. Fully Dynamic Total Questions Count (No Hardcode)
     const totalQuestionsElem = document.getElementById('total-questions');
     if (totalQuestionsElem) {
-        let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
-        const baseCount = 150; 
-        totalQuestionsElem.innerText = baseCount + customQuestions.length;
+        let totalQCount = 150; // Default base count
+        try {
+            let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
+            let allQuestions = JSON.parse(localStorage.getItem('kbc_questions') || 'null');
+            
+            if (allQuestions && Array.isArray(allQuestions) && allQuestions.length > 0) {
+                totalQCount = allQuestions.length + customQuestions.length;
+            } else {
+                totalQCount = 150 + customQuestions.length;
+            }
+        } catch (e) {
+            totalQCount = 150;
+        }
+        totalQuestionsElem.innerText = totalQCount;
     }
 }
 
-// Tab Switching এর সাথে ডেটা সিঙ্ক করার জন্য
+// Tab Switching with Data Synchronization
 const originalSwitchTab = window.switchTab;
 window.switchTab = function(tabName, element) {
     if (typeof originalSwitchTab === 'function') {

@@ -372,16 +372,32 @@ function registerUser() {
     }
 
     const userData = {
+        id: username,
         name: name,
         phone: phone,
         username: username,
         pass: pass,
         role: 'player',
         regTimestamp: Date.now(),
-        trialDays: 5
+        trialDays: 5,
+        highScore: 0,
+        status: 'Active'
     };
 
+    // Save individual account
     localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
+    
+    // Also push to 'kbc_real_players' so Admin Dashboard can display it instantly
+    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
+    // Check if player already exists in the list to avoid duplicates
+    const existingIndex = realPlayers.findIndex(p => p.id === username || p.username === username);
+    if (existingIndex >= 0) {
+        realPlayers[existingIndex] = userData;
+    } else {
+        realPlayers.push(userData);
+    }
+    localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
+
     localStorage.setItem('kbc_current_user', username);
     localStorage.setItem('kbc_login_session', 'active');
 

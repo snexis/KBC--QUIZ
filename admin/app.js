@@ -126,7 +126,7 @@ function loadAuditLogs() {
     logTbody.innerHTML = html;
 }
 
-// Function to Load Real Players List with Live Indicator (Single Source: 'kbc_players')
+// Function to Load Real Players List with Live Indicator and Password Details (Single Source: 'kbc_players')
 function loadRealPlayersList() {
     const tableBody = document.getElementById('player-table-body');
     if (!tableBody) return;
@@ -137,7 +137,7 @@ function loadRealPlayersList() {
     if (savedPlayers.length === 0) {
         tableBody.innerHTML = `
             <tr>
-                <td colspan="5" style="text-align: center; color: #aaa;">কোনো প্লেয়ার পাওয়া যায়নি</td>
+                <td colspan="6" style="text-align: center; color: #aaa;">কোনো প্লেয়ার পাওয়া যায়নি</td>
             </tr>
         `;
         return;
@@ -162,6 +162,9 @@ function loadRealPlayersList() {
             ? `<span style="display: inline-flex; align-items: center; gap: 5px; background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;"><span style="width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2ecc71;"></span> LIVE</span>`
             : `<span style="color: #95a5a6; font-size: 11px;">Offline</span>`;
 
+        // Player Password info
+        const playerPassword = player.password || player.pass || 'N/A';
+
         html += `
             <tr>
                 <td>${player.phone || player.id || 'N/A'}</td>
@@ -171,6 +174,7 @@ function loadRealPlayersList() {
                         ${liveBadge}
                     </div>
                 </td>
+                <td><code style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; color: #66fcf1;">${playerPassword}</code></td>
                 <td>${player.highScore || 0} Points</td>
                 <td><span style="color: ${playerStatus === 'Blocked' ? '#e74c3c' : '#2ecc71'};">${playerStatus}</span></td>
                 <td>
@@ -208,17 +212,17 @@ window.addEventListener('DOMContentLoaded', () => {
     updateAdminDashboardStats();
 });
 
-// Fully Dynamic Admin Dashboard Statistics Updater
+// Fully Dynamic Admin Dashboard Statistics Updater (No Hardcoded 150)
 function updateAdminDashboardStats() {
     let savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
 
-    // 1. Total Registered Players Count
+    // 1. Total Registered Players Count (Zero if none)
     const totalPlayersElem = document.getElementById('total-players');
     if (totalPlayersElem) {
         totalPlayersElem.innerText = savedPlayers.length;
     }
 
-    // 2. Active Sessions Count
+    // 2. Active Sessions Count (Zero if none)
     const activeSessionsElem = document.getElementById('active-sessions');
     if (activeSessionsElem) {
         const activeCount = savedPlayers.filter(p => 
@@ -227,21 +231,21 @@ function updateAdminDashboardStats() {
         activeSessionsElem.innerText = activeCount;
     }
 
-    // 3. Fully Dynamic Total Questions Count (No Hardcode)
+    // 3. Fully Dynamic Total Questions Count (Depends purely on actual question bank & custom questions)
     const totalQuestionsElem = document.getElementById('total-questions');
     if (totalQuestionsElem) {
-        let totalQCount = 150; // Default base count
+        let totalQCount = 0; 
         try {
             let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
             let allQuestions = JSON.parse(localStorage.getItem('kbc_questions') || 'null');
             
-            if (allQuestions && Array.isArray(allQuestions) && allQuestions.length > 0) {
-                totalQCount = allQuestions.length + customQuestions.length;
-            } else {
-                totalQCount = 150 + customQuestions.length;
+            let baseCount = 0;
+            if (allQuestions && Array.isArray(allQuestions)) {
+                baseCount = allQuestions.length;
             }
+            totalQCount = baseCount + customQuestions.length;
         } catch (e) {
-            totalQCount = 150;
+            totalQCount = 0;
         }
         totalQuestionsElem.innerText = totalQCount;
     }

@@ -16,6 +16,7 @@ let isMuted = false;
 let recognition;
 let currentSlabCount = 0;
 let fullQuestionPool = [];
+let explanationTimer = null;
 
 // Helper Function: Merge Custom Admin Questions into Main Question Pool
 function loadCustomAdminQuestions() {
@@ -212,6 +213,7 @@ function toggleMute() {
 function confirmExitGame() {
     if (confirm(curLang === 'bn' ? "আপনি কি খেলা ছেড়ে বাইরে যেতে চান?" : "Are you sure you want to exit the game?")) {
         clearInterval(timerInt);
+        if (explanationTimer) clearTimeout(explanationTimer);
         const bg = document.getElementById('bg-music');
         if (bg) bg.pause();
         if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -224,6 +226,7 @@ function confirmExitGame() {
 function logoutUser() {
     if (confirm(curLang === 'bn' ? "আপনি কি নিশ্চিত যে আপনি লগআউট করতে চান?" : "Are you sure you want to logout?")) {
         clearInterval(timerInt);
+        if (explanationTimer) clearTimeout(explanationTimer);
         const bg = document.getElementById('bg-music');
         if (bg) bg.pause();
         if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -245,21 +248,33 @@ function logoutUser() {
 
 // Authentication Handlers
 function switchAuthTab(type) {
-    const loginTab = document.getElementById('tab-login');
-    const regTab = document.getElementById('tab-register');
+    const loginTab = document.getElementById('tab-login-btn');
+    const regTab = document.getElementById('tab-signup-btn');
     const loginForm = document.getElementById('form-login');
-    const regForm = document.getElementById('form-register');
+    const regForm = document.getElementById('form-signup');
 
     if (type === 'login') {
         if (loginTab) loginTab.classList.add('active');
         if (regTab) regTab.classList.remove('active');
-        if (loginForm) loginForm.style.display = 'flex';
-        if (regForm) regForm.style.display = 'none';
+        if (loginForm) {
+            loginForm.classList.add('active');
+            loginForm.style.display = 'block';
+        }
+        if (regForm) {
+            regForm.classList.remove('active');
+            regForm.style.display = 'none';
+        }
     } else {
         if (regTab) regTab.classList.add('active');
         if (loginTab) loginTab.classList.remove('active');
-        if (regForm) regForm.style.display = 'flex';
-        if (loginForm) loginForm.style.display = 'none';
+        if (regForm) {
+            regForm.classList.add('active');
+            regForm.style.display = 'block';
+        }
+        if (loginForm) {
+            loginForm.classList.remove('active');
+            loginForm.style.display = 'none';
+        }
     }
 }
 
@@ -463,6 +478,8 @@ function startGameWithLevel(lvl) {
 
 function loadQ() {
     clearInterval(timerInt);
+    if (explanationTimer) clearTimeout(explanationTimer);
+    closeExplanationModal();
 
     if (curIdx >= activeQuestions.length) {
         return end();
@@ -587,7 +604,7 @@ function check(idx) {
     let statusHeader = "";
     if (isCorrect) {
         statusHeader = curLang === "bn" 
-            ? `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✓ চমৎকার! আপনার উত্তর সঠিক হয়েছে।</div>`
+            ? `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✓ চমৎকার! আপনার উত্তর সঠিক হয়েছে।</div>`
             : `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✓ Correct Answer! Well done.</div>`;
     } else {
         statusHeader = curLang === "bn" 
@@ -595,31 +612,79 @@ function check(idx) {
             : `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✗ Incorrect! Correct Answer: Option ${correctLetter}</div>`;
     }
 
-    const modal = document.getElementById("exp-modal");
-    const modalBody = document.getElementById("exp-modal-body");
-    const box = document.getElementById("exp-box");
+    // Fixed Modal Elements matching index.html
+    const modal = document.getElementById("modal-explanation");
+    const modalText = document.getElementById("modal-exp-text");
 
     const fullHTML = statusHeader + "<hr style='margin: 8px 0; border: 0; border-top: 1px solid #ccc;'>" + "<b>" + (curLang === "bn" ? "ব্যাখ্যা" : "Explanation") + ":</b><br>" + explanationText;
 
-    if (modal && modalBody) {
-        modalBody.innerHTML = fullHTML;
+    if (modal && modalText) {
+        modalText.innerHTML = fullHTML;
         modal.style.display = "flex";
-    } else if (box) {
-        box.style.display = "block";
-        box.innerHTML = fullHTML;
     }
 
-    setTimeout(() => {
-        if (modal) modal.style.display = "none";
-        if (box) box.style.display = "none";
+    speak(explanationText);
+
+    // Automatically proceed to the next question after 4.5 seconds
+    if (explanationTimer) clearTimeout(explanationTimer);
+    explanationTimer = setTimeout(() => {
+        closeExplanationModal();
         curIdx++;
         loadQ();
     }, 4500);
 }
 
-function closeExpModal() {
-    const modal = document.getElementById("exp-modal");
+function closeExplanationModal() {
+    const modal = document.getElementById("modal-explanation");
     if (modal) modal.style.display = "none";
+    if (explanationTimer) {
+        clearTimeout(explanationTimer);
+        explanationTimer = null;
+    }
+}
+
+// Modal Admin Control Functions
+function openAdminModal() {
+    const modal = document.getElementById('modal-admin');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeAdminModal() {
+    const modal = document.getElementById('modal-admin');
+    if (modal) modal.style.display = 'none';
+}
+
+function verifyAdminAccess() {
+    const passInput = document.getElementById('admin-passcode-input');
+    const val = passInput ? passInput.value.trim() : '';
+    if (val === 'ADMIN2026' || val === '1234') {
+        closeAdminModal();
+        alert(curLang === 'bn' ? "অ্যাডমিন টেস্ট মোড সক্রিয় হয়েছে!" : "Admin Test Mode Activated!");
+        show('scr-lang');
+    } else {
+        alert(curLang === 'bn' ? "ভুল মাস্টার পাসকোড!" : "Incorrect Master Passcode!");
+    }
+}
+
+// Player Invite Control Functions
+function invitePlayer() {
+    const modal = document.getElementById('modal-invite');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeInviteModal() {
+    const modal = document.getElementById('modal-invite');
+    if (modal) modal.style.display = 'none';
+}
+
+function copyInviteCode() {
+    const codeElem = document.getElementById('invite-code-input');
+    if (codeElem) {
+        codeElem.select();
+        document.execCommand('copy');
+        alert(curLang === 'bn' ? "ইনভাইট কোড কপি করা হয়েছে!" : "Invite Code Copied!");
+        closeInviteModal();
+    }
 }
 
 function playSound(type) {
@@ -657,6 +722,9 @@ function speak(t) {
 
 function end() {
     clearInterval(timerInt);
+    if (explanationTimer) clearTimeout(explanationTimer);
+    closeExplanationModal();
+    
     show('scr-res');
     const resScore = document.getElementById('res-score');
     const resCor = document.getElementById('res-cor');

@@ -18,6 +18,23 @@ let currentSlabCount = 0;
 let fullQuestionPool = [];
 let explanationTimer = null;
 
+// Track failed login attempts per user ID
+let failedLoginAttempts = {};
+
+// Password Visibility Toggle Function
+function togglePasswordVisibility(fieldId, iconElem) {
+    const passInput = document.getElementById(fieldId);
+    if (!passInput) return;
+    
+    if (passInput.type === 'password') {
+        passInput.type = 'text';
+        iconElem.innerText = '👁️‍🗨️';
+    } else {
+        passInput.type = 'password';
+        iconElem.innerText = '👁️';
+    }
+}
+
 // Helper Function: Merge Custom Admin Questions into Main Question Pool
 function loadCustomAdminQuestions() {
     try {
@@ -292,6 +309,9 @@ function loginUser() {
     if (savedUserRaw) {
         const userData = JSON.parse(savedUserRaw);
         if (userData.pass === pass) {
+            // Reset failed attempts on success
+            failedLoginAttempts[userOrPhone] = 0;
+
             localStorage.setItem('kbc_current_user', userOrPhone);
             localStorage.setItem('kbc_login_session', 'active');
 
@@ -311,7 +331,21 @@ function loginUser() {
         }
     }
 
-    alert(curLang === 'bn' ? "ভুল আইডি বা পাসওয়ার্ড!" : "Invalid ID or Password!");
+    // Track failed attempts
+    failedLoginAttempts[userOrPhone] = (failedLoginAttempts[userOrPhone] || 0) + 1;
+
+    if (failedLoginAttempts[userOrPhone] >= 3) {
+        alert(curLang === 'bn' 
+            ? "পরপর ৩ বার ভুল পাসওয়ার্ড দেওয়া হয়েছে! অ্যাকাউন্ট সুরক্ষায় পাসওয়ার্ড রিকভারি পেজে পাঠানো হচ্ছে।" 
+            : "3 consecutive incorrect password attempts! Redirecting to password recovery.");
+        failedLoginAttempts[userOrPhone] = 0;
+        openForgotPassModal();
+        const forgotUserElem = document.getElementById('forgot-username');
+        if (forgotUserElem) forgotUserElem.value = userOrPhone;
+        return;
+    }
+
+    alert(curLang === 'bn' ? `ভুল আইডি বা পাসওয়ার্ড! (${failedLoginAttempts[userOrPhone]}/3 চেষ্টা)` : `Invalid ID or Password! (${failedLoginAttempts[userOrPhone]}/3 attempts)`);
 }
 
 function loadSavedCredentials() {
@@ -389,7 +423,6 @@ function registerUser() {
     
     // Also push to 'kbc_real_players' so Admin Dashboard can display it instantly
     let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-    // Check if player already exists in the list to avoid duplicates
     const existingIndex = realPlayers.findIndex(p => p.id === username || p.username === username);
     if (existingIndex >= 0) {
         realPlayers[existingIndex] = userData;
@@ -400,6 +433,12 @@ function registerUser() {
 
     localStorage.setItem('kbc_current_user', username);
     localStorage.setItem('kbc_login_session', 'active');
+
+    // Auto-clear sign up input fields completely
+    if (nameElem) nameElem.value = '';
+    if (phoneElem) phoneElem.value = '';
+    if (userElem) userElem.value = '';
+    if (passElem) passElem.value = '';
 
     playSound('alert');
     checkUserTrialAndProceed(userData);
@@ -580,7 +619,7 @@ function loadQ() {
         }
     }, 1000);
 
-// Read Question and Options sequentially
+    // Read Question and Options sequentially
     let speechText = txt;
     if (opts && opts.length > 0) {
         opts.forEach((o, i) => {
@@ -637,7 +676,6 @@ function check(idx) {
             : `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✗ Incorrect! Correct Answer: Option ${correctLetter}</div>`;
     }
 
-    // Fixed Modal Elements matching index.html
     const modal = document.getElementById("modal-explanation");
     const modalText = document.getElementById("modal-exp-text");
 
@@ -650,7 +688,6 @@ function check(idx) {
 
     speak(explanationText);
 
-    // Automatically proceed to the next question after 4.5 seconds
     if (explanationTimer) clearTimeout(explanationTimer);
     explanationTimer = setTimeout(() => {
         closeExplanationModal();
@@ -710,6 +747,82 @@ function copyInviteCode() {
         alert(curLang === 'bn' ? "ইনভাইট কোড কপি করা হয়েছে!" : "Invite Code Copied!");
         closeInviteModal();
     }
+}
+
+// Forgot Password / Recovery Modals Controllers
+function openForgotPassModal() {
+    const modal = document.getElementById('modal-forgot');
+    if (modal) modal.style.display = 'flex';
+    const newPassGroup = document.getElementById('new-pass-group');
+    const verifyBtn = document.getElementById('btn-verify-forgot');
+    const instruction = document.getElementById('forgot-instruction');
+
+    if (newPassGroup) newPassGroup.style.display = 'none';
+    if (verifyBtn) verifyBtn.innerText = curLang === 'bn' ? 'যাচাই করুন' : 'Verify';
+    if (instruction) instruction.innerText = curLang === 'bn' ? 'আপনার ইউজারনেম এবং নিবন্ধিত মোবাইল নম্বর দিন:' : 'Enter your Username and registered mobile number:';
+}
+
+function closeForgotPassModal() {
+    const modal = document.getElementById('modal-forgot');
+    if (modal) modal.style.display = 'none';
+    const userElem = document.getElementById('forgot-username');
+    const phoneElem = document.getElementById('forgot-phone');
+    const passElem = document.getElementById('forgot-new-pass');
+    if (userElem) userElem.value = '';
+    if (phoneElem) phoneElem.value = '';
+    if (passElem) passElem.value = '';
+}
+
+function verifyAndResetPassword() {
+    const username = document.getElementById('forgot-username') ? document.getElementById('forgot-username').value.trim() : '';
+    const phone = document.getElementById('forgot-phone') ? document.getElementById('forgot-phone').value.trim() : '';
+    const newPassGroup = document.getElementById('new-pass-group');
+    const newPassElem = document.getElementById('forgot-new-pass');
+    const verifyBtn = document.getElementById('btn-verify-forgot');
+    const instruction = document.getElementById('forgot-instruction');
+
+    if (!username || !phone) {
+        alert(curLang === 'bn' ? "ইউজারনেম এবং মোবাইল নম্বর দিন!" : "Please enter username and phone number!");
+        return;
+    }
+
+    const savedUserRaw = localStorage.getItem('kbc_user_account_' + username);
+    if (!savedUserRaw) {
+        alert(curLang === 'bn' ? "এই ইউজারনেম দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি!" : "No account found with this username!");
+        return;
+    }
+
+    let userData = JSON.parse(savedUserRaw);
+
+    if (newPassGroup && newPassGroup.style.display === 'none') {
+        if (userData.phone && userData.phone !== phone) {
+            alert(curLang === 'bn' ? "মোবাইল নম্বরটি সঠিক নয়!" : "Registered mobile number does not match!");
+            return;
+        }
+        newPassGroup.style.display = 'block';
+        if (verifyBtn) verifyBtn.innerText = curLang === 'bn' ? 'পাসওয়ার্ড পরিবর্তন করুন' : 'Update Password';
+        if (instruction) instruction.innerText = curLang === 'bn' ? 'আপনার নতুন পাসওয়ার্ড সেট করুন:' : 'Set your new password:';
+        return;
+    }
+
+    const newPass = newPassElem ? newPassElem.value.trim() : '';
+    if (!newPass) {
+        alert(curLang === 'bn' ? "নতুন পাসওয়ার্ড দিন!" : "Please enter a new password!");
+        return;
+    }
+
+    userData.pass = newPass;
+    localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
+
+    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
+    const pIndex = realPlayers.findIndex(p => p.id === username || p.username === username);
+    if (pIndex >= 0) {
+        realPlayers[pIndex].pass = newPass;
+        localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
+    }
+
+    alert(curLang === 'bn' ? "পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে! এখন লগইন করুন।" : "Password successfully updated! Please login now.");
+    closeForgotPassModal();
 }
 
 function playSound(type) {

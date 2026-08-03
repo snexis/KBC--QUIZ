@@ -43,8 +43,11 @@
     <main class="admin-main" id="admin-main-content" style="display: none;">
         
         <!-- Header -->
-        <header class="top-header">
-            <h1 class="page-title">🏆 KBC PREMIUM - Admin Master Control</h1>
+        <header class="top-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 class="page-title" style="margin-bottom: 2px;">🏆 KBC PREMIUM - Admin Master Control</h1>
+                <div id="live-clock-date" style="font-size: 0.85rem; color: #38bdf8; font-weight: 500;"></div>
+            </div>
             <button class="btn-logout" onclick="logoutAdmin()">🚪 Logout</button>
         </header>
 
@@ -199,6 +202,7 @@
             } else {
                 showLoginUI();
             }
+            updateAdminClock();
         });
 
         function loginAdminCheck() {
@@ -210,7 +214,7 @@
                 sessionStorage.setItem('adminLoggedIn', 'true');
                 showDashboardUI();
             } else {
-                alert('ভুল অ্যাডমিন আইডি বা পাসওয়ার্ড!');
+                alert('ভুল অ্যাডমিন আইডি বা পাসওয়ার্ড!');
             }
         }
 
@@ -281,8 +285,28 @@
                 badge.className = 'badge badge-active';
             }
         }
+
+        // Live Clock and Date Updater
+        function updateAdminClock() {
+            const clockElement = document.getElementById('live-clock-date');
+            if (clockElement) {
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric', 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit',
+                    hour12: true 
+                };
+                clockElement.innerText = '📅 ' + now.toLocaleDateString('bn-BD', options);
+            }
+        }
+        setInterval(updateAdminClock, 1000);
     </script>
     <script src="app.js"></script>
-<script src="network/network-adapter.js"></script>
+    <script src="network/network-adapter.js"></script>
 </body>
 </html>

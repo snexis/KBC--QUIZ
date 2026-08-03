@@ -930,3 +930,38 @@ window.onload = async () => {
         show('scr-login');
     }
 };
+// Anti-Cheat: Resets game if user switches tabs
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        const gameScreen = document.getElementById('scr-game');
+        if (gameScreen && gameScreen.classList.contains('active')) {
+            alert(curLang === 'bn' ? "সতর্কতা! ট্যাব পরিবর্তন করার কারণে গেমটি রিসেট করা হলো।" : "Warning! Game reset due to tab switching.");
+            end();
+        }
+    }
+});
+
+// Sync registration data with both storage keys to fix Admin Panel visibility permanently
+function syncPlayerToAdmin(userData) {
+    try {
+        let adminPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
+        const index = adminPlayers.findIndex(p => p.id === userData.username || p.id === userData.id);
+        
+        const formattedAdminPlayer = {
+            id: userData.username || userData.id,
+            name: userData.name,
+            password: userData.pass,
+            highScore: userData.highScore || 0,
+            status: userData.status || 'Active'
+        };
+
+        if (index >= 0) {
+            adminPlayers[index] = formattedAdminPlayer;
+        } else {
+            adminPlayers.push(formattedAdminPlayer);
+        }
+        localStorage.setItem('kbc_players', JSON.stringify(adminPlayers));
+    } catch (e) {
+        console.error("Error syncing player to admin:", e);
+    }
+}

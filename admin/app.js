@@ -3,7 +3,6 @@ function addNewQuestionFromAdmin() {
     const authorElem = document.getElementById('admin-q-author');
     const authorName = authorElem ? authorElem.value.trim() : "";
 
-    const lang = document.getElementById('admin-q-lang').value;
     const subj = document.getElementById('admin-q-subj').value;
     const level = document.getElementById('admin-q-level').value;
     const qText = document.getElementById('admin-q-text').value.trim();
@@ -29,7 +28,7 @@ function addNewQuestionFromAdmin() {
         return;
     }
 
-    // Question Object Structure matching questions.json exactly
+    // Unified Question Object Structure for both languages
     const newQ = {
         id: "custom_" + Date.now(),
         author: authorName,
@@ -37,23 +36,22 @@ function addNewQuestionFromAdmin() {
         level: level,
         correct: correct,
         bn: {
-            q: (lang === 'bn') ? qText : "",
-            a: (lang === 'bn') ? optA : "",
-            b: (lang === 'bn') ? optB : "",
-            c: (lang === 'bn') ? optC : "",
-            d: (lang === 'bn') ? optD : "",
-            exp: (lang === 'bn') ? qExp : ""
+            q: qText,
+            a: optA,
+            b: optB,
+            c: optC,
+            d: optD,
+            exp: qExp
         },
         en: {
-            q: (lang === 'en') ? qText : "",
-            a: (lang === 'en') ? optA : "",
-            b: (lang === 'en') ? optB : "",
-            c: (lang === 'en') ? optC : "",
-            d: (lang === 'en') ? optD : "",
-            exp: (lang === 'en') ? qExp : ""
+            q: qText,
+            a: optA,
+            b: optB,
+            c: optC,
+            d: optD,
+            exp: qExp
         }
     };
-
     // Save Custom Questions to LocalStorage
     let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
     customQuestions.push(newQ);

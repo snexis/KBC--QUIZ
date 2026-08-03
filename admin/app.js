@@ -1,3 +1,20 @@
+// Helper Function to Get Players from Any Possible LocalStorage Key
+function getAllStoredPlayers() {
+    let keysToTry = ['kbc_players', 'players', 'users', 'registered_users', 'kbc_users'];
+    for (let key of keysToTry) {
+        let data = localStorage.getItem(key);
+        if (data) {
+            try {
+                let parsed = JSON.parse(data);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    return parsed;
+                }
+            } catch (e) {}
+        }
+    }
+    return [];
+}
+
 // Admin Add Question Functionality
 function addNewQuestionFromAdmin() {
     const authorElem = document.getElementById('admin-q-author');
@@ -16,7 +33,6 @@ function addNewQuestionFromAdmin() {
     const expElement = document.getElementById('admin-q-exp');
     const qExp = expElement ? expElement.value.trim() : "";
 
-    // Mandatory Field Checks
     if (!authorName) {
         alert("দয়া করে এডমিনের নাম (Created By) ইনপুট দিন!");
         if (authorElem) authorElem.focus();
@@ -28,36 +44,20 @@ function addNewQuestionFromAdmin() {
         return;
     }
 
-    // Unified Question Object Structure for both languages
     const newQ = {
         id: "custom_" + Date.now(),
         author: authorName,
         subject: subj,
         level: level,
         correct: correct,
-        bn: {
-            q: qText,
-            a: optA,
-            b: optB,
-            c: optC,
-            d: optD,
-            exp: qExp
-        },
-        en: {
-            q: qText,
-            a: optA,
-            b: optB,
-            c: optC,
-            d: optD,
-            exp: qExp
-        }
+        bn: { q: qText, a: optA, b: optB, c: optC, d: optD, exp: qExp },
+        en: { q: qText, a: optA, b: optB, c: optC, d: optD, exp: qExp }
     };
-    // Save Custom Questions to LocalStorage
+
     let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
     customQuestions.push(newQ);
     localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
 
-    // Log Creation into Admin Audit History Log
     const now = new Date();
     const timeFormatted = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
     
@@ -69,12 +69,11 @@ function addNewQuestionFromAdmin() {
     };
 
     let auditLogs = JSON.parse(localStorage.getItem('kbc_admin_audit_log') || '[]');
-    auditLogs.unshift(logEntry); // Save newest log first
+    auditLogs.unshift(logEntry);
     localStorage.setItem('kbc_admin_audit_log', JSON.stringify(auditLogs));
 
     alert("প্রশ্ন ও ব্যাখ্যা সফলভাবে সেভ হয়েছে! গেমে নতুন প্রশ্ন যুক্ত হয়ে গেছে।");
 
-    // Clear All Form Fields Completely
     document.getElementById('admin-q-text').value = '';
     document.getElementById('admin-opt-a').value = '';
     document.getElementById('admin-opt-b').value = '';
@@ -126,13 +125,12 @@ function loadAuditLogs() {
     logTbody.innerHTML = html;
 }
 
-// Function to Load Real Players List with Live Indicator and Password Details (Single Source: 'kbc_players')
+// Function to Load Real Players List
 function loadRealPlayersList() {
     const tableBody = document.getElementById('player-table-body');
     if (!tableBody) return;
 
-    // সরাসরি একক লোকালস্টোরেজ কি 'kbc_players' ব্যবহার করা হলো
-    let savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
+    let savedPlayers = getAllStoredPlayers();
 
     if (savedPlayers.length === 0) {
         tableBody.innerHTML = `
@@ -147,10 +145,9 @@ function loadRealPlayersList() {
     const currentTime = Date.now();
 
     savedPlayers.forEach(player => {
-        const playerId = player.id || player.phone;
+        const playerId = player.id || player.phone || player.userId;
         const playerStatus = player.status || (player.isBlocked ? 'Blocked' : 'Active');
         
-        // Check if player is truly live (active within the last 2 minutes / 120000 ms)
         let isLive = false;
         if (player.lastActive && (currentTime - player.lastActive < 120000)) {
             isLive = true;
@@ -162,20 +159,21 @@ function loadRealPlayersList() {
             ? `<span style="display: inline-flex; align-items: center; gap: 5px; background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;"><span style="width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2ecc71;"></span> LIVE</span>`
             : `<span style="color: #95a5a6; font-size: 11px;">Offline</span>`;
 
-        // Player Password info
-        const playerPassword = player.password || player.pass || 'N/A';
+        const playerPassword = player.password || player.pass || player.pwd || 'N/A';
+        const playerName = player.name || player.username || player.fullName || 'Unknown';
+        const playerPhone = player.phone || player.id || player.userId || 'N/A';
 
         html += `
             <tr>
-                <td>${player.phone || player.id || 'N/A'}</td>
+                <td>${playerPhone}</td>
                 <td>
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
-                        <span>${player.name || player.username || 'Unknown'}</span>
+                        <span>${playerName}</span>
                         ${liveBadge}
                     </div>
                 </td>
                 <td><code style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; color: #66fcf1;">${playerPassword}</code></td>
-                <td>${player.highScore || 0} Points</td>
+                <td>${player.highScore || player.score || 0} Points</td>
                 <td><span style="color: ${playerStatus === 'Blocked' ? '#e74c3c' : '#2ecc71'};">${playerStatus}</span></td>
                 <td>
                     <button class="btn-action" onclick="toggleBlockPlayer('${playerId}')" style="background: ${playerStatus === 'Blocked' ? '#27ae60' : '#e74c3c'}; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">
@@ -190,18 +188,33 @@ function loadRealPlayersList() {
 
 // Block/Unblock Toggle Functionality
 function toggleBlockPlayer(playerId) {
-    let storageKey = 'kbc_players';
-    let savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
+    let keysToTry = ['kbc_players', 'players', 'users', 'registered_users', 'kbc_users'];
+    let targetKey = 'kbc_players';
+    let savedPlayers = [];
+
+    for (let key of keysToTry) {
+        let data = localStorage.getItem(key);
+        if (data) {
+            try {
+                let parsed = JSON.parse(data);
+                if (Array.isArray(parsed)) {
+                    savedPlayers = parsed;
+                    targetKey = key;
+                    break;
+                }
+            } catch (e) {}
+        }
+    }
 
     savedPlayers = savedPlayers.map(player => {
-        if (player.id === playerId || player.phone === playerId) {
+        if (player.id === playerId || player.phone === playerId || player.userId === playerId) {
             player.isBlocked = !player.isBlocked;
             player.status = player.isBlocked ? 'Blocked' : 'Active';
         }
         return player;
     });
 
-    localStorage.setItem(storageKey, JSON.stringify(savedPlayers));
+    localStorage.setItem(targetKey, JSON.stringify(savedPlayers));
     loadRealPlayersList();
     updateAdminDashboardStats();
 }
@@ -212,17 +225,15 @@ window.addEventListener('DOMContentLoaded', () => {
     updateAdminDashboardStats();
 });
 
-// Fully Dynamic Admin Dashboard Statistics Updater (No Hardcoded 150)
+// Fully Dynamic Admin Dashboard Statistics Updater
 function updateAdminDashboardStats() {
-    let savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
+    let savedPlayers = getAllStoredPlayers();
 
-    // 1. Total Registered Players Count (Zero if none)
     const totalPlayersElem = document.getElementById('total-players');
     if (totalPlayersElem) {
         totalPlayersElem.innerText = savedPlayers.length;
     }
 
-    // 2. Active Sessions Count (Zero if none)
     const activeSessionsElem = document.getElementById('active-sessions');
     if (activeSessionsElem) {
         const activeCount = savedPlayers.filter(p => 
@@ -231,7 +242,6 @@ function updateAdminDashboardStats() {
         activeSessionsElem.innerText = activeCount;
     }
 
-    // 3. Fully Dynamic Total Questions Count (Depends purely on actual question bank & custom questions)
     const totalQuestionsElem = document.getElementById('total-questions');
     if (totalQuestionsElem) {
         let totalQCount = 0; 

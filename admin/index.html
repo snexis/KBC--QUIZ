@@ -4,63 +4,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KBC Admin Control Panel</title>
-  <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="admin.css">
     <style>
+        /* Modern Glassmorphism Center Layout for Login Card */
         body {
-            background-color: #0b0c10;
-            color: #fff;
-            font-family: Arial, sans-serif;
+            background: radial-gradient(circle at center, #111827 0%, #070913 100%);
+            color: var(--text-main, #fff);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            padding: 20px;
         }
+
         .admin-card {
-            background: #1f2833;
-            border: 2px solid #c5a059;
-            border-radius: 12px;
-            padding: 30px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 0 20px rgba(197, 160, 89, 0.3);
+            background: rgba(15, 23, 42, 0.85);
+            border: 2px solid var(--border-gold, #ffd700);
+            border-radius: 20px;
+            padding: 35px 30px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 0 35px var(--gold-glow, rgba(255, 215, 0, 0.35));
+            backdrop-filter: blur(15px);
             text-align: center;
+            transition: transform 0.3s ease;
         }
+
+        .admin-card:hover {
+            transform: translateY(-3px);
+        }
+
         .admin-card h2 {
-            color: #c5a059;
-            margin-bottom: 20px;
+            color: var(--border-gold, #ffd700);
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--gold-glow, rgba(255, 215, 0, 0.35));
         }
+
+        .admin-card p {
+            color: var(--text-muted, #94a3b8);
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             text-align: left;
         }
+
         .input-group label {
             display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent-cyan, #00f2fe);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+
         .input-group input {
             width: 100%;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid #45a29e;
-            background: #0b0c10;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.5);
             color: #fff;
             box-sizing: border-box;
+            outline: none;
+            font-size: 15px;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
+
+        .input-group input:focus {
+            border-color: var(--accent-cyan, #00f2fe);
+            box-shadow: 0 0 12px var(--cyan-glow, rgba(0, 242, 254, 0.4));
+        }
+
         .btn-admin {
             width: 100%;
-            padding: 12px;
-            background: #c5a059;
+            padding: 14px;
+            background: linear-gradient(135deg, #ffd700, #ffaa00);
             color: #000;
             border: none;
-            font-weight: bold;
-            border-radius: 6px;
+            font-weight: 800;
+            font-size: 15px;
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 10px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
         }
+
         .btn-admin:hover {
-            background: #66fcf1;
+            background: linear-gradient(135deg, #00f2fe, #4facfe);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+            transform: translateY(-2px);
         }
     </style>
 </head>

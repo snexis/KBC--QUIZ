@@ -193,7 +193,55 @@ function toggleBlockPlayer(playerId) {
     loadRealPlayersList();
 }
 
-// Window load trigger
+// Window load trigger (আপনার ফাইলের শেষের অংশ)
 window.addEventListener('DOMContentLoaded', () => {
     loadRealPlayersList();
+    updateAdminDashboardStats(); // ড্যাশবোর্ড লোড করার সময় স্ট্যাটস আপডেট হবে
 });
+
+// ==========================================
+// নতুন যোগ করা ফাংশনগুলো এখানে বসাবেন:
+// ==========================================
+
+function updateAdminDashboardStats() {
+    let savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || 'null');
+    if (!savedPlayers || savedPlayers.length === 0) {
+        savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
+    }
+
+    // 1. Total Registered Players Count
+    const totalPlayersElem = document.getElementById('total-players');
+    if (totalPlayersElem) {
+        totalPlayersElem.innerText = savedPlayers.length;
+    }
+
+    // 2. Active Sessions Count
+    const activeSessionsElem = document.getElementById('active-sessions');
+    if (activeSessionsElem) {
+        const activeCount = savedPlayers.filter(p => 
+            p.status === 'Active' || (!p.isBlocked && p.status !== 'Blocked')
+        ).length;
+        activeSessionsElem.innerText = activeCount;
+    }
+
+    // 3. Total Questions Count
+    const totalQuestionsElem = document.getElementById('total-questions');
+    if (totalQuestionsElem) {
+        let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
+        const baseCount = 150; 
+        totalQuestionsElem.innerText = baseCount + customQuestions.length;
+    }
+}
+
+// Tab Switching এর সাথে ডেটা সিঙ্ক করার জন্য
+const originalSwitchTab = window.switchTab;
+window.switchTab = function(tabName, element) {
+    if (typeof originalSwitchTab === 'function') {
+        originalSwitchTab(tabName, element);
+    }
+    if (tabName === 'dashboard') {
+        updateAdminDashboardStats();
+    } else if (tabName === 'players') {
+        loadRealPlayersList();
+    }
+};

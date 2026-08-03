@@ -16,7 +16,7 @@
         <div class="nav-controls">
             <!-- Audio Mute / Unmute Button -->
             <button id="btn-mute" class="nav-btn" onclick="toggleMute()" title="Mute/Unmute Audio">
-                🔊 <span id="mute-label">Audio</span>
+                <span class="nav-btn-icon">🔊</span> <span id="mute-label" class="nav-btn-text">Audio</span>
             </button>
             <!-- 3D Animated Glowing Voice Indicator -->
             <div class="voice-indicator mic-3d-pulse" id="voice-btn" onclick="toggleVoice()" title="Toggle Voice Assistance">
@@ -25,23 +25,23 @@
             </div>
             <!-- Admin Login Trigger -->
             <button id="btn-admin-trigger" class="nav-btn admin-btn" onclick="openAdminModal()" title="Admin Test Mode">
-                🔑 <span class="admin-label">Admin</span>
+                <span class="nav-btn-icon">🔑</span> <span class="admin-label nav-btn-text">Admin</span>
             </button>
-           <!-- Invite Player Button -->
+            <!-- Invite Player Button -->
             <button id="btn-invite" class="nav-btn invite-btn" onclick="invitePlayer()" title="Invite Player">
-                📩 <span class="invite-label">Invite</span>
+                <span class="nav-btn-icon">📩</span> <span class="invite-label nav-btn-text">Invite</span>
             </button>
-         <!-- Exit Game Button -->
-        <button id="btn-exit" class="nav-btn exit-btn" onclick="confirmExitGame()">
-            <span class="exit-label">Exit</span>
-        </button>
+            <!-- Exit Game Button -->
+            <button id="btn-exit" class="nav-btn exit-btn" onclick="confirmExitGame()" title="Exit Game">
+                <span class="nav-btn-icon">🚪</span> <span class="exit-label nav-btn-text">Exit</span>
+            </button>
+            <!-- Logout Button -->
+            <button id="btn-logout" class="nav-btn logout-btn" onclick="logoutUser()" title="Logout">
+                <span class="nav-btn-icon">🛑</span> <span class="logout-label nav-btn-text">Logout</span>
+            </button>
+        </div>
+    </header>
 
-        <!-- Logout Button (নতুন যুক্ত) -->
-        <button id="btn-logout" class="nav-btn logout-btn" onclick="logoutUser()">
-            <span class="logout-label">Logout</span>
-        </button>
-    </div>
-</header>
     <div class="container" id="app">
         
         <!-- Screen 1: Global Standard Login & Authentication Portal -->
@@ -56,22 +56,23 @@
                     <button id="tab-signup-btn" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
                 </div>
 
-     <!-- Login Form -->
-    <div id="form-login" class="auth-form active">
-        <div class="input-group">
-            <label for="login-phone">Mobile Number / User ID</label>
-            <input type="text" id="login-phone" placeholder="Enter 10-digit Phone or User ID">
-        </div>
-        <div class="input-group">
-            <label for="login-pass">Password</label>
-            <input type="password" id="login-pass" placeholder="Enter your Password">
-        </div>
-        <div class="remember-group" style="display: flex; align-items: center; gap: 8px; margin: 10px 0;">
-            <input type="checkbox" id="remember-me" style="width: auto; cursor: pointer;">
-            <label for="remember-me" style="font-size: 14px; cursor: pointer; margin: 0;">Remember Me / Save Credentials</label>
-        </div>
-        <button class="btn btn-primary" onclick="loginUser()">LOGIN</button>
-    </div>
+                <!-- Login Form -->
+                <div id="form-login" class="auth-form active">
+                    <div class="input-group">
+                        <label for="login-phone">Mobile Number / User ID</label>
+                        <input type="text" id="login-phone" placeholder="Enter 10-digit Phone or User ID">
+                    </div>
+                    <div class="input-group">
+                        <label for="login-pass">Password</label>
+                        <input type="password" id="login-pass" placeholder="Enter your Password">
+                    </div>
+                    <div class="remember-group" style="display: flex; align-items: center; gap: 8px; margin: 10px 0;">
+                        <input type="checkbox" id="remember-me" style="width: auto; cursor: pointer;">
+                        <label for="remember-me" style="font-size: 14px; cursor: pointer; margin: 0;">Remember Me / Save Credentials</label>
+                    </div>
+                    <button class="btn btn-primary" onclick="loginUser()">LOGIN</button>
+                </div>
+
                 <!-- Sign Up / Registration Form -->
                 <div id="form-signup" class="auth-form" style="display:none;">
                     <div class="input-group">
@@ -92,9 +93,10 @@
                     </div>
                     <button class="btn btn-success" onclick="registerUser()">CREATE ACCOUNT</button>
                 </div>
-              <!-- Top Integrated Promo Code Card (Initially Hidden, Visible upon 5-day Trial Expiry) -->
+
+                <!-- Top Integrated Promo Code Card (Initially Hidden, Visible upon 5-day Trial Expiry) -->
                 <div id="promo-section" class="promo-card" style="display: none;">
-                    <span class="promo-title">⚠️ আপনার ৫ দিনের ট্রায়াল শেষ হয়েছে! প্রোমো কোড দিন:</span>
+                    <span class="promo-title">⚠️ আপনার ৫ দিনের ট্রায়াল শেষ হয়েছে! প্রোমো কোড দিন:</span>
                     <div class="promo-input-wrapper">
                         <input type="text" id="promoInput" placeholder="যেমন: KBC15DAYS">
                         <button class="btn btn-small" onclick="handlePromoSubmit()">আবেদন করুন</button>
@@ -107,8 +109,8 @@
         <div id="scr-lang" class="screen">
             <h1>SELECT LANGUAGE / ভাষা নির্বাচন</h1>
             <div class="lang-grid">
-                <button class="btn btn-lang" onclick="selectLanguage('bn')">🇧🇩 বাংলা (Bengali)</button>
-                <button class="btn btn-lang" onclick="selectLanguage('en')">🇬🇧 ENGLISH</button>
+                <button class="btn btn-lang" onclick="selectLanguage('bn')">🌐 বাংলা (BENGALI)</button>
+                <button class="btn btn-lang" onclick="selectLanguage('en')">🌐 ENGLISH</button>
             </div>
         </div>
 
@@ -195,7 +197,7 @@
         </div>
     </div>
 
-   <!-- Admin Master Passcode Modal -->
+    <!-- Admin Master Passcode Modal -->
     <div id="modal-admin" class="modal-overlay" style="display: none;">
         <div class="modal-content admin-modal-card">
             <div class="modal-header">
@@ -220,7 +222,7 @@
                 <span class="close-modal" onclick="closeInviteModal()">&times;</span>
             </div>
             <div class="modal-body">
-                <p>অন্য প্লেয়ারকে গেম খেলতে আমন্ত্রণ জানাতে আপনার ইনভাইট কোড কপি করুন:</p>
+                <p>অন্য প্লেয়ারকে গেম খেলতে আমন্ত্রণ জানাতে আপনার ইনভাইট কোড কপি করুন:</p>
                 <input type="text" id="invite-code-input" readonly value="KBC-ROOM-2026">
             </div>
             <div class="modal-footer">
@@ -228,6 +230,7 @@
             </div>
         </div>
     </div>
+
     <!-- Audio Elements -->
     <audio id="bg-music" loop src="https://www.soundjay.com/free-music/sounds/ambient-atmosphere-01.mp3"></audio>
     <audio id="snd-cor" src="https://www.soundjay.com/buttons/sounds/button-37.mp3"></audio>

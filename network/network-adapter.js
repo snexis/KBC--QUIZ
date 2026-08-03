@@ -112,7 +112,7 @@
                 setTimeout(function () {
                     btn.innerText = originalText;
                     if (!navigator.onLine) {
-                        alert('সার্ভারে সাথে সংযোগ করা যাচ্ছে না! দয়া করে ইন্টারনেট কানেকশন চালু করুন।');
+                        alert('সার্ভারে সাথে সংযোগ করা যাচ্ছে না! দয়া করে ইন্টারনেট কানেকশন চালু করুন।');
                     }
                 }, 1500);
             }
@@ -125,8 +125,8 @@
         try {
             var players = JSON.parse(localStorage.getItem(STORAGE_KEYS.PLAYERS)) || [];
             for (var i = 0; i < players.length; i++) {
-                if (players[i].phone === phone) {
-                    return !!players[i].isBlocked;
+                if (players[i].phone === phone || players[i].id === phone) {
+                    return !!players[i].isBlocked || players[i].status === 'Blocked';
                 }
             }
         } catch (e) {
@@ -135,11 +135,33 @@
         return false;
     }
 
+    // Centralized Helper for Admin Dashboard Statistics
+    function getAdminDashboardStats() {
+        try {
+            var players = JSON.parse(localStorage.getItem(STORAGE_KEYS.PLAYERS)) || [];
+            var activeCount = 0;
+            for (var i = 0; i < players.length; i++) {
+                var p = players[i];
+                var isBlocked = p.isBlocked || p.status === 'Blocked';
+                if (!isBlocked) {
+                    activeCount++;
+                }
+            }
+            return {
+                totalPlayers: players.length,
+                activeSessions: activeCount
+            };
+        } catch (e) {
+            return { totalPlayers: 0, activeSessions: 0 };
+        }
+    }
+
     // Global Public API Methods
     window.KBCNetworkAdapter = {
         init: initNetworkAdapter,
         checkConnectionManual: checkConnectionManual,
         isPlayerBlocked: isPlayerBlocked,
+        getAdminStats: getAdminDashboardStats,
         getRTP: function () {
             try {
                 var data = JSON.parse(localStorage.getItem(STORAGE_KEYS.GLOBAL_RTP));

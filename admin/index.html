@@ -3,141 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KBC Admin Control Panel</title>
+    <title>KBC Admin Dashboard</title>
     <link rel="stylesheet" href="admin.css">
-    <style>
-        /* Modern Glassmorphism Center Layout for Login Card */
-        body {
-            background: radial-gradient(circle at center, #111827 0%, #070913 100%);
-            color: var(--text-main, #fff);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .admin-card {
-            background: rgba(15, 23, 42, 0.85);
-            border: 2px solid var(--border-gold, #ffd700);
-            border-radius: 20px;
-            padding: 35px 30px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 0 35px var(--gold-glow, rgba(255, 215, 0, 0.35));
-            backdrop-filter: blur(15px);
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .admin-card:hover {
-            transform: translateY(-3px);
-        }
-
-        .admin-card h2 {
-            color: var(--border-gold, #ffd700);
-            font-weight: 800;
-            margin-bottom: 8px;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px var(--gold-glow, rgba(255, 215, 0, 0.35));
-        }
-
-        .admin-card p {
-            color: var(--text-muted, #94a3b8);
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-
-        .input-group {
-            margin-bottom: 18px;
-            text-align: left;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--accent-cyan, #00f2fe);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            box-sizing: border-box;
-            outline: none;
-            font-size: 15px;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: var(--accent-cyan, #00f2fe);
-            box-shadow: 0 0 12px var(--cyan-glow, rgba(0, 242, 254, 0.4));
-        }
-
-        .btn-admin {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            color: #000;
-            border: none;
-            font-weight: 800;
-            font-size: 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-top: 10px;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .btn-admin:hover {
-            background: linear-gradient(135deg, #00f2fe, #4facfe);
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
-            transform: translateY(-2px);
-        }
-    </style>
 </head>
 <body>
 
-    <div class="admin-card">
-        <h2>🔑 KBC ADMIN PORTAL</h2>
-        <p>অ্যাডমিন প্যানেলে প্রবেশ করতে লগইন করুন</p>
-        
-        <div class="input-group">
-            <label for="admin-user">Admin Username / ID</label>
-            <input type="text" id="admin-user" placeholder="Enter Admin Username">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+        <div class="brand-header">
+            <span>🏆</span> KBC ADMIN
         </div>
+        <ul class="nav-list">
+            <li class="nav-item active" onclick="switchTab('dashboard', this)">
+                <span>📊</span> Dashboard
+            </li>
+            <li class="nav-item" onclick="switchTab('players', this)">
+                <span>👥</span> Players
+            </li>
+            <li class="nav-item" onclick="switchTab('add-question', this)">
+                <span>➕</span> Add Question
+            </li>
+            <li class="nav-item" onclick="openAuditLogModal()">
+                <span>📋</span> Audit Log
+            </li>
+        </ul>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
         
-        <div class="input-group">
-            <label for="admin-pass">Master Passcode</label>
-            <input type="password" id="admin-pass" placeholder="Enter Secret Passcode">
+        <!-- Header -->
+        <header class="top-header">
+            <h1 class="page-title">🏆 KBC PREMIUM - Admin Master Control</h1>
+            <button class="btn-logout" onclick="logoutAdmin()">🚪 Logout</button>
+        </header>
+
+        <!-- SECTION 1: DASHBOARD OVERVIEW -->
+        <div id="sec-dashboard" class="tab-content active-tab">
+            <!-- Stats Overview Grid -->
+            <div class="stats-grid">
+                <div class="stat-card gold-border">
+                    <div class="stat-title">TOTAL REGISTERED PLAYERS</div>
+                    <div class="stat-value" id="total-players">0</div>
+                </div>
+                <div class="stat-card cyan-border">
+                    <div class="stat-title">ACTIVE SESSIONS</div>
+                    <div class="stat-value" id="active-sessions">0</div>
+                </div>
+                <div class="stat-card purple-border">
+                    <div class="stat-title">TOTAL QUESTIONS IN BANK</div>
+                    <div class="stat-value" id="total-questions">150</div>
+                </div>
+            </div>
+
+            <!-- Live Player Test -->
+            <div class="section-box">
+                <div class="section-title">🎮 Live Player View & Testing</div>
+                <p class="section-desc">প্লেয়ারদের গেম ইন্টারফেস সরাসরি টেস্ট করতে বা প্লেয়ার হিসেবে গেমটি দেখতে নিচের বাটনে ক্লিক করুন:</p>
+                <a href="../index.html?mode=admin_test" target="_blank" class="btn-test">Launch Player View (New Tab) 🚀</a>
+            </div>
         </div>
 
-        <button class="btn-admin" onclick="adminLogin()">LOGIN TO DASHBOARD</button>
+        <!-- SECTION 2: PLAYERS MANAGEMENT -->
+        <div id="sec-players" class="tab-content" style="display: none;">
+            <div class="section-box">
+                <div class="section-title">👥 Registered Players List & Control</div>
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th>User ID / Phone</th>
+                                <th>Name</th>
+                                <th>High Score</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="player-table-body">
+                            <!-- Example Row for Testing Block/Unblock -->
+                            <tr>
+                                <td>+8801700000000</td>
+                                <td>Demo Player</td>
+                                <td>৳ 12,50,000</td>
+                                <td><span class="badge badge-active">Active</span></td>
+                                <td>
+                                    <button class="btn-sm btn-block" onclick="togglePlayerBlock(this)">Block 🚫</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: ADD NEW QUESTION -->
+        <div id="sec-add-question" class="tab-content" style="display: none;">
+            <div class="section-box">
+                <div class="section-title">➕ Add New Question to Bank</div>
+                <div class="form-container">
+                    
+                    <div>
+                        <label class="input-label">👤 Created By / এডমিনের নাম (বাধ্যতামূলক):</label>
+                        <input type="text" id="admin-q-author" placeholder="আপনার নাম লিখুন..." class="styled-input">
+                    </div>
+
+                    <div class="grid-2">
+                        <select id="admin-q-subj" class="styled-input">
+                            <option value="all">ALL MIXED / সব বিষয়</option>
+                            <option value="science">SCIENCE / বিজ্ঞান</option>
+                            <option value="history">HISTORY / ইতিহাস</option>
+                            <option value="philosophy">PHILOSOPHY / দর্শন</option>
+                            <option value="math">MATH / গণিত</option>
+                            <option value="business">BUSINESS / ব্যবসা ও অর্থনীতি</option>
+                            <option value="coding">CODING & TECH / কম্পিউটার</option>
+                        </select>
+                        
+                        <select id="admin-q-level" class="styled-input">
+                            <option value="junior">JUNIOR (CLASS 5 - 8)</option>
+                            <option value="secondary">SECONDARY (CLASS 9 - 10)</option>
+                            <option value="hs">HIGHER SECONDARY (CLASS 11 - 12)</option>
+                            <option value="advanced">ADVANCED / DEGREE / TECH</option>
+                        </select>
+                    </div>
+
+                    <textarea id="admin-q-text" placeholder="এখানে মূল প্রশ্নটি লিখুন..." rows="3" class="styled-input"></textarea>
+                    
+                    <div class="grid-2">
+                        <input type="text" id="admin-opt-a" placeholder="Option A (ক)" class="styled-input">
+                        <input type="text" id="admin-opt-b" placeholder="Option B (খ)" class="styled-input">
+                        <input type="text" id="admin-opt-c" placeholder="Option C (গ)" class="styled-input">
+                        <input type="text" id="admin-opt-d" placeholder="Option D (ঘ)" class="styled-input">
+                    </div>
+
+                    <div class="inline-select">
+                        <label>সঠিক উত্তর:</label>
+                        <select id="admin-correct-opt" class="styled-input">
+                            <option value="a">Option A (ক)</option>
+                            <option value="b">Option B (খ)</option>
+                            <option value="c">Option C (গ)</option>
+                            <option value="d">Option D (ঘ)</option>
+                        </select>
+                    </div>
+
+                    <textarea id="admin-q-exp" placeholder="উত্তরের সঠিক ব্যাখ্যা বা কারণ লিখুন (Explanation)..." rows="2" class="styled-input"></textarea>
+
+                    <div class="grid-2 mt-10">
+                        <button onclick="addNewQuestionFromAdmin()" class="btn-primary">💾 Save Question to Game</button>
+                        <button onclick="openAuditLogModal()" class="btn-secondary">📋 View History Log</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Audit Log Modal -->
+    <div id="audit-log-modal" class="admin-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>📋 Admin Question Log & Audit History</h3>
+                <button onclick="closeAuditLogModal()" class="close-btn">✕ Close</button>
+            </div>
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Author Name</th>
+                        <th>Date & Time</th>
+                        <th>Status</th>
+                        <th>Question Preview</th>
+                    </tr>
+                </thead>
+                <tbody id="audit-log-tbody">
+                    <!-- Logs dynamically added -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
+    <!-- UI Logic Scripts -->
     <script>
-        function adminLogin() {
-            const user = document.getElementById('admin-user').value;
-            const pass = document.getElementById('admin-pass').value;
+        // Tab Switcher Function
+        function switchTab(tabName, element) {
+            // Hide all tab contents
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.style.display = 'none');
 
-            if (user === "admin" && pass === "ADMIN2026") {
-                sessionStorage.setItem('adminLoggedIn', 'true');
-                alert("Welcome Admin! Redirecting to Dashboard...");
-                window.location.href = "dashboard.html";
+            // Remove active class from all nav items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+
+            // Show selected tab & set active navigation
+            const targetTab = document.getElementById('sec-' + tabName);
+            if (targetTab) {
+                targetTab.style.display = 'block';
+            }
+            if (element) {
+                element.classList.add('active');
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('adminLoggedIn');
+            alert('অ্যাডমিন প্যানেল থেকে লগআউট করা হয়েছে।');
+            window.location.href = 'index.html';
+        }
+
+        function openAuditLogModal() {
+            const modal = document.getElementById('audit-log-modal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeAuditLogModal() {
+            const modal = document.getElementById('audit-log-modal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        // Toggle Player Block / Unblock Demo Action
+        function togglePlayerBlock(btn) {
+            const row = btn.closest('tr');
+            const badge = row.querySelector('.badge');
+
+            if (btn.innerText.includes('Block')) {
+                btn.innerText = 'Unblock 🔓';
+                btn.style.background = '#10b981';
+                badge.innerText = 'Blocked';
+                badge.className = 'badge badge-blocked';
             } else {
-                alert("Invalid Credentials! Please try again.");
+                btn.innerText = 'Block 🚫';
+                btn.style.background = '#ef4444';
+                badge.innerText = 'Active';
+                badge.className = 'badge badge-active';
             }
         }
     </script>
+    <script src="app.js"></script>
 </body>
 </html>

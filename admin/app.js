@@ -126,15 +126,13 @@ function loadAuditLogs() {
     logTbody.innerHTML = html;
 }
 
-// Function to Load Real Players List with Live Indicator (Green Pulsing Badge)
+// Function to Load Real Players List with Live Indicator (Single Source: 'kbc_players')
 function loadRealPlayersList() {
     const tableBody = document.getElementById('player-table-body');
     if (!tableBody) return;
 
-    let savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || 'null');
-    if (!savedPlayers || savedPlayers.length === 0) {
-        savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
-    }
+    // সরাসরি একক লোকালস্টোরেজ কি 'kbc_players' ব্যবহার করা হলো
+    let savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
 
     if (savedPlayers.length === 0) {
         tableBody.innerHTML = `
@@ -157,7 +155,6 @@ function loadRealPlayersList() {
         if (player.lastActive && (currentTime - player.lastActive < 120000)) {
             isLive = true;
         } else if (playerStatus === 'Active' && !player.isBlocked) {
-            // Fallback assumption if status is Active
             isLive = true;
         }
 
@@ -189,21 +186,13 @@ function loadRealPlayersList() {
 
 // Block/Unblock Toggle Functionality
 function toggleBlockPlayer(playerId) {
-    let storageKey = 'kbc_real_players';
-    let savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-    
-    if (savedPlayers.length === 0) {
-        savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
-        storageKey = 'kbc_players';
-    }
+    let storageKey = 'kbc_players';
+    let savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
 
     savedPlayers = savedPlayers.map(player => {
         if (player.id === playerId || player.phone === playerId) {
-            if (storageKey === 'kbc_players') {
-                player.isBlocked = !player.isBlocked;
-            } else {
-                player.status = (player.status === 'Blocked') ? 'Active' : 'Blocked';
-            }
+            player.isBlocked = !player.isBlocked;
+            player.status = player.isBlocked ? 'Blocked' : 'Active';
         }
         return player;
     });
@@ -221,10 +210,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // Fully Dynamic Admin Dashboard Statistics Updater
 function updateAdminDashboardStats() {
-    let savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || 'null');
-    if (!savedPlayers || savedPlayers.length === 0) {
-        savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
-    }
+    let savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
 
     // 1. Total Registered Players Count
     const totalPlayersElem = document.getElementById('total-players');
@@ -236,7 +222,7 @@ function updateAdminDashboardStats() {
     const activeSessionsElem = document.getElementById('active-sessions');
     if (activeSessionsElem) {
         const activeCount = savedPlayers.filter(p => 
-            p.status === 'Active' || (!p.isBlocked && p.status !== 'Blocked')
+            !p.isBlocked && p.status !== 'Blocked'
         ).length;
         activeSessionsElem.innerText = activeCount;
     }

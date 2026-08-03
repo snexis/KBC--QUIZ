@@ -126,12 +126,16 @@ function loadAuditLogs() {
     logTbody.innerHTML = html;
 }
 
-// Function to Load Real Players List
+// Function to Load Real Players List (Fixed to check both storage keys)
 function loadRealPlayersList() {
     const tableBody = document.getElementById('player-table-body');
-    const savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-
     if (!tableBody) return;
+
+    // Fetch from both possible storage keys to ensure data is found
+    let savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || 'null');
+    if (!savedPlayers || savedPlayers.length === 0) {
+        savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
+    }
 
     if (savedPlayers.length === 0) {
         tableBody.innerHTML = `
@@ -144,15 +148,18 @@ function loadRealPlayersList() {
 
     let html = '';
     savedPlayers.forEach(player => {
+        const playerId = player.id || player.phone;
+        const playerStatus = player.status || (player.isBlocked ? 'Blocked' : 'Active');
+        
         html += `
             <tr>
-                <td>${player.phone || player.id}</td>
-                <td>${player.name}</td>
+                <td>${player.phone || player.id || 'N/A'}</td>
+                <td>${player.name || player.username || 'Unknown'}</td>
                 <td>${player.highScore || 0} Points</td>
-                <td><span style="color: ${player.status === 'Blocked' ? '#e74c3c' : '#2ecc71'};">${player.status || 'Active'}</span></td>
+                <td><span style="color: ${playerStatus === 'Blocked' ? '#e74c3c' : '#2ecc71'};">${playerStatus}</span></td>
                 <td>
-                    <button class="btn-action" onclick="toggleBlockPlayer('${player.id}')" style="background: ${player.status === 'Blocked' ? '#27ae60' : '#e74c3c'}; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">
-                        ${player.status === 'Blocked' ? 'Unblock' : 'Block'}
+                    <button class="btn-action" onclick="toggleBlockPlayer('${playerId}')" style="background: ${playerStatus === 'Blocked' ? '#27ae60' : '#e74c3c'}; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">
+                        ${playerStatus === 'Blocked' ? 'Unblock' : 'Block'}
                     </button>
                 </td>
             </tr>
@@ -161,16 +168,28 @@ function loadRealPlayersList() {
     tableBody.innerHTML = html;
 }
 
-// Block/Unblock Toggle Functionality
+// Block/Unblock Toggle Functionality (Fixed for both keys)
 function toggleBlockPlayer(playerId) {
+    let storageKey = 'kbc_real_players';
     let savedPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
+    
+    if (savedPlayers.length === 0) {
+        savedPlayers = JSON.parse(localStorage.getItem('kbc_players') || '[]');
+        storageKey = 'kbc_players';
+    }
+
     savedPlayers = savedPlayers.map(player => {
-        if (player.id === playerId) {
-            player.status = (player.status === 'Blocked') ? 'Active' : 'Blocked';
+        if (player.id === playerId || player.phone === playerId) {
+            if (storageKey === 'kbc_players') {
+                player.isBlocked = !player.isBlocked;
+            } else {
+                player.status = (player.status === 'Blocked') ? 'Active' : 'Blocked';
+            }
         }
         return player;
     });
-    localStorage.setItem('kbc_real_players', JSON.stringify(savedPlayers));
+
+    localStorage.setItem(storageKey, JSON.stringify(savedPlayers));
     loadRealPlayersList();
 }
 

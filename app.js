@@ -481,7 +481,7 @@ function loadQ() {
     if (explanationTimer) clearTimeout(explanationTimer);
     closeExplanationModal();
 
-    if (curIdx >= activeQuestions.length) {
+    if (!activeQuestions || activeQuestions.length === 0 || curIdx >= activeQuestions.length) {
         return end();
     }
 

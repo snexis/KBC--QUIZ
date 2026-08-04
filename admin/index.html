@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
@@ -93,16 +93,7 @@
                             </tr>
                         </thead>
                         <tbody id="player-table-body">
-                            <!-- Example Row for Testing Block/Unblock -->
-                            <tr>
-                                <td>+8801700000000</td>
-                                <td>Demo Player</td>
-                                <td>৳ 12,50,000</td>
-                                <td><span class="badge badge-active">Active</span></td>
-                                <td>
-                                    <button class="btn-sm btn-block" onclick="togglePlayerBlock(this)">Block 🚫</button>
-                                </td>
-                            </tr>
+                            <!-- Dynamic Players Render Here -->
                         </tbody>
                     </table>
                 </div>
@@ -203,6 +194,7 @@
                 showLoginUI();
             }
             updateAdminClock();
+            loadRegisteredPlayers();
         });
 
         function loginAdminCheck() {
@@ -222,6 +214,7 @@
             document.getElementById('admin-login-screen').style.display = 'none';
             document.getElementById('admin-sidebar').style.display = 'block';
             document.getElementById('admin-main-content').style.display = 'block';
+            loadRegisteredPlayers();
         }
 
         function showLoginUI() {
@@ -244,11 +237,13 @@
             if (element) {
                 element.classList.add('active');
             }
+            if (tabName === 'players') {
+                loadRegisteredPlayers();
+            }
         }
 
         function logoutAdmin() {
-            sessionStorage.clear();
-            localStorage.clear();
+            sessionStorage.removeItem('adminLoggedIn');
             alert('অ্যাডমিন প্যানেল থেকে সফলভাবে লগআউট করা হয়েছে।');
             showLoginUI();
         }
@@ -269,20 +264,68 @@
             }
         }
 
-        function togglePlayerBlock(btn) {
-            const row = btn.closest('tr');
-            const badge = row.querySelector('.badge');
+        // Dynamic Registered Players Loader from localStorage
+        function loadRegisteredPlayers() {
+            const tbody = document.getElementById('player-table-body');
+            const totalPlayersElem = document.getElementById('total-players');
+            const activeSessionsElem = document.getElementById('active-sessions');
 
-            if (btn.innerText.includes('Block')) {
-                btn.innerText = 'Unblock 🔓';
-                btn.style.background = '#10b981';
-                badge.innerText = 'Blocked';
-                badge.className = 'badge badge-blocked';
-            } else {
-                btn.innerText = 'Block 🚫';
-                btn.style.background = '#ef4444';
-                badge.innerText = 'Active';
-                badge.className = 'badge badge-active';
+            if (!tbody) return;
+
+            // Retrieve registered players from localStorage (Supports common keys like 'kbc_players', 'players', or generic user store)
+            let players = [];
+            try {
+                const storedPlayers = localStorage.getItem('kbc_registered_users') || localStorage.getItem('players') || localStorage.getItem('kbc_users');
+                if (storedPlayers) {
+                    players = JSON.parse(storedPlayers);
+                }
+            } catch (e) {
+                players = [];
+            }
+
+            tbody.innerHTML = '';
+
+            if (!Array.isArray(players) || players.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 20px;">কোনো রেজিস্টার্ড প্লেয়ার পাওয়া যায়নি</td></tr>`;
+                if (totalPlayersElem) totalPlayersElem.innerText = '0';
+                if (activeSessionsElem) activeSessionsElem.innerText = '0';
+                return;
+            }
+
+            if (totalPlayersElem) totalPlayersElem.innerText = players.length;
+            let activeCount = 0;
+
+            players.forEach((player, index) => {
+                const isBlocked = player.status === 'Blocked' || player.isBlocked;
+                if (!isBlocked) activeCount++;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${player.phone || player.userId || player.id || 'N/A'}</td>
+                    <td>${player.name || player.username || 'Unnamed Player'}</td>
+                    <td>৳ ${player.highScore || player.score || 0}</td>
+                    <td><span class="badge ${isBlocked ? 'badge-blocked' : 'badge-active'}">${isBlocked ? 'Blocked' : 'Active'}</span></td>
+                    <td>
+                        <button class="btn-sm btn-block" onclick="togglePlayerBlockIndex(${index}, this)">${isBlocked ? 'Unblock 🔓' : 'Block 🚫'}</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (activeSessionsElem) activeSessionsElem.innerText = activeCount;
+        }
+
+        function togglePlayerBlockIndex(index, btn) {
+            try {
+                let key = localStorage.getItem('kbc_registered_users') ? 'kbc_registered_users' : (localStorage.getItem('players') ? 'players' : 'kbc_users');
+                let players = JSON.parse(localStorage.getItem(key) || '[]');
+                if (players[index]) {
+                    players[index].status = players[index].status === 'Blocked' ? 'Active' : 'Blocked';
+                    localStorage.setItem(key, JSON.stringify(players));
+                    loadRegisteredPlayers();
+                }
+            } catch (e) {
+                console.error(e);
             }
         }
 

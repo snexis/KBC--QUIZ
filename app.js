@@ -9,6 +9,7 @@ let curIdx = 0;
 let score = 0, cor = 0, wr = 0;
 let timerVal = 30;
 let timerInt = null;
+let liveClockInt = null;
 let activeQuestions = [];
 let canAnswer = false;
 let voiceEnabled = false;
@@ -20,6 +21,52 @@ let explanationTimer = null;
 
 // Track failed login attempts per user ID
 let failedLoginAttempts = {};
+
+// Initialize Live English Clock and Question Bank on Load
+document.addEventListener('DOMContentLoaded', () => {
+    startLiveClock();
+    loadQuestionBank();
+    checkSavedSession();
+});
+
+// Live Digital Clock (English Format)
+function startLiveClock() {
+    if (liveClockInt) clearInterval(liveClockInt);
+    
+    function updateClock() {
+        const clockElem = document.getElementById('live-clock');
+        if (clockElem) {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: true, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            clockElem.innerText = timeString;
+        }
+    }
+    
+    updateClock();
+    liveClockInt = setInterval(updateClock, 1000);
+}
+
+// Session Checker for Auto-Login
+function checkSavedSession() {
+    const activeUser = localStorage.getItem('kbc_current_user');
+    const sessionFlag = localStorage.getItem('kbc_login_session');
+    
+    if (activeUser && sessionFlag === 'active') {
+        const savedUserRaw = localStorage.getItem('kbc_user_account_' + activeUser);
+        if (savedUserRaw) {
+            const userData = JSON.parse(savedUserRaw);
+            checkUserTrialAndProceed(userData);
+            return;
+        }
+    }
+    show('scr-login');
+    loadSavedCredentials();
+}
 
 // Password Visibility Toggle Function
 function togglePasswordVisibility(fieldId, iconElem) {
@@ -42,10 +89,8 @@ function loadCustomAdminQuestions() {
         if (savedCustom) {
             const customList = JSON.parse(savedCustom);
             if (Array.isArray(customList) && customList.length > 0) {
-                // Remove existing custom questions to prevent duplicate entries
                 fullQuestionPool = fullQuestionPool.filter(q => !q.id || !q.id.toString().startsWith('custom_'));
                 
-                // Format subject naming inconsistencies (e.g. math/mathematics)
                 const formattedCustoms = customList.map(cQ => {
                     let sub = cQ.subject ? cQ.subject.toLowerCase() : '';
                     if (sub === 'mathematics' || sub === 'math') {
@@ -54,7 +99,6 @@ function loadCustomAdminQuestions() {
                     return cQ;
                 });
 
-                // Unshift to place custom questions at the top of the pool
                 fullQuestionPool.unshift(...formattedCustoms);
                 console.log(`Successfully merged ${formattedCustoms.length} custom admin questions into pool.`);
             }
@@ -253,7 +297,6 @@ function logoutUser() {
         localStorage.removeItem('kbc_login_session');
         localStorage.removeItem('kbc_current_user');
 
-        // Clear URL Params if in test mode
         if (window.location.search.includes('mode=admin_test')) {
             window.history.replaceState({}, document.title, window.location.pathname);
         }
@@ -309,7 +352,6 @@ function loginUser() {
     if (savedUserRaw) {
         const userData = JSON.parse(savedUserRaw);
         if (userData.pass === pass) {
-            // Reset failed attempts on success
             failedLoginAttempts[userOrPhone] = 0;
 
             localStorage.setItem('kbc_current_user', userOrPhone);
@@ -331,7 +373,6 @@ function loginUser() {
         }
     }
 
-    // Track failed attempts
     failedLoginAttempts[userOrPhone] = (failedLoginAttempts[userOrPhone] || 0) + 1;
 
     if (failedLoginAttempts[userOrPhone] >= 3) {
@@ -418,10 +459,8 @@ function registerUser() {
         status: 'Active'
     };
 
-    // Save individual account
     localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
     
-    // Also push to 'kbc_real_players' so Admin Dashboard can display it instantly
     let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
     const existingIndex = realPlayers.findIndex(p => p.id === username || p.username === username);
     if (existingIndex >= 0) {
@@ -434,7 +473,6 @@ function registerUser() {
     localStorage.setItem('kbc_current_user', username);
     localStorage.setItem('kbc_login_session', 'active');
 
-    // Auto-clear sign up input fields completely
     if (nameElem) nameElem.value = '';
     if (phoneElem) phoneElem.value = '';
     if (userElem) userElem.value = '';
@@ -444,6 +482,7 @@ function registerUser() {
     checkUserTrialAndProceed(userData);
 }
 
+// Optimized Promo Code Handler
 function handlePromoSubmit() {
     const codeInput = document.getElementById('promoInput');
     if (!codeInput) return;
@@ -451,18 +490,21 @@ function handlePromoSubmit() {
     const currentUser = localStorage.getItem('kbc_current_user');
 
     if (!currentUser) {
-        alert(curLang === 'bn' ? "প্রথমে লগইন করুন!" : "Please login first!");
+        alert(curLang === 'bn' ? "প্রথমে লগইন অথবা সাইন-আপ করুন!" : "Please login or sign up first!");
         return;
     }
 
-    if (code === 'KBC2026' || code === 'KBC15DAYS' || code === 'FREE10') {
+    const validCodes = ['KBC2026', 'KBC15DAYS', 'FREE10'];
+
+    if (validCodes.includes(code)) {
         const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
         if (savedUserRaw) {
             let userData = JSON.parse(savedUserRaw);
-            userData.trialDays = (userData.trialDays || 5) + 15;
+            const addedDays = (code === 'KBC2026') ? 30 : 15;
+            userData.trialDays = (userData.trialDays || 5) + addedDays;
             localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
             
-            alert(curLang === 'bn' ? "প্রোমো কোড সফল হয়েছে! আপনার মেয়াদ আরও ১৫ দিন বাড়ানো হলো।" : "Promo code applied! Trial extended by 15 days.");
+            alert(curLang === 'bn' ? `প্রোমো কোড সফল হয়েছে! আপনার সময়সীমা আরও ${addedDays} দিন বাড়ানো হলো।` : `Promo code applied! Extended by ${addedDays} days.`);
             
             const promoSec = document.getElementById('promo-section');
             if (promoSec) promoSec.style.display = 'none';
@@ -491,7 +533,6 @@ function startGameWithLevel(lvl) {
     wr = 0;
     currentSlabCount = 0;
 
-    // Refresh custom questions from LocalStorage before filtering
     loadCustomAdminQuestions();
 
     let filtered = fullQuestionPool.filter(q => {
@@ -890,9 +931,13 @@ function show(id) {
     }
 }
 
-// Anti-Cheat: Resets game or pauses timer if user switches tabs
+// Anti-Cheat: Resets timer/audio safely if user switches tabs
 document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
-        clearInterval(timerInt);
+        if (timerInt) clearInterval(timerInt);
         if (explanationTimer) clearTimeout(explanationTimer);
-        const bg = document.get
+        const bg = document.getElementById('bg-music');
+        if (bg) bg.pause();
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+    }
+});

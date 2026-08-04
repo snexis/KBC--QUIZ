@@ -1,15 +1,24 @@
 // ==========================================
-// PROMO CODE & TRIAL MANAGEMENT (SECURE HASH)
+// PROMO CODE & TRIAL MANAGEMENT (UPDATED & SECURE)
 // ==========================================
 
-// SHA-256 হ্যাশ তালিকা (আসল কোড গোপনে রাখার জন্য)
-// KBC15DAYS -> 40e2cfbf6be71e95690b2203efbc6b8e3a2c499e7df12ba6673bb2f638cbab89
-// KBC20DAYS -> 08e98ec7d62fbdb99e46a74b12aa318ee4eb5953049b5c2c77d46a8947596fa5
-// KBC30DAYS -> 8b6d3763ebad0841dfa9d5a6b09bd711463eefbbbf15dbbc450201c70e263d90
+// SHA-256 হ্যাশ তালিকা (গোপন কোড ও দিন)
+// KBC15DAYS -> 40e2cfbf6be71e95690b2203efbc6b8e3a2c499e7df12ba6673bb2f638cbab89 (15 Days)
+// KBC20DAYS -> 08e98ec7d62fbdb99e46a74b12aa318ee4eb5953049b5c2c77d46a8947596fa5 (20 Days)
+// KBC30DAYS -> 8b6d3763ebad0841dfa9d5a6b09bd711463eefbbbf15dbbc450201c70e263d90 (30 Days)
+// WELCOME2026 -> b85fa179973bf7c269826d9c6c2bbfec2f0b355811cda32b1236113b2c1b2f42 (10 Days)
+// KBCVIP60 -> e38dbbc0f4f9543e3c66f5716df0ee3cae235a90967dbb69ffef900a08e1a144 (60 Days)
+// KBCFESTIVAL -> a8f58beed84bbdf3e1765c363dc839f993f4124cb11ef62cfb37b6c7a7605d3b (25 Days)
+// FREE7DAYS -> d516caefdf0ef087f95fb6be0b5e5a2db3647183e8b0a996f0110bd5f43dbbbf (7 Days)
+
 const PROMO_HASHES = {
   "40e2cfbf6be71e95690b2203efbc6b8e3a2c499e7df12ba6673bb2f638cbab89": 15,
   "08e98ec7d62fbdb99e46a74b12aa318ee4eb5953049b5c2c77d46a8947596fa5": 20,
-  "8b6d3763ebad0841dfa9d5a6b09bd711463eefbbbf15dbbc450201c70e263d90": 30
+  "8b6d3763ebad0841dfa9d5a6b09bd711463eefbbbf15dbbc450201c70e263d90": 30,
+  "b85fa179973bf7c269826d9c6c2bbfec2f0b355811cda32b1236113b2c1b2f42": 10,
+  "e38dbbc0f4f9543e3c66f5716df0ee3cae235a90967dbb69ffef900a08e1a144": 60,
+  "a8f58beed84bbdf3e1765c363dc839f993f4124cb11ef62cfb37b6c7a7605d3b": 25,
+  "d516caefdf0ef087f95fb6be0b5e5a2db3647183e8b0a996f0110bd5f43dbbbf": 7
 };
 
 // ক্যারেক্টার হ্যাশ রূপান্তর ফাংশন
@@ -21,34 +30,52 @@ async function hashText(text) {
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-// ফ্রি ট্রায়াল ইনিশিয়ালাইজেশন (প্রথমবার ৫ দিন দেওয়া হবে)
+// প্রথমবার ফ্রি ট্রায়াল সেট করা (৫ দিন)
 function initializeTrial() {
   let expiryDate = localStorage.getItem("app_expiry_date");
   if (!expiryDate) {
     let now = new Date();
-    now.setDate(now.getDate() + 5); // ৫ দিনের ফ্রি ট্রায়াল
+    now.setDate(now.getDate() + 5);
     localStorage.setItem("app_expiry_date", now.toISOString());
     expiryDate = now.toISOString();
   }
   return new Date(expiryDate);
 }
 
-// ট্রায়াল বা সাবস্ক্রিপশনের মেয়াদ চেক
+// ট্রায়াল বা এক্সেস বৈধ কিনা যাচাই
 function isAccessValid() {
   const expiryDate = initializeTrial();
   const currentDate = new Date();
   return currentDate <= expiryDate;
 }
 
-// ইউজার প্রোমো কোড ইনপুট দিলে এটি কল হবে
+// ইউজার কতদিন মেয়াদ বাকি আছে তা বের করার হেল্পার
+function getRemainingDays() {
+  const expiryDate = initializeTrial();
+  const currentDate = new Date();
+  const diffTime = expiryDate - currentDate;
+  if (diffTime <= 0) return 0;
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+}
+
+// প্রোমো কোড অ্যাপ্লাই করার আধুনিক ফাংশন
 async function applyPromoCode(userEnteredCode) {
-  if (!userEnteredCode) {
-    alert("অনুগ্রহ করে একটি প্রোমো কোড লিখুন!");
+  const codeInput = userEnteredCode || (document.getElementById("promoInput") ? document.getElementById("promoInput").value : "");
+  
+  if (!codeInput || codeInput.trim() === "") {
+    alert(curLang === 'bn' ? "অনুগ্রহ করে একটি প্রোমো কোড লিখুন!" : "Please enter a promo code!");
     return false;
   }
 
-  const cleanCode = userEnteredCode.trim().toUpperCase();
+  const cleanCode = codeInput.trim().toUpperCase();
   const userHash = await hashText(cleanCode);
+
+  // ব্যবহৃত কোড কিনা তা যাচাই
+  let usedCodes = JSON.parse(localStorage.getItem("kbc_used_promo_hashes") || "[]");
+  if (usedCodes.includes(userHash)) {
+    alert(curLang === 'bn' ? "আপনি এই প্রোমো কোডটি ইতিমধ্যে ব্যবহার করেছেন!" : "You have already redeemed this promo code!");
+    return false;
+  }
 
   if (PROMO_HASHES[userHash]) {
     const daysToAdd = PROMO_HASHES[userHash];
@@ -58,30 +85,45 @@ async function applyPromoCode(userEnteredCode) {
     baseDate.setDate(baseDate.getDate() + daysToAdd);
     localStorage.setItem("app_expiry_date", baseDate.toISOString());
 
-    alert(`প্রোমো কোড সফলভাবে যুক্ত হয়েছে! আপনার মেয়াদ ${daysToAdd} দিন বাড়ানো হয়েছে।`);
+    // ব্যবহৃত কোড সেভ করা
+    usedCodes.push(userHash);
+    localStorage.setItem("kbc_used_promo_hashes", JSON.stringify(usedCodes));
+
+    alert(curLang === 'bn' 
+      ? `সফল হয়েছে! আপনার মেয়াদ আরও ${daysToAdd} দিন বাড়ানো হয়েছে।` 
+      : `Success! Your access has been extended by ${daysToAdd} days.`);
     
-    // লগইন বা প্রম্পট হাইড করে গেম ইন্টারফেস দেখানোর ফাংশন কল করুন
+    // ইনপুট বক্স ক্লিয়ার করা
+    const inputElem = document.getElementById("promoInput");
+    if (inputElem) inputElem.value = "";
+
     checkAppAccessStatus();
     return true;
   } else {
-    alert("ভুল বা অবৈধ প্রোমো কোড!");
+    alert(curLang === 'bn' ? "ভুল বা অবৈধ প্রোমো কোড!" : "Invalid promo code!");
     return false;
   }
 }
 
-// অ্যাপ খোলার সাথে সাথে এক্সেস যাচাইকরণ
+// অ্যাপ এক্সেস স্ট্যাটাস চেক এবং ইন্টারফেস আপডেট
 function checkAppAccessStatus() {
+  const remainingDays = getRemainingDays();
+  const promoSection = document.getElementById('promo-section');
+  const expiryBadge = document.getElementById('expiry-badge');
+
+  if (expiryBadge) {
+    expiryBadge.innerText = curLang === 'bn' 
+      ? `মেয়াদ বাকি: ${remainingDays} দিন` 
+      : `Validity: ${remainingDays} Days`;
+  }
+
   if (!isAccessValid()) {
-    // মেয়াদ শেষ হলে গেমের মূল অংশ লক করে প্রোমো কোড ইন্টারফেস দেখাবে
-    alert("আপনার ফ্রি ট্রায়াল বা মেয়াদের সময়সীমা শেষ হয়ে গেছে! অনুগ্রহ করে প্রোমো কোড ব্যবহার করুন।");
-    // এখানে আপনার লগইন/প্রোমো কোড ইউআই (Modal) দৃশ্যমান করার কোড লিখুন
+    if (promoSection) promoSection.style.display = 'block';
+    alert(curLang === 'bn' 
+      ? "আপনার ফ্রি ট্রায়ালের মেয়াদ শেষ হয়ে গেছে! অনুগ্রহ করে প্রোমো কোড ব্যবহার করুন।" 
+      : "Your trial period has expired! Please enter a valid promo code.");
+    show('scr-login');
   } else {
-    // মেয়াদ থাকলে স্বাভাবিক গেম চালু থাকবে
-    console.log("Access Granted. Expiry Date:", localStorage.getItem("app_expiry_date"));
+    if (promoSection) promoSection.style.display = 'none';
   }
 }
-
-// পেজ লোড হওয়ার পর এক্সেস চেক করুন
-document.addEventListener("DOMContentLoaded", () => {
-  checkAppAccessStatus();
-});

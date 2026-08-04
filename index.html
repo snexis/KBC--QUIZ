@@ -14,6 +14,10 @@
             <span class="brand-title">KBC PREMIUM</span>
         </div>
         <div class="nav-controls">
+            <!-- Validity Expiry Badge (Top Navigation Bar) -->
+            <div id="expiry-badge" class="nav-btn validity-badge-btn" style="background: rgba(0, 123, 255, 0.2); border: 1px solid #007bff; color: #4dabf7; font-weight: bold; cursor: default;">
+                <span class="nav-btn-icon">⏳</span> <span class="nav-btn-text">মেয়াদ: -- দিন</span>
+            </div>
             <!-- Audio Mute / Unmute Button -->
             <button id="btn-mute" class="nav-btn" onclick="toggleMute()" title="Mute/Unmute Audio">
                 <span class="nav-btn-icon">🔊</span> <span id="mute-label" class="nav-btn-text">Audio</span>
@@ -103,12 +107,12 @@
                     <button class="btn btn-success" onclick="registerUser()">CREATE ACCOUNT</button>
                 </div>
 
-                <!-- Top Integrated Promo Code Card (Initially Hidden, Visible upon 5-day Trial Expiry) -->
-                <div id="promo-section" class="promo-card" style="display: none;">
-                    <span class="promo-title">⚠️ আপনার ৫ দিনের ট্রায়াল শেষ হয়েছে! প্রোমো কোড দিন:</span>
-                    <div class="promo-input-wrapper">
-                        <input type="text" id="promoInput" placeholder="যেমন: KBC15DAYS">
-                        <button class="btn btn-small" onclick="handlePromoSubmit()">আবেদন করুন</button>
+                <!-- Integrated Modern Promo Code Section -->
+                <div id="promo-section" class="promo-card" style="display: none; margin-top: 20px; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px dashed var(--gold, #ffd700);">
+                    <span class="promo-title" style="display: block; margin-bottom: 10px; font-weight: bold; color: #ffcc00;">⚠️ আপনার ট্রায়ালের মেয়াদ শেষ হয়েছে! প্রোমো কোড দিন:</span>
+                    <div class="promo-input-wrapper" style="display: flex; gap: 8px;">
+                        <input type="text" id="promoInput" placeholder="যেমন: WELCOME2026" style="flex: 1; padding: 8px; text-transform: uppercase;">
+                        <button class="btn btn-small" onclick="applyPromoCode()">রিডিম করুন</button>
                     </div>
                 </div>
             </div>
@@ -117,6 +121,14 @@
         <!-- Screen 2: Language Selection -->
         <div id="scr-lang" class="screen">
             <h1>SELECT LANGUAGE / ভাষা নির্বাচন</h1>
+            
+            <!-- Expiry Badge for Main Menu -->
+            <div style="text-align: center; margin-bottom: 15px;">
+                <div id="expiry-badge-lang" style="background: rgba(0, 123, 255, 0.15); border: 1px solid #007bff; color: #00d2ff; padding: 6px 15px; border-radius: 20px; font-size: 14px; display: inline-block; font-weight: bold;">
+                    ⏳ ট্রায়াল / সাবস্ক্রিপশন মেয়াদ বাকি: -- দিন
+                </div>
+            </div>
+
             <div class="lang-grid">
                 <button class="btn btn-lang" onclick="selectLanguage('bn')">🌐 বাংলা (BENGALI)</button>
                 <button class="btn btn-lang" onclick="selectLanguage('en')">🌐 ENGLISH</button>

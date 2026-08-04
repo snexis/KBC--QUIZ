@@ -280,12 +280,12 @@
         </div>
     </div>
 
-    <!-- Audio Elements -->
-    <audio id="bg-music" loop src="https://www.soundjay.com/free-music/sounds/ambient-atmosphere-01.mp3"></audio>
-    <audio id="snd-cor" src="https://www.soundjay.com/buttons/sounds/button-37.mp3"></audio>
-    <audio id="snd-wr" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
-    <audio id="snd-tick" src="https://www.soundjay.com/misc/sounds/clock-tick-1.mp3"></audio>
-    <audio id="snd-alert" src="https://www.soundjay.com/buttons/sounds/button-0.mp3"></audio>
+   <!-- Audio Elements (Safe Load Handling) -->
+    <audio id="bg-music" loop preload="none"></audio>
+    <audio id="snd-cor" preload="none"></audio>
+    <audio id="snd-wr" preload="none"></audio>
+    <audio id="snd-tick" preload="none"></audio>
+    <audio id="snd-alert" preload="none"></audio>
 
     <!-- Main Logic Scripts -->
     <script src="promo.js"></script>

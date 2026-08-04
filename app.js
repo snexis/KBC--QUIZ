@@ -1,903 +1,283 @@
-// ==========================================
-// KBC PREMIUM 2026 - COMPLETE APP LOGIC (UPDATED & BUG-FIXED)
-// ==========================================
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KBC Premium 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Top Global Navigation Control Bar (Initially Hidden Until Authenticated) -->
+    <header class="top-nav-bar" id="top-nav-bar">
+        <div class="nav-brand">
+            <span class="brand-logo">🏆</span>
+            <span class="brand-title">KBC PREMIUM</span>
+        </div>
+        <div class="nav-controls">
+            <!-- Audio Mute / Unmute Button -->
+            <button id="btn-mute" class="nav-btn" onclick="toggleMute()" title="Mute/Unmute Audio">
+                <span class="nav-btn-icon">🔊</span> <span id="mute-label" class="nav-btn-text">Audio</span>
+            </button>
+            <!-- 3D Animated Glowing Voice Indicator -->
+            <div class="voice-indicator mic-3d-pulse" id="voice-btn" onclick="toggleVoice()" title="Toggle Voice Assistance">
+                <span class="mic-icon">🎤</span>
+                <span class="mic-pulse-ring"></span>
+            </div>
+            <!-- Admin Login Trigger -->
+            <button id="btn-admin-trigger" class="nav-btn admin-btn" onclick="openAdminModal()" title="Admin Test Mode">
+                <span class="nav-btn-icon">🔑</span> <span class="admin-label nav-btn-text">Admin</span>
+            </button>
+            <!-- Invite Player Button -->
+            <button id="btn-invite" class="nav-btn invite-btn" onclick="invitePlayer()" title="Invite Player">
+                <span class="nav-btn-icon">📩</span> <span class="invite-label nav-btn-text">Invite</span>
+            </button>
+            <!-- Exit Game Button -->
+            <button id="btn-exit" class="nav-btn exit-btn" onclick="confirmExitGame()" title="Exit Game">
+                <span class="nav-btn-icon">🚪</span> <span class="exit-label nav-btn-text">Exit</span>
+            </button>
+            <!-- Logout Button -->
+            <button id="btn-logout" class="nav-btn logout-btn" onclick="logoutUser()" title="Logout">
+                <span class="nav-btn-icon">🛑</span> <span class="logout-label nav-btn-text">Logout</span>
+            </button>
+        </div>
+    </header>
 
-let curLang = 'bn';
-let curSubject = 'all';
-let curLevel = 'junior';
-let curIdx = 0;
-let score = 0, cor = 0, wr = 0;
-let timerVal = 30;
-let timerInt;
-let activeQuestions = [];
-let canAnswer = false;
-let voiceEnabled = false;
-let isMuted = false;
-let recognition;
-let currentSlabCount = 0;
-let fullQuestionPool = [];
-let explanationTimer = null;
-
-// Track failed login attempts per user ID
-let failedLoginAttempts = {};
-
-// Password Visibility Toggle Function
-function togglePasswordVisibility(fieldId, iconElem) {
-    const passInput = document.getElementById(fieldId);
-    if (!passInput) return;
-    
-    if (passInput.type === 'password') {
-        passInput.type = 'text';
-        iconElem.innerText = '👁️‍🗨️';
-    } else {
-        passInput.type = 'password';
-        iconElem.innerText = '👁️';
-    }
-}
-
-// Helper Function: Merge Custom Admin Questions into Main Question Pool
-function loadCustomAdminQuestions() {
-    try {
-        const savedCustom = localStorage.getItem('kbc_custom_questions');
-        if (savedCustom) {
-            const customList = JSON.parse(savedCustom);
-            if (Array.isArray(customList) && customList.length > 0) {
-                // Remove existing custom questions to prevent duplicate entries
-                fullQuestionPool = fullQuestionPool.filter(q => !q.id || !q.id.toString().startsWith('custom_'));
+    <div class="container" id="app">
+        
+        <!-- Screen 1: Global Standard Login & Authentication Portal -->
+        <div id="scr-login" class="screen active">
+            <div class="auth-card">
+                <h1>KBC PREMIUM 2026</h1>
+                <p class="subtitle">Educational & Knowledge Quiz Platform</p>
                 
-                // Format subject naming inconsistencies (e.g. math/mathematics)
-                const formattedCustoms = customList.map(cQ => {
-                    let sub = cQ.subject ? cQ.subject.toLowerCase() : '';
-                    if (sub === 'mathematics' || sub === 'math') {
-                        cQ.subject = 'math';
-                    }
-                    return cQ;
-                });
+                <!-- Authentication Tabs Switcher -->
+                <div class="auth-tabs">
+                    <button id="tab-login-btn" class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+                    <button id="tab-signup-btn" class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+                </div>
 
-                // Unshift to place custom questions at the top of the pool
-                fullQuestionPool.unshift(...formattedCustoms);
-                console.log(`Successfully merged ${formattedCustoms.length} custom admin questions into pool.`);
-            }
-        }
-    } catch (e) {
-        console.error("Error loading custom admin questions:", e);
-    }
-}
+                <!-- Login Form -->
+                <div id="form-login" class="auth-form active">
+                    <div class="input-group">
+                        <label for="login-phone">Mobile Number / User ID</label>
+                        <input type="text" id="login-phone" placeholder="Enter 10-digit Phone or User ID">
+                    </div>
+                    <div class="input-group">
+                        <label for="login-pass">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="login-pass" placeholder="Enter your Password">
+                            <span class="toggle-password-icon" onclick="togglePasswordVisibility('login-pass', this)">👁️</span>
+                        </div>
+                    </div>
+                    <div class="remember-group">
+                        <div class="remember-me-checkbox">
+                            <input type="checkbox" id="remember-me">
+                            <label for="remember-me">Remember Me</label>
+                        </div>
+                        <a href="javascript:void(0);" onclick="openForgotPassModal(); return false;" class="forgot-pass-link">Forgot Password?</a>
+                    </div>
+                    <button class="btn btn-primary" onclick="loginUser()">LOGIN</button>
+                </div>
 
-// Automatic Syntax Recovery & Robust JSON Parser
-function autoFixAndParseObj(rawText) {
-    let cleanText = rawText.trim();
-    if (cleanText.endsWith(',')) {
-        cleanText = cleanText.slice(0, -1);
-    }
-    
-    try {
-        return JSON.parse(cleanText);
-    } catch (e) {
-        try {
-            cleanText = cleanText.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2":');
-            return JSON.parse(cleanText);
-        } catch (innerErr) {
-            return null;
-        }
-    }
-}
+                <!-- Sign Up / Registration Form -->
+                <div id="form-signup" class="auth-form" style="display:none;">
+                    <div class="input-group">
+                        <label for="signup-name">Full Name</label>
+                        <input type="text" id="signup-name" placeholder="Enter full name">
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-phone">Mobile Number</label>
+                        <input type="tel" id="signup-phone" placeholder="Enter 10-digit number" maxlength="10">
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-username">Username</label>
+                        <input type="text" id="signup-username" placeholder="e.g. QuizMaster99">
+                    </div>
+                    <div class="input-group">
+                        <label for="signup-pass">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="signup-pass" placeholder="Create password">
+                            <span class="toggle-password-icon" onclick="togglePasswordVisibility('signup-pass', this)">👁️</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-success" onclick="registerUser()">CREATE ACCOUNT</button>
+                </div>
 
-// External JSON Question Bank Loader
-async function loadQuestionBank() {
-    try {
-        const response = await fetch('questions.json');
-        if (!response.ok) throw new Error("Question bank not found");
-        
-        const textData = await response.text();
-        let cleanData = textData.trim();
+                <!-- Top Integrated Promo Code Card (Initially Hidden, Visible upon 5-day Trial Expiry) -->
+                <div id="promo-section" class="promo-card" style="display: none;">
+                    <span class="promo-title">⚠️ আপনার ৫ দিনের ট্রায়াল শেষ হয়েছে! প্রোমো কোড দিন:</span>
+                    <div class="promo-input-wrapper">
+                        <input type="text" id="promoInput" placeholder="যেমন: KBC15DAYS">
+                        <button class="btn btn-small" onclick="handlePromoSubmit()">আবেদন করুন</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        try {
-            fullQuestionPool = JSON.parse(cleanData);
-            console.log("Successfully loaded " + fullQuestionPool.length + " questions instantly.");
-            loadCustomAdminQuestions();
-            return;
-        } catch (e) {
-            console.warn("Direct JSON parsing failed. Activating Safe Chunking Processor...");
-        }
+        <!-- Screen 2: Language Selection -->
+        <div id="scr-lang" class="screen">
+            <h1>SELECT LANGUAGE / ভাষা নির্বাচন</h1>
+            <div class="lang-grid">
+                <button class="btn btn-lang" onclick="selectLanguage('bn')">🌐 বাংলা (BENGALI)</button>
+                <button class="btn btn-lang" onclick="selectLanguage('en')">🌐 ENGLISH</button>
+            </div>
+        </div>
 
-        fullQuestionPool = [];
-        let items = [];
+        <!-- Screen 3: Subject Selection -->
+        <div id="scr-subject" class="screen">
+            <h1>SELECT SUBJECT / বিষয় নির্বাচন</h1>
+            <div class="subject-grid">
+                <button class="btn sub-btn" onclick="selectSubject('all')">🌐 All Mixed / সব বিষয়</button>
+                <button class="btn sub-btn" onclick="selectSubject('science')">🧪 Science / বিজ্ঞান</button>
+                <button class="btn sub-btn" onclick="selectSubject('history')">📜 History / ইতিহাস</button>
+                <button class="btn sub-btn" onclick="selectSubject('philosophy')">🧠 Philosophy / দর্শন</button>
+                <button class="btn sub-btn" onclick="selectSubject('math')">📐 Math / গণিত</button>
+                <button class="btn sub-btn" onclick="selectSubject('commerce')">💼 Business / ব্যবসা ও অর্থনীতি</button>
+                <button class="btn sub-btn" onclick="selectSubject('tech')">💻 Coding & Tech / কম্পিউটার</button>
+            </div>
+        </div>
 
-        if (cleanData.startsWith('[')) cleanData = cleanData.substring(1);
-        if (cleanData.endsWith(']')) cleanData = cleanData.substring(0, cleanData.length - 1);
+        <!-- Screen 4: Level / Class Selection -->
+        <div id="scr-level" class="screen">
+            <h1>SELECT LEVEL / শ্রেণী নির্বাচন</h1>
+            <div class="level-grid">
+                <button class="btn lvl-btn" onclick="startGameWithLevel('junior')">🐣 Junior (Class 5 - 8)</button>
+                <button class="btn lvl-btn" onclick="startGameWithLevel('secondary')">🎓 Secondary (Class 9 - 10)</button>
+                <button class="btn lvl-btn" onclick="startGameWithLevel('higher')">🏛️ Higher Secondary (Class 11 - 12)</button>
+                <button class="btn lvl-btn" onclick="startGameWithLevel('advanced')">🔬 Advanced / Degree / Tech</button>
+            </div>
+        </div>
 
-        const rawObjects = cleanData.split(/\},\s*\{/);
-        const BATCH_SIZE = 300;
-        let successCount = 0;
-        let errorCount = 0;
-
-        for (let i = 0; i < rawObjects.length; i++) {
-            let str = rawObjects[i].trim();
-            if (!str.startsWith('{')) str = '{' + str;
-            if (!str.endsWith('}')) str = str + '}';
-
-            const parsedObj = autoFixAndParseObj(str);
-            if (parsedObj) {
-                items.push(parsedObj);
-                successCount++;
-            } else {
-                errorCount++;
-            }
-
-            if (items.length >= BATCH_SIZE) {
-                fullQuestionPool.push(...items);
-                items = [];
-                await new Promise(resolve => setTimeout(resolve, 0));
-            }
-        }
-
-        if (items.length > 0) {
-            fullQuestionPool.push(...items);
-        }
-
-        console.log(`Loaded ${fullQuestionPool.length} valid questions successfully. Skipped corrupted entries: ${errorCount}`);
-        loadCustomAdminQuestions();
-
-    } catch (error) {
-        console.error("Error loading JSON, falling back to default pool:", error);
-        loadCustomAdminQuestions();
-    }
-}
-
-// Initialize Speech Recognition
-function initVoice() {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        recognition = new SpeechRecognition();
-        recognition.continuous = false;
-        recognition.interimResults = false;
-        recognition.lang = curLang === 'bn' ? 'bn-IN' : 'en-IN';
-        
-        recognition.onresult = (event) => {
-            const transcript = event.results[0][0].transcript.toLowerCase();
-            processVoiceCommand(transcript);
-        };
-        
-        recognition.onerror = (event) => {
-            console.log('Voice error:', event.error);
-        };
-    }
-}
-
-function toggleVoice() {
-    voiceEnabled = !voiceEnabled;
-    const btn = document.getElementById('voice-btn');
-    if (voiceEnabled) {
-        if (btn) btn.classList.add('active', 'listening');
-        if (!recognition) initVoice();
-        startListening();
-    } else {
-        if (btn) btn.classList.remove('active', 'listening');
-        if (recognition) {
-            try { recognition.stop(); } catch(e) {}
-        }
-    }
-}
-
-function startListening() {
-    if (voiceEnabled && recognition && canAnswer) {
-        try {
-            recognition.start();
-        } catch(e) {
-            console.log('Recognition already running or busy');
-        }
-    }
-}
-
-function processVoiceCommand(cmd) {
-    if (!canAnswer) return;
-    
-    const mappings = {
-        'a': 0, 'এ': 0, 'এক': 0, 'one': 0, 'প্রথম': 0, 'option a': 0, '১': 0, '1': 0, 'ক': 0,
-        'b': 1, 'বি': 1, 'দুই': 1, 'two': 1, 'দ্বিতীয়': 1, 'option b': 1, '২': 1, '2': 1, 'খ': 1,
-        'c': 2, 'সি': 2, 'তিন': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2, '৩': 2, '3': 2, 'গ': 2,
-        'd': 3, 'ডি': 3, 'চার': 3, 'four': 3, 'চতুর্থ': 3, 'option d': 3, '৪': 3, '4': 3, 'ঘ': 3
-    };
-    
-    for (let key in mappings) {
-        if (cmd.includes(key)) {
-            check(mappings[key]);
-            break;
-        }
-    }
-}
-
-// Audio Controls
-function toggleMute() {
-    isMuted = !isMuted;
-    const label = document.getElementById('mute-label');
-    const bg = document.getElementById('bg-music');
-    
-    if (isMuted) {
-        if (bg) bg.pause();
-        if (label) label.innerText = curLang === 'bn' ? 'আনমিউট' : 'Unmute';
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
-    } else {
-        if (bg && document.getElementById('scr-game') && document.getElementById('scr-game').classList.contains('active')) {
-            bg.play().catch(e => console.log("Audio play blocked"));
-        }
-        if (label) label.innerText = curLang === 'bn' ? 'সাউন্ড' : 'Mute';
-    }
-}
-
-// Game Exit
-function confirmExitGame() {
-    if (confirm(curLang === 'bn' ? "আপনি কি খেলা ছেড়ে বাইরে যেতে চান?" : "Are you sure you want to exit the game?")) {
-        clearInterval(timerInt);
-        if (explanationTimer) clearTimeout(explanationTimer);
-        const bg = document.getElementById('bg-music');
-        if (bg) bg.pause();
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
-        if (recognition) { try { recognition.stop(); } catch(e) {} }
-        show('scr-lang');
-    }
-}
-
-// User Logout Logic
-function logoutUser() {
-    if (confirm(curLang === 'bn' ? "আপনি কি নিশ্চিত যে আপনি লগআউট করতে চান?" : "Are you sure you want to logout?")) {
-        clearInterval(timerInt);
-        if (explanationTimer) clearTimeout(explanationTimer);
-        const bg = document.getElementById('bg-music');
-        if (bg) bg.pause();
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
-        if (recognition) { try { recognition.stop(); } catch(e) {} }
-
-        // Clear Session
-        localStorage.removeItem('kbc_login_session');
-        localStorage.removeItem('kbc_current_user');
-
-        // Clear URL Params if in test mode
-        if (window.location.search.includes('mode=admin_test')) {
-            window.history.replaceState({}, document.title, window.location.pathname);
-        }
-
-        show('scr-login');
-        loadSavedCredentials();
-    }
-}
-
-// Authentication Handlers
-function switchAuthTab(type) {
-    const loginTab = document.getElementById('tab-login-btn');
-    const regTab = document.getElementById('tab-signup-btn');
-    const loginForm = document.getElementById('form-login');
-    const regForm = document.getElementById('form-signup');
-
-    if (type === 'login') {
-        if (loginTab) loginTab.classList.add('active');
-        if (regTab) regTab.classList.remove('active');
-        if (loginForm) {
-            loginForm.classList.add('active');
-            loginForm.style.display = 'block';
-        }
-        if (regForm) {
-            regForm.classList.remove('active');
-            regForm.style.display = 'none';
-        }
-    } else {
-        if (regTab) regTab.classList.add('active');
-        if (loginTab) loginTab.classList.remove('active');
-        if (regForm) {
-            regForm.classList.add('active');
-            regForm.style.display = 'block';
-        }
-        if (loginForm) {
-            loginForm.classList.remove('active');
-            loginForm.style.display = 'none';
-        }
-    }
-}
-
-function loginUser() {
-    const userOrPhone = document.getElementById('login-phone') ? document.getElementById('login-phone').value.trim() : '';
-    const pass = document.getElementById('login-pass') ? document.getElementById('login-pass').value.trim() : '';
-    const rememberMe = document.getElementById('remember-me') ? document.getElementById('remember-me').checked : false;
-
-    if (!userOrPhone || !pass) {
-        alert(curLang === 'bn' ? "ইউজার আইডি এবং পাসওয়ার্ড সঠিকভাবে দিন!" : "Please enter valid credentials!");
-        return;
-    }
-
-    const savedUserRaw = localStorage.getItem('kbc_user_account_' + userOrPhone);
-    if (savedUserRaw) {
-        const userData = JSON.parse(savedUserRaw);
-        if (userData.pass === pass) {
-            // Reset failed attempts on success
-            failedLoginAttempts[userOrPhone] = 0;
-
-            localStorage.setItem('kbc_current_user', userOrPhone);
-            localStorage.setItem('kbc_login_session', 'active');
-
-            if (rememberMe) {
-                localStorage.setItem('kbc_saved_username', userOrPhone);
-                localStorage.setItem('kbc_saved_password', pass);
-                localStorage.setItem('kbc_remember_flag', 'true');
-            } else {
-                localStorage.removeItem('kbc_saved_username');
-                localStorage.removeItem('kbc_saved_password');
-                localStorage.removeItem('kbc_remember_flag');
-            }
-
-            playSound('alert');
-            checkUserTrialAndProceed(userData);
-            return;
-        }
-    }
-
-    // Track failed attempts
-    failedLoginAttempts[userOrPhone] = (failedLoginAttempts[userOrPhone] || 0) + 1;
-
-    if (failedLoginAttempts[userOrPhone] >= 3) {
-        alert(curLang === 'bn' 
-            ? "পরপর ৩ বার ভুল পাসওয়ার্ড দেওয়া হয়েছে! অ্যাকাউন্ট সুরক্ষায় পাসওয়ার্ড রিকভারি পেজে পাঠানো হচ্ছে।" 
-            : "3 consecutive incorrect password attempts! Redirecting to password recovery.");
-        failedLoginAttempts[userOrPhone] = 0;
-        openForgotPassModal();
-        const forgotUserElem = document.getElementById('forgot-username');
-        if (forgotUserElem) forgotUserElem.value = userOrPhone;
-        return;
-    }
-
-    alert(curLang === 'bn' ? `ভুল আইডি বা পাসওয়ার্ড! (${failedLoginAttempts[userOrPhone]}/3 চেষ্টা)` : `Invalid ID or Password! (${failedLoginAttempts[userOrPhone]}/3 attempts)`);
-}
-
-function loadSavedCredentials() {
-    const savedUser = localStorage.getItem('kbc_saved_username');
-    const savedPass = localStorage.getItem('kbc_saved_password');
-    const rememberFlag = localStorage.getItem('kbc_remember_flag');
-
-    const phoneInput = document.getElementById('login-phone');
-    const passInput = document.getElementById('login-pass');
-    const rememberCheckbox = document.getElementById('remember-me');
-
-    if (savedUser && savedPass && rememberFlag === 'true') {
-        if (phoneInput) phoneInput.value = savedUser;
-        if (passInput) passInput.value = savedPass;
-        if (rememberCheckbox) rememberCheckbox.checked = true;
-    }
-}
-
-function checkUserTrialAndProceed(userData) {
-    if (userData.role === 'admin') {
-        show('scr-lang');
-        return;
-    }
-
-    const now = Date.now();
-    const registeredOn = userData.regTimestamp || now;
-    const allowedDays = userData.trialDays || 5;
-    const elapsedDays = (now - registeredOn) / (1000 * 60 * 60 * 24);
-
-    const promoSec = document.getElementById('promo-section');
-
-    if (elapsedDays > allowedDays) {
-        if (promoSec) promoSec.style.display = 'block';
-        alert(curLang === 'bn' 
-            ? "আপনার " + allowedDays + " দিনের মেয়াদের ট্রায়াল শেষ হয়ে গেছে! অনুগ্রহ করে প্রমো কোড ব্যবহার করুন।" 
-            : "Your " + allowedDays + "-day trial has expired! Please enter a promo code.");
-        show('scr-login');
-    } else {
-        if (promoSec) promoSec.style.display = 'none';
-        show('scr-lang');
-    }
-}
-
-function registerUser() {
-    const nameElem = document.getElementById('signup-name');
-    const phoneElem = document.getElementById('signup-phone');
-    const userElem = document.getElementById('signup-username');
-    const passElem = document.getElementById('signup-pass');
-
-    const name = nameElem ? nameElem.value.trim() : '';
-    const phone = phoneElem ? phoneElem.value.trim() : '';
-    const username = userElem ? userElem.value.trim() : '';
-    const pass = passElem ? passElem.value.trim() : '';
-
-    if (!name || !username || !pass) {
-        alert(curLang === 'bn' ? "দয়া করে সমস্ত ফিল্ড পূরণ করুন!" : "Please fill in all fields!");
-        return;
-    }
-
-    const userData = {
-        id: username,
-        name: name,
-        phone: phone,
-        username: username,
-        pass: pass,
-        role: 'player',
-        regTimestamp: Date.now(),
-        trialDays: 5,
-        highScore: 0,
-        status: 'Active'
-    };
-
-    // Save individual account
-    localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
-    
-    // Also push to 'kbc_real_players' so Admin Dashboard can display it instantly
-    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-    const existingIndex = realPlayers.findIndex(p => p.id === username || p.username === username);
-    if (existingIndex >= 0) {
-        realPlayers[existingIndex] = userData;
-    } else {
-        realPlayers.push(userData);
-    }
-    localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
-
-    localStorage.setItem('kbc_current_user', username);
-    localStorage.setItem('kbc_login_session', 'active');
-
-    // Auto-clear sign up input fields completely
-    if (nameElem) nameElem.value = '';
-    if (phoneElem) phoneElem.value = '';
-    if (userElem) userElem.value = '';
-    if (passElem) passElem.value = '';
-
-    playSound('alert');
-    checkUserTrialAndProceed(userData);
-}
-
-function handlePromoSubmit() {
-    const codeInput = document.getElementById('promoInput');
-    if (!codeInput) return;
-    const code = codeInput.value.trim().toUpperCase();
-    const currentUser = localStorage.getItem('kbc_current_user');
-
-    if (!currentUser) {
-        alert(curLang === 'bn' ? "প্রথমে লগইন করুন!" : "Please login first!");
-        return;
-    }
-
-    if (code === 'KBC2026' || code === 'KBC15DAYS' || code === 'FREE10') {
-        const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
-        if (savedUserRaw) {
-            let userData = JSON.parse(savedUserRaw);
-            userData.trialDays = (userData.trialDays || 5) + 15;
-            localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
+        <!-- Screen 5: Game Board -->
+        <div id="scr-game" class="screen">
+            <div class="header-info">
+                <div class="difficulty-badge" id="diff-badge">ROUND 1: BASE SLAB</div>
+                <div class="subject-badge" id="subj-badge">SCIENCE</div>
+            </div>
             
-            alert(curLang === 'bn' ? "প্রোমো কোড সফল হয়েছে! আপনার মেয়াদ আরও ১৫ দিন বাড়ানো হলো。" : "Promo code applied! Trial extended by 15 days.");
+            <div class="stats">
+                <span id="st-score">SCORE: 0</span>
+                <span id="st-count">Q: 1/5</span>
+            </div>
             
-            const promoSec = document.getElementById('promo-section');
-            if (promoSec) promoSec.style.display = 'none';
-            show('scr-lang');
-        }
-    } else {
-        alert(curLang === 'bn' ? "অবৈধ প্রোমো কোড!" : "Invalid Promo Code!");
-    }
-}
-
-function selectLanguage(l) {
-    curLang = l;
-    show('scr-subject');
-}
-
-function selectSubject(subj) {
-    curSubject = subj;
-    show('scr-level');
-}
-
-function startGameWithLevel(lvl) {
-    curLevel = lvl;
-    curIdx = 0; 
-    score = 0; 
-    cor = 0; 
-    wr = 0;
-    currentSlabCount = 0;
-
-    // Refresh custom questions from LocalStorage before filtering
-    loadCustomAdminQuestions();
-
-    let filtered = fullQuestionPool.filter(q => {
-        let qSub = q.subject ? q.subject.toLowerCase() : '';
-        let cSub = curSubject.toLowerCase();
-        
-        let matchSubj = (cSub === 'all') || (qSub === cSub) || (cSub === 'math' && qSub === 'mathematics') || (cSub === 'mathematics' && qSub === 'math');
-        let matchLvl = (q.level === curLevel);
-        return matchSubj && matchLvl;
-    });
-
-    if (filtered.length === 0) {
-        filtered = fullQuestionPool;
-    }
-
-    const charMap = { 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
-
-    activeQuestions = filtered.map(item => ({
-        qb: item.bn ? item.bn.q : '',
-        qe: item.en ? item.en.q : '',
-        ab: item.bn ? [item.bn.a, item.bn.b, item.bn.c, item.bn.d] : [],
-        ae: item.en ? [item.en.a, item.en.b, item.en.c, item.en.d] : [],
-        ans: charMap[item.correct],
-        expb: item.bn ? item.bn.exp : '',
-        expe: item.en ? item.en.exp : ''
-    })).sort(() => Math.random() - 0.5);
-
-    show('scr-game');
-
-    const bg = document.getElementById('bg-music');
-    if (bg && !isMuted) {
-        bg.volume = 0.3;
-        bg.play().catch(e => console.log("Audio play blocked until interaction"));
-    }
-
-    if (voiceEnabled) initVoice();
-    loadQ();
-}
-
-function loadQ() {
-    clearInterval(timerInt);
-    if (explanationTimer) clearTimeout(explanationTimer);
-    closeExplanationModal();
-
-    if (!activeQuestions || activeQuestions.length === 0 || curIdx >= activeQuestions.length) {
-        return end();
-    }
-
-    if (curIdx > 0 && curIdx % 5 === 0 && currentSlabCount !== curIdx) {
-        currentSlabCount = curIdx;
-        const slabScore = document.getElementById('slab-score');
-        const slabMsg = document.getElementById('slab-msg');
-        if (slabScore) slabScore.innerText = score;
-        if (slabMsg) {
-            slabMsg.innerText = curLang === 'bn' 
-                ? `আপনি সফলভাবে ${curIdx}টি প্রশ্ন সম্পন্ন করেছেন!` 
-                : `You have successfully completed ${curIdx} questions!`;
-        }
-        show('scr-slab-cleared');
-        return;
-    }
-
-    canAnswer = true;
-    const q = activeQuestions[curIdx];
-
-    const diffBadge = document.getElementById('diff-badge');
-    const subjBadge = document.getElementById('subj-badge');
-
-    if (subjBadge) subjBadge.innerText = curSubject.toUpperCase();
-
-    if (curIdx < 10) {
-        if(diffBadge) diffBadge.innerText = 'ROUND 1: EASY';
-        timerVal = 30;
-    } else if (curIdx < 25) {
-        if(diffBadge) diffBadge.innerText = 'ROUND 2: INTERMEDIATE';
-        timerVal = 20;
-    } else {
-        if(diffBadge) diffBadge.innerText = 'ROUND 3: EXPERT';
-        timerVal = 15;
-    }
-
-    const stCount = document.getElementById('st-count');
-    const stScore = document.getElementById('st-score');
-    if (stCount) stCount.innerText = `Q: ${curIdx + 1}/${activeQuestions.length}`;
-    if (stScore) stScore.innerText = `SCORE: ${score}`;
-
-    const txt = (curLang === 'bn') ? (q.qb || q.qe) : (q.qe || q.qb);
-    const opts = (curLang === 'bn') ? (q.ab && q.ab[0] ? q.ab : q.ae) : (q.ae && q.ae[0] ? q.ae : q.ab);
-
-    const qText = document.getElementById('q-text');
-    if (qText) qText.innerText = txt;
-
-    const container = document.getElementById('opt-container');
-    if (container) {
-        container.innerHTML = '';
-        if (opts && opts.length > 0) {
-            opts.forEach((o, i) => {
-                const div = document.createElement('div');
-                div.className = 'option';
-                div.innerHTML = `<strong>${String.fromCharCode(65 + i)}:</strong> ${o}`;
-                div.onclick = () => check(i);
-                container.appendChild(div);
-            });
-        }
-    }
-
-    const timerElem = document.getElementById('timer');
-    if (timerElem) {
-        timerElem.innerText = timerVal;
-        timerElem.classList.remove('critical');
-    }
-
-    timerInt = setInterval(() => {
-        timerVal--;
-        if (timerElem) timerElem.innerText = timerVal;
-
-        if (timerVal <= 5) {
-            if (timerElem) timerElem.classList.add('critical');
-            playSound('tick');
-        }
-
-        if (timerVal <= 0) {
-            clearInterval(timerInt);
-            check(-1);
-        }
-    }, 1000);
-
-    let speechText = txt;
-    if (opts && opts.length > 0) {
-        opts.forEach((o, i) => {
-            const letter = String.fromCharCode(65 + i);
-            speechText += (curLang === 'bn') ? `. অপশন ${letter}: ${o}` : `. Option ${letter}: ${o}`;
-        });
-    }
-
-    speak(speechText);
-    if (voiceEnabled) setTimeout(startListening, 2000);
-}
-
-function proceedToNextSlab() {
-    show('scr-game');
-    loadQ();
-}
-
-function check(idx) {
-    if (!canAnswer) return;
-    canAnswer = false;
-    clearInterval(timerInt);
-
-    const q = activeQuestions[curIdx];
-    const opts = document.querySelectorAll('.option');
-    let isCorrect = (idx === q.ans);
-
-    if (isCorrect) {
-        let points = 10;
-        if (curIdx >= 10) points = 20;
-        if (curIdx >= 25) points = 50;
-
-        score += points;
-        cor++;
-        playSound('cor');
-        if (idx !== -1 && opts[idx]) opts[idx].classList.add('correct');
-    } else {
-        wr++;
-        playSound('wr');
-        if (idx !== -1 && opts[idx]) opts[idx].classList.add('wrong');
-        if (opts[q.ans]) opts[q.ans].classList.add('correct');
-    }
-
-    const explanationText = curLang === "bn" ? (q.expb || q.expe || "ব্যাখ্যা উপলব্ধ নেই।") : (q.expe || q.expb || "Explanation not available.");
-    const correctLetter = String.fromCharCode(65 + q.ans);
-
-    let statusHeader = "";
-    if (isCorrect) {
-        statusHeader = curLang === "bn" 
-            ? `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✓ চমৎকার! আপনার উত্তর সঠিক হয়েছে।</div>` 
-            : `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✓ Correct Answer! Well done.</div>`;
-    } else {
-        statusHeader = curLang === "bn" 
-            ? `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✗ ভুল উত্তর! সঠিক উত্তর: Option ${correctLetter}</div>` 
-            : `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">✗ Incorrect! Correct Answer: Option ${correctLetter}</div>`;
-    }
-
-    const modal = document.getElementById("modal-explanation");
-    const modalText = document.getElementById("modal-exp-text");
-
-    const fullHTML = statusHeader + "<hr style='margin: 8px 0; border: 0; border-top: 1px solid #ccc;'>" + "<b>" + (curLang === "bn" ? "ব্যাখ্যা" : "Explanation") + ":</b><br>" + explanationText;
-
-    if (modal && modalText) {
-        modalText.innerHTML = fullHTML;
-        modal.style.display = "flex";
-    }
-
-    speak(explanationText);
-
-    if (explanationTimer) clearTimeout(explanationTimer);
-    explanationTimer = setTimeout(() => {
-        closeExplanationModal();
-        curIdx++;
-        loadQ();
-    }, 4500);
-}
-
-function closeExplanationModal() {
-    const modal = document.getElementById("modal-explanation");
-    if (modal) modal.style.display = "none";
-    if (explanationTimer) {
-        clearTimeout(explanationTimer);
-        explanationTimer = null;
-    }
-}
-
-function openAdminModal() {
-    const modal = document.getElementById('modal-admin');
-    if (modal) modal.style.display = 'flex';
-}
-
-function closeAdminModal() {
-    const modal = document.getElementById('modal-admin');
-    if (modal) modal.style.display = 'none';
-}
-
-function verifyAdminAccess() {
-    const passInput = document.getElementById('admin-passcode-input');
-    const val = passInput ? passInput.value.trim() : '';
-    if (val === 'ADMIN2026' || val === '1234') {
-        closeAdminModal();
-        alert(curLang === 'bn' ? "অ্যাডমিন টেস্ট মোড সক্রিয় হয়েছে!" : "Admin Test Mode Activated!");
-        show('scr-lang');
-    } else {
-        alert(curLang === 'bn' ? "ভুল মাস্টার পাসকোড!" : "Incorrect Master Passcode!");
-    }
-}
-
-function invitePlayer() {
-    const modal = document.getElementById('modal-invite');
-    if (modal) modal.style.display = 'flex';
-}
-
-function closeInviteModal() {
-    const modal = document.getElementById('modal-invite');
-    if (modal) modal.style.display = 'none';
-}
-
-function copyInviteCode() {
-    const codeElem = document.getElementById('invite-code-input');
-    if (codeElem) {
-        codeElem.select();
-        document.execCommand('copy');
-        alert(curLang === 'bn' ? "ইনভাইট কোড কপি করা হয়েছে!" : "Invite Code Copied!");
-        closeInviteModal();
-    }
-}
-
-function openForgotPassModal() {
-    const modal = document.getElementById('modal-forgot');
-    if (modal) modal.style.display = 'flex';
-    const newPassGroup = document.getElementById('new-pass-group');
-    const verifyBtn = document.getElementById('btn-verify-forgot');
-    const instruction = document.getElementById('forgot-instruction');
-
-    if (newPassGroup) newPassGroup.style.display = 'none';
-    if (verifyBtn) verifyBtn.innerText = curLang === 'bn' ? 'যাচাই করুন' : 'Verify';
-    if (instruction) instruction.innerText = curLang === 'bn' ? 'আপনার ইউজারনেম এবং নিবন্ধিত মোবাইল নম্বর দিন:' : 'Enter your Username and registered mobile number:';
-}
-
-function closeForgotPassModal() {
-    const modal = document.getElementById('modal-forgot');
-    if (modal) modal.style.display = 'none';
-    const userElem = document.getElementById('forgot-username');
-    const phoneElem = document.getElementById('forgot-phone');
-    const passElem = document.getElementById('forgot-new-pass');
-    if (userElem) userElem.value = '';
-    if (phoneElem) phoneElem.value = '';
-    if (passElem) passElem.value = '';
-}
-
-function verifyAndResetPassword() {
-    const username = document.getElementById('forgot-username') ? document.getElementById('forgot-username').value.trim() : '';
-    const phone = document.getElementById('forgot-phone') ? document.getElementById('forgot-phone').value.trim() : '';
-    const newPassGroup = document.getElementById('new-pass-group');
-    const newPassElem = document.getElementById('forgot-new-pass');
-    const verifyBtn = document.getElementById('btn-verify-forgot');
-    const instruction = document.getElementById('forgot-instruction');
-
-    if (!username || !phone) {
-        alert(curLang === 'bn' ? "ইউজারনেম এবং মোবাইল নম্বর দিন!" : "Please enter username and phone number!");
-        return;
-    }
-
-    const savedUserRaw = localStorage.getItem('kbc_user_account_' + username);
-    if (!savedUserRaw) {
-        alert(curLang === 'bn' ? "এই ইউজারনেম দিয়ে কোনো অ্যাকাউন্ট পাওয়া যায়নি!" : "No account found with this username!");
-        return;
-    }
-
-    let userData = JSON.parse(savedUserRaw);
-
-    if (newPassGroup && newPassGroup.style.display === 'none') {
-        if (userData.phone && userData.phone !== phone) {
-            alert(curLang === 'bn' ? "মোবাইল নম্বরটি সঠিক নয়!" : "Registered mobile number does not match!");
-            return;
-        }
-        newPassGroup.style.display = 'block';
-        if (verifyBtn) verifyBtn.innerText = curLang === 'bn' ? 'পাসওয়ার্ড পরিবর্তন করুন' : 'Update Password';
-        if (instruction) instruction.innerText = curLang === 'bn' ? 'আপনার নতুন পাসওয়ার্ড সেট করুন:' : 'Set your new password:';
-        return;
-    }
-
-    const newPass = newPassElem ? newPassElem.value.trim() : '';
-    if (!newPass) {
-        alert(curLang === 'bn' ? "নতুন পাসওয়ার্ড দিন!" : "Please enter a new password!");
-        return;
-    }
-
-    userData.pass = newPass;
-    localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
-
-    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-    const pIndex = realPlayers.findIndex(p => p.id === username || p.username === username);
-    if (pIndex >= 0) {
-        realPlayers[pIndex].pass = newPass;
-        localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
-    }
-
-    alert(curLang === 'bn' ? "পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে! এখন লগইন করুন।" : "Password successfully updated! Please login now.");
-    closeForgotPassModal();
-}
-
-function playSound(type) {
-    if (isMuted) return;
-    const sounds = {
-        'cor': document.getElementById('snd-cor'),
-        'wr': document.getElementById('snd-wr'),
-        'tick': document.getElementById('snd-tick'),
-        'alert': document.getElementById('snd-alert')
-    };
-    if (sounds[type] && typeof sounds[type].play === 'function') {
-        try {
-            sounds[type].currentTime = 0;
-            sounds[type].volume = 1.0; 
-            sounds[type].play().catch(e => console.warn("Audio play prevented:", e));
-        } catch(e) {
-            console.warn("Audio exception:", e);
-        }
-    }
-}
-
-function speak(t) {
-    if (isMuted || !window.speechSynthesis || !t) return;
-    try {
-        window.speechSynthesis.cancel();
-        const m = new SpeechSynthesisUtterance(t);
-        m.lang = (curLang === 'bn') ? 'bn-IN' : 'en-IN';
-        m.pitch = 1.0;
-        m.rate = 0.9;
-        window.speechSynthesis.speak(m);
-    } catch(e) {
-        console.warn("TTS Error:", e);
-    }
-}
-
-function end() {
-    clearInterval(timerInt);
-    if (explanationTimer) clearTimeout(explanationTimer);
-    closeExplanationModal();
-    
-    show('scr-res');
-    const resScore = document.getElementById('res-score');
-    const resCor = document.getElementById('res-cor');
-    const resWr = document.getElementById('res-wr');
-
-    if (resScore) resScore.innerText = score;
-    if (resCor) resCor.innerText = cor;
-    if (resWr) resWr.innerText = wr;
-    
-    const bg = document.getElementById('bg-music');
-    if (bg) bg.pause();
-    
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    if (recognition) { try { recognition.stop(); } catch(e) {} }
-}
-
-function show(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    const target = document.getElementById(id);
-    if (target) target.classList.add('active');
-
-    const topNav = document.getElementById('top-nav-bar');
-    if (topNav) {
-        if (id === 'scr-login') {
-            topNav.style.display = 'none';
-        } else {
-            topNav.style.display = 'flex';
-        }
-    }
-}
-
-// Anti-Cheat: Resets game if user switches tabs
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        clearInterval(timerInt);
-        if (explanationTimer) clearTimeout(explanationTimer);
-        const bg = document.getElementById('bg-music');
-        if (bg) bg.pause();
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
-        if (recognition) { try { recognition.stop(); } catch(e) {} }
-    }
-});
+            <div id="timer" class="timer-circle">30</div>
+            
+            <div class="question-box" id="q-text">এখানে প্রশ্নটি প্রদর্শিত হবে...</div>
+            
+            <div class="options-grid" id="opt-container">
+                <!-- Options populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Screen 6: Slab Completion Modal / Intermission -->
+        <div id="scr-slab-cleared" class="screen">
+            <h1>🎉 SLAB CLEARED!</h1>
+            <p id="slab-msg">আপনি ১ম ৫টি রাউন্ড সফলভাবে সম্পন্ন করেছেন!</p>
+            <p>বর্তমান পয়েন্ট: <span id="slab-score" style="color:var(--gold); font-weight:bold;">0</span></p>
+            <button class="btn" onclick="proceedToNextSlab()">পরবর্তী স্লাবে যান (Next Slab) 🚀</button>
+        </div>
+
+        <!-- Screen 7: Result -->
+        <div id="scr-res" class="screen">
+            <h1>GAME OVER</h1>
+            <div class="result-box">
+                <p>TOTAL SCORE: <span id="res-score" style="color:var(--gold)">0</span></p>
+                <p>CORRECT: <span id="res-cor" style="color:var(--correct)">0</span></p>
+                <p>WRONG: <span id="res-wr" style="color:var(--wrong)">0</span></p>
+            </div>
+            <button class="btn" onclick="location.reload()">RESTART / পুনরায় শুরু</button>
+        </div>
+
+    </div>
+
+    <!-- Explanation Pop-up Modal -->
+    <div id="modal-explanation" class="modal-overlay" style="display: none;">
+        <div class="modal-content explanation-modal-card">
+            <div class="modal-header">
+                <h2>💡 সঠিক ব্যাখ্যার বিশ্লেষণ</h2>
+                <span class="close-modal" onclick="closeExplanationModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="modal-exp-text">প্রশ্নের উত্তর ব্যাখ্যা এখানে পপআপ আকারে প্রদর্শিত হবে...</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-small" onclick="closeExplanationModal()">ঠিক আছে (Continue)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Master Passcode Modal -->
+    <div id="modal-admin" class="modal-overlay" style="display: none;">
+        <div class="modal-content admin-modal-card">
+            <div class="modal-header">
+                <h2>🔑 Admin & Tester Access</h2>
+                <span class="close-modal" onclick="closeAdminModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>অ্যাডমিন টেস্ট মোডে প্রবেশ করতে মাস্টার সিক্রেট কোড লিখুন:</p>
+                <input type="password" id="admin-passcode-input" placeholder="Master Key (e.g. ADMIN2026)">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning" onclick="verifyAdminAccess()">অ্যাক্সেস যাচাই করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Player Invite Modal -->
+    <div id="modal-invite" class="modal-overlay" style="display: none;">
+        <div class="modal-content invite-modal-card">
+            <div class="modal-header">
+                <h2>📩 Invite a Player</h2>
+                <span class="close-modal" onclick="closeInviteModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>অন্য প্লেয়ারকে গেম খেলতে আমন্ত্রণ জানাতে আপনার ইনভাইট কোড কপি করুন:</p>
+                <input type="text" id="invite-code-input" readonly value="KBC-ROOM-2026">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="copyInviteCode()">কোড কপি করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="modal-forgot" class="modal-overlay" style="display: none;">
+        <div class="modal-content forgot-modal-card">
+            <div class="modal-header">
+                <h2>🔒 Password Recovery</h2>
+                <span class="close-modal" onclick="closeForgotPassModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p id="forgot-instruction" class="instruction-text">আপনার ইউজারনেম এবং নিবন্ধিত মোবাইল নম্বর দিন:</p>
+                <div class="input-group">
+                    <label for="forgot-username">Username</label>
+                    <input type="text" id="forgot-username" placeholder="Enter your username">
+                </div>
+                <div class="input-group">
+                    <label for="forgot-phone">Mobile Number</label>
+                    <input type="text" id="forgot-phone" placeholder="Enter your mobile number">
+                </div>
+                <div id="new-pass-group" class="input-group" style="display: none;">
+                    <label for="forgot-new-pass">New Password</label>
+                    <input type="password" id="forgot-new-pass" placeholder="Enter new password">
+                </div>
+            </div>
+            <div class="modal-footer center-footer">
+                <button id="btn-verify-forgot" class="btn btn-primary" onclick="verifyAndResetPassword()">যাচাই করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bg-music" loop src="https://www.soundjay.com/free-music/sounds/ambient-atmosphere-01.mp3"></audio>
+    <audio id="snd-cor" src="https://www.soundjay.com/buttons/sounds/button-37.mp3"></audio>
+    <audio id="snd-wr" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+    <audio id="snd-tick" src="https://www.soundjay.com/misc/sounds/clock-tick-1.mp3"></audio>
+    <audio id="snd-alert" src="https://www.soundjay.com/buttons/sounds/button-0.mp3"></audio>
+
+    <!-- Main Logic Scripts -->
+    <script src="promo.js"></script>
+    <script src="app.js"></script>
+    <script src="network/networkadapter.js"></script>
+</body>
+</html>

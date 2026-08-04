@@ -65,7 +65,7 @@
                 </div>
                 <div class="stat-card purple-border">
                     <div class="stat-title">TOTAL QUESTIONS IN BANK</div>
-                    <div class="stat-value" id="total-questions">150</div>
+                    <div class="stat-value" id="total-questions">0</div>
                 </div>
             </div>
 
@@ -163,9 +163,9 @@
 
     <!-- Audit Log Modal -->
     <div id="audit-log-modal" class="admin-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 99999; justify-content: center; align-items: center;">
-        <div class="modal-container" style="background: #0f172a; border: 2px solid var(--border-gold, #ffd700); border-radius: 16px; padding: 25px; width: 90%; max-width: 750px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 30px rgba(255,215,0,0.3);">
+        <div class="modal-container" style="background: #0f172a; border: 2px solid #ffd700; border-radius: 16px; padding: 25px; width: 90%; max-width: 750px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 30px rgba(255,215,0,0.3);">
             <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                <h3 style="color: var(--border-gold, #ffd700); margin: 0; font-size: 20px;">📋 Admin Question Log & Audit History</h3>
+                <h3 style="color: #ffd700; margin: 0; font-size: 20px;">📋 Admin Question Log & Audit History</h3>
                 <button onclick="closeAuditLogModal()" class="close-btn" style="background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">✕ Close</button>
             </div>
             <table class="custom-table">
@@ -184,7 +184,11 @@
         </div>
     </div>
 
-    <!-- UI Logic Scripts -->
+    <!-- External Core Scripts Loaded First -->
+    <script src="network/networkadapter.js"></script>
+    <script src="app.js"></script>
+
+    <!-- UI Core Logic Scripts -->
     <script>
         // Check session on page load
         window.addEventListener('DOMContentLoaded', () => {
@@ -195,13 +199,22 @@
             }
             updateAdminClock();
             loadRegisteredPlayers();
+            updateTotalQuestionsCount();
         });
 
         function loginAdminCheck() {
-            const user = document.getElementById('admin-user-id').value;
-            const pass = document.getElementById('admin-user-pass').value;
+            const user = document.getElementById('admin-user-id').value.trim();
+            const pass = document.getElementById('admin-user-pass').value.trim();
 
-            // Default credentials (admin / admin123) - Change if needed
+            if (typeof window.validateAdminLogin === 'function') {
+                if (window.validateAdminLogin(user, pass)) {
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    showDashboardUI();
+                    return;
+                }
+            }
+
+            // Fallback Local Validation
             if (user === 'admin' && pass === 'admin123') {
                 sessionStorage.setItem('adminLoggedIn', 'true');
                 showDashboardUI();
@@ -215,6 +228,7 @@
             document.getElementById('admin-sidebar').style.display = 'block';
             document.getElementById('admin-main-content').style.display = 'block';
             loadRegisteredPlayers();
+            updateTotalQuestionsCount();
         }
 
         function showLoginUI() {
@@ -239,6 +253,8 @@
             }
             if (tabName === 'players') {
                 loadRegisteredPlayers();
+            } else if (tabName === 'dashboard') {
+                updateTotalQuestionsCount();
             }
         }
 
@@ -251,6 +267,7 @@
         function openAuditLogModal() {
             const modal = document.getElementById('audit-log-modal');
             if (modal) {
+                renderAuditLogs();
                 modal.style.display = 'flex';
                 modal.classList.add('active');
             }
@@ -264,7 +281,48 @@
             }
         }
 
-        // Dynamic Registered Players Loader from localStorage
+        function renderAuditLogs() {
+            const tbody = document.getElementById('audit-log-tbody');
+            if (!tbody) return;
+
+            let logs = [];
+            try {
+                logs = JSON.parse(localStorage.getItem('kbc_question_audit_log') || '[]');
+            } catch (e) {
+                logs = [];
+            }
+
+            tbody.innerHTML = '';
+            if (logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 15px;">কোনো অডিট লগ পাওয়া যায়নি</td></tr>`;
+                return;
+            }
+
+            logs.reverse().forEach(log => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${log.author || 'Admin'}</td>
+                    <td>${log.timestamp || 'N/A'}</td>
+                    <td><span class="badge badge-active">${log.status || 'Added'}</span></td>
+                    <td>${log.questionText ? log.questionText.substring(0, 40) + '...' : 'N/A'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateTotalQuestionsCount() {
+            const totalQElem = document.getElementById('total-questions');
+            if (!totalQElem) return;
+
+            try {
+                const customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
+                const baseCount = 150; 
+                totalQElem.innerText = baseCount + customQuestions.length;
+            } catch (e) {
+                totalQElem.innerText = '150';
+            }
+        }
+
         function loadRegisteredPlayers() {
             const tbody = document.getElementById('player-table-body');
             const totalPlayersElem = document.getElementById('total-players');
@@ -272,7 +330,6 @@
 
             if (!tbody) return;
 
-            // Retrieve registered players from localStorage (Supports common keys like 'kbc_players', 'players', or generic user store)
             let players = [];
             try {
                 const storedPlayers = localStorage.getItem('kbc_registered_users') || localStorage.getItem('players') || localStorage.getItem('kbc_users');
@@ -306,7 +363,7 @@
                     <td>৳ ${player.highScore || player.score || 0}</td>
                     <td><span class="badge ${isBlocked ? 'badge-blocked' : 'badge-active'}">${isBlocked ? 'Blocked' : 'Active'}</span></td>
                     <td>
-                        <button class="btn-sm btn-block" onclick="togglePlayerBlockIndex(${index}, this)">${isBlocked ? 'Unblock 🔓' : 'Block 🚫'}</button>
+                        <button class="btn-sm btn-block" onclick="togglePlayerBlockIndex(${index})">${isBlocked ? 'Unblock 🔓' : 'Block 🚫'}</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -315,12 +372,13 @@
             if (activeSessionsElem) activeSessionsElem.innerText = activeCount;
         }
 
-        function togglePlayerBlockIndex(index, btn) {
+        function togglePlayerBlockIndex(index) {
             try {
                 let key = localStorage.getItem('kbc_registered_users') ? 'kbc_registered_users' : (localStorage.getItem('players') ? 'players' : 'kbc_users');
                 let players = JSON.parse(localStorage.getItem(key) || '[]');
                 if (players[index]) {
                     players[index].status = players[index].status === 'Blocked' ? 'Active' : 'Blocked';
+                    players[index].isBlocked = players[index].status === 'Blocked';
                     localStorage.setItem(key, JSON.stringify(players));
                     loadRegisteredPlayers();
                 }
@@ -329,7 +387,6 @@
             }
         }
 
-        // Live Clock and Date Updater
         function updateAdminClock() {
             const clockElement = document.getElementById('live-clock-date');
             if (clockElement) {
@@ -349,7 +406,5 @@
         }
         setInterval(updateAdminClock, 1000);
     </script>
-    <script src="app.js"></script>
-    <script src="network/networkadapter.js"></script>
 </body>
 </html>

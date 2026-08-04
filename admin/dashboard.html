@@ -8,153 +8,166 @@
 </head>
 <body>
 
+    <!-- ADMIN LOGIN MODAL / CARD -->
+    <div id="admin-login-screen" style="display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0f172a; z-index: 999999; justify-content: center; align-items: center;">
+        <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 2px solid #ffd700; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);">
+            <h2 style="color: #ffd700; margin-bottom: 20px;">🔑 Admin Login</h2>
+            <input type="text" id="admin-user-id" placeholder="Admin ID" style="width: 100%; margin-bottom: 12px; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; box-sizing: border-box;">
+            <input type="password" id="admin-user-pass" placeholder="Password" style="width: 100%; margin-bottom: 20px; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; box-sizing: border-box;">
+            <button onclick="loginAdminCheck()" style="width: 100%; padding: 10px; background: #3b82f6; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Login Dashboard</button>
+        </div>
+    </div>
+
     <!-- Modern Sidebar Navigation -->
-    <aside class="admin-sidebar">
+    <aside class="admin-sidebar" id="admin-sidebar" style="display: none;">
         <div class="brand-header">
             <span>🏆</span> KBC ADMIN
         </div>
         <ul class="nav-list">
-            <li class="nav-item active">📊 Dashboard</li>
-            <li class="nav-item" onclick="document.getElementById('players-section').scrollIntoView({behavior: 'smooth'})">👥 Players</li>
-            <li class="nav-item" onclick="document.getElementById('add-question-section').scrollIntoView({behavior: 'smooth'})">➕ Add Question</li>
+            <li class="nav-item active" onclick="switchTab('dashboard', this)">📊 Dashboard</li>
+            <li class="nav-item" onclick="switchTab('players', this)">👥 Players</li>
+            <li class="nav-item" onclick="switchTab('add-question', this)">➕ Add Question</li>
             <li class="nav-item" onclick="openAuditLogModal()">📋 Audit Log</li>
         </ul>
     </aside>
 
     <!-- Main Dashboard Area -->
-    <main class="admin-main">
-        <header>
-            <h1>🏆 KBC PREMIUM - Admin Master Control</h1>
-            <button class="btn-logout" onclick="logoutAdmin()">Logout 🚪</button>
+    <main class="admin-main" id="admin-main-content" style="display: none;">
+        <header style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+                <h1 style="margin: 0; font-size: 1.5rem;">🏆 KBC PREMIUM - Admin Master Control</h1>
+                <div id="live-clock-date" style="font-size: 0.85rem; color: #38bdf8; font-weight: 500; margin-top: 4px;"></div>
+            </div>
+            <button class="btn-logout" onclick="logoutAdmin()" style="background: #ef4444; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">Logout 🚪</button>
         </header>
 
-        <!-- Top Statistics Overview -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-title">TOTAL REGISTERED PLAYERS</div>
-                <div class="stat-value" id="total-players">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">ACTIVE SESSIONS</div>
-                <div class="stat-value" id="active-sessions">0</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-title">TOTAL QUESTIONS IN BANK</div>
-                <div class="stat-value" id="total-questions">150</div>
-            </div>
-        </div>
-
-        <!-- Live Test Player Section -->
-        <div class="section-box">
-            <div class="section-title">🎮 Live Player View & Testing</div>
-            <p style="color: #94a3b8; margin-bottom: 12px;">প্লেয়ারদের গেম ইন্টারফেস সরাসরি টেস্ট করতে বা প্লেয়ার হিসেবে গেমটি দেখতে নিচের বাটনে ক্লিক করুন:</p>
-            <a href="../index.html?mode=admin_test" target="_blank" class="btn-test">Launch Player View (New Tab) 🚀</a>
-        </div>
-
-        <!-- Registered Players Table -->
-        <div class="section-box" id="players-section">
-            <div class="section-title">👥 Registered Players List</div>
-            <table class="custom-table">
-                <thead>
-                    <tr>
-                        <th>User ID / Phone</th>
-                        <th>Name</th>
-                        <th>Password</th>
-                        <th>High Score</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody id="player-table-body">
-                    <!-- Real Players List will load here dynamically -->
-                    <tr>
-                        <td colspan="6" style="text-align: center; color: #94a3b8;">কোনো প্লেয়ার পাওয়া যায়নি</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Add New Question Section -->
-        <div class="section-box" id="add-question-section" style="margin-top: 20px;">
-            <div class="section-title">➕ Add New Question to Bank</div>
-            <div style="display: flex; flex-direction: column; gap: 12px; max-width: 750px; margin-top: 15px;">
-                
-                <!-- Created By / Author Name (Mandatory Field) -->
-                <div>
-                    <label style="color: var(--accent-cyan); font-weight: bold; font-size: 14px; display: block; margin-bottom: 5px;">
-                        👤 Created By / এডমিনের নাম (বাধ্যতামূলক):
-                    </label>
-                    <input type="text" id="admin-q-author" placeholder="আপনার নাম লিখুন..." style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid var(--gold-glow);">
+        <!-- SECTION 1: DASHBOARD OVERVIEW -->
+        <div id="sec-dashboard" class="tab-content active-tab">
+            <!-- Top Statistics Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-title">TOTAL REGISTERED PLAYERS</div>
+                    <div class="stat-value" id="total-players">0</div>
                 </div>
+                <div class="stat-card">
+                    <div class="stat-title">ACTIVE SESSIONS</div>
+                    <div class="stat-value" id="active-sessions">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">TOTAL QUESTIONS IN BANK</div>
+                    <div class="stat-value" id="total-questions">150</div>
+                </div>
+            </div>
 
-                <!-- Subject & Level Dropdowns -->
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <select id="admin-q-subj" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                        <option value="all">ALL MIXED / সব বিষয়</option>
-                        <option value="science">SCIENCE / বিজ্ঞান</option>
-                        <option value="history">HISTORY / ইতিহাস</option>
-                        <option value="philosophy">PHILOSOPHY / দর্শন</option>
-                        <option value="math">MATH / গণিত</option>
-                        <option value="business">BUSINESS / ব্যবসা ও অর্থনীতি</option>
-                        <option value="coding">CODING & TECH / কম্পিউটার</option>
-                    </select>
+            <!-- Live Test Player Section -->
+            <div class="section-box" style="margin-top: 20px;">
+                <div class="section-title">🎮 Live Player View & Testing</div>
+                <p style="color: #94a3b8; margin-bottom: 12px;">প্লেয়ারদের গেম ইন্টারফেস সরাসরি টেস্ট করতে বা প্লেয়ার হিসেবে গেমটি দেখতে নিচের বাটনে ক্লিক করুন:</p>
+                <a href="../index.html?mode=admin_test" target="_blank" class="btn-test">Launch Player View (New Tab) 🚀</a>
+            </div>
+        </div>
+
+        <!-- SECTION 2: REGISTERED PLAYERS TABLE -->
+        <div id="sec-players" class="tab-content" style="display: none;">
+            <div class="section-box" id="players-section">
+                <div class="section-title">👥 Registered Players List & Control</div>
+                <div style="overflow-x: auto;">
+                    <table class="custom-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <thead>
+                            <tr>
+                                <th style="padding: 10px; text-align: left;">User ID / Phone</th>
+                                <th style="padding: 10px; text-align: left;">Name</th>
+                                <th style="padding: 10px; text-align: left;">Password</th>
+                                <th style="padding: 10px; text-align: left;">High Score</th>
+                                <th style="padding: 10px; text-align: left;">Status</th>
+                                <th style="padding: 10px; text-align: left;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="player-table-body">
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">কোনো প্লেয়ার পাওয়া যায়নি</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: ADD NEW QUESTION SECTION -->
+        <div id="sec-add-question" class="tab-content" style="display: none;">
+            <div class="section-box" id="add-question-section">
+                <div class="section-title">➕ Add New Question to Bank</div>
+                <div style="display: flex; flex-direction: column; gap: 12px; max-width: 750px; margin-top: 15px;">
+                    <div>
+                        <label style="color: #38bdf8; font-weight: bold; font-size: 14px; display: block; margin-bottom: 5px;">
+                            👤 Created By / এডমিনের নাম (বাধ্যতামূলক):
+                        </label>
+                        <input type="text" id="admin-q-author" placeholder="আপনার নাম লিখুন..." style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid #ffd700; box-sizing: border-box;">
+                    </div>
+
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <select id="admin-q-subj" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                            <option value="all">ALL MIXED / সব বিষয়</option>
+                            <option value="science">SCIENCE / বিজ্ঞান</option>
+                            <option value="history">HISTORY / ইতিহাস</option>
+                            <option value="philosophy">PHILOSOPHY / দর্শন</option>
+                            <option value="math">MATH / গণিত</option>
+                            <option value="business">BUSINESS / ব্যবসা ও অর্থনীতি</option>
+                            <option value="coding">CODING & TECH / কম্পিউটার</option>
+                        </select>
+                        
+                        <select id="admin-q-level" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                            <option value="junior">JUNIOR (CLASS 5 - 8)</option>
+                            <option value="secondary">SECONDARY (CLASS 9 - 10)</option>
+                            <option value="hs">HIGHER SECONDARY (CLASS 11 - 12)</option>
+                            <option value="advanced">ADVANCED / DEGREE / TECH</option>
+                        </select>
+                    </div>
+
+                    <textarea id="admin-q-text" placeholder="এখানে মূল প্রশ্নটি লিখুন..." rows="3" style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); resize: vertical; box-sizing: border-box;"></textarea>
                     
-                    <select id="admin-q-level" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                        <option value="junior">JUNIOR (CLASS 5 - 8)</option>
-                        <option value="secondary">SECONDARY (CLASS 9 - 10)</option>
-                        <option value="hs">HIGHER SECONDARY (CLASS 11 - 12)</option>
-                        <option value="advanced">ADVANCED / DEGREE / TECH</option>
-                    </select>
-                </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" id="admin-opt-a" placeholder="Option A (ক)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); width: 100%; box-sizing: border-box;">
+                        <input type="text" id="admin-opt-b" placeholder="Option B (খ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); width: 100%; box-sizing: border-box;">
+                        <input type="text" id="admin-opt-c" placeholder="Option C (গ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); width: 100%; box-sizing: border-box;">
+                        <input type="text" id="admin-opt-d" placeholder="Option D (ঘ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); width: 100%; box-sizing: border-box;">
+                    </div>
 
-                <!-- Question Text Area -->
-                <textarea id="admin-q-text" placeholder="এখানে মূল প্রশ্নটি লিখুন..." rows="3" style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); resize: vertical;"></textarea>
-                
-                <!-- Options Grid -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <input type="text" id="admin-opt-a" placeholder="Option A (ক)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                    <input type="text" id="admin-opt-b" placeholder="Option B (খ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                    <input type="text" id="admin-opt-c" placeholder="Option C (গ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                    <input type="text" id="admin-opt-d" placeholder="Option D (ঘ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                </div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <label style="color: #fff; font-weight: bold;">সঠিক উত্তর:</label>
+                        <select id="admin-correct-opt" style="padding: 10px; flex: 1; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
+                            <option value="a">Option A (ক)</option>
+                            <option value="b">Option B (খ)</option>
+                            <option value="c">Option C (গ)</option>
+                            <option value="d">Option D (ঘ)</option>
+                        </select>
+                    </div>
 
-                <!-- Correct Option Dropdown -->
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <label style="color: #fff; font-weight: bold;">সঠিক উত্তর:</label>
-                    <select id="admin-correct-opt" style="padding: 10px; flex: 1; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                        <option value="a">Option A (ক)</option>
-                        <option value="b">Option B (খ)</option>
-                        <option value="c">Option C (গ)</option>
-                        <option value="d">Option D (ঘ)</option>
-                    </select>
-                </div>
+                    <textarea id="admin-q-exp" placeholder="উত্তরের সঠিক ব্যাখ্যা বা কারণ লিখুন (Explanation)..." rows="2" style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); resize: vertical; box-sizing: border-box;"></textarea>
 
-                <!-- Explanation Text Area -->
-                <textarea id="admin-q-exp" placeholder="উত্তরের সঠিক ব্যাখ্যা বা কারণ লিখুন (Explanation)..." rows="2" style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); resize: vertical;"></textarea>
-
-                <!-- Action Buttons -->
-                <div style="display: flex; gap: 10px; margin-top: 5px;">
-                    <button onclick="addNewQuestionFromAdmin()" class="btn-action" style="flex: 2; padding: 12px; background-color: var(--success, #10b981); color: white; border: none; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 15px;">💾 Save Question to Game</button>
-                    <button onclick="openAuditLogModal()" class="btn-action" style="flex: 1; padding: 12px; background-color: var(--accent-blue, #00f2fe); color: #000; border: none; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 15px;">📋 View History Log</button>
+                    <div style="display: flex; gap: 10px; margin-top: 5px; flex-wrap: wrap;">
+                        <button onclick="addNewQuestionFromAdmin()" style="flex: 2; padding: 12px; background-color: #10b981; color: white; border: none; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 15px;">💾 Save Question to Game</button>
+                        <button onclick="openAuditLogModal()" style="flex: 1; padding: 12px; background-color: #00f2fe; color: #000; border: none; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 15px;">📋 View History Log</button>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Secret Admin Audit Log Modal Popup -->
-    <div id="audit-log-modal" class="admin-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 99999; justify-content: center; align-items: center;">
-        <div class="modal-container" style="background: #0f172a; border: 2px solid var(--border-gold, #ffd700); border-radius: 16px; padding: 25px; width: 90%; max-width: 750px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 30px rgba(255,215,0,0.3);">
-            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                <h3 style="color: var(--border-gold, #ffd700); margin: 0; font-size: 20px;">📋 Admin Question Log & Audit History</h3>
-                <button onclick="closeAuditLogModal()" class="close-btn" style="background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">✕ Close</button>
+    <div id="audit-log-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 99999; justify-content: center; align-items: center;">
+        <div style="background: #0f172a; border: 2px solid #ffd700; border-radius: 16px; padding: 25px; width: 90%; max-width: 750px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 30px rgba(255,215,0,0.3); box-sizing: border-box;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
+                <h3 style="color: #ffd700; margin: 0; font-size: 20px;">📋 Admin Question Log & Audit History</h3>
+                <button onclick="closeAuditLogModal()" style="background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">✕ Close</button>
             </div>
-            <table class="custom-table">
+            <table class="custom-table" style="width: 100%; border-collapse: collapse;">
                 <thead>
                     <tr>
-                        <th>Author Name</th>
-                        <th>Date & Time</th>
-                        <th>Status</th>
-                        <th>Question Preview</th>
+                        <th style="padding: 10px; text-align: left;">Author Name</th>
+                        <th style="padding: 10px; text-align: left;">Date & Time</th>
+                        <th style="padding: 10px; text-align: left;">Status</th>
+                        <th style="padding: 10px; text-align: left;">Question Preview</th>
                     </tr>
                 </thead>
                 <tbody id="audit-log-tbody">
@@ -164,16 +177,66 @@
         </div>
     </div>
 
+    <!-- UI Logic Scripts -->
     <script>
-        // Check if admin is logged in
-        if (sessionStorage.getItem('adminLoggedIn') !== 'true') {
-            // window.location.href = 'index.html';
+        window.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                showDashboardUI();
+            } else {
+                showLoginUI();
+            }
+            updateAdminClock();
+            loadRegisteredPlayers();
+        });
+
+        function loginAdminCheck() {
+            const user = document.getElementById('admin-user-id').value;
+            const pass = document.getElementById('admin-user-pass').value;
+
+            if (user === 'admin' && pass === 'admin123') {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                showDashboardUI();
+            } else {
+                alert('ভুল অ্যাডমিন আইডি বা পাসওয়ার্ড!');
+            }
+        }
+
+        function showDashboardUI() {
+            document.getElementById('admin-login-screen').style.display = 'none';
+            document.getElementById('admin-sidebar').style.display = 'block';
+            document.getElementById('admin-main-content').style.display = 'block';
+            loadRegisteredPlayers();
+        }
+
+        function showLoginUI() {
+            document.getElementById('admin-login-screen').style.display = 'flex';
+            document.getElementById('admin-sidebar').style.display = 'none';
+            document.getElementById('admin-main-content').style.display = 'none';
+        }
+
+        function switchTab(tabName, element) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.style.display = 'none');
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+
+            const targetTab = document.getElementById('sec-' + tabName);
+            if (targetTab) {
+                targetTab.style.display = 'block';
+            }
+            if (element) {
+                element.classList.add('active');
+            }
+            if (tabName === 'players') {
+                loadRegisteredPlayers();
+            }
         }
 
         function logoutAdmin() {
             sessionStorage.removeItem('adminLoggedIn');
-            alert('অ্যাডমিন প্যানেল থেকে লগআউট করা হয়েছে।');
-            window.location.href = 'index.html';
+            alert('অ্যাডমিন প্যানেল থেকে সফলভাবে লগআউট করা হয়েছে।');
+            showLoginUI();
         }
 
         function openAuditLogModal() {
@@ -185,8 +248,92 @@
             const modal = document.getElementById('audit-log-modal');
             if (modal) modal.style.display = 'none';
         }
+
+        // Unified LocalStorage Player Loader (Supports both keys to prevent data mismatch)
+        function loadRegisteredPlayers() {
+            const tbody = document.getElementById('player-table-body');
+            const totalPlayersElem = document.getElementById('total-players');
+            const activeSessionsElem = document.getElementById('active-sessions');
+
+            if (!tbody) return;
+
+            let players = [];
+            try {
+                // Checking standard unified keys
+                const storedPlayers = localStorage.getItem('kbc_registered_users') || localStorage.getItem('players') || localStorage.getItem('kbc_users');
+                if (storedPlayers) {
+                    players = JSON.parse(storedPlayers);
+                }
+            } catch (e) {
+                players = [];
+            }
+
+            tbody.innerHTML = '';
+
+            if (!Array.isArray(players) || players.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">কোনো রেজিস্টার্ড প্লেয়ার পাওয়া যায়নি</td></tr>`;
+                if (totalPlayersElem) totalPlayersElem.innerText = '0';
+                if (activeSessionsElem) activeSessionsElem.innerText = '0';
+                return;
+            }
+
+            if (totalPlayersElem) totalPlayersElem.innerText = players.length;
+            let activeCount = 0;
+
+            players.forEach((player, index) => {
+                const isBlocked = player.status === 'Blocked' || player.isBlocked;
+                if (!isBlocked) activeCount++;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="padding: 10px;">${player.phone || player.userId || player.id || 'N/A'}</td>
+                    <td style="padding: 10px;">${player.name || player.username || 'Unnamed Player'}</td>
+                    <td style="padding: 10px;">${player.password || player.pass || '••••••'}</td>
+                    <td style="padding: 10px;">৳ ${player.highScore || player.score || 0}</td>
+                    <td style="padding: 10px;"><span style="padding: 4px 8px; border-radius: 4px; font-size: 12px; background: ${isBlocked ? '#ef4444' : '#10b981'}; color: #fff;">${isBlocked ? 'Blocked' : 'Active'}</span></td>
+                    <td style="padding: 10px;">
+                        <button onclick="togglePlayerBlockIndex(${index})" style="padding: 6px 10px; background: ${isBlocked ? '#3b82f6' : '#ef4444'}; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">${isBlocked ? 'Unblock 🔓' : 'Block 🚫'}</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (activeSessionsElem) activeSessionsElem.innerText = activeCount;
+        }
+
+        function togglePlayerBlockIndex(index) {
+            try {
+                let key = localStorage.getItem('kbc_registered_users') ? 'kbc_registered_users' : (localStorage.getItem('players') ? 'players' : 'kbc_users');
+                let players = JSON.parse(localStorage.getItem(key) || '[]');
+                if (players[index]) {
+                    players[index].status = players[index].status === 'Blocked' ? 'Active' : 'Blocked';
+                    localStorage.setItem(key, JSON.stringify(players));
+                    loadRegisteredPlayers();
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function updateAdminClock() {
+            const clockElement = document.getElementById('live-clock-date');
+            if (clockElement) {
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric', 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit',
+                    hour12: true 
+                };
+                clockElement.innerText = '📅 ' + now.toLocaleDateString('bn-BD', options);
+            }
+        }
+        setInterval(updateAdminClock, 1000);
     </script>
     <script src="app.js"></script>
-    <script src="network/networkadapter.js"></script>
 </body>
 </html>

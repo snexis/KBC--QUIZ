@@ -15,19 +15,7 @@ function getAllStoredPlayers() {
     return [];
 }
 
-// Universal User Registration & Auto-Login Save Handler
-function registerUser(userData) {
-    let players = getAllStoredPlayers();
-    players.push(userData);
-    localStorage.setItem('kbc_players', JSON.stringify(players));
-    localStorage.setItem('kbc_real_players', JSON.stringify(players));
-    
-    // অটো সাইন-আপ সফল হলে লগইন পেজের জন্য ইউজার আইডি বা মোবাইল নম্বর সেভ করে রাখা
-    localStorage.setItem('kbc_last_login_id', userData.phone || userData.id || userData.userId || userData.username);
-    localStorage.setItem('kbc_last_login_pass', userData.password || userData.pass || userData.pwd);
-}
-
-// Admin Add Question Functionality with Direct Game Pool Sync
+// Admin Add Question Functionality
 function addNewQuestionFromAdmin() {
     const authorElem = document.getElementById('admin-q-author');
     const authorName = authorElem ? authorElem.value.trim() : "";
@@ -70,7 +58,6 @@ function addNewQuestionFromAdmin() {
     customQuestions.push(newQ);
     localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
 
-    // মূল গেমের প্রশ্ন ব্যাংকের সাথে ইনস্ট্যান্ট মার্জ করার সিঙ্ক লজিক
     let mainQuestions = JSON.parse(localStorage.getItem('kbc_questions') || '[]');
     if (!Array.isArray(mainQuestions)) mainQuestions = [];
     mainQuestions.push(newQ);
@@ -167,19 +154,20 @@ function loadRealPlayersList() {
         const playerStatus = player.status || (player.isBlocked ? 'Blocked' : 'Active');
         
         let isLive = false;
-        if (player.lastActive && (currentTime - player.lastActive < 120000)) {
+        if (player.lastActive && (currentTime - player.lastActive < 30000)) {
             isLive = true;
-        } else if (playerStatus === 'Active' && !player.isBlocked) {
+        } else if (player.isOnline === true && (currentTime - (player.lastActive || 0) < 30000)) {
             isLive = true;
         }
 
         const liveBadge = isLive 
             ? `<span style="display: inline-flex; align-items: center; gap: 5px; background: rgba(46, 204, 113, 0.15); color: #2ecc71; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;"><span style="width: 8px; height: 8px; background: #2ecc71; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #2ecc71;"></span> LIVE</span>`
-            : `<span style="color: #95a5a6; font-size: 11px;">Offline</span>`;
+            : `<span style="display: inline-flex; align-items: center; gap: 5px; background: rgba(149, 165, 166, 0.15); color: #95a5a6; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: bold;"><span style="width: 8px; height: 8px; background: #95a5a6; border-radius: 50%; display: inline-block;"></span> Offline</span>`;
 
         const playerPassword = player.password || player.pass || player.pwd || 'N/A';
         const playerName = player.name || player.username || player.fullName || 'Unknown';
         const playerPhone = player.phone || player.id || player.userId || 'N/A';
+        const playerScore = player.highScore || player.score || 0;
 
         html += `
             <tr>
@@ -191,7 +179,7 @@ function loadRealPlayersList() {
                     </div>
                 </td>
                 <td><code style="background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px; color: #66fcf1;">${playerPassword}</code></td>
-                <td>${player.highScore || player.score || 0} Points</td>
+                <td>${playerScore} Points</td>
                 <td><span style="color: ${playerStatus === 'Blocked' ? '#e74c3c' : '#2ecc71'};">${playerStatus}</span></td>
                 <td>
                     <button class="btn-action" onclick="toggleBlockPlayer('${playerId}')" style="background: ${playerStatus === 'Blocked' ? '#27ae60' : '#e74c3c'}; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">
@@ -238,24 +226,16 @@ function toggleBlockPlayer(playerId) {
     updateAdminDashboardStats();
 }
 
-// Auto-fill login inputs on page load if available
+// Window load trigger
 window.addEventListener('DOMContentLoaded', () => {
     loadRealPlayersList();
     updateAdminDashboardStats();
-
-    const savedId = localStorage.getItem('kbc_last_login_id');
-    const savedPass = localStorage.getItem('kbc_last_login_pass');
-
-    const loginIdInput = document.getElementById('login-username') || document.getElementById('mobile-or-userid');
-    const loginPassInput = document.getElementById('login-password') || document.getElementById('password');
-
-    if (loginIdInput && savedId) loginIdInput.value = savedId;
-    if (loginPassInput && savedPass) loginPassInput.value = savedPass;
 });
 
 // Fully Dynamic Admin Dashboard Statistics Updater
 function updateAdminDashboardStats() {
     let savedPlayers = getAllStoredPlayers();
+    const currentTime = Date.now();
 
     const totalPlayersElem = document.getElementById('total-players');
     if (totalPlayersElem) {
@@ -265,7 +245,7 @@ function updateAdminDashboardStats() {
     const activeSessionsElem = document.getElementById('active-sessions');
     if (activeSessionsElem) {
         const activeCount = savedPlayers.filter(p => 
-            !p.isBlocked && p.status !== 'Blocked'
+            !p.isBlocked && p.status !== 'Blocked' && (p.lastActive && (currentTime - p.lastActive < 30000))
         ).length;
         activeSessionsElem.innerText = activeCount;
     }

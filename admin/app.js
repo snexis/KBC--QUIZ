@@ -1,6 +1,14 @@
-// Helper Function to Get Players from Any Possible LocalStorage Key
+/**
+ * Project: KBC Admin Dashboard Logic
+ * Role: Senior Software Architect & Security Expert
+ * Description: Fully updated administrative logic supporting cross-storage fallback,
+ * live player tracking, custom question insertion, audit logging, and dynamic status updates.
+ */
+
+// Helper Function: Retrieve registered players safely across all possible LocalStorage keys
 function getAllStoredPlayers() {
-    let keysToTry = ['kbc_players', 'players', 'users', 'registered_users', 'kbc_users', 'kbc_real_players'];
+    const keysToTry = ['kbc_players', 'players', 'users', 'registered_users', 'kbc_users', 'kbc_real_players'];
+    
     for (let key of keysToTry) {
         let data = localStorage.getItem(key);
         if (data) {
@@ -9,30 +17,37 @@ function getAllStoredPlayers() {
                 if (Array.isArray(parsed) && parsed.length > 0) {
                     return parsed;
                 }
-            } catch (e) {}
+            } catch (e) {
+                console.error("Error parsing stored players data from key: " + key, e);
+            }
         }
     }
     return [];
 }
 
-// Admin Add Question Functionality
+// Admin Feature: Add New Question directly to the game repository
 function addNewQuestionFromAdmin() {
     const authorElem = document.getElementById('admin-q-author');
     const authorName = authorElem ? authorElem.value.trim() : "";
 
-    const subj = document.getElementById('admin-q-subj').value;
-    const level = document.getElementById('admin-q-level').value;
-    const qText = document.getElementById('admin-q-text').value.trim();
+    const subjElem = document.getElementById('admin-q-subj');
+    const levelElem = document.getElementById('admin-q-level');
+    const qTextElem = document.getElementById('admin-q-text');
+
+    const subj = subjElem ? subjElem.value : "General";
+    const level = levelElem ? levelElem.value : "1";
+    const qText = qTextElem ? qTextElem.value.trim() : "";
     
-    const optA = document.getElementById('admin-opt-a').value.trim();
-    const optB = document.getElementById('admin-opt-b').value.trim();
-    const optC = document.getElementById('admin-opt-c').value.trim();
-    const optD = document.getElementById('admin-opt-d').value.trim();
-    const correct = document.getElementById('admin-correct-opt').value;
+    const optA = document.getElementById('admin-opt-a') ? document.getElementById('admin-opt-a').value.trim() : "";
+    const optB = document.getElementById('admin-opt-b') ? document.getElementById('admin-opt-b').value.trim() : "";
+    const optC = document.getElementById('admin-opt-c') ? document.getElementById('admin-opt-c').value.trim() : "";
+    const optD = document.getElementById('admin-opt-d') ? document.getElementById('admin-opt-d').value.trim() : "";
+    const correct = document.getElementById('admin-correct-opt') ? document.getElementById('admin-correct-opt').value : "a";
     
     const expElement = document.getElementById('admin-q-exp');
     const qExp = expElement ? expElement.value.trim() : "";
 
+    // Validation
     if (!authorName) {
         alert("দয়া করে এডমিনের নাম (Created By) ইনপুট দিন!");
         if (authorElem) authorElem.focus();
@@ -44,6 +59,7 @@ function addNewQuestionFromAdmin() {
         return;
     }
 
+    // Construct Question Payload
     const newQ = {
         id: "custom_" + Date.now(),
         author: authorName,
@@ -54,15 +70,19 @@ function addNewQuestionFromAdmin() {
         en: { q: qText, a: optA, b: optB, c: optC, d: optD, exp: qExp }
     };
 
+    // Save to Custom Questions list
     let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
+    if (!Array.isArray(customQuestions)) customQuestions = [];
     customQuestions.push(newQ);
     localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
 
+    // Append to Primary Questions repository
     let mainQuestions = JSON.parse(localStorage.getItem('kbc_questions') || '[]');
     if (!Array.isArray(mainQuestions)) mainQuestions = [];
     mainQuestions.push(newQ);
     localStorage.setItem('kbc_questions', JSON.stringify(mainQuestions));
 
+    // Audit Log Generation
     const now = new Date();
     const timeFormatted = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
     
@@ -74,29 +94,29 @@ function addNewQuestionFromAdmin() {
     };
 
     let auditLogs = JSON.parse(localStorage.getItem('kbc_admin_audit_log') || '[]');
+    if (!Array.isArray(auditLogs)) auditLogs = [];
     auditLogs.unshift(logEntry);
     localStorage.setItem('kbc_admin_audit_log', JSON.stringify(auditLogs));
 
     alert("প্রশ্ন ও ব্যাখ্যা সফলভাবে সেভ হয়েছে! গেমে নতুন প্রশ্ন যুক্ত হয়ে গেছে।");
 
-    document.getElementById('admin-q-text').value = '';
-    document.getElementById('admin-opt-a').value = '';
-    document.getElementById('admin-opt-b').value = '';
-    document.getElementById('admin-opt-c').value = '';
-    document.getElementById('admin-opt-d').value = '';
-    if (expElement) {
-        expElement.value = '';
-    }
+    // UI Reset
+    if (qTextElem) qTextElem.value = '';
+    if (document.getElementById('admin-opt-a')) document.getElementById('admin-opt-a').value = '';
+    if (document.getElementById('admin-opt-b')) document.getElementById('admin-opt-b').value = '';
+    if (document.getElementById('admin-opt-c')) document.getElementById('admin-opt-c').value = '';
+    if (document.getElementById('admin-opt-d')) document.getElementById('admin-opt-d').value = '';
+    if (expElement) expElement.value = '';
 }
 
-// Audit Log Modal Operations
+// Display Audit Logs in Modal Table
 function loadAuditLogs() {
     const logTbody = document.getElementById('audit-log-tbody');
     if (!logTbody) return;
 
     const auditLogs = JSON.parse(localStorage.getItem('kbc_admin_audit_log') || '[]');
 
-    if (auditLogs.length === 0) {
+    if (!Array.isArray(auditLogs) || auditLogs.length === 0) {
         logTbody.innerHTML = `
             <tr>
                 <td colspan="4" style="text-align: center; color: #aaa;">কোনো হিস্ট্রি বা লগ পাওয়া যায়নি</td>
@@ -110,16 +130,16 @@ function loadAuditLogs() {
         html += `
             <tr>
                 <td style="color: #66fcf1; font-weight: bold;">${log.author || 'Unknown Admin'}</td>
-                <td>${log.timestamp}</td>
-                <td><span style="color: #2ecc71;">${log.status}</span></td>
-                <td>${log.questionSnippet}</td>
+                <td>${log.timestamp || 'N/A'}</td>
+                <td><span style="color: #2ecc71;">${log.status || 'Success'}</span></td>
+                <td>${log.questionSnippet || ''}</td>
             </tr>
         `;
     });
     logTbody.innerHTML = html;
 }
 
-// Function to Load Real Players List matching the HTML table structure
+// Render Real Players Table with Online/Offline Badges
 function loadRealPlayersList() {
     const tableBody = document.getElementById('player-table-body');
     if (!tableBody) return;
@@ -139,7 +159,7 @@ function loadRealPlayersList() {
     const currentTime = Date.now();
 
     savedPlayers.forEach(player => {
-        const playerId = player.id || player.phone || player.userId;
+        const playerId = player.id || player.phone || player.userId || 'N/A';
         const playerStatus = player.status || (player.isBlocked ? 'Blocked' : 'Active');
         
         let isLive = false;
@@ -182,9 +202,9 @@ function loadRealPlayersList() {
     tableBody.innerHTML = html;
 }
 
-// Block/Unblock Toggle Functionality
+// Toggle Player Block Status
 function toggleBlockPlayer(playerId) {
-    let keysToTry = ['kbc_players', 'players', 'users', 'registered_users', 'kbc_users', 'kbc_real_players'];
+    const keysToTry = ['kbc_players', 'players', 'users', 'registered_users', 'kbc_users', 'kbc_real_players'];
     let targetKey = 'kbc_players';
     let savedPlayers = [];
 
@@ -193,7 +213,7 @@ function toggleBlockPlayer(playerId) {
         if (data) {
             try {
                 let parsed = JSON.parse(data);
-                if (Array.isArray(parsed)) {
+                if (Array.isArray(parsed) && parsed.length > 0) {
                     savedPlayers = parsed;
                     targetKey = key;
                     break;
@@ -216,13 +236,7 @@ function toggleBlockPlayer(playerId) {
     updateAdminDashboardStats();
 }
 
-// Window load trigger extension
-window.addEventListener('DOMContentLoaded', () => {
-    loadRealPlayersList();
-    updateAdminDashboardStats();
-});
-
-// Fully Dynamic Admin Dashboard Statistics Updater
+// Dashboard Dynamic Metrics Updater
 function updateAdminDashboardStats() {
     let savedPlayers = getAllStoredPlayers();
     const currentTime = Date.now();
@@ -260,7 +274,7 @@ function updateAdminDashboardStats() {
     }
 }
 
-// Tab Switching with Data Synchronization enhancement
+// Global Tab Switcher Handler
 const originalSwitchTab = window.switchTab;
 window.switchTab = function(tabName, element) {
     if (typeof originalSwitchTab === 'function') {
@@ -272,3 +286,9 @@ window.switchTab = function(tabName, element) {
         loadRealPlayersList();
     }
 };
+
+// Event Listener: Initialize data on DOM Ready
+window.addEventListener('DOMContentLoaded', () => {
+    loadRealPlayersList();
+    updateAdminDashboardStats();
+});

@@ -1,5 +1,5 @@
 // ==========================================
-// KBC PREMIUM 2026 - COMPLETE APP LOGIC (UPDATED & BUG-FIXED WITH I18N)
+// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED 404 & JSON ERROR)
 // ==========================================
 
 let curLang = 'bn';
@@ -199,7 +199,6 @@ function loadCustomAdminQuestions() {
                 });
 
                 fullQuestionPool.unshift(...formattedCustoms);
-                console.log(`Successfully merged ${formattedCustoms.length} custom admin questions into pool.`);
             }
         }
     } catch (e) {
@@ -226,22 +225,25 @@ function autoFixAndParseObj(rawText) {
     }
 }
 
-// External JSON Question Bank Loader
+// External JSON Question Bank Loader (With Safe 404 & Parse Error Handling)
 async function loadQuestionBank() {
     try {
         const response = await fetch('questions.json');
-        if (!response.ok) throw new Error("Question bank not found");
+        if (!response.ok) {
+            console.warn(`questions.json HTTP response status: ${response.status}`);
+            loadCustomAdminQuestions();
+            return;
+        }
         
         const textData = await response.text();
         let cleanData = textData.trim();
 
         try {
             fullQuestionPool = JSON.parse(cleanData);
-            console.log("Successfully loaded " + fullQuestionPool.length + " questions instantly.");
             loadCustomAdminQuestions();
             return;
         } catch (e) {
-            console.warn("Direct JSON parsing failed. Activating Safe Chunking Processor...");
+            // Direct JSON parsing failed, safely attempt chunk recovery
         }
 
         fullQuestionPool = [];
@@ -252,8 +254,6 @@ async function loadQuestionBank() {
 
         const rawObjects = cleanData.split(/\},\s*\{/);
         const BATCH_SIZE = 300;
-        let successCount = 0;
-        let errorCount = 0;
 
         for (let i = 0; i < rawObjects.length; i++) {
             let str = rawObjects[i].trim();
@@ -263,9 +263,6 @@ async function loadQuestionBank() {
             const parsedObj = autoFixAndParseObj(str);
             if (parsedObj) {
                 items.push(parsedObj);
-                successCount++;
-            } else {
-                errorCount++;
             }
 
             if (items.length >= BATCH_SIZE) {
@@ -279,11 +276,10 @@ async function loadQuestionBank() {
             fullQuestionPool.push(...items);
         }
 
-        console.log(`Loaded ${fullQuestionPool.length} valid questions successfully. Skipped corrupted entries: ${errorCount}`);
         loadCustomAdminQuestions();
 
     } catch (error) {
-        console.error("Error loading JSON, falling back to default pool:", error);
+        console.warn("Could not load external questions.json file:", error);
         loadCustomAdminQuestions();
     }
 }
@@ -339,7 +335,7 @@ function processVoiceCommand(cmd) {
     const mappings = {
         'a': 0, 'এ': 0, 'এক': 0, 'one': 0, 'প্রথম': 0, 'option a': 0, '১': 0, '1': 0, 'ক': 0,
         'b': 1, 'বি': 1, 'দুই': 1, 'two': 1, 'দ্বিতীয়': 1, 'option b': 1, '২': 1, '2': 1, 'খ': 1,
-        'c': 2, 'সি': 2, 'তিন': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2, '৩': 2, '3': 2, 'গ': 2,
+        'c': 2, 'সি': 2, 'তিন': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2, '৩': 3, '3': 2, 'গ': 2,
         'd': 3, 'ডি': 3, 'চার': 3, 'four': 3, 'চতুর্থ': 3, 'option d': 3, '৪': 3, '4': 3, 'ঘ': 3
     };
     

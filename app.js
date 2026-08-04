@@ -895,41 +895,4 @@ document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
         clearInterval(timerInt);
         if (explanationTimer) clearTimeout(explanationTimer);
-        const bg = document.getElementById('bg-music');
-        if (bg) bg.pause();
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
-        if (recognition) { try { recognition.stop(); } catch(e) {} }
-        
-        const gameScr = document.getElementById('scr-game');
-        if (gameScr && gameScr.classList.contains('active')) {
-            alert(curLang === 'bn' 
-                ? "ট্যাব পরিবর্তন করার জন্য গেম স্থগিত করা হয়েছে!" 
-                : "Game paused/reset due to switching tabs!");
-            confirmExitGame();
-        }
-    }
-});
-
-// Auto-Initialization on DOM Load
-document.addEventListener('DOMContentLoaded', () => {
-    loadQuestionBank();
-    loadSavedCredentials();
-
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('mode') === 'admin_test') {
-        show('scr-lang');
-    } else {
-        const session = localStorage.getItem('kbc_login_session');
-        const currentUser = localStorage.getItem('kbc_current_user');
-        if (session === 'active' && currentUser) {
-            const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
-            if (savedUserRaw) {
-                checkUserTrialAndProceed(JSON.parse(savedUserRaw));
-            } else {
-                show('scr-lang');
-            }
-        } else {
-            show('scr-login');
-        }
-    }
-});
+        const bg = document.get

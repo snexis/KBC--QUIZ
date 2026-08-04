@@ -29,6 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
     checkSavedSession();
 });
 
+// Helper Function: Show specific screen by ID
+function show(screenId) {
+    const screens = document.querySelectorAll('.screen');
+    screens.forEach(s => {
+        s.classList.remove('active');
+        s.style.display = 'none';
+    });
+    const target = document.getElementById(screenId);
+    if (target) {
+        target.classList.add('active');
+        target.style.display = 'block';
+    }
+}
+
 // Live Digital Clock (English Format)
 function startLiveClock() {
     if (liveClockInt) clearInterval(liveClockInt);
@@ -908,36 +922,23 @@ function end() {
     if (resScore) resScore.innerText = score;
     if (resCor) resCor.innerText = cor;
     if (resWr) resWr.innerText = wr;
-    
-    const bg = document.getElementById('bg-music');
-    if (bg) bg.pause();
-    
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    if (recognition) { try { recognition.stop(); } catch(e) {} }
-}
 
-function show(id) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    const target = document.getElementById(id);
-    if (target) target.classList.add('active');
-
-    const topNav = document.getElementById('top-nav-bar');
-    if (topNav) {
-        if (id === 'scr-login') {
-            topNav.style.display = 'none';
-        } else {
-            topNav.style.display = 'flex';
+    const currentUser = localStorage.getItem('kbc_current_user');
+    if (currentUser) {
+        const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
+        if (savedUserRaw) {
+            let userData = JSON.parse(savedUserRaw);
+            if (!userData.highScore || score > userData.highScore) {
+                userData.highScore = score;
+                localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
+            }
         }
     }
+
+    const bg = document.getElementById('bg-music');
+    if (bg) bg.pause();
 }
 
-// Anti-Cheat: Resets timer/audio safely if user switches tabs
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        if (timerInt) clearInterval(timerInt);
-        if (explanationTimer) clearTimeout(explanationTimer);
-        const bg = document.getElementById('bg-music');
-        if (bg) bg.pause();
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
-    }
-});
+function restartGame() {
+    show('scr-subject');
+}

@@ -4,336 +4,460 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KBC Admin Dashboard</title>
-    <link rel="stylesheet" href="admin.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #0b0c10;
+            --card-bg: rgba(31, 40, 51, 0.7);
+            --border-color: #45a29e;
+            --text-color: #c5c6c7;
+            --accent-color: #66fcf1;
+            --hover-color: #45a29e;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at 50% 50%, #1f2833 0%, #0b0c10 100%);
+        }
+
+        /* Login Overlay */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 12, 16, 0.95);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(102, 252, 241, 0.2);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        .login-box h2 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: rgba(11, 12, 16, 0.8);
+            color: #fff;
+            outline: none;
+        }
+
+        .btn {
+            background: var(--accent-color);
+            color: #0b0c10;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--hover-color);
+            color: #fff;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(31, 40, 51, 0.9);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            color: var(--accent-color);
+            font-size: 20px;
+        }
+
+        /* Container & Tabs */
+        .container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--border-color);
+            color: #fff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-top: 10px;
+        }
+
+        /* Tables */
+        .table-responsive {
+            overflow-x: auto;
+            background: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(69, 162, 158, 0.2);
+        }
+
+        th {
+            background: rgba(11, 12, 16, 0.5);
+            color: var(--accent-color);
+        }
+
+        .badge {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        .badge-active { background: rgba(16, 185, 129, 0.2); color: var(--success-color); }
+        .badge-blocked { background: rgba(239, 68, 68, 0.2); color: var(--danger-color); }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1100;
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 25px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- ADMIN LOGIN MODAL / CARD -->
-    <div id="admin-login-screen" style="display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0f172a; z-index: 999999; justify-content: center; align-items: center;">
-        <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 2px solid #ffd700; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);">
-            <h2 style="color: #ffd700; margin-bottom: 20px;">🔑 Admin Login</h2>
-            <input type="text" id="admin-user-id" placeholder="Admin ID" style="width: 100%; margin-bottom: 12px; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; box-sizing: border-box;">
-            <input type="password" id="admin-user-pass" placeholder="Password" style="width: 100%; margin-bottom: 20px; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0f172a; color: #fff; box-sizing: border-box;">
-            <button onclick="loginAdminCheck()" style="width: 100%; padding: 10px; background: #3b82f6; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Login Dashboard</button>
+    <!-- Admin Login Modal -->
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2>Admin Login</h2>
+            <div class="input-group">
+                <label for="admin-user">Username</label>
+                <input type="text" id="admin-user" placeholder="Enter Admin ID">
+            </div>
+            <div class="input-group">
+                <label for="admin-pass">Password</label>
+                <input type="password" id="admin-pass" placeholder="Enter Password">
+            </div>
+            <button class="btn" onclick="loginAdminCheck()">Login</button>
         </div>
     </div>
 
-    <!-- Modern Sidebar Navigation -->
-    <aside class="admin-sidebar" id="admin-sidebar" style="display: none;">
-        <div class="brand-header">
-            <span>🏆</span> KBC ADMIN
+    <!-- Main Navigation -->
+    <nav class="navbar">
+        <h1><i class="fa-solid fa-user-shield"></i> KBC Admin Panel</h1>
+        <button class="tab-btn" onclick="logoutAdmin()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+    </nav>
+
+    <!-- Main Content Container -->
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('dashboard', this)"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
+            <button class="tab-btn" onclick="switchTab('players', this)"><i class="fa-solid fa-users"></i> Players Management</button>
+            <button class="tab-btn" onclick="switchTab('add-question', this)"><i class="fa-solid fa-circle-plus"></i> Add Question</button>
+            <button class="tab-btn" onclick="openAuditModal()"><i class="fa-solid fa-clock-rotate-left"></i> Audit Logs</button>
         </div>
-        <ul class="nav-list">
-            <li class="nav-item active" onclick="switchTab('dashboard', this)">📊 Dashboard</li>
-            <li class="nav-item" onclick="switchTab('players', this)">👥 Players</li>
-            <li class="nav-item" onclick="switchTab('add-question', this)">➕ Add Question</li>
-            <li class="nav-item" onclick="openAuditLogModal()">📋 Audit Log</li>
-        </ul>
-    </aside>
 
-    <!-- Main Dashboard Area -->
-    <main class="admin-main" id="admin-main-content" style="display: none;">
-        <header style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <div>
-                <h1 style="margin: 0; font-size: 1.5rem;">🏆 KBC PREMIUM - Admin Master Control</h1>
-                <div id="live-clock-date" style="font-size: 0.85rem; color: #38bdf8; font-weight: 500; margin-top: 4px;"></div>
-            </div>
-            <button class="btn-logout" onclick="logoutAdmin()" style="background: #ef4444; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold;">Logout 🚪</button>
-        </header>
-
-        <!-- SECTION 1: DASHBOARD OVERVIEW -->
-        <div id="sec-dashboard" class="tab-content active-tab">
-            <!-- Top Statistics Overview -->
+        <!-- Tab 1: Dashboard Overview -->
+        <div id="dashboard" class="tab-content active">
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-title">TOTAL REGISTERED PLAYERS</div>
-                    <div class="stat-value" id="total-players">0</div>
+                    <h3>TOTAL REGISTERED PLAYERS</h3>
+                    <div class="value" id="total-players">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">ACTIVE SESSIONS</div>
-                    <div class="stat-value" id="active-sessions">0</div>
+                    <h3>ACTIVE SESSIONS (LIVE)</h3>
+                    <div class="value" id="active-sessions">0</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-title">TOTAL QUESTIONS IN BANK</div>
-                    <div class="stat-value" id="total-questions">150</div>
-                </div>
-            </div>
-
-            <!-- Live Test Player Section -->
-            <div class="section-box" style="margin-top: 20px;">
-                <div class="section-title">🎮 Live Player View & Testing</div>
-                <p style="color: #94a3b8; margin-bottom: 12px;">প্লেয়ারদের গেম ইন্টারফেস সরাসরি টেস্ট করতে বা প্লেয়ার হিসেবে গেমটি দেখতে নিচের বাটনে ক্লিক করুন:</p>
-                <a href="../index.html?mode=admin_test" target="_blank" class="btn-test">Launch Player View (New Tab) 🚀</a>
-            </div>
-        </div>
-
-        <!-- SECTION 2: REGISTERED PLAYERS TABLE -->
-        <div id="sec-players" class="tab-content" style="display: none;">
-            <div class="section-box" id="players-section">
-                <div class="section-title">👥 Registered Players List & Control</div>
-                <div style="overflow-x: auto;">
-                    <table class="custom-table" style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                        <thead>
-                            <tr>
-                                <th style="padding: 10px; text-align: left;">User ID / Phone</th>
-                                <th style="padding: 10px; text-align: left;">Name</th>
-                                <th style="padding: 10px; text-align: left;">Password</th>
-                                <th style="padding: 10px; text-align: left;">High Score</th>
-                                <th style="padding: 10px; text-align: left;">Status</th>
-                                <th style="padding: 10px; text-align: left;">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="player-table-body">
-                            <tr>
-                                <td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">কোনো প্লেয়ার পাওয়া যায়নি</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <h3>TOTAL QUESTIONS IN BANK</h3>
+                    <div class="value" id="total-questions">0</div>
                 </div>
             </div>
         </div>
 
-        <!-- SECTION 3: ADD NEW QUESTION SECTION -->
-        <div id="sec-add-question" class="tab-content" style="display: none;">
-            <div class="section-box" id="add-question-section">
-                <div class="section-title">➕ Add New Question to Bank</div>
-                <div style="display: flex; flex-direction: column; gap: 12px; max-width: 750px; margin-top: 15px;">
-                    <div>
-                        <label style="color: #38bdf8; font-weight: bold; font-size: 14px; display: block; margin-bottom: 5px;">
-                            👤 Created By / এডমিনের নাম (বাধ্যতামূলক):
-                        </label>
-                        <input type="text" id="admin-q-author" placeholder="আপনার নাম লিখুন..." style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid #ffd700; box-sizing: border-box;">
-                    </div>
-
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <select id="admin-q-subj" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                            <option value="all">ALL MIXED / সব বিষয়</option>
-                            <option value="science">SCIENCE / বিজ্ঞান</option>
-                            <option value="history">HISTORY / ইতিহাস</option>
-                            <option value="philosophy">PHILOSOPHY / দর্শন</option>
-                            <option value="math">MATH / গণিত</option>
-                            <option value="business">BUSINESS / ব্যবসা ও অর্থনীতি</option>
-                            <option value="coding">CODING & TECH / কম্পিউটার</option>
-                        </select>
-                        
-                        <select id="admin-q-level" style="padding: 10px; flex: 1.5; min-width: 180px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                            <option value="junior">JUNIOR (CLASS 5 - 8)</option>
-                            <option value="secondary">SECONDARY (CLASS 9 - 10)</option>
-                            <option value="hs">HIGHER SECONDARY (CLASS 11 - 12)</option>
-                            <option value="advanced">ADVANCED / DEGREE / TECH</option>
-                        </select>
-                    </div>
-
-                    <textarea id="admin-q-text" placeholder="এখানে মূল প্রশ্নটি লিখুন..." rows="3" style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); resize: vertical; box-sizing: border-box;"></textarea>
-                    
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <input type="text" id="admin-opt-a" placeholder="Option A (ক)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); width: 100%; box-sizing: border-box;">
-                        <input type="text" id="admin-opt-b" placeholder="Option B (খ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); width: 100%; box-sizing: border-box;">
-                        <input type="text" id="admin-opt-c" placeholder="Option C (গ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); width: 100%; box-sizing: border-box;">
-                        <input type="text" id="admin-opt-d" placeholder="Option D (ঘ)" style="padding: 10px; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); width: 100%; box-sizing: border-box;">
-                    </div>
-
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <label style="color: #fff; font-weight: bold;">সঠিক উত্তর:</label>
-                        <select id="admin-correct-opt" style="padding: 10px; flex: 1; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1);">
-                            <option value="a">Option A (ক)</option>
-                            <option value="b">Option B (খ)</option>
-                            <option value="c">Option C (গ)</option>
-                            <option value="d">Option D (ঘ)</option>
-                        </select>
-                    </div>
-
-                    <textarea id="admin-q-exp" placeholder="উত্তরের সঠিক ব্যাখ্যা বা কারণ লিখুন (Explanation)..." rows="2" style="padding: 10px; width: 100%; border-radius: 6px; background: rgba(0,0,0,0.4); color: #fff; border: 1px solid rgba(255,255,255,0.1); resize: vertical; box-sizing: border-box;"></textarea>
-
-                    <div style="display: flex; gap: 10px; margin-top: 5px; flex-wrap: wrap;">
-                        <button onclick="addNewQuestionFromAdmin()" style="flex: 2; padding: 12px; background-color: #10b981; color: white; border: none; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 15px;">💾 Save Question to Game</button>
-                        <button onclick="openAuditLogModal()" style="flex: 1; padding: 12px; background-color: #00f2fe; color: #000; border: none; cursor: pointer; border-radius: 6px; font-weight: bold; font-size: 15px;">📋 View History Log</button>
-                    </div>
-                </div>
+        <!-- Tab 2: Players List -->
+        <div id="players" class="tab-content">
+            <h2><i class="fa-solid fa-users"></i> Registered Players</h2>
+            <br>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phone / ID</th>
+                            <th>Name / Status</th>
+                            <th>Score</th>
+                            <th>Account Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="player-table-body">
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: #aaa;">ডেটা লোড হচ্ছে...</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </main>
 
-    <!-- Secret Admin Audit Log Modal Popup -->
-    <div id="audit-log-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 99999; justify-content: center; align-items: center;">
-        <div style="background: #0f172a; border: 2px solid #ffd700; border-radius: 16px; padding: 25px; width: 90%; max-width: 750px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 30px rgba(255,215,0,0.3); box-sizing: border-box;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
-                <h3 style="color: #ffd700; margin: 0; font-size: 20px;">📋 Admin Question Log & Audit History</h3>
-                <button onclick="closeAuditLogModal()" style="background: #ef4444; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;">✕ Close</button>
+        <!-- Tab 3: Add New Question -->
+        <div id="add-question" class="tab-content">
+            <h2><i class="fa-solid fa-circle-plus"></i> Add New Question</h2>
+            <br>
+            <div style="background: var(--card-bg); padding: 20px; border-radius: 10px; border: 1px solid var(--border-color);">
+                <div class="input-group">
+                    <label>Created By (Admin Name):</label>
+                    <input type="text" id="admin-q-author" placeholder="Admin Name">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="input-group">
+                        <label>Subject Category:</label>
+                        <select id="admin-q-subj">
+                            <option value="General">General Knowledge</option>
+                            <option value="Science">Science</option>
+                            <option value="History">History</option>
+                            <option value="Geography">Geography</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Difficulty Level:</label>
+                        <select id="admin-q-level">
+                            <option value="1">Level 1 (Easy)</option>
+                            <option value="2">Level 2 (Medium)</option>
+                            <option value="3">Level 3 (Hard)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Question Text (Bangla):</label>
+                    <textarea id="admin-q-text" rows="3" placeholder="প্রশ্নটি লিখুন..."></textarea>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="input-group"><label>Option A:</label><input type="text" id="admin-opt-a"></div>
+                    <div class="input-group"><label>Option B:</label><input type="text" id="admin-opt-b"></div>
+                    <div class="input-group"><label>Option C:</label><input type="text" id="admin-opt-c"></div>
+                    <div class="input-group"><label>Option D:</label><input type="text" id="admin-opt-d"></div>
+                </div>
+                <div class="input-group">
+                    <label>Correct Option:</label>
+                    <select id="admin-correct-opt">
+                        <option value="a">Option A</option>
+                        <option value="b">Option B</option>
+                        <option value="c">Option C</option>
+                        <option value="d">Option D</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Explanation / Note (Optional):</label>
+                    <textarea id="admin-q-exp" rows="2" placeholder="প্রশ্নের ব্যাখ্যা লিখুন..."></textarea>
+                </div>
+                <button class="btn" onclick="addNewQuestionFromAdmin()">Save Question</button>
             </div>
-            <table class="custom-table" style="width: 100%; border-collapse: collapse;">
-                <thead>
-                    <tr>
-                        <th style="padding: 10px; text-align: left;">Author Name</th>
-                        <th style="padding: 10px; text-align: left;">Date & Time</th>
-                        <th style="padding: 10px; text-align: left;">Status</th>
-                        <th style="padding: 10px; text-align: left;">Question Preview</th>
-                    </tr>
-                </thead>
-                <tbody id="audit-log-tbody">
-                    <!-- Dynamic Log Data Will Load Here -->
-                </tbody>
-            </table>
         </div>
     </div>
 
-    <!-- UI Logic Scripts -->
+    <!-- Audit Log Modal -->
+    <div id="audit-modal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: var(--accent-color); margin-bottom: 15px;">Audit Logs</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Admin</th>
+                            <th>Time</th>
+                            <th>Status</th>
+                            <th>Snippet</th>
+                        </tr>
+                    </thead>
+                    <tbody id="audit-log-tbody">
+                    </tbody>
+                </table>
+            </div>
+            <br>
+            <button class="btn" onclick="closeAuditModal()" style="background: var(--danger-color); color: white;">Close</button>
+        </div>
+    </div>
+
+    <!-- Inline Script for Login & UI Controls -->
     <script>
+        // Check Login Status on Load
         window.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-                showDashboardUI();
-            } else {
-                showLoginUI();
+            if (sessionStorage.getItem('kbc_admin_logged_in') === 'true') {
+                const overlay = document.getElementById('login-overlay');
+                if (overlay) overlay.style.display = 'none';
             }
-            updateAdminClock();
-            loadRegisteredPlayers();
         });
 
+        // Smart Login Handler with Trim and Case Insensitivity
         function loginAdminCheck() {
-            const user = document.getElementById('admin-user-id').value;
-            const pass = document.getElementById('admin-user-pass').value;
+            const user = document.getElementById('admin-user').value.trim().toLowerCase();
+            const pass = document.getElementById('admin-pass').value.trim();
 
             if (user === 'admin' && pass === 'admin123') {
-                sessionStorage.setItem('adminLoggedIn', 'true');
-                showDashboardUI();
+                sessionStorage.setItem('kbc_admin_logged_in', 'true');
+                document.getElementById('login-overlay').style.display = 'none';
             } else {
                 alert('ভুল অ্যাডমিন আইডি বা পাসওয়ার্ড!');
             }
         }
 
-        function showDashboardUI() {
-            document.getElementById('admin-login-screen').style.display = 'none';
-            document.getElementById('admin-sidebar').style.display = 'block';
-            document.getElementById('admin-main-content').style.display = 'block';
-            loadRegisteredPlayers();
-        }
-
-        function showLoginUI() {
-            document.getElementById('admin-login-screen').style.display = 'flex';
-            document.getElementById('admin-sidebar').style.display = 'none';
-            document.getElementById('admin-main-content').style.display = 'none';
-        }
-
-        function switchTab(tabName, element) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.style.display = 'none');
-
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-
-            const targetTab = document.getElementById('sec-' + tabName);
-            if (targetTab) {
-                targetTab.style.display = 'block';
-            }
-            if (element) {
-                element.classList.add('active');
-            }
-            if (tabName === 'players') {
-                loadRegisteredPlayers();
-            }
-        }
-
         function logoutAdmin() {
-            sessionStorage.removeItem('adminLoggedIn');
-            alert('অ্যাডমিন প্যানেল থেকে সফলভাবে লগআউট করা হয়েছে।');
-            showLoginUI();
+            sessionStorage.removeItem('kbc_admin_logged_in');
+            location.reload();
         }
 
-        function openAuditLogModal() {
-            const modal = document.getElementById('audit-log-modal');
-            if (modal) modal.style.display = 'flex';
+        // Navigation Tab Switching Logic
+        function switchTab(tabId, btnElement) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) targetTab.classList.add('active');
+            if (btnElement) btnElement.classList.add('active');
         }
 
-        function closeAuditLogModal() {
-            const modal = document.getElementById('audit-log-modal');
+        // Modal Controls
+        function openAuditModal() {
+            const modal = document.getElementById('audit-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+                if (typeof loadAuditLogs === 'function') {
+                    loadAuditLogs();
+                }
+            }
+        }
+
+        function closeAuditModal() {
+            const modal = document.getElementById('audit-modal');
             if (modal) modal.style.display = 'none';
         }
-
-        // Unified LocalStorage Player Loader (Supports both keys to prevent data mismatch)
-        function loadRegisteredPlayers() {
-            const tbody = document.getElementById('player-table-body');
-            const totalPlayersElem = document.getElementById('total-players');
-            const activeSessionsElem = document.getElementById('active-sessions');
-
-            if (!tbody) return;
-
-            let players = [];
-            try {
-                // Checking standard unified keys
-                const storedPlayers = localStorage.getItem('kbc_registered_users') || localStorage.getItem('players') || localStorage.getItem('kbc_users');
-                if (storedPlayers) {
-                    players = JSON.parse(storedPlayers);
-                }
-            } catch (e) {
-                players = [];
-            }
-
-            tbody.innerHTML = '';
-
-            if (!Array.isArray(players) || players.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 20px;">কোনো রেজিস্টার্ড প্লেয়ার পাওয়া যায়নি</td></tr>`;
-                if (totalPlayersElem) totalPlayersElem.innerText = '0';
-                if (activeSessionsElem) activeSessionsElem.innerText = '0';
-                return;
-            }
-
-            if (totalPlayersElem) totalPlayersElem.innerText = players.length;
-            let activeCount = 0;
-
-            players.forEach((player, index) => {
-                const isBlocked = player.status === 'Blocked' || player.isBlocked;
-                if (!isBlocked) activeCount++;
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="padding: 10px;">${player.phone || player.userId || player.id || 'N/A'}</td>
-                    <td style="padding: 10px;">${player.name || player.username || 'Unnamed Player'}</td>
-                    <td style="padding: 10px;">${player.password || player.pass || '••••••'}</td>
-                    <td style="padding: 10px;">৳ ${player.highScore || player.score || 0}</td>
-                    <td style="padding: 10px;"><span style="padding: 4px 8px; border-radius: 4px; font-size: 12px; background: ${isBlocked ? '#ef4444' : '#10b981'}; color: #fff;">${isBlocked ? 'Blocked' : 'Active'}</span></td>
-                    <td style="padding: 10px;">
-                        <button onclick="togglePlayerBlockIndex(${index})" style="padding: 6px 10px; background: ${isBlocked ? '#3b82f6' : '#ef4444'}; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">${isBlocked ? 'Unblock 🔓' : 'Block 🚫'}</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            if (activeSessionsElem) activeSessionsElem.innerText = activeCount;
-        }
-
-        function togglePlayerBlockIndex(index) {
-            try {
-                let key = localStorage.getItem('kbc_registered_users') ? 'kbc_registered_users' : (localStorage.getItem('players') ? 'players' : 'kbc_users');
-                let players = JSON.parse(localStorage.getItem(key) || '[]');
-                if (players[index]) {
-                    players[index].status = players[index].status === 'Blocked' ? 'Active' : 'Blocked';
-                    localStorage.setItem(key, JSON.stringify(players));
-                    loadRegisteredPlayers();
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        function updateAdminClock() {
-            const clockElement = document.getElementById('live-clock-date');
-            if (clockElement) {
-                const now = new Date();
-                const options = { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric', 
-                    hour: '2-digit', 
-                    minute: '2-digit', 
-                    second: '2-digit',
-                    hour12: true 
-                };
-                clockElement.innerText = '📅 ' + now.toLocaleDateString('bn-BD', options);
-            }
-        }
-        setInterval(updateAdminClock, 1000);
     </script>
+
+    <!-- Load Admin External JS File -->
     <script src="app.js"></script>
 </body>
 </html>

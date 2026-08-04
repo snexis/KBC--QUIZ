@@ -14,9 +14,11 @@
             <span class="brand-title">KBC PREMIUM</span>
         </div>
         <div class="nav-controls">
-            <!-- Validity Expiry Badge (Top Navigation Bar) -->
+            <!-- Validity Expiry Badge & Live Clock (Top Navigation Bar) -->
             <div id="expiry-badge" class="nav-btn validity-badge-btn" style="background: rgba(0, 123, 255, 0.2); border: 1px solid #007bff; color: #4dabf7; font-weight: bold; cursor: default;">
-                <span class="nav-btn-icon">⏳</span> <span class="nav-btn-text">মেয়াদ: -- দিন</span>
+                <span class="nav-btn-icon">⏳</span> 
+                <span id="header-trial-days" class="nav-btn-text">মেয়াদ: -- দিন</span>
+                <span id="live-clock" style="color: #ffd700; font-weight: bold; font-family: monospace; margin-left: 8px;"></span>
             </div>
             <!-- Audio Mute / Unmute Button -->
             <button id="btn-mute" class="nav-btn" onclick="toggleMute()" title="Mute/Unmute Audio">
@@ -125,7 +127,7 @@
             <!-- Expiry Badge for Main Menu -->
             <div style="text-align: center; margin-bottom: 15px;">
                 <div id="expiry-badge-lang" style="background: rgba(0, 123, 255, 0.15); border: 1px solid #007bff; color: #00d2ff; padding: 6px 15px; border-radius: 20px; font-size: 14px; display: inline-block; font-weight: bold;">
-                    ⏳ ট্রায়াল / সাবস্ক্রিপশন মেয়াদ বাকি: -- দিন
+                    ⏳ <span id="lang-trial-days">ট্রায়াল / সাবস্ক্রিপশন মেয়াদ বাকি: -- দিন</span>
                 </div>
             </div>
 
@@ -280,16 +282,16 @@
         </div>
     </div>
 
-   <!-- Audio Elements (Safe Load Handling) -->
+    <!-- Audio Elements (Safe Load Handling) -->
     <audio id="bg-music" loop preload="none"></audio>
     <audio id="snd-cor" preload="none"></audio>
     <audio id="snd-wr" preload="none"></audio>
     <audio id="snd-tick" preload="none"></audio>
     <audio id="snd-alert" preload="none"></audio>
 
-    <!-- Main Logic Scripts -->
+    <!-- Main Logic Scripts (Loaded in Correct Sequence) -->
+    <script src="network/networkadapter.js"></script>
     <script src="promo.js"></script>
     <script src="app.js"></script>
-    <script src="network/networkadapter.js"></script>
 </body>
 </html>

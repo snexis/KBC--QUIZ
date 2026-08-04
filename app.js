@@ -1,5 +1,5 @@
 // ==========================================
-// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED 404 & JSON ERROR)
+// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED PLAYERSOUND ERROR)
 // ==========================================
 
 let curLang = 'bn';
@@ -87,6 +87,25 @@ const i18n = {
 // Helper Translation Resolver
 function t(key) {
     return (i18n[curLang] && i18n[curLang][key]) ? i18n[curLang][key] : (i18n['en'][key] || key);
+}
+
+// Sound Effects Helper
+function playSound(type) {
+    if (isMuted) return;
+    try {
+        let audioId = 'sound-alert';
+        if (type === 'cor') audioId = 'sound-correct';
+        else if (type === 'wr') audioId = 'sound-wrong';
+        else if (type === 'tick') audioId = 'sound-tick';
+        
+        const audioElem = document.getElementById(audioId);
+        if (audioElem) {
+            audioElem.currentTime = 0;
+            audioElem.play().catch(e => console.log("Audio play prevented:", e));
+        }
+    } catch (err) {
+        console.log("Sound error:", err);
+    }
 }
 
 // Initialize Live English Clock, Question Bank and User Session on Load
@@ -225,7 +244,7 @@ function autoFixAndParseObj(rawText) {
     }
 }
 
-// External JSON Question Bank Loader (With Safe 404 & Parse Error Handling)
+// External JSON Question Bank Loader
 async function loadQuestionBank() {
     try {
         const response = await fetch('questions.json');
@@ -243,7 +262,7 @@ async function loadQuestionBank() {
             loadCustomAdminQuestions();
             return;
         } catch (e) {
-            // Direct JSON parsing failed, safely attempt chunk recovery
+            // Direct JSON parsing failed
         }
 
         fullQuestionPool = [];
@@ -388,7 +407,6 @@ function logoutUser() {
         if (window.speechSynthesis) window.speechSynthesis.cancel();
         if (recognition) { try { recognition.stop(); } catch(e) {} }
 
-        // Clear Session
         localStorage.removeItem('kbc_login_session');
         localStorage.removeItem('kbc_current_user');
 
@@ -626,7 +644,6 @@ function startGameWithLevel(lvl) {
     wr = 0;
     currentSlabCount = 0;
 
-    // Reset Lifelines
     lifelinesUsed = { fiftyFifty: false, audiencePoll: false, skipQuestion: false, timeFreeze: false };
     resetLifelineUI();
 
@@ -840,7 +857,6 @@ function closeExplanationModal() {
     }
 }
 
-// KBC Lifelines Engine
 function resetLifelineUI() {
     const keys = ['fiftyFifty', 'audiencePoll', 'skipQuestion', 'timeFreeze'];
     keys.forEach(k => {
@@ -891,7 +907,6 @@ function useLifeline(type) {
     }
 }
 
-// 3D Victory Particle & Confetti Effect
 function triggerConfettiFX() {
     const canvas = document.getElementById('confetti-canvas');
     if (!canvas) return;
@@ -927,7 +942,6 @@ function triggerConfettiFX() {
     }, 3500);
 }
 
-// User Settings & Change Password Modal Controls
 function openSettingsModal() {
     const modal = document.getElementById('modal-settings');
     if (modal) modal.style.display = 'flex';
@@ -984,7 +998,6 @@ function changeUserPassword() {
     }
 }
 
-// Forgot Password Modal Controls
 function openForgotPassModal() {
     const modal = document.getElementById('modal-forgot');
     if (modal) modal.style.display = 'flex';
@@ -1044,7 +1057,6 @@ function verifyAndResetPassword() {
     }
 }
 
-// Admin Panel Modal Controls
 function openAdminModal() {
     const modal = document.getElementById('modal-admin');
     if (modal) modal.style.display = 'flex';
@@ -1079,7 +1091,6 @@ function verifyAdminAccess() {
     }
 }
 
-// Invite Friend Modal Controls
 function invitePlayer() {
     const modal = document.getElementById('modal-invite');
     if (modal) {
@@ -1111,7 +1122,6 @@ function copyInviteCode() {
     }
 }
 
-// Speech Synthesis Helper
 function speak(text) {
     if (isMuted || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
@@ -1121,7 +1131,6 @@ function speak(text) {
     window.speechSynthesis.speak(utterance);
 }
 
-// Final Game Over Screen Handler
 function end() {
     clearInterval(timerInt);
     if (explanationTimer) clearTimeout(explanationTimer);

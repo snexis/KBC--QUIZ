@@ -1,6 +1,6 @@
 // Helper Function to Get Players from Any Possible LocalStorage Key
 function getAllStoredPlayers() {
-    let keysToTry = ['kbc_players', 'players', 'users', 'registered_users', 'kbc_users'];
+    let keysToTry = ['kbc_players', 'players', 'users', 'registered_users', 'kbc_users', 'kbc_real_players'];
     for (let key of keysToTry) {
         let data = localStorage.getItem(key);
         if (data) {
@@ -15,7 +15,19 @@ function getAllStoredPlayers() {
     return [];
 }
 
-// Admin Add Question Functionality
+// Universal User Registration & Auto-Login Save Handler
+function registerUser(userData) {
+    let players = getAllStoredPlayers();
+    players.push(userData);
+    localStorage.setItem('kbc_players', JSON.stringify(players));
+    localStorage.setItem('kbc_real_players', JSON.stringify(players));
+    
+    // অটো সাইন-আপ সফল হলে লগইন পেজের জন্য ইউজার আইডি বা মোবাইল নম্বর সেভ করে রাখা
+    localStorage.setItem('kbc_last_login_id', userData.phone || userData.id || userData.userId || userData.username);
+    localStorage.setItem('kbc_last_login_pass', userData.password || userData.pass || userData.pwd);
+}
+
+// Admin Add Question Functionality with Direct Game Pool Sync
 function addNewQuestionFromAdmin() {
     const authorElem = document.getElementById('admin-q-author');
     const authorName = authorElem ? authorElem.value.trim() : "";
@@ -57,6 +69,12 @@ function addNewQuestionFromAdmin() {
     let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
     customQuestions.push(newQ);
     localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
+
+    // মূল গেমের প্রশ্ন ব্যাংকের সাথে ইনস্ট্যান্ট মার্জ করার সিঙ্ক লজিক
+    let mainQuestions = JSON.parse(localStorage.getItem('kbc_questions') || '[]');
+    if (!Array.isArray(mainQuestions)) mainQuestions = [];
+    mainQuestions.push(newQ);
+    localStorage.setItem('kbc_questions', JSON.stringify(mainQuestions));
 
     const now = new Date();
     const timeFormatted = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
@@ -188,7 +206,7 @@ function loadRealPlayersList() {
 
 // Block/Unblock Toggle Functionality
 function toggleBlockPlayer(playerId) {
-    let keysToTry = ['kbc_players', 'players', 'users', 'registered_users', 'kbc_users'];
+    let keysToTry = ['kbc_players', 'players', 'users', 'registered_users', 'kbc_users', 'kbc_real_players'];
     let targetKey = 'kbc_players';
     let savedPlayers = [];
 
@@ -215,14 +233,24 @@ function toggleBlockPlayer(playerId) {
     });
 
     localStorage.setItem(targetKey, JSON.stringify(savedPlayers));
+    localStorage.setItem('kbc_real_players', JSON.stringify(savedPlayers));
     loadRealPlayersList();
     updateAdminDashboardStats();
 }
 
-// Window load trigger
+// Auto-fill login inputs on page load if available
 window.addEventListener('DOMContentLoaded', () => {
     loadRealPlayersList();
     updateAdminDashboardStats();
+
+    const savedId = localStorage.getItem('kbc_last_login_id');
+    const savedPass = localStorage.getItem('kbc_last_login_pass');
+
+    const loginIdInput = document.getElementById('login-username') || document.getElementById('mobile-or-userid');
+    const loginPassInput = document.getElementById('login-password') || document.getElementById('password');
+
+    if (loginIdInput && savedId) loginIdInput.value = savedId;
+    if (loginPassInput && savedPass) loginPassInput.value = savedPass;
 });
 
 // Fully Dynamic Admin Dashboard Statistics Updater
@@ -253,7 +281,7 @@ function updateAdminDashboardStats() {
             if (allQuestions && Array.isArray(allQuestions)) {
                 baseCount = allQuestions.length;
             }
-            totalQCount = baseCount + customQuestions.length;
+            totalQCount = baseCount > customQuestions.length ? baseCount : (baseCount + customQuestions.length);
         } catch (e) {
             totalQCount = 0;
         }

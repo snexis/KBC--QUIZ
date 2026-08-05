@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KBC Admin Dashboard</title>
+    <title>KBC Admin</title>
+    <!-- Favicon Fix to Prevent 404 -->
+    <link rel="icon" href="data:,">
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -184,9 +186,9 @@
         </div>
     </div>
 
-    <!-- External Core Scripts Loaded First -->
-    <script src="network/networkadapter.js"></script>
-    <script src="app.js"></script>
+    <!-- External Core Scripts Loaded First (with version parameters to prevent cache/network errors) -->
+    <script src="network/networkadapter.js?v=2.0"></script>
+    <script src="app.js?v=2.0"></script>
 
     <!-- UI Core Logic Scripts -->
     <script>

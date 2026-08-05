@@ -175,3 +175,233 @@
 
     <script src="/KBC--QUIZ/network/networkadapter.js?v=2.0"></script>
     <script src="app.js?v=2.0"></script>
+<script>
+        window.addEventListener('DOMContentLoaded', () => {
+            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+                showDashboardUI();
+            } else {
+                showLoginUI();
+            }
+            updateAdminClock();
+            loadRegisteredPlayers();
+            updateTotalQuestionsCount();
+        });
+
+        function loginAdminCheck() {
+            const user = document.getElementById('admin-user-id').value.trim();
+            const pass = document.getElementById('admin-user-pass').value.trim();
+
+            if (typeof window.validateAdminLogin === 'function') {
+                if (window.validateAdminLogin(user, pass)) {
+                    sessionStorage.setItem('adminLoggedIn', 'true');
+                    showDashboardUI();
+                    return;
+                }
+            }
+
+            if (user === 'admin' && pass === 'admin123') {
+                sessionStorage.setItem('adminLoggedIn', 'true');
+                showDashboardUI();
+            } else {
+                alert('ভুল অ্যাডমিন আইডি বা পাসওয়ার্ড!');
+            }
+        }
+
+        function showDashboardUI() {
+            document.getElementById('admin-login-screen').style.display = 'none';
+            document.getElementById('admin-sidebar').style.display = 'block';
+            document.getElementById('admin-main-content').style.display = 'block';
+            loadRegisteredPlayers();
+            updateTotalQuestionsCount();
+        }
+
+        function showLoginUI() {
+            document.getElementById('admin-login-screen').style.display = 'flex';
+            document.getElementById('admin-sidebar').style.display = 'none';
+            document.getElementById('admin-main-content').style.display = 'none';
+        }
+
+        function switchTab(tabName, element) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.style.display = 'none');
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+
+            const targetTab = document.getElementById('sec-' + tabName);
+            if (targetTab) {
+                targetTab.style.display = 'block';
+            }
+            if (element) {
+                element.classList.add('active');
+            }
+            if (tabName === 'players') {
+                loadRegisteredPlayers();
+            } else if (tabName === 'dashboard') {
+                updateTotalQuestionsCount();
+            }
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('adminLoggedIn');
+            alert('অ্যাডমিন প্যানেল থেকে সফলভাবে লগআউট করা হয়েছে।');
+            showLoginUI();
+        }
+
+        function openAuditLogModal() {
+            const modal = document.getElementById('audit-log-modal');
+            if (modal) {
+                renderAuditLogs();
+                modal.style.display = 'flex';
+                modal.classList.add('active');
+            }
+        }
+
+        function closeAuditLogModal() {
+            const modal = document.getElementById('audit-log-modal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+            }
+        }
+
+        function renderAuditLogs() {
+            const tbody = document.getElementById('audit-log-tbody');
+            if (!tbody) return;
+
+            let logs = [];
+            try {
+                logs = JSON.parse(localStorage.getItem('kbc_question_audit_log') || '[]');
+            } catch (e) {
+                logs = [];
+            }
+
+            tbody.innerHTML = '';
+            if (logs.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 15px;">কোনো অডিট লগ পাওয়া যায়নি</td></tr>`;
+                return;
+            }
+
+            logs.reverse().forEach(log => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${log.author || 'Admin'}</td>
+                    <td>${log.timestamp || 'N/A'}</td>
+                    <td><span class="badge badge-active">${log.status || 'Added'}</span></td>
+                    <td>${log.questionText ? log.questionText.substring(0, 40) + '...' : 'N/A'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateTotalQuestionsCount() {
+            const totalQElem = document.getElementById('total-questions');
+            if (!totalQElem) return;
+
+            let customCount = 0;
+            try {
+                const customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
+                customCount = customQuestions.length;
+            } catch (e) {
+                customCount = 0;
+            }
+
+            fetch('/KBC--QUIZ/questions.json')
+                .then(res => {
+                    if (!res.ok) throw new Error('questions.json not found');
+                    return res.json();
+                })
+                .then(data => {
+                    const baseCount = Array.isArray(data) ? data.length : 0;
+                    totalQElem.innerText = baseCount + customCount;
+                })
+                .catch(() => {
+                    totalQElem.innerText = customCount;
+                });
+        }
+
+        function loadRegisteredPlayers() {
+            const tbody = document.getElementById('player-table-body');
+            const totalPlayersElem = document.getElementById('total-players');
+            const activeSessionsElem = document.getElementById('active-sessions');
+
+            if (!tbody) return;
+
+            let players = [];
+            try {
+                const storedPlayers = localStorage.getItem('kbc_registered_users') || localStorage.getItem('players') || localStorage.getItem('kbc_users');
+                if (storedPlayers) {
+                    players = JSON.parse(storedPlayers);
+                }
+            } catch (e) {
+                players = [];
+            }
+
+            tbody.innerHTML = '';
+
+            if (!Array.isArray(players) || players.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 20px;">কোনো রেজিস্টার্ড প্লেয়ার পাওয়া যায়নি</td></tr>`;
+                if (totalPlayersElem) totalPlayersElem.innerText = '0';
+                if (activeSessionsElem) activeSessionsElem.innerText = '0';
+                return;
+            }
+
+            if (totalPlayersElem) totalPlayersElem.innerText = players.length;
+            let activeCount = 0;
+
+            players.forEach((player, index) => {
+                const isBlocked = player.status === 'Blocked' || player.isBlocked;
+                if (!isBlocked) activeCount++;
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${player.phone || player.userId || player.id || 'N/A'}</td>
+                    <td>${player.name || player.username || 'Unnamed Player'}</td>
+                    <td>৳ ${player.highScore || player.score || 0}</td>
+                    <td><span class="badge ${isBlocked ? 'badge-blocked' : 'badge-active'}">${isBlocked ? 'Blocked' : 'Active'}</span></td>
+                    <td>
+                        <button class="btn-sm btn-block" onclick="togglePlayerBlockIndex(${index})">${isBlocked ? 'Unblock 🔓' : 'Block 🚫'}</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            if (activeSessionsElem) activeSessionsElem.innerText = activeCount;
+        }
+
+        function togglePlayerBlockIndex(index) {
+            try {
+                let key = localStorage.getItem('kbc_registered_users') ? 'kbc_registered_users' : (localStorage.getItem('players') ? 'players' : 'kbc_users');
+                let players = JSON.parse(localStorage.getItem(key) || '[]');
+                if (players[index]) {
+                    players[index].status = players[index].status === 'Blocked' ? 'Active' : 'Blocked';
+                    players[index].isBlocked = players[index].status === 'Blocked';
+                    localStorage.setItem(key, JSON.stringify(players));
+                    loadRegisteredPlayers();
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function updateAdminClock() {
+            const clockElement = document.getElementById('live-clock-date');
+            if (clockElement) {
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric', 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit',
+                    hour12: true 
+                };
+                clockElement.innerText = '📅 ' + now.toLocaleDateString('bn-BD', options);
+            }
+        }
+        setInterval(updateAdminClock, 1000);
+    </script>
+</body>
+</html>

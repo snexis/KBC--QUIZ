@@ -1,5 +1,5 @@
 // ==========================================
-// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED PLAYERSOUND ERROR)
+// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED PLAYERSOUND ERROR & FULL GAMING DASHBOARD)
 // ==========================================
 
 let curLang = 'bn';
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkSavedSession();
 });
 
-// Helper Function: Show specific screen by ID
+// Helper Function: Show specific screen by ID (With Header Visibility Protection)
 function show(screenId) {
     const screens = document.querySelectorAll('.screen');
     screens.forEach(s => {
@@ -126,6 +126,16 @@ function show(screenId) {
     if (target) {
         target.classList.add('active');
         target.style.display = 'block';
+    }
+
+    // Header & Navbar Protection Logic
+    const header = document.getElementById('main-header') || document.querySelector('header') || document.querySelector('.navbar') || document.querySelector('.top-nav');
+    if (header) {
+        if (screenId === 'scr-login' || screenId === 'scr-signup') {
+            header.style.display = 'none';
+        } else {
+            header.style.display = '';
+        }
     }
 }
 
@@ -952,17 +962,27 @@ function closeSettingsModal() {
     if (modal) modal.style.display = 'none';
 }
 
-function changeUserPassword() {
-    const activeUser = localStorage.getItem('kbc_current_user');
-    if (!activeUser) return;
+// ==========================================
+// NEW & COMPLETE FUNCTIONS FOR KBC INTERNATIONAL GAMING DASHBOARD
+// ==========================================
 
-    const oldPassInput = document.getElementById('settings-old-pass');
-    const newPassInput = document.getElementById('settings-new-pass');
+// Complete User Password Change Function
+function changeUserPassword() {
+    const oldPassInput = document.getElementById('old-password');
+    const newPassInput = document.getElementById('new-password');
+    const confirmPassInput = document.getElementById('confirm-password');
 
     const oldPass = oldPassInput ? oldPassInput.value.trim() : '';
     const newPass = newPassInput ? newPassInput.value.trim() : '';
+    const confirmPass = confirmPassInput ? confirmPassInput.value.trim() : '';
 
-    if (!oldPass || !newPass) {
+    const currentUser = localStorage.getItem('kbc_current_user');
+    if (!currentUser) {
+        alert(t('loginFirst'));
+        return;
+    }
+
+    if (!oldPass || !newPass || !confirmPass) {
         alert(t('fillAllFields'));
         return;
     }
@@ -972,52 +992,59 @@ function changeUserPassword() {
         return;
     }
 
-    const savedUserRaw = localStorage.getItem('kbc_user_account_' + activeUser);
-    if (savedUserRaw) {
-        let userData = JSON.parse(savedUserRaw);
-        if (userData.pass === oldPass) {
-            userData.pass = newPass;
-            localStorage.setItem('kbc_user_account_' + activeUser, JSON.stringify(userData));
-            
-            let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-            realPlayers = realPlayers.map(p => {
-                if (p.id === activeUser || p.username === activeUser) {
-                    p.pass = newPass;
-                }
-                return p;
-            });
-            localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
-
-            alert(t('passUpdated'));
-            if (oldPassInput) oldPassInput.value = '';
-            if (newPassInput) newPassInput.value = '';
-            closeSettingsModal();
-        } else {
-            alert(t('oldPassMismatch'));
-        }
+    if (newPass !== confirmPass) {
+        alert(curLang === 'bn' ? "নতুন পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড মিলছে না!" : "New passwords do not match!");
+        return;
     }
+
+    const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
+    if (!savedUserRaw) {
+        alert(t('invalidCredentials'));
+        return;
+    }
+
+    let userData = JSON.parse(savedUserRaw);
+    if (userData.pass !== oldPass) {
+        alert(t('oldPassMismatch'));
+        return;
+    }
+
+    userData.pass = newPass;
+    localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
+
+    // Update inside global player registry
+    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
+    const idx = realPlayers.findIndex(p => p.id === currentUser || p.username === currentUser);
+    if (idx >= 0) {
+        realPlayers[idx] = userData;
+        localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
+    }
+
+    alert(t('passUpdated'));
+    if (oldPassInput) oldPassInput.value = '';
+    if (newPassInput) newPassInput.value = '';
+    if (confirmPassInput) confirmPassInput.value = '';
+    closeSettingsModal();
 }
 
+// Forgot Password Recovery Modals & Handler
 function openForgotPassModal() {
-    const modal = document.getElementById('modal-forgot');
+    const modal = document.getElementById('modal-forgot-pass');
     if (modal) modal.style.display = 'flex';
 }
 
 function closeForgotPassModal() {
-    const modal = document.getElementById('modal-forgot');
+    const modal = document.getElementById('modal-forgot-pass');
     if (modal) modal.style.display = 'none';
 }
 
-function verifyAndResetPassword() {
+function handleForgotPassSubmit() {
     const userElem = document.getElementById('forgot-username');
-    const phoneElem = document.getElementById('forgot-phone');
     const newPassElem = document.getElementById('forgot-new-pass');
-
     const username = userElem ? userElem.value.trim() : '';
-    const phone = phoneElem ? phoneElem.value.trim() : '';
     const newPass = newPassElem ? newPassElem.value.trim() : '';
 
-    if (!username || !phone || !newPass) {
+    if (!username || !newPass) {
         alert(t('fillAllFields'));
         return;
     }
@@ -1028,126 +1055,54 @@ function verifyAndResetPassword() {
     }
 
     const savedUserRaw = localStorage.getItem('kbc_user_account_' + username);
-    if (savedUserRaw) {
-        let userData = JSON.parse(savedUserRaw);
-        if (userData.phone === phone) {
-            userData.pass = newPass;
-            localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
-
-            let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-            realPlayers = realPlayers.map(p => {
-                if (p.id === username || p.username === username) {
-                    p.pass = newPass;
-                }
-                return p;
-            });
-            localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
-
-            alert(t('passUpdated'));
-            if (userElem) userElem.value = '';
-            if (phoneElem) phoneElem.value = '';
-            if (newPassElem) newPassElem.value = '';
-            closeForgotPassModal();
-            show('scr-login');
-        } else {
-            alert(t('invalidCredentials'));
-        }
-    } else {
+    if (!savedUserRaw) {
         alert(t('invalidCredentials'));
+        return;
     }
-}
 
-function openAdminModal() {
-    const modal = document.getElementById('modal-admin');
-    if (modal) modal.style.display = 'flex';
-}
+    let userData = JSON.parse(savedUserRaw);
+    userData.pass = newPass;
+    localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
 
-function closeAdminModal() {
-    const modal = document.getElementById('modal-admin');
-    if (modal) modal.style.display = 'none';
-}
-
-function verifyAdminAccess() {
-    const passcodeInput = document.getElementById('admin-passcode-input');
-    const passcode = passcodeInput ? passcodeInput.value.trim() : '';
-
-    if (passcode === 'ADMIN2026' || passcode === 'admin123') {
-        alert(t('adminActive'));
-        if (passcodeInput) passcodeInput.value = '';
-        closeAdminModal();
-        
-        let currentUser = localStorage.getItem('kbc_current_user');
-        if (currentUser) {
-            let savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
-            if (savedUserRaw) {
-                let userData = JSON.parse(savedUserRaw);
-                userData.role = 'admin';
-                localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
-            }
-        }
-        show('scr-lang');
-    } else {
-        alert(t('wrongPasscode'));
+    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
+    const idx = realPlayers.findIndex(p => p.id === username || p.username === username);
+    if (idx >= 0) {
+        realPlayers[idx] = userData;
+        localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
     }
+
+    alert(t('passUpdated'));
+    if (userElem) userElem.value = '';
+    if (newPassElem) newPassElem.value = '';
+    closeForgotPassModal();
 }
 
-function invitePlayer() {
-    const modal = document.getElementById('modal-invite');
-    if (modal) {
-        modal.style.display = 'flex';
-        const inviteInput = document.getElementById('invite-code-input');
-        if (inviteInput) {
-            const currentUser = localStorage.getItem('kbc_current_user') || 'KBC2026';
-            inviteInput.value = `KBC-REF-${currentUser.toUpperCase()}`;
-        }
-    }
-}
-
-function closeInviteModal() {
-    const modal = document.getElementById('modal-invite');
-    if (modal) modal.style.display = 'none';
-}
-
-function copyInviteCode() {
-    const inviteInput = document.getElementById('invite-code-input');
-    if (inviteInput) {
-        inviteInput.select();
-        inviteInput.setSelectionRange(0, 99999);
-        navigator.clipboard.writeText(inviteInput.value).then(() => {
-            alert(t('copiedCode'));
-        }).catch(() => {
-            document.execCommand('copy');
-            alert(t('copiedCode'));
-        });
-    }
-}
-
+// Complete Speech Synthesis (Voice Engine for Questions & Explanation)
 function speak(text) {
-    if (isMuted || !('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = curLang === 'bn' ? 'bn-IN' : 'en-US';
-    utterance.rate = 1.0;
-    window.speechSynthesis.speak(utterance);
+    if (isMuted || !window.speechSynthesis) return;
+    try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = curLang === 'bn' ? 'bn-IN' : 'en-IN';
+        utterance.rate = 0.95;
+        window.speechSynthesis.speak(utterance);
+    } catch (e) {
+        console.log("Speech synthesis error:", e);
+    }
 }
 
+// End Game & Dashboard High Score Tracker
 function end() {
     clearInterval(timerInt);
     if (explanationTimer) clearTimeout(explanationTimer);
+    closeExplanationModal();
     
     const bg = document.getElementById('bg-music');
     if (bg) bg.pause();
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+    if (recognition) { try { recognition.stop(); } catch(e) {} }
 
-    show('scr-res');
-
-    const finalScore = document.getElementById('res-score');
-    const finalCor = document.getElementById('res-cor');
-    const finalWr = document.getElementById('res-wr');
-
-    if (finalScore) finalScore.innerText = score;
-    if (finalCor) finalCor.innerText = cor;
-    if (finalWr) finalWr.innerText = wr;
-
+    // Save and Update High Score in LocalStorage
     const currentUser = localStorage.getItem('kbc_current_user');
     if (currentUser) {
         const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
@@ -1156,8 +1111,72 @@ function end() {
             if (score > (userData.highScore || 0)) {
                 userData.highScore = score;
                 localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
+                updatePlayerProfileUI(userData);
             }
         }
     }
-    triggerConfettiFX();
+
+    // Populate Final Scores on Result Screen
+    const resultScoreElem = document.getElementById('final-score');
+    const resultCorrectElem = document.getElementById('final-correct');
+    const resultWrongElem = document.getElementById('final-wrong');
+    const resultMsgElem = document.getElementById('final-message');
+
+    if (resultScoreElem) resultScoreElem.innerText = score;
+    if (resultCorrectElem) resultCorrectElem.innerText = cor;
+    if (resultWrongElem) resultWrongElem.innerText = wr;
+
+    if (resultMsgElem) {
+        if (score >= 500) {
+            resultMsgElem.innerText = curLang === 'bn' 
+                ? "অসাধারণ! আপনি একজন সত্যিকারের ক্রোড়পতি চ্যাম্পিয়ন!" 
+                : "Outstanding! You are a true KBC Champion!";
+            triggerConfettiFX();
+            playSound('cor');
+        } else {
+            resultMsgElem.innerText = curLang === 'bn' 
+                ? "ভালো চেষ্টা করেছেন! আবার চেষ্টা করুন এবং আরও বেশি পয়েন্ট জিতুন।" 
+                : "Good effort! Try again to win more points.";
+            playSound('alert');
+        }
+    }
+
+    show('scr-result');
+}
+
+// Game Restarter
+function restartGame() {
+    clearInterval(timerInt);
+    if (explanationTimer) clearTimeout(explanationTimer);
+    show('scr-lang');
+}
+
+// Leaderboard / Hall of Fame Handlers
+function openLeaderboardModal() {
+    const modal = document.getElementById('modal-leaderboard');
+    const listContainer = document.getElementById('leaderboard-list');
+    if (!modal) return;
+
+    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
+    realPlayers.sort((a, b) => (b.highScore || 0) - (a.highScore || 0));
+
+    if (listContainer) {
+        listContainer.innerHTML = '';
+        realPlayers.slice(0, 10).forEach((player, i) => {
+            const li = document.createElement('div');
+            li.className = 'leaderboard-entry';
+            li.style.display = 'flex';
+            li.style.justifyContent = 'space-between';
+            li.style.padding = '8px';
+            li.style.borderBottom = '1px solid #444';
+            li.innerHTML = `<span><strong>#${i + 1} ${player.name || player.username}</strong></span><span> Score: ${player.highScore || 0}</span>`;
+            listContainer.appendChild(li);
+        });
+    }
+    modal.style.display = 'flex';
+}
+
+function closeLeaderboardModal() {
+    const modal = document.getElementById('modal-leaderboard');
+    if (modal) modal.style.display = 'none';
 }

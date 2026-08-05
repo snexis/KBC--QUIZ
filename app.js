@@ -1,5 +1,5 @@
 // ==========================================
-// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED PLAYERSOUND ERROR & FULL GAMING DASHBOARD)
+// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED NAVIGATION, PROMO & SOUND LOGIC)
 // ==========================================
 
 let curLang = 'bn';
@@ -108,6 +108,20 @@ function playSound(type) {
     }
 }
 
+// Text to Speech
+function speak(text) {
+    if (isMuted || !('speechSynthesis' in window)) return;
+    try {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = (curLang === 'bn') ? 'bn-IN' : 'en-US';
+        utterance.rate = 0.95;
+        window.speechSynthesis.speak(utterance);
+    } catch (e) {
+        console.log("Speech synthesis error:", e);
+    }
+}
+
 // Initialize Live English Clock, Question Bank and User Session on Load
 document.addEventListener('DOMContentLoaded', () => {
     startLiveClock();
@@ -115,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkSavedSession();
 });
 
-// Helper Function: Show specific screen by ID (With Header Visibility Protection)
+// Helper Function: Show specific screen by ID (With Top Navigation Bar Visibility Control)
 function show(screenId) {
     const screens = document.querySelectorAll('.screen');
     screens.forEach(s => {
@@ -128,14 +142,16 @@ function show(screenId) {
         target.style.display = 'block';
     }
 
-    // Header & Navbar Protection Logic
-    const header = document.getElementById('main-header') || document.querySelector('header') || document.querySelector('.navbar') || document.querySelector('.top-nav');
-    if (header) {
-        if (screenId === 'scr-login' || screenId === 'scr-signup') {
-            header.style.display = 'none';
-        } else {
-            header.style.display = '';
-        }
+    // Top Navigation Bar Protection & Visibility Logic
+    const topNavBar = document.getElementById('top-nav-bar') || document.querySelector('.top-nav-bar');
+    const mainHeader = document.getElementById('main-header') || document.querySelector('header');
+
+    if (screenId === 'scr-login' || screenId === 'scr-signup') {
+        if (topNavBar) topNavBar.style.display = 'none';
+        if (mainHeader) mainHeader.style.display = 'none';
+    } else {
+        if (topNavBar) topNavBar.style.display = 'flex';
+        if (mainHeader) mainHeader.style.display = 'block';
     }
 }
 
@@ -179,7 +195,7 @@ function checkSavedSession() {
     loadSavedCredentials();
 }
 
-// Update Player Avatar, Name, and Unique ID in UI
+// Update Player Avatar, Name, Unique ID, and Trial Counter UI
 function updatePlayerProfileUI(userData) {
     if (!userData) return;
     
@@ -194,6 +210,20 @@ function updatePlayerProfileUI(userData) {
         const avatarSeed = userData.id || userData.username || 'Player';
         elemAvatar.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(avatarSeed)}`;
     }
+
+    // Trial Days Calculations for Header Bar
+    const now = Date.now();
+    const registeredOn = userData.regTimestamp || now;
+    const allowedDays = userData.trialDays || 5;
+    const elapsedDays = (now - registeredOn) / (1000 * 60 * 60 * 24);
+    const remainingDays = Math.max(0, Math.ceil(allowedDays - elapsedDays));
+
+    const headerTrialElem = document.getElementById('header-trial-days');
+    const langTrialElem = document.getElementById('lang-trial-days');
+    
+    const dayText = curLang === 'bn' ? `মেয়াদ: ${remainingDays} দিন` : `Trial: ${remainingDays} Days`;
+    if (headerTrialElem) headerTrialElem.innerText = dayText;
+    if (langTrialElem) langTrialElem.innerText = dayText;
 }
 
 // Password Visibility Toggle Function
@@ -203,10 +233,10 @@ function togglePasswordVisibility(fieldId, iconElem) {
     
     if (passInput.type === 'password') {
         passInput.type = 'text';
-        iconElem.innerText = '👁️‍🗨️';
+        if (iconElem) iconElem.innerText = '👁️‍🗨️';
     } else {
         passInput.type = 'password';
-        iconElem.innerText = '👁️';
+        if (iconElem) iconElem.innerText = '👁️';
     }
 }
 
@@ -272,7 +302,7 @@ async function loadQuestionBank() {
             loadCustomAdminQuestions();
             return;
         } catch (e) {
-            // Direct JSON parsing failed
+            // Direct JSON parsing failed, fallback to chunk parsing
         }
 
         fullQuestionPool = [];
@@ -313,7 +343,7 @@ async function loadQuestionBank() {
     }
 }
 
-// Initialize Speech Recognition
+// Speech Recognition Engine
 function initVoice() {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -364,7 +394,7 @@ function processVoiceCommand(cmd) {
     const mappings = {
         'a': 0, 'এ': 0, 'এক': 0, 'one': 0, 'প্রথম': 0, 'option a': 0, '১': 0, '1': 0, 'ক': 0,
         'b': 1, 'বি': 1, 'দুই': 1, 'two': 1, 'দ্বিতীয়': 1, 'option b': 1, '২': 1, '2': 1, 'খ': 1,
-        'c': 2, 'সি': 2, 'তিন': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2, '৩': 3, '3': 2, 'গ': 2,
+        'c': 2, 'সি': 2, 'তিন': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2, '৩': 2, '3': 2, 'গ': 2,
         'd': 3, 'ডি': 3, 'চার': 3, 'four': 3, 'চতুর্থ': 3, 'option d': 3, '৪': 3, '4': 3, 'ঘ': 3
     };
     
@@ -629,6 +659,7 @@ function handlePromoSubmit() {
             
             const promoSec = document.getElementById('promo-section');
             if (promoSec) promoSec.style.display = 'none';
+            updatePlayerProfileUI(userData);
             show('scr-lang');
         }
     } else {
@@ -917,6 +948,37 @@ function useLifeline(type) {
     }
 }
 
+// Game Completion & End Handler
+function end() {
+    clearInterval(timerInt);
+    const bg = document.getElementById('bg-music');
+    if (bg) bg.pause();
+
+    const currentUser = localStorage.getItem('kbc_current_user');
+    if (currentUser) {
+        const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
+        if (savedUserRaw) {
+            let userData = JSON.parse(savedUserRaw);
+            if (score > (userData.highScore || 0)) {
+                userData.highScore = score;
+                localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
+            }
+        }
+    }
+
+    const resScore = document.getElementById('res-score');
+    const resCor = document.getElementById('res-cor');
+    const resWr = document.getElementById('res-wr');
+
+    if (resScore) resScore.innerText = score;
+    if (resCor) resCor.innerText = cor;
+    if (resWr) resWr.innerText = wr;
+
+    triggerConfettiFX();
+    show('scr-end');
+}
+
+// Confetti Visual Effects
 function triggerConfettiFX() {
     const canvas = document.getElementById('confetti-canvas');
     if (!canvas) return;
@@ -943,91 +1005,18 @@ function triggerConfettiFX() {
             ctx.fillStyle = p.color;
             ctx.fillRect(p.x, p.y, p.size, p.size);
         });
-        animId = requestAnimationFrame(render);
+        
+        if (pieces.some(p => p.y < canvas.height)) {
+            animId = requestAnimationFrame(render);
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            cancelAnimationFrame(animId);
+        }
     }
     render();
-    setTimeout(() => {
-        cancelAnimationFrame(animId);
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }, 3500);
 }
 
-function openSettingsModal() {
-    const modal = document.getElementById('modal-settings');
-    if (modal) modal.style.display = 'flex';
-}
-
-function closeSettingsModal() {
-    const modal = document.getElementById('modal-settings');
-    if (modal) modal.style.display = 'none';
-}
-
-// ==========================================
-// NEW & COMPLETE FUNCTIONS FOR KBC INTERNATIONAL GAMING DASHBOARD
-// ==========================================
-
-// Complete User Password Change Function
-function changeUserPassword() {
-    const oldPassInput = document.getElementById('old-password');
-    const newPassInput = document.getElementById('new-password');
-    const confirmPassInput = document.getElementById('confirm-password');
-
-    const oldPass = oldPassInput ? oldPassInput.value.trim() : '';
-    const newPass = newPassInput ? newPassInput.value.trim() : '';
-    const confirmPass = confirmPassInput ? confirmPassInput.value.trim() : '';
-
-    const currentUser = localStorage.getItem('kbc_current_user');
-    if (!currentUser) {
-        alert(t('loginFirst'));
-        return;
-    }
-
-    if (!oldPass || !newPass || !confirmPass) {
-        alert(t('fillAllFields'));
-        return;
-    }
-
-    if (newPass.length < 4) {
-        alert(t('passMinLength'));
-        return;
-    }
-
-    if (newPass !== confirmPass) {
-        alert(curLang === 'bn' ? "নতুন পাসওয়ার্ড এবং কনফার্ম পাসওয়ার্ড মিলছে না!" : "New passwords do not match!");
-        return;
-    }
-
-    const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
-    if (!savedUserRaw) {
-        alert(t('invalidCredentials'));
-        return;
-    }
-
-    let userData = JSON.parse(savedUserRaw);
-    if (userData.pass !== oldPass) {
-        alert(t('oldPassMismatch'));
-        return;
-    }
-
-    userData.pass = newPass;
-    localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
-
-    // Update inside global player registry
-    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-    const idx = realPlayers.findIndex(p => p.id === currentUser || p.username === currentUser);
-    if (idx >= 0) {
-        realPlayers[idx] = userData;
-        localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
-    }
-
-    alert(t('passUpdated'));
-    if (oldPassInput) oldPassInput.value = '';
-    if (newPassInput) newPassInput.value = '';
-    if (confirmPassInput) confirmPassInput.value = '';
-    closeSettingsModal();
-}
-
-// Forgot Password Recovery Modals & Handler
+// Forgot Password Modal Handlers
 function openForgotPassModal() {
     const modal = document.getElementById('modal-forgot-pass');
     if (modal) modal.style.display = 'flex';
@@ -1038,13 +1027,16 @@ function closeForgotPassModal() {
     if (modal) modal.style.display = 'none';
 }
 
-function handleForgotPassSubmit() {
+function resetPasswordSubmit() {
     const userElem = document.getElementById('forgot-username');
+    const oldPassElem = document.getElementById('forgot-old-pass');
     const newPassElem = document.getElementById('forgot-new-pass');
+
     const username = userElem ? userElem.value.trim() : '';
+    const oldPass = oldPassElem ? oldPassElem.value.trim() : '';
     const newPass = newPassElem ? newPassElem.value.trim() : '';
 
-    if (!username || !newPass) {
+    if (!username || !oldPass || !newPass) {
         alert(t('fillAllFields'));
         return;
     }
@@ -1061,122 +1053,13 @@ function handleForgotPassSubmit() {
     }
 
     let userData = JSON.parse(savedUserRaw);
+    if (userData.pass !== oldPass) {
+        alert(t('oldPassMismatch'));
+        return;
+    }
+
     userData.pass = newPass;
     localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
-
-    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-    const idx = realPlayers.findIndex(p => p.id === username || p.username === username);
-    if (idx >= 0) {
-        realPlayers[idx] = userData;
-        localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
-    }
-
     alert(t('passUpdated'));
-    if (userElem) userElem.value = '';
-    if (newPassElem) newPassElem.value = '';
     closeForgotPassModal();
-}
-
-// Complete Speech Synthesis (Voice Engine for Questions & Explanation)
-function speak(text) {
-    if (isMuted || !window.speechSynthesis) return;
-    try {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = curLang === 'bn' ? 'bn-IN' : 'en-IN';
-        utterance.rate = 0.95;
-        window.speechSynthesis.speak(utterance);
-    } catch (e) {
-        console.log("Speech synthesis error:", e);
-    }
-}
-
-// End Game & Dashboard High Score Tracker
-function end() {
-    clearInterval(timerInt);
-    if (explanationTimer) clearTimeout(explanationTimer);
-    closeExplanationModal();
-    
-    const bg = document.getElementById('bg-music');
-    if (bg) bg.pause();
-    if (window.speechSynthesis) window.speechSynthesis.cancel();
-    if (recognition) { try { recognition.stop(); } catch(e) {} }
-
-    // Save and Update High Score in LocalStorage
-    const currentUser = localStorage.getItem('kbc_current_user');
-    if (currentUser) {
-        const savedUserRaw = localStorage.getItem('kbc_user_account_' + currentUser);
-        if (savedUserRaw) {
-            let userData = JSON.parse(savedUserRaw);
-            if (score > (userData.highScore || 0)) {
-                userData.highScore = score;
-                localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
-                updatePlayerProfileUI(userData);
-            }
-        }
-    }
-
-    // Populate Final Scores on Result Screen
-    const resultScoreElem = document.getElementById('final-score');
-    const resultCorrectElem = document.getElementById('final-correct');
-    const resultWrongElem = document.getElementById('final-wrong');
-    const resultMsgElem = document.getElementById('final-message');
-
-    if (resultScoreElem) resultScoreElem.innerText = score;
-    if (resultCorrectElem) resultCorrectElem.innerText = cor;
-    if (resultWrongElem) resultWrongElem.innerText = wr;
-
-    if (resultMsgElem) {
-        if (score >= 500) {
-            resultMsgElem.innerText = curLang === 'bn' 
-                ? "অসাধারণ! আপনি একজন সত্যিকারের ক্রোড়পতি চ্যাম্পিয়ন!" 
-                : "Outstanding! You are a true KBC Champion!";
-            triggerConfettiFX();
-            playSound('cor');
-        } else {
-            resultMsgElem.innerText = curLang === 'bn' 
-                ? "ভালো চেষ্টা করেছেন! আবার চেষ্টা করুন এবং আরও বেশি পয়েন্ট জিতুন।" 
-                : "Good effort! Try again to win more points.";
-            playSound('alert');
-        }
-    }
-
-    show('scr-result');
-}
-
-// Game Restarter
-function restartGame() {
-    clearInterval(timerInt);
-    if (explanationTimer) clearTimeout(explanationTimer);
-    show('scr-lang');
-}
-
-// Leaderboard / Hall of Fame Handlers
-function openLeaderboardModal() {
-    const modal = document.getElementById('modal-leaderboard');
-    const listContainer = document.getElementById('leaderboard-list');
-    if (!modal) return;
-
-    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-    realPlayers.sort((a, b) => (b.highScore || 0) - (a.highScore || 0));
-
-    if (listContainer) {
-        listContainer.innerHTML = '';
-        realPlayers.slice(0, 10).forEach((player, i) => {
-            const li = document.createElement('div');
-            li.className = 'leaderboard-entry';
-            li.style.display = 'flex';
-            li.style.justifyContent = 'space-between';
-            li.style.padding = '8px';
-            li.style.borderBottom = '1px solid #444';
-            li.innerHTML = `<span><strong>#${i + 1} ${player.name || player.username}</strong></span><span> Score: ${player.highScore || 0}</span>`;
-            listContainer.appendChild(li);
-        });
-    }
-    modal.style.display = 'flex';
-}
-
-function closeLeaderboardModal() {
-    const modal = document.getElementById('modal-leaderboard');
-    if (modal) modal.style.display = 'none';
 }

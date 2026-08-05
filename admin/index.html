@@ -306,7 +306,7 @@
                 customCount = 0;
             }
 
-          fetch('/KBC--QUIZ/network/questions.json')
+          fetch('/KBC--QUIZ/questions.json')
                 .then(res => {
                     if (!res.ok) throw new Error('questions.json not found');
                     return res.json();

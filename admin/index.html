@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KBC Admin</title>
-    <!-- Favicon Fix to Prevent 404 -->
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
 
-    <!-- ADMIN LOGIN MODAL / CARD -->
     <div id="admin-login-screen" style="display: flex; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0f172a; z-index: 999999; justify-content: center; align-items: center;">
         <div style="background: #1e293b; padding: 30px; border-radius: 12px; border: 2px solid #ffd700; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);">
             <h2 style="color: #ffd700; margin-bottom: 20px;">🔑 Admin Login</h2>
@@ -20,7 +18,6 @@
         </div>
     </div>
 
-    <!-- Sidebar Navigation -->
     <aside class="admin-sidebar" id="admin-sidebar" style="display: none;">
         <div class="brand-header">
             <span>🏆</span> KBC ADMIN
@@ -41,10 +38,8 @@
         </ul>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="admin-main" id="admin-main-content" style="display: none;">
         
-        <!-- Header -->
         <header class="top-header" style="display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h1 class="page-title" style="margin-bottom: 2px;">🏆 KBC PREMIUM - Admin Master Control</h1>
@@ -53,9 +48,7 @@
             <button class="btn-logout" onclick="logoutAdmin()">🚪 Logout</button>
         </header>
 
-        <!-- SECTION 1: DASHBOARD OVERVIEW -->
         <div id="sec-dashboard" class="tab-content active-tab">
-            <!-- Stats Overview Grid -->
             <div class="stats-grid">
                 <div class="stat-card gold-border">
                     <div class="stat-title">TOTAL REGISTERED PLAYERS</div>
@@ -71,7 +64,6 @@
                 </div>
             </div>
 
-            <!-- Live Player Test -->
             <div class="section-box">
                 <div class="section-title">🎮 Live Player View & Testing</div>
                 <p class="section-desc">প্লেয়ারদের গেম ইন্টারফেস সরাসরি টেস্ট করতে বা প্লেয়ার হিসেবে গেমটি দেখতে নিচের বাটনে ক্লিক করুন:</p>
@@ -79,7 +71,6 @@
             </div>
         </div>
 
-        <!-- SECTION 2: PLAYERS MANAGEMENT -->
         <div id="sec-players" class="tab-content" style="display: none;">
             <div class="section-box">
                 <div class="section-title">👥 Registered Players List & Control</div>
@@ -95,14 +86,12 @@
                             </tr>
                         </thead>
                         <tbody id="player-table-body">
-                            <!-- Dynamic Players Render Here -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
 
-        <!-- SECTION 3: ADD NEW QUESTION -->
         <div id="sec-add-question" class="tab-content" style="display: none;">
             <div class="section-box">
                 <div class="section-title">➕ Add New Question to Bank</div>
@@ -163,7 +152,6 @@
 
     </main>
 
-    <!-- Audit Log Modal -->
     <div id="audit-log-modal" class="admin-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 99999; justify-content: center; align-items: center;">
         <div class="modal-container" style="background: #0f172a; border: 2px solid #ffd700; border-radius: 16px; padding: 25px; width: 90%; max-width: 750px; max-height: 85vh; overflow-y: auto; box-shadow: 0 0 30px rgba(255,215,0,0.3);">
             <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px;">
@@ -180,233 +168,10 @@
                     </tr>
                 </thead>
                 <tbody id="audit-log-tbody">
-                    <!-- Logs dynamically added -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- External Core Scripts Loaded First (with version parameters to prevent cache/network errors) -->
-    <script src="network/networkadapter.js?v=2.0"></script>
+    <script src="/KBC--QUIZ/network/networkadapter.js?v=2.0"></script>
     <script src="app.js?v=2.0"></script>
-
-    <!-- UI Core Logic Scripts -->
-    <script>
-        // Check session on page load
-        window.addEventListener('DOMContentLoaded', () => {
-            if (sessionStorage.getItem('adminLoggedIn') === 'true') {
-                showDashboardUI();
-            } else {
-                showLoginUI();
-            }
-            updateAdminClock();
-            loadRegisteredPlayers();
-            updateTotalQuestionsCount();
-        });
-
-        function loginAdminCheck() {
-            const user = document.getElementById('admin-user-id').value.trim();
-            const pass = document.getElementById('admin-user-pass').value.trim();
-
-            if (typeof window.validateAdminLogin === 'function') {
-                if (window.validateAdminLogin(user, pass)) {
-                    sessionStorage.setItem('adminLoggedIn', 'true');
-                    showDashboardUI();
-                    return;
-                }
-            }
-
-            // Fallback Local Validation
-            if (user === 'admin' && pass === 'admin123') {
-                sessionStorage.setItem('adminLoggedIn', 'true');
-                showDashboardUI();
-            } else {
-                alert('ভুল অ্যাডমিন আইডি বা পাসওয়ার্ড!');
-            }
-        }
-
-        function showDashboardUI() {
-            document.getElementById('admin-login-screen').style.display = 'none';
-            document.getElementById('admin-sidebar').style.display = 'block';
-            document.getElementById('admin-main-content').style.display = 'block';
-            loadRegisteredPlayers();
-            updateTotalQuestionsCount();
-        }
-
-        function showLoginUI() {
-            document.getElementById('admin-login-screen').style.display = 'flex';
-            document.getElementById('admin-sidebar').style.display = 'none';
-            document.getElementById('admin-main-content').style.display = 'none';
-        }
-
-        function switchTab(tabName, element) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.style.display = 'none');
-
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-
-            const targetTab = document.getElementById('sec-' + tabName);
-            if (targetTab) {
-                targetTab.style.display = 'block';
-            }
-            if (element) {
-                element.classList.add('active');
-            }
-            if (tabName === 'players') {
-                loadRegisteredPlayers();
-            } else if (tabName === 'dashboard') {
-                updateTotalQuestionsCount();
-            }
-        }
-
-        function logoutAdmin() {
-            sessionStorage.removeItem('adminLoggedIn');
-            alert('অ্যাডমিন প্যানেল থেকে সফলভাবে লগআউট করা হয়েছে।');
-            showLoginUI();
-        }
-
-        function openAuditLogModal() {
-            const modal = document.getElementById('audit-log-modal');
-            if (modal) {
-                renderAuditLogs();
-                modal.style.display = 'flex';
-                modal.classList.add('active');
-            }
-        }
-
-        function closeAuditLogModal() {
-            const modal = document.getElementById('audit-log-modal');
-            if (modal) {
-                modal.style.display = 'none';
-                modal.classList.remove('active');
-            }
-        }
-
-        function renderAuditLogs() {
-            const tbody = document.getElementById('audit-log-tbody');
-            if (!tbody) return;
-
-            let logs = [];
-            try {
-                logs = JSON.parse(localStorage.getItem('kbc_question_audit_log') || '[]');
-            } catch (e) {
-                logs = [];
-            }
-
-            tbody.innerHTML = '';
-            if (logs.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #94a3b8; padding: 15px;">কোনো অডিট লগ পাওয়া যায়নি</td></tr>`;
-                return;
-            }
-
-            logs.reverse().forEach(log => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${log.author || 'Admin'}</td>
-                    <td>${log.timestamp || 'N/A'}</td>
-                    <td><span class="badge badge-active">${log.status || 'Added'}</span></td>
-                    <td>${log.questionText ? log.questionText.substring(0, 40) + '...' : 'N/A'}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function updateTotalQuestionsCount() {
-            const totalQElem = document.getElementById('total-questions');
-            if (!totalQElem) return;
-
-            try {
-                const customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
-                const baseCount = 150; 
-                totalQElem.innerText = baseCount + customQuestions.length;
-            } catch (e) {
-                totalQElem.innerText = '150';
-            }
-        }
-
-        function loadRegisteredPlayers() {
-            const tbody = document.getElementById('player-table-body');
-            const totalPlayersElem = document.getElementById('total-players');
-            const activeSessionsElem = document.getElementById('active-sessions');
-
-            if (!tbody) return;
-
-            let players = [];
-            try {
-                const storedPlayers = localStorage.getItem('kbc_registered_users') || localStorage.getItem('players') || localStorage.getItem('kbc_users');
-                if (storedPlayers) {
-                    players = JSON.parse(storedPlayers);
-                }
-            } catch (e) {
-                players = [];
-            }
-
-            tbody.innerHTML = '';
-
-            if (!Array.isArray(players) || players.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 20px;">কোনো রেজিস্টার্ড প্লেয়ার পাওয়া যায়নি</td></tr>`;
-                if (totalPlayersElem) totalPlayersElem.innerText = '0';
-                if (activeSessionsElem) activeSessionsElem.innerText = '0';
-                return;
-            }
-
-            if (totalPlayersElem) totalPlayersElem.innerText = players.length;
-            let activeCount = 0;
-
-            players.forEach((player, index) => {
-                const isBlocked = player.status === 'Blocked' || player.isBlocked;
-                if (!isBlocked) activeCount++;
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${player.phone || player.userId || player.id || 'N/A'}</td>
-                    <td>${player.name || player.username || 'Unnamed Player'}</td>
-                    <td>৳ ${player.highScore || player.score || 0}</td>
-                    <td><span class="badge ${isBlocked ? 'badge-blocked' : 'badge-active'}">${isBlocked ? 'Blocked' : 'Active'}</span></td>
-                    <td>
-                        <button class="btn-sm btn-block" onclick="togglePlayerBlockIndex(${index})">${isBlocked ? 'Unblock 🔓' : 'Block 🚫'}</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            if (activeSessionsElem) activeSessionsElem.innerText = activeCount;
-        }
-
-        function togglePlayerBlockIndex(index) {
-            try {
-                let key = localStorage.getItem('kbc_registered_users') ? 'kbc_registered_users' : (localStorage.getItem('players') ? 'players' : 'kbc_users');
-                let players = JSON.parse(localStorage.getItem(key) || '[]');
-                if (players[index]) {
-                    players[index].status = players[index].status === 'Blocked' ? 'Active' : 'Blocked';
-                    players[index].isBlocked = players[index].status === 'Blocked';
-                    localStorage.setItem(key, JSON.stringify(players));
-                    loadRegisteredPlayers();
-                }
-            } catch (e) {
-                console.error(e);
-            }
-        }
-
-        function updateAdminClock() {
-            const clockElement = document.getElementById('live-clock-date');
-            if (clockElement) {
-                const now = new Date();
-                const options = { 
-                    weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric', 
-                    hour: '2-digit', 
-                    minute: '2-digit', 
-                    second: '2-digit',
-                    hour12: true 
-                };
-                clockElement.innerText = '📅 ' + now.toLocaleDateString('bn-BD', options);
-            }
-        }
-        setInterval(updateAdminClock, 1000);
-    </script>
-</body>
-</html>

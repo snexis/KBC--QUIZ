@@ -8,7 +8,7 @@
 
     // Global Configuration
     // নোট: গুগল অ্যাপস স্ক্রিপ্ট ডিপ্লয় করার পর যে URLটি পাবেন, সেটি নিচের উদ্ধৃতি চিহ্নের ("") ভেতরে বসাবেন।
-    var WEB_APP_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"; 
+    var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbynhzEYW5ZIUNYvj0gMyvpAMimEQgMJxq-ucTNi2xprY6r4vi1cxrAb7p-ZVR7ItVxN/exec"; 
     var SECRET_KEY = "MyKbcSecret2026"; // গুগল অ্যাপস স্ক্রিপ্টের সাথে মেলানো পাসকোড
 
     // Global Network State & Storage Keys

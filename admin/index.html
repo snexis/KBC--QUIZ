@@ -306,7 +306,7 @@
                 customCount = 0;
             }
 
-            fetch('/KBC--QUIZ/questions.json')
+          fetch('/KBC--QUIZ/network/questions.json')
                 .then(res => {
                     if (!res.ok) throw new Error('questions.json not found');
                     return res.json();
@@ -329,7 +329,7 @@
 
             let players = [];
             try {
-                const storedPlayers = localStorage.getItem('kbc_registered_users') || localStorage.getItem('players') || localStorage.getItem('kbc_users');
+                const storedPlayers = localStorage.getItem('kbc_players') || localStorage.getItem('kbc_registered_users') || localStorage.getItem('players') || localStorage.getItem('kbc_users');;
                 if (storedPlayers) {
                     players = JSON.parse(storedPlayers);
                 }
@@ -369,20 +369,20 @@
             if (activeSessionsElem) activeSessionsElem.innerText = activeCount;
         }
 
-        function togglePlayerBlockIndex(index) {
-            try {
-                let key = localStorage.getItem('kbc_registered_users') ? 'kbc_registered_users' : (localStorage.getItem('players') ? 'players' : 'kbc_users');
-                let players = JSON.parse(localStorage.getItem(key) || '[]');
-                if (players[index]) {
-                    players[index].status = players[index].status === 'Blocked' ? 'Active' : 'Blocked';
-                    players[index].isBlocked = players[index].status === 'Blocked';
-                    localStorage.setItem(key, JSON.stringify(players));
-                    loadRegisteredPlayers();
-                }
-            } catch (e) {
-                console.error(e);
-            }
+       function togglePlayerBlockIndex(index) {
+    try {
+        let key = localStorage.getItem('kbc_players') ? 'kbc_players' : (localStorage.getItem('kbc_registered_users') ? 'kbc_registered_users' : (localStorage.getItem('players') ? 'players' : 'kbc_users'));
+        let players = JSON.parse(localStorage.getItem(key) || '[]');
+        if (players[index]) {
+            players[index].status = players[index].status === 'Blocked' ? 'Active' : 'Blocked';
+            players[index].isBlocked = players[index].status === 'Blocked';
+            localStorage.setItem(key, JSON.stringify(players));
+            loadRegisteredPlayers();
         }
+    } catch (e) {
+        console.error(e);
+    }
+}
 
         function updateAdminClock() {
             const clockElement = document.getElementById('live-clock-date');

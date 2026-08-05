@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KBC Admin Dashboard</title>
+    <!-- Favicon Fix to Prevent 404 -->
+    <link rel="icon" href="data:,">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
     <!-- FontAwesome Icons -->
@@ -457,8 +459,8 @@
         }
     </script>
 
-<!-- External Core Scripts Loaded First -->
-    <script src="../networkAdapter.js"></script>
-    <script src="app.js"></script>
+    <!-- External Core Scripts Loaded First (with v=2.0 to bypass cache and fix networkadapter.js error) -->
+    <script src="../networkAdapter.js?v=2.0"></script>
+    <script src="app.js?v=2.0"></script>
 </body>
 </html>

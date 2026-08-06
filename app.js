@@ -55,7 +55,8 @@ const i18n = {
         wrongHeader: "✗ ভুল উত্তর! সঠিক উত্তর: Option ",
         explanationTitle: "ব্যাখ্যা",
         lifelineUsed: "এই লাইফলাইনটি আপনি ইতিপূর্বে ব্যবহার করেছেন!",
-        freezeActive: "সময় থমকে গেছে! অতিরিক্ত ১৫ সেকেন্ড যোগ করা হলো।"
+        freezeActive: "সময় থমকে গেছে! অতিরিক্ত ১৫ সেকেন্ড যোগ করা হলো।",
+        signupSuccess: "অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! এখন আপনার পাসওয়ার্ড দিয়ে লগইন করুন।"
     },
     en: {
         fillAllFields: "Please fill in all required fields!",
@@ -80,7 +81,8 @@ const i18n = {
         wrongHeader: "✗ Incorrect! Correct Answer: Option ",
         explanationTitle: "Explanation",
         lifelineUsed: "You have already used this lifeline!",
-        freezeActive: "Time Frozen! 15 seconds added to timer."
+        freezeActive: "Time Frozen! 15 seconds added to timer.",
+        signupSuccess: "Account created successfully! Please login with your new password."
     }
 };
 
@@ -177,8 +179,36 @@ function startLiveClock() {
     liveClockInt = setInterval(updateClock, 1000);
 }
 
+// ==========================================
+// FIX: Admin Test Mode Bypass
+// If the URL contains ?mode=admin_test (used by the "Launch Player View" button
+// in the Admin Dashboard), skip the login screen entirely and drop the tester
+// straight into the game with unlimited trial days.
+// ==========================================
+function isAdminTestMode() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('mode') === 'admin_test';
+}
+
 // Session Checker & Player Dashboard Avatar Sync
 function checkSavedSession() {
+    // --- Admin Test Mode Bypass ---
+    if (isAdminTestMode()) {
+        const adminTestUser = {
+            id: 'admin_tester',
+            name: (curLang === 'bn') ? 'অ্যাডমিন টেস্টার' : 'Admin Tester',
+            username: 'admin_tester',
+            role: 'admin',
+            regTimestamp: Date.now(),
+            trialDays: 9999,
+            highScore: 0
+        };
+        updatePlayerProfileUI(adminTestUser);
+        show('scr-lang');
+        return;
+    }
+    // --- End Admin Test Mode Bypass ---
+
     const activeUser = localStorage.getItem('kbc_current_user');
     const sessionFlag = localStorage.getItem('kbc_login_session');
     
@@ -580,6 +610,12 @@ function checkUserTrialAndProceed(userData) {
     }
 }
 
+// ==========================================
+// FIX: Sign Up no longer auto-logs the user into the game.
+// After creating the account, the credentials are saved, the Sign Up form
+// is cleared, and the user is switched back to the Login tab (with their
+// username pre-filled) so they must actively log in.
+// ==========================================
 function registerUser() {
     const nameElem = document.getElementById('signup-name');
     const phoneElem = document.getElementById('signup-phone');
@@ -593,6 +629,14 @@ function registerUser() {
 
     if (!name || !username || !pass) {
         alert(t('fillAllFields'));
+        return;
+    }
+
+    // Prevent overwriting an existing account with the same username
+    if (localStorage.getItem('kbc_user_account_' + username)) {
+        alert(curLang === 'bn'
+            ? 'এই ইউজারনেমটি ইতিমধ্যে ব্যবহৃত হয়েছে! অন্য একটি ইউজারনেম চেষ্টা করুন।'
+            : 'This username is already taken! Please try another one.');
         return;
     }
 
@@ -610,7 +654,7 @@ function registerUser() {
     };
 
     localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
-    
+
     let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
     const existingIndex = realPlayers.findIndex(p => p.id === username || p.username === username);
     if (existingIndex >= 0) {
@@ -620,17 +664,22 @@ function registerUser() {
     }
     localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
 
-    localStorage.setItem('kbc_current_user', username);
-    localStorage.setItem('kbc_login_session', 'active');
-
+    // --- Do NOT auto-login. Clear form and send back to Login tab. ---
     if (nameElem) nameElem.value = '';
     if (phoneElem) phoneElem.value = '';
-    if (userElem) userElem.value = '';
     if (passElem) passElem.value = '';
+    if (userElem) userElem.value = '';
 
-    updatePlayerProfileUI(userData);
-    playSound('alert');
-    checkUserTrialAndProceed(userData);
+    alert(t('signupSuccess'));
+
+    switchAuthTab('login');
+
+    // Pre-fill the username on the login form for convenience
+    const loginPhoneElem = document.getElementById('login-phone');
+    if (loginPhoneElem) loginPhoneElem.value = username;
+    const loginPassElem = document.getElementById('login-pass');
+    if (loginPassElem) loginPassElem.value = '';
+    if (loginPassElem) loginPassElem.focus();
 }
 
 // Optimized Promo Code Handler
@@ -962,6 +1011,14 @@ function end() {
             if (score > (userData.highScore || 0)) {
                 userData.highScore = score;
                 localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
+
+                // Keep kbc_real_players list in sync with the latest high score too
+                let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
+                const idx = realPlayers.findIndex(p => p.id === currentUser || p.username === currentUser);
+                if (idx >= 0) {
+                    realPlayers[idx] = userData;
+                    localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
+                }
             }
         }
     }

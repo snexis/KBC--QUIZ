@@ -77,14 +77,15 @@
                 <div class="table-responsive">
                     <table class="custom-table">
                         <thead>
-                            <tr>
-                                <th>User ID / Phone</th>
-                                <th>Name</th>
-                                <th>High Score</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
+    <tr>
+        <th>Phone</th>
+        <th>Username</th>
+        <th>Name</th>
+        <th>High Score</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+</thead>
                         <tbody id="player-table-body">
                         </tbody>
                     </table>
@@ -143,11 +144,28 @@
                     <textarea id="admin-q-exp" placeholder="উত্তরের সঠিক ব্যাখ্যা বা কারণ লিখুন (Explanation)..." rows="2" class="styled-input"></textarea>
 
                     <div class="grid-2 mt-10">
-                        <button onclick="addNewQuestionFromAdmin()" class="btn-primary">💾 Save Question to Game</button>
+                        <button id="save-question-btn" onclick="addNewQuestionFromAdmin()" class="btn-primary">💾 Save Question to Game</button>
                         <button onclick="openAuditLogModal()" class="btn-secondary">📋 View History Log</button>
                     </div>
                 </div>
             </div>
+            <div class="section-box">
+    <div class="section-title">📝 আপনার যোগ করা প্রশ্নসমূহ (Edit / Delete)</div>
+    <div class="table-responsive">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>প্রশ্ন</th>
+                    <th>বিষয়</th>
+                    <th>লেভেল</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="custom-question-list-tbody">
+            </tbody>
+        </table>
+    </div>
+</div>
         </div>
 
     </main>

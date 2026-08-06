@@ -43,7 +43,13 @@ function savePlayersList(players) {
     // Keep kbc_real_players as the canonical mirror too
     localStorage.setItem('kbc_real_players', JSON.stringify(players));
 }
-
+// Sync this player to Google Sheet via networkadapter.js so the Admin
+    // panel (on a different device) can see them too.
+    if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.registerPlayer === 'function') {
+        window.KBCNetworkAdapter.registerPlayer(username, name, 0, function(res) {
+            // Sync happens in the background; no UI action needed here.
+        });
+    }
 // Admin Feature: Add New Question directly to the game repository (also supports Edit mode)
 function addNewQuestionFromAdmin() {
     const authorElem = document.getElementById('admin-q-author');

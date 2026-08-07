@@ -291,11 +291,12 @@
         return fallbackResult;
     }
 
-    // Register Player Functionality
-    function registerPlayer(userId, name, score, callback) {
+   // Register Player Functionality
+    function registerPlayer(userId, name, phone, score, callback) {
         var playerData = {
             userId: userId,
             name: name,
+            phone: phone || '',
             score: score || 0,
             date: new Date().toLocaleString()
         };

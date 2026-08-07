@@ -314,6 +314,21 @@ function autoFixAndParseObj(rawText) {
     }
 }
 
+// Applies any Admin-panel edits/deletions (stored locally) on top of the
+// base questions.json pool, before custom admin-added questions are merged in.
+function applyAdminOverridesAndDeletions() {
+    try {
+        const overrides = JSON.parse(localStorage.getItem('kbc_question_overrides') || '{}');
+        const deletedIds = JSON.parse(localStorage.getItem('kbc_deleted_question_ids') || '[]').map(String);
+
+        fullQuestionPool = fullQuestionPool
+            .filter(q => !deletedIds.includes(String(q.id)))
+            .map(q => overrides[q.id] ? { ...q, ...overrides[q.id] } : q);
+    } catch (e) {
+        console.warn("Could not apply question overrides:", e);
+    }
+}
+
 // External JSON Question Bank Loader
 async function loadQuestionBank() {
     try {
@@ -329,6 +344,7 @@ async function loadQuestionBank() {
 
         try {
             fullQuestionPool = JSON.parse(cleanData);
+            applyAdminOverridesAndDeletions();
             loadCustomAdminQuestions();
             return;
         } catch (e) {
@@ -365,6 +381,7 @@ async function loadQuestionBank() {
             fullQuestionPool.push(...items);
         }
 
+        applyAdminOverridesAndDeletions();
         loadCustomAdminQuestions();
 
     } catch (error) {
@@ -663,6 +680,14 @@ function registerUser() {
         realPlayers.push(userData);
     }
     localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
+
+    // Sync this player to Google Sheet via networkadapter.js so the Admin
+    // panel (even on a different device) can eventually see them too.
+    if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.registerPlayer === 'function') {
+        window.KBCNetworkAdapter.registerPlayer(username, name, 0, function(res) {
+            // Sync happens in the background; no UI action needed here.
+        });
+    }
 
     // --- Do NOT auto-login. Clear form and send back to Login tab. ---
     if (nameElem) nameElem.value = '';

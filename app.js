@@ -34,30 +34,30 @@ let lifelinesUsed = {
 // Central i18n Translations Dictionary
 const i18n = {
     bn: {
-        fillAllFields: "দয়া করে সমস্ত ফিল্ড পূরণ করুন!",
-        validCredentials: "ইউজার আইডি এবং পাসওয়ার্ড সঠিকভাবে দিন!",
-        loginSuccess: "লগইন সফল হয়েছে!",
-        invalidCredentials: "ভুল আইডি বা পাসওয়ার্ড!",
-        maxFailedAttempts: "পরপর ৩ বার ভুল পাসওয়ার্ড দেওয়া হয়েছে! অ্যাকাউন্ট সুরক্ষায় পাসওয়ার্ড রিকভারি পেজে পাঠানো হচ্ছে।",
-        trialExpired: "আপনার ট্রায়ালের মেয়াদ শেষ হয়ে গেছে! অনুগ্রহ করে প্রমো কোড ব্যবহার করুন।",
-        promoSuccess: "প্রোমো কোড সফল হয়েছে!",
-        invalidPromo: "অবৈধ প্রোমো কোড!",
-        loginFirst: "প্রথমে লগইন অথবা সাইন-আপ করুন!",
-        confirmExit: "আপনি কি খেলা ছেড়ে বাইরে যেতে চান?",
-        confirmLogout: "আপনি কি নিশ্চিত যে আপনি লগআউট করতে চান?",
-        adminActive: "অ্যাডমিন টেস্ট মোড সক্রিয় হয়েছে!",
+        fillAllFields: "দয়া করে সব প্রয়োজনীয় ঘরগুলো পূরণ করুন!",
+        validCredentials: "সঠিক ইউজার আইডি এবং পাসওয়ার্ড দিন!",
+        loginSuccess: "লগইন সফল হয়েছে!",
+        invalidCredentials: "ভুল ইউজার আইডি বা পাসওয়ার্ড!",
+        maxFailedAttempts: "৩ বার ভুল পাসওয়ার্ড দেওয়া হয়েছে! পাসওয়ার্ড পুনরুদ্ধারের পেজে রিডাইরেক্ট করা হচ্ছে।",
+        trialExpired: "আপনার ট্রায়াল সময় শেষ হয়ে গেছে! অনুগ্রহ করে একটি ভ্যালিড প্রোমো কোড দিন।",
+        promoSuccess: "প্রোমো কোড সফলভাবে যোগ হয়েছে!",
+        invalidPromo: "ভুল প্রোমো কোড!",
+        loginFirst: "প্রথমে লগইন বা সাইন আপ করুন!",
+        confirmExit: "আপনি কি নিশ্চিতভাবে গেম থেকে বের হতে চান?",
+        confirmLogout: "আপনি কি নিশ্চিতভাবে লগআউট করতে চান?",
+        adminActive: "অ্যাডমিন টেস্ট মোড অ্যাক্টিভেটেড!",
         wrongPasscode: "ভুল মাস্টার পাসকোড!",
-        copiedCode: "ইনভাইট কোড কপি করা হয়েছে!",
-        passUpdated: "পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে! এখন নতুন পাসওয়ার্ড দিয়ে ব্যবহার করুন।",
-        oldPassMismatch: "পুরাতন পাসওয়ার্ড সঠিক নয়!",
-        passMinLength: "পাসওয়ার্ড অন্তত ৪ অক্ষরের হতে হবে!",
-        explanationNav: "ব্যাখ্যা উপলব্ধ নেই।",
-        correctHeader: "✓ চমৎকার! আপনার উত্তর সঠিক হয়েছে।",
+        copiedCode: "আমন্ত্রণ কোড কপি করা হয়েছে!",
+        passUpdated: "পাসওয়ার্ড সফলভাবে আপডেট হয়েছে! নতুন পাসওয়ার্ড দিয়ে লগইন করুন।",
+        oldPassMismatch: "পুরনো পাসওয়ার্ড মিলেনি!",
+        passMinLength: "পাসওয়ার্ড অন্তত ৪ অক্ষরের হতে হবে!",
+        explanationNav: "ব্যাখ্যা উপলব্ধ নয়।",
+        correctHeader: "✓ সঠিক উত্তর! দারুন হয়েছে।",
         wrongHeader: "✗ ভুল উত্তর! সঠিক উত্তর: Option ",
         explanationTitle: "ব্যাখ্যা",
-        lifelineUsed: "এই লাইফলাইনটি আপনি ইতিপূর্বে ব্যবহার করেছেন!",
-        freezeActive: "সময় থমকে গেছে! অতিরিক্ত ১৫ সেকেন্ড যোগ করা হলো।",
-        signupSuccess: "অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! এখন আপনার পাসওয়ার্ড দিয়ে লগইন করুন।"
+        lifelineUsed: "আপনি এই লাইফলাইনটি আগেই ব্যবহার করেছেন!",
+        freezeActive: "টাইম ফ্রিজ! টাইমে ১৫ সেকেন্ড যোগ করা হয়েছে।",
+        signupSuccess: "অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! এখন নতুন পাসওয়ার্ড দিয়ে লগইন করুন।"
     },
     en: {
         fillAllFields: "Please fill in all required fields!",
@@ -234,7 +234,7 @@ function updatePlayerProfileUI(userData) {
     const headerTrialElem = document.getElementById('header-trial-days');
     const langTrialElem = document.getElementById('lang-trial-days');
     
-    const dayText = curLang === 'bn' ? `মেয়াদ: ${remainingDays} দিন` : `Trial: ${remainingDays} Days`;
+    const dayText = curLang === 'bn' ? `ট্রায়াল: ${remainingDays} দিন` : `Trial: ${remainingDays} Days`;
     if (headerTrialElem) headerTrialElem.innerText = dayText;
     if (langTrialElem) langTrialElem.innerText = dayText;
 }
@@ -245,10 +245,10 @@ function togglePasswordVisibility(fieldId, iconElem) {
     
     if (passInput.type === 'password') {
         passInput.type = 'text';
-        if (iconElem) iconElem.innerText = '👁️‍🗨️';
+        if (iconElem) iconElem.innerText = 'লুকান';
     } else {
         passInput.type = 'password';
-        if (iconElem) iconElem.innerText = '👁️';
+        if (iconElem) iconElem.innerText = 'দেখুন';
     }
 }
 // Merge Custom Admin Questions into Main Question Pool
@@ -420,10 +420,10 @@ function processVoiceCommand(cmd) {
     if (!canAnswer) return;
     
     const mappings = {
-        'a': 0, 'এ': 0, 'এক': 0, 'one': 0, 'প্রথম': 0, 'option a': 0, '১': 0, '1': 0, 'ক': 0,
-        'b': 1, 'বি': 1, 'দুই': 1, 'two': 1, 'দ্বিতীয়': 1, 'option b': 1, '২': 1, '2': 1, 'খ': 1,
-        'c': 2, 'সি': 2, 'তিন': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2, '৩': 2, '3': 2, 'গ': 2,
-        'd': 3, 'ডি': 3, 'চার': 3, 'four': 3, 'চতুর্থ': 3, 'option d': 3, '৪': 3, '4': 3, 'ঘ': 3
+        'a': 0, 'এ': 0, '১': 0, 'one': 0, 'প্রথম': 0, 'option a': 0, 'ক': 0, '1': 0, 'a': 0,
+        'b': 1, 'বি': 1, '২': 1, 'two': 1, 'দ্বিতীয়': 1, 'option b': 1, 'খ': 1, '2': 1, 'b': 1,
+        'c': 2, 'সি': 2, '৩': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2, 'গ': 2, '3': 2, 'c': 2,
+        'd': 3, 'ডি': 3, '৪': 3, 'four': 3, 'চতুর্থ': 3, 'option d': 3, 'ঘ': 3, '4': 3, 'd': 3
     };
     
     for (let key in mappings) {
@@ -441,7 +441,7 @@ function toggleMute() {
     
     if (isMuted) {
         if (bg) bg.pause();
-        if (label) label.innerText = curLang === 'bn' ? 'আনমিউট' : 'Unmute';
+        if (label) label.innerText = curLang === 'bn' ? 'মিউট' : 'Unmute';
         if (window.speechSynthesis) window.speechSynthesis.cancel();
     } else {
         if (bg && document.getElementById('scr-game') && document.getElementById('scr-game').classList.contains('active')) {
@@ -623,7 +623,7 @@ function registerUser() {
 
     if (localStorage.getItem('kbc_user_account_' + username)) {
         alert(curLang === 'bn'
-            ? 'এই ইউজারনেমটি ইতিমধ্যে ব্যবহৃত হয়েছে! অন্য একটি ইউজারনেম চেষ্টা করুন।'
+            ? 'এই ইউজারনেমটি ইতিমধ্যে ব্যবহৃত হয়েছে! অন্য একটি ইউজারনেম দিয়ে চেষ্টা করুন।'
             : 'This username is already taken! Please try another one.');
         return;
     }
@@ -655,7 +655,7 @@ function registerUser() {
     // Sync this player to Google Sheet via networkadapter.js so the Admin
     // panel (even on a different device) can eventually see them too.
     if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.registerPlayer === 'function') {
-        window.KBCNetworkAdapter.registerPlayer(username, name, 0, function(res) {
+        window.KBCNetworkAdapter.registerPlayer(username, name, phone, 0, function(res) {
             // Sync happens in the background; no UI action needed here.
         });
     }
@@ -848,7 +848,7 @@ function loadQ() {
         if (slabScore) slabScore.innerText = score;
         if (slabMsg) {
             slabMsg.innerText = curLang === 'bn' 
-                ? `আপনি সফলভাবে ${curIdx}টি প্রশ্ন সম্পন্ন করেছেন!` 
+                ? `অভিনন্দন! আপনি ${curIdx}টি প্রশ্ন সফলভাবে সম্পন্ন করেছেন!` 
                 : `You have successfully completed ${curIdx} questions!`;
         }
         triggerConfettiFX();
@@ -998,7 +998,7 @@ function showExplanationModal(q, isCorrect) {
     }, 6000);
 }
 
-// Called by BOTH the auto-timer above AND the "ঠিক আছে (Continue)" button.
+// Called by BOTH the auto-timer above AND the "পরবর্তী প্রশ্ন (Continue)" button.
 // This is the fix for the game "hanging" — previously the button only closed
 // the modal without ever moving to the next question.
 function proceedToNextQuestion() {

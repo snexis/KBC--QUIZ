@@ -330,23 +330,23 @@
         isPlayerBlocked: isPlayerBlocked,
         getAdminStats: getAdminDashboardStats,
         registerPlayer: registerPlayer,
-        sendHttpRequest: sendHttpRequest,
-        getRTP: function () {
-            try {
-                var data = JSON.parse(localStorage.getItem(STORAGE_KEYS.GLOBAL_RTP));
-                return data ? data.rtp : DEFAULT_RTP;
-            } catch (e) {
-                return DEFAULT_RTP;
-            }
+        registerPlayer: registerPlayer,
+        getAllPlayers: function (callback) {
+            sendHttpRequest("GET_PLAYERS", {}, function (res) {
+                if (callback) callback(res);
+            });
         },
-        setRTP: function (rtpVal) {
-            localStorage.setItem(STORAGE_KEYS.GLOBAL_RTP, JSON.stringify({
-                rtp: parseFloat(rtpVal) || DEFAULT_RTP,
-                updatedAt: Date.now()
-            }));
-        }
-    };
-
+        updatePlayerStatus: function (userId, status, callback) {
+            sendHttpRequest("UPDATE_PLAYER_STATUS", { userId: userId, status: status }, function (res) {
+                if (callback) callback(res);
+            });
+        },
+        deletePlayer: function (userId, callback) {
+            sendHttpRequest("DELETE_PLAYER", { userId: userId }, function (res) {
+                if (callback) callback(res);
+            });
+        },
+        
     // Auto Run on Load
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         initNetworkAdapter();

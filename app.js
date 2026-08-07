@@ -200,7 +200,7 @@ function checkSavedSession() {
             username: 'admin_tester',
             role: 'admin',
             regTimestamp: Date.now(),
-            trialDays: 9999,
+            trialDays: 99999,
             highScore: 0
         };
         updatePlayerProfileUI(adminTestUser);
@@ -574,16 +574,66 @@ function loginUser() {
         }
     }
 
-    failedLoginAttempts[userOrPhone] = (failedLoginAttempts[userOrPhone] || 0) + 1;
+   let forgotPassVerified = false;
 
-    if (failedLoginAttempts[userOrPhone] >= 3) {
-        alert(t('maxFailedAttempts'));
-        failedLoginAttempts[userOrPhone] = 0;
-        openForgotPassModal();
-        const forgotUserElem = document.getElementById('forgot-username');
-        if (forgotUserElem) forgotUserElem.value = userOrPhone;
+function openForgotPassModal() {
+    forgotPassVerified = false;
+    const modal = document.getElementById('modal-forgot');
+    if (modal) modal.style.display = 'flex';
+    const newPassGroup = document.getElementById('new-pass-group');
+    if (newPassGroup) newPassGroup.style.display = 'none';
+    const btn = document.getElementById('btn-verify-forgot');
+    if (btn) btn.innerText = 'যাচাই করুন';
+}
+
+function closeForgotPassModal() {
+    const modal = document.getElementById('modal-forgot');
+    if (modal) modal.style.display = 'none';
+    forgotPassVerified = false;
+}
+
+function verifyAndResetPassword() {
+    const username = document.getElementById('forgot-username').value.trim();
+    const phone = document.getElementById('forgot-phone').value.trim();
+
+    if (!forgotPassVerified) {
+        if (!username || !phone) {
+            alert(t('fillAllFields'));
+            return;
+        }
+        const savedUserRaw = localStorage.getItem('kbc_user_account_' + username);
+        if (!savedUserRaw) {
+            alert(t('invalidCredentials'));
+            return;
+        }
+        const userData = JSON.parse(savedUserRaw);
+        if (userData.phone !== phone) {
+            alert(t('invalidCredentials'));
+            return;
+        }
+        forgotPassVerified = true;
+        const newPassGroup = document.getElementById('new-pass-group');
+        if (newPassGroup) newPassGroup.style.display = 'block';
+        const btn = document.getElementById('btn-verify-forgot');
+        if (btn) btn.innerText = 'নতুন পাসওয়ার্ড সেভ করুন';
         return;
     }
+
+    const newPass = document.getElementById('forgot-new-pass').value.trim();
+    if (!newPass || newPass.length < 4) {
+        alert(t('passMinLength'));
+        return;
+    }
+
+    const savedUserRaw = localStorage.getItem('kbc_user_account_' + username);
+    let userData = JSON.parse(savedUserRaw);
+    userData.pass = newPass;
+    localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
+
+    alert(t('passUpdated'));
+    forgotPassVerified = false;
+    closeForgotPassModal();
+}
 
     alert(`${t('invalidCredentials')} (${failedLoginAttempts[userOrPhone]}/3)`);
 }
@@ -841,7 +891,7 @@ function loadQ() {
         timerVal = 20;
     } else {
         if(diffBadge) diffBadge.innerText = 'ROUND 3: EXPERT';
-        timerVal = 15;
+        timerVal = 19;
     }
 
     const stCount = document.getElementById('st-count');
@@ -907,7 +957,6 @@ function proceedToNextSlab() {
     show('scr-game');
     loadQ();
 }
-
 function check(idx) {
     if (!canAnswer) return;
     canAnswer = false;
@@ -921,7 +970,6 @@ function check(idx) {
         let points = 10;
         if (curIdx >= 10) points = 20;
         if (curIdx >= 25) points = 50;
-
         score += points;
         cor++;
         playSound('cor');
@@ -933,6 +981,14 @@ function check(idx) {
         if (opts[q.ans]) opts[q.ans].classList.add('correct');
     }
 
+    // Give the player ~1 second to see the red/green highlight before the
+    // explanation popup appears.
+    setTimeout(() => {
+        showExplanationModal(q, isCorrect);
+    }, 1000);
+}
+
+function showExplanationModal(q, isCorrect) {
     const explanationText = curLang === "bn" ? (q.expb || q.expe || t('explanationNav')) : (q.expe || q.expb || t('explanationNav'));
     const correctLetter = String.fromCharCode(65 + q.ans);
 
@@ -945,7 +1001,6 @@ function check(idx) {
 
     const modal = document.getElementById("modal-explanation");
     const modalText = document.getElementById("modal-exp-text");
-
     const fullHTML = statusHeader + "<hr style='margin: 8px 0; border: 0; border-top: 1px solid #ccc;'>" + "<b>" + t('explanationTitle') + ":</b><br>" + explanationText;
 
     if (modal && modalText) {
@@ -955,71 +1010,30 @@ function check(idx) {
 
     speak(explanationText);
 
+    // Auto-advance after enough time to read the explanation.
     if (explanationTimer) clearTimeout(explanationTimer);
     explanationTimer = setTimeout(() => {
-        closeExplanationModal();
-        curIdx++;
-        loadQ();
-    }, 4500);
+        proceedToNextQuestion();
+    }, 6000);
 }
 
-function closeExplanationModal() {
+// Called by BOTH the auto-timer above AND the "ঠিক আছে (Continue)" button —
+// this is the fix for the game "hanging": previously the button only closed
+// the modal without moving to the next question.
+function proceedToNextQuestion() {
     const modal = document.getElementById("modal-explanation");
     if (modal) modal.style.display = "none";
     if (explanationTimer) {
         clearTimeout(explanationTimer);
         explanationTimer = null;
     }
+    curIdx++;
+    loadQ();
 }
 
-function resetLifelineUI() {
-    const keys = ['fiftyFifty', 'audiencePoll', 'skipQuestion', 'timeFreeze'];
-    keys.forEach(k => {
-        const btn = document.getElementById(`life-${k}`);
-        if (btn) {
-            btn.classList.remove('disabled');
-            btn.style.opacity = '1';
-            btn.style.pointerEvents = 'auto';
-        }
-    });
-}
-
-function useLifeline(type) {
-    if (!canAnswer) return;
-    if (lifelinesUsed[type]) {
-        alert(t('lifelineUsed'));
-        return;
-    }
-
-    lifelinesUsed[type] = true;
-    const btn = document.getElementById(`life-${type}`);
-    if (btn) {
-        btn.classList.add('disabled');
-        btn.style.opacity = '0.4';
-        btn.style.pointerEvents = 'none';
-    }
-
-    const q = activeQuestions[curIdx];
-
-    if (type === 'fiftyFifty') {
-        let removed = 0;
-        for (let i = 0; i < 4; i++) {
-            if (i !== q.ans && removed < 2) {
-                const optElem = document.getElementById(`opt-${i}`);
-                if (optElem) optElem.style.visibility = 'hidden';
-                removed++;
-            }
-        }
-    } else if (type === 'audiencePoll') {
-        alert(`Audience Poll Results:\nOption A: ${q.ans === 0 ? '65%' : '10%'}\nOption B: ${q.ans === 1 ? '65%' : '15%'}\nOption C: ${q.ans === 2 ? '65%' : '10%'}\nOption D: ${q.ans === 3 ? '65%' : '10%'}`);
-    } else if (type === 'skipQuestion') {
-        clearInterval(timerInt);
-        curIdx++;
-        loadQ();
-    } else if (type === 'timeFreeze') {
-        timerVal += 15;
-        alert(t('freezeActive'));
-    }
+// Kept for backward compatibility with the button's onclick="closeExplanationModal()"
+function closeExplanationModal() {
+    proceedToNextQuestion();
 }
 
 // Game Completion & End Handler

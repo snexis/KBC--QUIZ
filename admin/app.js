@@ -2,12 +2,16 @@
  * Project: KBC Admin Dashboard Logic
  * Role: Senior Software Architect & Security Expert
  * Description: Fully updated administrative logic supporting cross-storage fallback,
- * live player tracking, custom question insertion/edit/delete, audit logging,
- * and dynamic status updates.
+ * live player tracking, custom + base question insertion/edit/delete, audit logging,
+ * password view toggle, and dynamic status updates.
  */
 
-// Tracks which custom question is currently being edited (null = adding new)
+// Tracks which question is currently being edited (null = adding new)
 let editingQuestionId = null;
+let editingIsBaseQuestion = false;
+
+// Cache for the fetched base questions.json so we don't re-fetch every time
+let baseQuestionsCache = null;
 
 // Helper Function: Find which localStorage key currently holds the player array
 function findPlayerStorageKey() {
@@ -26,7 +30,6 @@ function findPlayerStorageKey() {
     return 'kbc_real_players';
 }
 
-// Helper Function: Retrieve registered players safely across all possible LocalStorage keys
 function getAllStoredPlayers() {
     const key = findPlayerStorageKey();
     try {
@@ -40,18 +43,48 @@ function getAllStoredPlayers() {
 function savePlayersList(players) {
     const key = findPlayerStorageKey();
     localStorage.setItem(key, JSON.stringify(players));
-    // Keep kbc_real_players as the canonical mirror too
     localStorage.setItem('kbc_real_players', JSON.stringify(players));
 }
-// Sync this player to Google Sheet via networkadapter.js so the Admin
-    // panel (on a different device) can see them too.
-    if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.registerPlayer === 'function') {
-        window.KBCNetworkAdapter.registerPlayer(username, name, 0, function(res) {
-            // Sync happens in the background; no UI action needed here.
-        });
+
+// ================= QUESTION BANK HELPERS (base + overrides + deletions) =================
+
+async function fetchBaseQuestions() {
+    if (baseQuestionsCache) return baseQuestionsCache;
+    try {
+        const res = await fetch('/KBC--QUIZ/questions.json');
+        if (!res.ok) throw new Error('not found');
+        const data = await res.json();
+        baseQuestionsCache = Array.isArray(data) ? data : [];
+    } catch (e) {
+        baseQuestionsCache = [];
     }
-// Admin Feature: Add New Question directly to the game repository (also supports Edit mode)
-function addNewQuestionFromAdmin() {
+    return baseQuestionsCache;
+}
+
+function getOverrides() {
+    try {
+        return JSON.parse(localStorage.getItem('kbc_question_overrides') || '{}');
+    } catch (e) {
+        return {};
+    }
+}
+function saveOverrides(obj) {
+    localStorage.setItem('kbc_question_overrides', JSON.stringify(obj));
+}
+function getDeletedIds() {
+    try {
+        const arr = JSON.parse(localStorage.getItem('kbc_deleted_question_ids') || '[]');
+        return Array.isArray(arr) ? arr : [];
+    } catch (e) {
+        return [];
+    }
+}
+function saveDeletedIds(arr) {
+    localStorage.setItem('kbc_deleted_question_ids', JSON.stringify(arr));
+}
+// ================= ADD / EDIT QUESTION =================
+
+async function addNewQuestionFromAdmin() {
     const authorElem = document.getElementById('admin-q-author');
     const authorName = authorElem ? authorElem.value.trim() : "";
 
@@ -72,7 +105,6 @@ function addNewQuestionFromAdmin() {
     const expElement = document.getElementById('admin-q-exp');
     const qExp = expElement ? expElement.value.trim() : "";
 
-    // Validation
     if (!authorName) {
         alert("দয়া করে এডমিনের নাম (Created By) ইনপুট দিন!");
         if (authorElem) authorElem.focus();
@@ -84,14 +116,8 @@ function addNewQuestionFromAdmin() {
         return;
     }
 
-    let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
-    if (!Array.isArray(customQuestions)) customQuestions = [];
-
-    let mainQuestions = JSON.parse(localStorage.getItem('kbc_questions') || '[]');
-    if (!Array.isArray(mainQuestions)) mainQuestions = [];
-
     if (editingQuestionId) {
-        // ---- EDIT MODE: update the existing question in place ----
+        // ---- EDIT MODE ----
         const updatedQ = {
             id: editingQuestionId,
             author: authorName,
@@ -102,23 +128,33 @@ function addNewQuestionFromAdmin() {
             en: { q: qText, a: optA, b: optB, c: optC, d: optD, exp: qExp }
         };
 
-        const customIdx = customQuestions.findIndex(q => q.id === editingQuestionId);
-        if (customIdx >= 0) customQuestions[customIdx] = updatedQ;
+        if (editingIsBaseQuestion) {
+            // Base (questions.json) question: store as an override, don't touch the file
+            let overrides = getOverrides();
+            overrides[editingQuestionId] = updatedQ;
+            saveOverrides(overrides);
+        } else {
+            // Admin-added custom question: update in place
+            let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
+            const customIdx = customQuestions.findIndex(q => q.id === editingQuestionId);
+            if (customIdx >= 0) customQuestions[customIdx] = updatedQ;
+            localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
 
-        const mainIdx = mainQuestions.findIndex(q => q.id === editingQuestionId);
-        if (mainIdx >= 0) mainQuestions[mainIdx] = updatedQ;
-
-        localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
-        localStorage.setItem('kbc_questions', JSON.stringify(mainQuestions));
+            let mainQuestions = JSON.parse(localStorage.getItem('kbc_questions') || '[]');
+            const mainIdx = mainQuestions.findIndex(q => q.id === editingQuestionId);
+            if (mainIdx >= 0) mainQuestions[mainIdx] = updatedQ;
+            localStorage.setItem('kbc_questions', JSON.stringify(mainQuestions));
+        }
 
         logAuditEntry(authorName, "✏️ Edited", qText);
         alert("প্রশ্নটি সফলভাবে আপডেট হয়েছে!");
 
         editingQuestionId = null;
+        editingIsBaseQuestion = false;
         resetAddQuestionFormLabel();
 
     } else {
-        // ---- ADD MODE: create a brand new question ----
+        // ---- ADD MODE ----
         const newQ = {
             id: "custom_" + Date.now(),
             author: authorName,
@@ -129,17 +165,20 @@ function addNewQuestionFromAdmin() {
             en: { q: qText, a: optA, b: optB, c: optC, d: optD, exp: qExp }
         };
 
+        let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
+        if (!Array.isArray(customQuestions)) customQuestions = [];
         customQuestions.push(newQ);
-        mainQuestions.push(newQ);
-
         localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
+
+        let mainQuestions = JSON.parse(localStorage.getItem('kbc_questions') || '[]');
+        if (!Array.isArray(mainQuestions)) mainQuestions = [];
+        mainQuestions.push(newQ);
         localStorage.setItem('kbc_questions', JSON.stringify(mainQuestions));
 
         logAuditEntry(authorName, "✔️ Added", qText);
         alert("প্রশ্ন ও ব্যাখ্যা সফলভাবে সেভ হয়েছে! প্লেয়ার পরের বার গেম খুললে নতুন প্রশ্ন পাবে।");
     }
 
-    // UI Reset
     if (qTextElem) qTextElem.value = '';
     if (document.getElementById('admin-opt-a')) document.getElementById('admin-opt-a').value = '';
     if (document.getElementById('admin-opt-b')) document.getElementById('admin-opt-b').value = '';
@@ -151,13 +190,26 @@ function addNewQuestionFromAdmin() {
     loadCustomQuestionsList();
 }
 
-// Load an existing custom question's data back into the form for editing
-function editCustomQuestion(qId) {
-    let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
-    const q = customQuestions.find(item => item.id === qId);
-    if (!q) {
-        alert("প্রশ্নটি খুঁজে পাওয়া যায়নি!");
-        return;
+// Load an existing question (base OR custom) back into the form for editing
+async function editCustomQuestion(qId, isBase) {
+    let q = null;
+
+    if (isBase) {
+        const base = await fetchBaseQuestions();
+        const overrides = getOverrides();
+        const found = base.find(item => String(item.id) === String(qId));
+        if (!found) {
+            alert("প্রশ্নটি খুঁজে পাওয়া যায়নি!");
+            return;
+        }
+        q = overrides[qId] ? { ...overrides[qId], id: qId } : found;
+    } else {
+        let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
+        q = customQuestions.find(item => item.id === qId);
+        if (!q) {
+            alert("প্রশ্নটি খুঁজে পাওয়া যায়নি!");
+            return;
+        }
     }
 
     document.getElementById('admin-q-author').value = q.author || '';
@@ -172,11 +224,11 @@ function editCustomQuestion(qId) {
     document.getElementById('admin-q-exp').value = (q.bn && q.bn.exp) || '';
 
     editingQuestionId = qId;
+    editingIsBaseQuestion = !!isBase;
 
     const saveBtn = document.getElementById('save-question-btn');
     if (saveBtn) saveBtn.innerText = '✏️ Update This Question';
 
-    // Scroll form into view
     const formBox = document.getElementById('admin-q-author');
     if (formBox) formBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
@@ -186,58 +238,93 @@ function resetAddQuestionFormLabel() {
     if (saveBtn) saveBtn.innerText = '💾 Save Question to Game';
 }
 
-// Permanently delete a custom (admin-added) question. Base questions.json
-// questions cannot be deleted here since they live in a separate repo file.
-function deleteCustomQuestion(qId) {
+// Delete a question (base OR custom) permanently from the player's pool
+function deleteCustomQuestion(qId, isBase) {
     if (!confirm("আপনি কি নিশ্চিত এই প্রশ্নটি স্থায়ীভাবে মুছে ফেলতে চান? এটি প্লেয়ারদের প্রশ্ন তালিকা থেকেও সরে যাবে।")) {
         return;
     }
 
-    let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
-    customQuestions = customQuestions.filter(q => q.id !== qId);
-    localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
+    if (isBase) {
+        let deletedIds = getDeletedIds();
+        if (!deletedIds.map(String).includes(String(qId))) {
+            deletedIds.push(qId);
+            saveDeletedIds(deletedIds);
+        }
+        let overrides = getOverrides();
+        delete overrides[qId];
+        saveOverrides(overrides);
+    } else {
+        let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
+        customQuestions = customQuestions.filter(q => q.id !== qId);
+        localStorage.setItem('kbc_custom_questions', JSON.stringify(customQuestions));
 
-    let mainQuestions = JSON.parse(localStorage.getItem('kbc_questions') || '[]');
-    mainQuestions = mainQuestions.filter(q => q.id !== qId);
-    localStorage.setItem('kbc_questions', JSON.stringify(mainQuestions));
+        let mainQuestions = JSON.parse(localStorage.getItem('kbc_questions') || '[]');
+        mainQuestions = mainQuestions.filter(q => q.id !== qId);
+        localStorage.setItem('kbc_questions', JSON.stringify(mainQuestions));
+    }
 
-    logAuditEntry('Admin', "🗑️ Deleted", qId);
+    logAuditEntry('Admin', "🗑️ Deleted", String(qId));
 
-    // If we were mid-edit on the deleted question, reset the form
     if (editingQuestionId === qId) {
         editingQuestionId = null;
+        editingIsBaseQuestion = false;
         resetAddQuestionFormLabel();
     }
 
     updateAdminDashboardStats();
     loadCustomQuestionsList();
 }
+// ================= QUESTION LIST (base + custom merged) =================
 
-// Render the list of admin-added (custom) questions with Edit / Delete controls
-function loadCustomQuestionsList() {
+async function loadCustomQuestionsList() {
     const tbody = document.getElementById('custom-question-list-tbody');
     if (!tbody) return;
+
+    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#aaa; padding:15px;">লোড হচ্ছে...</td></tr>`;
+
+    const base = await fetchBaseQuestions();
+    const overrides = getOverrides();
+    const deletedIds = getDeletedIds().map(String);
 
     let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
     if (!Array.isArray(customQuestions)) customQuestions = [];
 
-    if (customQuestions.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#aaa; padding:15px;">এখনো কোনো প্রশ্ন এডমিন থেকে যোগ করা হয়নি</td></tr>`;
+    const baseFiltered = base
+        .filter(q => !deletedIds.includes(String(q.id)))
+        .map(q => overrides[q.id] ? { ...overrides[q.id], id: q.id, isBase: true } : { ...q, isBase: true });
+
+    const customMarked = customQuestions.slice().reverse().map(q => ({ ...q, isBase: false }));
+
+    const allQuestions = [...customMarked, ...baseFiltered];
+    window._allQuestionsCache = allQuestions;
+
+    renderQuestionListRows(allQuestions);
+}
+
+function renderQuestionListRows(list) {
+    const tbody = document.getElementById('custom-question-list-tbody');
+    if (!tbody) return;
+
+    if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#aaa; padding:15px;">কোনো প্রশ্ন পাওয়া যায়নি</td></tr>`;
         return;
     }
 
     let html = '';
-    customQuestions.slice().reverse().forEach(q => {
+    list.forEach(q => {
         const qText = (q.bn && q.bn.q) ? q.bn.q : '';
         const preview = qText.length > 50 ? qText.substring(0, 50) + '...' : qText;
+        const sourceTag = q.isBase
+            ? '<span style="color:#94a3b8; font-size:11px;">(মূল প্রশ্ন)</span>'
+            : '<span style="color:#ffd700; font-size:11px;">(এডমিন যোগ করেছে)</span>';
         html += `
             <tr>
-                <td>${preview}</td>
+                <td>${preview}<br>${sourceTag}</td>
                 <td>${q.subject || 'all'}</td>
                 <td>${q.level || 'junior'}</td>
                 <td>
-                    <button class="btn-sm" style="background:#3b82f6; margin-right:6px;" onclick="editCustomQuestion('${q.id}')">✏️ Edit</button>
-                    <button class="btn-sm btn-block" onclick="deleteCustomQuestion('${q.id}')">🗑️ Delete</button>
+                    <button class="btn-sm" style="background:#3b82f6; margin-right:6px;" onclick="editCustomQuestion('${q.id}', ${q.isBase})">✏️ Edit</button>
+                    <button class="btn-sm btn-block" onclick="deleteCustomQuestion('${q.id}', ${q.isBase})">🗑️ Delete</button>
                 </td>
             </tr>
         `;
@@ -245,7 +332,23 @@ function loadCustomQuestionsList() {
     tbody.innerHTML = html;
 }
 
-// Shared audit log writer
+function filterQuestionList() {
+    const inputElem = document.getElementById('question-search-input');
+    const searchVal = inputElem ? inputElem.value.trim().toLowerCase() : '';
+    const all = window._allQuestionsCache || [];
+    if (!searchVal) {
+        renderQuestionListRows(all);
+        return;
+    }
+    const filtered = all.filter(q => {
+        const qText = ((q.bn && q.bn.q) || '').toLowerCase();
+        return qText.includes(searchVal);
+    });
+    renderQuestionListRows(filtered);
+}
+
+// ================= AUDIT LOG =================
+
 function logAuditEntry(authorName, statusLabel, questionText) {
     const now = new Date();
     const timeFormatted = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
@@ -263,7 +366,6 @@ function logAuditEntry(authorName, statusLabel, questionText) {
     localStorage.setItem('kbc_admin_audit_log', JSON.stringify(auditLogs));
 }
 
-// Display Audit Logs in Modal Table
 function loadAuditLogs() {
     const logTbody = document.getElementById('audit-log-tbody');
     if (!logTbody) return;
@@ -271,11 +373,7 @@ function loadAuditLogs() {
     const auditLogs = JSON.parse(localStorage.getItem('kbc_admin_audit_log') || '[]');
 
     if (!Array.isArray(auditLogs) || auditLogs.length === 0) {
-        logTbody.innerHTML = `
-            <tr>
-                <td colspan="4" style="text-align: center; color: #aaa;">কোনো হিস্ট্রি বা লগ পাওয়া যায়নি</td>
-            </tr>
-        `;
+        logTbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #aaa;">কোনো হিস্ট্রি বা লগ পাওয়া যায়নি</td></tr>`;
         return;
     }
 
@@ -293,7 +391,8 @@ function loadAuditLogs() {
     logTbody.innerHTML = html;
 }
 
-// Render Real Players Table with Online/Offline Badges, Username column, and Delete
+// ================= PLAYER LIST (with Password view toggle) =================
+
 function loadRealPlayersList() {
     const tableBody = document.getElementById('player-table-body');
     if (!tableBody) return;
@@ -301,25 +400,19 @@ function loadRealPlayersList() {
     let savedPlayers = getAllStoredPlayers();
 
     if (savedPlayers.length === 0) {
-        tableBody.innerHTML = `
-            <tr>
-                <td colspan="6" style="text-align: center; color: #aaa;">কোনো প্লেয়ার পাওয়া যায়নি</td>
-            </tr>
-        `;
+        tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #aaa;">কোনো প্লেয়ার পাওয়া যায়নি</td></tr>`;
         return;
     }
 
     let html = '';
     const currentTime = Date.now();
 
-    savedPlayers.forEach(player => {
+    savedPlayers.forEach((player, idx) => {
         const playerId = player.id || player.phone || player.userId || 'N/A';
         const playerStatus = player.status || (player.isBlocked ? 'Blocked' : 'Active');
 
         let isLive = false;
         if (player.lastActive && (currentTime - player.lastActive < 30000)) {
-            isLive = true;
-        } else if (player.isOnline === true && (currentTime - (player.lastActive || 0) < 30000)) {
             isLive = true;
         }
 
@@ -332,13 +425,23 @@ function loadRealPlayersList() {
         const playerPhone = player.phone || 'N/A';
         const playerScore = player.highScore || player.score || 0;
         const formattedScore = typeof playerScore === 'number' ? '৳ ' + playerScore.toLocaleString() : playerScore;
-
         const isBlocked = playerStatus === 'Blocked';
+
+        // Password is only available if this player's account was created on THIS
+        // same browser (localStorage). Players synced from another device via
+        // Google Sheets will show "N/A" here since we do not store passwords
+        // in the Sheet for security reasons.
+        const playerPass = player.pass || 'N/A';
 
         html += `
             <tr>
                 <td>${playerPhone}</td>
                 <td>${playerUsername}</td>
+                <td>
+                    <span id="pass-hidden-${idx}">••••••</span>
+                    <span id="pass-visible-${idx}" style="display:none;">${playerPass}</span>
+                    <button class="btn-sm" style="background:#334155; padding:2px 8px;" onclick="togglePasswordView(${idx})">👁️</button>
+                </td>
                 <td>
                     <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
                         <span>${playerName}</span>
@@ -361,10 +464,22 @@ function loadRealPlayersList() {
     tableBody.innerHTML = html;
 }
 
-// Toggle Player Block Status
+function togglePasswordView(idx) {
+    const hiddenElem = document.getElementById('pass-hidden-' + idx);
+    const visibleElem = document.getElementById('pass-visible-' + idx);
+    if (!hiddenElem || !visibleElem) return;
+
+    if (visibleElem.style.display === 'none') {
+        visibleElem.style.display = 'inline';
+        hiddenElem.style.display = 'none';
+    } else {
+        visibleElem.style.display = 'none';
+        hiddenElem.style.display = 'inline';
+    }
+}
+
 function toggleBlockPlayer(playerId) {
     let savedPlayers = getAllStoredPlayers();
-
     savedPlayers = savedPlayers.map(player => {
         if (player.id === playerId || player.phone === playerId || player.userId === playerId) {
             player.isBlocked = !player.isBlocked;
@@ -372,37 +487,32 @@ function toggleBlockPlayer(playerId) {
         }
         return player;
     });
-
     savePlayersList(savedPlayers);
     loadRealPlayersList();
     updateAdminDashboardStats();
 }
 
-// Permanently remove a player from the players list
 function deletePlayerPermanently(playerId) {
     if (!confirm("আপনি কি নিশ্চিত এই প্লেয়ারকে স্থায়ীভাবে মুছে ফেলতে চান? এই কাজটি ফেরানো যাবে না।")) {
         return;
     }
-
     let savedPlayers = getAllStoredPlayers();
     savedPlayers = savedPlayers.filter(player =>
         player.id !== playerId && player.phone !== playerId && player.userId !== playerId
     );
-
     savePlayersList(savedPlayers);
     loadRealPlayersList();
     updateAdminDashboardStats();
 }
 
-// Dashboard Dynamic Metrics Updater (fetches the REAL base question count from questions.json)
+// ================= DASHBOARD STATS =================
+
 function updateAdminDashboardStats() {
     let savedPlayers = getAllStoredPlayers();
     const currentTime = Date.now();
 
     const totalPlayersElem = document.getElementById('total-players');
-    if (totalPlayersElem) {
-        totalPlayersElem.innerText = savedPlayers.length;
-    }
+    if (totalPlayersElem) totalPlayersElem.innerText = savedPlayers.length;
 
     const activeSessionsElem = document.getElementById('active-sessions');
     if (activeSessionsElem) {
@@ -414,30 +524,25 @@ function updateAdminDashboardStats() {
 
     const totalQuestionsElem = document.getElementById('total-questions');
     if (totalQuestionsElem) {
-        let customQuestions = [];
-        try {
-            customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
-            if (!Array.isArray(customQuestions)) customQuestions = [];
-        } catch (e) {
-            customQuestions = [];
-        }
+        (async () => {
+            const base = await fetchBaseQuestions();
+            const deletedIds = getDeletedIds().map(String);
+            const baseCount = base.filter(q => !deletedIds.includes(String(q.id))).length;
 
-        fetch('/KBC--QUIZ/questions.json')
-            .then(res => {
-                if (!res.ok) throw new Error('questions.json not found');
-                return res.json();
-            })
-            .then(data => {
-                const baseCount = Array.isArray(data) ? data.length : 0;
-                totalQuestionsElem.innerText = baseCount + customQuestions.length;
-            })
-            .catch(() => {
-                totalQuestionsElem.innerText = customQuestions.length;
-            });
+            let customQuestions = [];
+            try {
+                customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
+                if (!Array.isArray(customQuestions)) customQuestions = [];
+            } catch (e) {
+                customQuestions = [];
+            }
+            totalQuestionsElem.innerText = baseCount + customQuestions.length;
+        })();
     }
 }
 
-// Global Tab Switcher Handler
+// ================= TAB SWITCH HOOK =================
+
 const originalSwitchTab = window.switchTab;
 window.switchTab = function(tabName, element) {
     if (typeof originalSwitchTab === 'function') {
@@ -452,7 +557,8 @@ window.switchTab = function(tabName, element) {
     }
 };
 
-// Event Listener: Initialize data on DOM Ready
+// ================= INIT =================
+
 window.addEventListener('DOMContentLoaded', () => {
     loadRealPlayersList();
     updateAdminDashboardStats();

@@ -18,6 +18,7 @@ let recognition = null;
 let currentSlabCount = 0;
 let fullQuestionPool = [];
 let explanationTimer = null;
+let forgotPassVerified = false;
 
 // Track failed login attempts per user ID
 let failedLoginAttempts = {};
@@ -86,12 +87,10 @@ const i18n = {
     }
 };
 
-// Helper Translation Resolver
 function t(key) {
     return (i18n[curLang] && i18n[curLang][key]) ? i18n[curLang][key] : (i18n['en'][key] || key);
 }
 
-// Sound Effects Helper
 function playSound(type) {
     if (isMuted) return;
     try {
@@ -110,7 +109,6 @@ function playSound(type) {
     }
 }
 
-// Text to Speech
 function speak(text) {
     if (isMuted || !('speechSynthesis' in window)) return;
     try {
@@ -124,14 +122,12 @@ function speak(text) {
     }
 }
 
-// Initialize Live English Clock, Question Bank and User Session on Load
 document.addEventListener('DOMContentLoaded', () => {
     startLiveClock();
     loadQuestionBank();
     checkSavedSession();
 });
 
-// Helper Function: Show specific screen by ID (With Top Navigation Bar Visibility Control)
 function show(screenId) {
     const screens = document.querySelectorAll('.screen');
     screens.forEach(s => {
@@ -144,7 +140,6 @@ function show(screenId) {
         target.style.display = 'block';
     }
 
-    // Top Navigation Bar Protection & Visibility Logic
     const topNavBar = document.getElementById('top-nav-bar') || document.querySelector('.top-nav-bar');
     const mainHeader = document.getElementById('main-header') || document.querySelector('header');
 
@@ -157,7 +152,6 @@ function show(screenId) {
     }
 }
 
-// Live Digital Clock (English Format)
 function startLiveClock() {
     if (liveClockInt) clearInterval(liveClockInt);
     
@@ -179,20 +173,12 @@ function startLiveClock() {
     liveClockInt = setInterval(updateClock, 1000);
 }
 
-// ==========================================
-// FIX: Admin Test Mode Bypass
-// If the URL contains ?mode=admin_test (used by the "Launch Player View" button
-// in the Admin Dashboard), skip the login screen entirely and drop the tester
-// straight into the game with unlimited trial days.
-// ==========================================
 function isAdminTestMode() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('mode') === 'admin_test';
 }
 
-// Session Checker & Player Dashboard Avatar Sync
 function checkSavedSession() {
-    // --- Admin Test Mode Bypass ---
     if (isAdminTestMode()) {
         const adminTestUser = {
             id: 'admin_tester',
@@ -207,7 +193,6 @@ function checkSavedSession() {
         show('scr-lang');
         return;
     }
-    // --- End Admin Test Mode Bypass ---
 
     const activeUser = localStorage.getItem('kbc_current_user');
     const sessionFlag = localStorage.getItem('kbc_login_session');
@@ -225,7 +210,6 @@ function checkSavedSession() {
     loadSavedCredentials();
 }
 
-// Update Player Avatar, Name, Unique ID, and Trial Counter UI
 function updatePlayerProfileUI(userData) {
     if (!userData) return;
     
@@ -241,7 +225,6 @@ function updatePlayerProfileUI(userData) {
         elemAvatar.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(avatarSeed)}`;
     }
 
-    // Trial Days Calculations for Header Bar
     const now = Date.now();
     const registeredOn = userData.regTimestamp || now;
     const allowedDays = userData.trialDays || 5;
@@ -256,7 +239,6 @@ function updatePlayerProfileUI(userData) {
     if (langTrialElem) langTrialElem.innerText = dayText;
 }
 
-// Password Visibility Toggle Function
 function togglePasswordVisibility(fieldId, iconElem) {
     const passInput = document.getElementById(fieldId);
     if (!passInput) return;
@@ -269,7 +251,6 @@ function togglePasswordVisibility(fieldId, iconElem) {
         if (iconElem) iconElem.innerText = '👁️';
     }
 }
-
 // Merge Custom Admin Questions into Main Question Pool
 function loadCustomAdminQuestions() {
     try {
@@ -453,7 +434,6 @@ function processVoiceCommand(cmd) {
     }
 }
 
-// Audio Controls
 function toggleMute() {
     isMuted = !isMuted;
     const label = document.getElementById('mute-label');
@@ -471,7 +451,6 @@ function toggleMute() {
     }
 }
 
-// Game Exit
 function confirmExitGame() {
     if (confirm(t('confirmExit'))) {
         clearInterval(timerInt);
@@ -484,7 +463,6 @@ function confirmExitGame() {
     }
 }
 
-// User Logout Logic
 function logoutUser() {
     if (confirm(t('confirmLogout'))) {
         clearInterval(timerInt);
@@ -506,7 +484,6 @@ function logoutUser() {
     }
 }
 
-// Authentication Handlers
 function switchAuthTab(type) {
     const loginTab = document.getElementById('tab-login-btn');
     const regTab = document.getElementById('tab-signup-btn');
@@ -537,7 +514,6 @@ function switchAuthTab(type) {
         }
     }
 }
-
 function loginUser() {
     const userOrPhone = document.getElementById('login-phone') ? document.getElementById('login-phone').value.trim() : '';
     const pass = document.getElementById('login-pass') ? document.getElementById('login-pass').value.trim() : '';
@@ -574,7 +550,133 @@ function loginUser() {
         }
     }
 
-   let forgotPassVerified = false;
+    failedLoginAttempts[userOrPhone] = (failedLoginAttempts[userOrPhone] || 0) + 1;
+
+    if (failedLoginAttempts[userOrPhone] >= 3) {
+        alert(t('maxFailedAttempts'));
+        failedLoginAttempts[userOrPhone] = 0;
+        openForgotPassModal();
+        const forgotUserElem = document.getElementById('forgot-username');
+        if (forgotUserElem) forgotUserElem.value = userOrPhone;
+        return;
+    }
+
+    alert(`${t('invalidCredentials')} (${failedLoginAttempts[userOrPhone]}/3)`);
+}
+
+function loadSavedCredentials() {
+    const savedUser = localStorage.getItem('kbc_saved_username');
+    const savedPass = localStorage.getItem('kbc_saved_password');
+    const rememberFlag = localStorage.getItem('kbc_remember_flag');
+
+    const phoneInput = document.getElementById('login-phone');
+    const passInput = document.getElementById('login-pass');
+    const rememberCheckbox = document.getElementById('remember-me');
+
+    if (savedUser && savedPass && rememberFlag === 'true') {
+        if (phoneInput) phoneInput.value = savedUser;
+        if (passInput) passInput.value = savedPass;
+        if (rememberCheckbox) rememberCheckbox.checked = true;
+    }
+}
+
+function checkUserTrialAndProceed(userData) {
+    if (userData.role === 'admin') {
+        show('scr-lang');
+        return;
+    }
+
+    const now = Date.now();
+    const registeredOn = userData.regTimestamp || now;
+    const allowedDays = userData.trialDays || 5;
+    const elapsedDays = (now - registeredOn) / (1000 * 60 * 60 * 24);
+
+    const promoSec = document.getElementById('promo-section');
+
+    if (elapsedDays > allowedDays) {
+        if (promoSec) promoSec.style.display = 'block';
+        alert(t('trialExpired'));
+        show('scr-login');
+    } else {
+        if (promoSec) promoSec.style.display = 'none';
+        show('scr-lang');
+    }
+}
+
+// Sign Up no longer auto-logs the user into the game — it saves the account,
+// then sends them back to the Login tab so they must actively log in.
+function registerUser() {
+    const nameElem = document.getElementById('signup-name');
+    const phoneElem = document.getElementById('signup-phone');
+    const userElem = document.getElementById('signup-username');
+    const passElem = document.getElementById('signup-pass');
+
+    const name = nameElem ? nameElem.value.trim() : '';
+    const phone = phoneElem ? phoneElem.value.trim() : '';
+    const username = userElem ? userElem.value.trim() : '';
+    const pass = passElem ? passElem.value.trim() : '';
+
+    if (!name || !username || !pass) {
+        alert(t('fillAllFields'));
+        return;
+    }
+
+    if (localStorage.getItem('kbc_user_account_' + username)) {
+        alert(curLang === 'bn'
+            ? 'এই ইউজারনেমটি ইতিমধ্যে ব্যবহৃত হয়েছে! অন্য একটি ইউজারনেম চেষ্টা করুন।'
+            : 'This username is already taken! Please try another one.');
+        return;
+    }
+
+    const userData = {
+        id: username,
+        name: name,
+        phone: phone,
+        username: username,
+        pass: pass,
+        role: 'player',
+        regTimestamp: Date.now(),
+        trialDays: 5,
+        highScore: 0,
+        status: 'Active'
+    };
+
+    localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
+
+    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
+    const existingIndex = realPlayers.findIndex(p => p.id === username || p.username === username);
+    if (existingIndex >= 0) {
+        realPlayers[existingIndex] = userData;
+    } else {
+        realPlayers.push(userData);
+    }
+    localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
+
+    // Sync this player to Google Sheet via networkadapter.js so the Admin
+    // panel (even on a different device) can eventually see them too.
+    if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.registerPlayer === 'function') {
+        window.KBCNetworkAdapter.registerPlayer(username, name, 0, function(res) {
+            // Sync happens in the background; no UI action needed here.
+        });
+    }
+
+    if (nameElem) nameElem.value = '';
+    if (phoneElem) phoneElem.value = '';
+    if (passElem) passElem.value = '';
+    if (userElem) userElem.value = '';
+
+    alert(t('signupSuccess'));
+
+    switchAuthTab('login');
+
+    const loginPhoneElem = document.getElementById('login-phone');
+    if (loginPhoneElem) loginPhoneElem.value = username;
+    const loginPassElem = document.getElementById('login-pass');
+    if (loginPassElem) loginPassElem.value = '';
+    if (loginPassElem) loginPassElem.focus();
+}
+
+// ================= FORGOT PASSWORD (single, correct version) =================
 
 function openForgotPassModal() {
     forgotPassVerified = false;
@@ -635,128 +737,6 @@ function verifyAndResetPassword() {
     closeForgotPassModal();
 }
 
-    alert(`${t('invalidCredentials')} (${failedLoginAttempts[userOrPhone]}/3)`);
-}
-
-function loadSavedCredentials() {
-    const savedUser = localStorage.getItem('kbc_saved_username');
-    const savedPass = localStorage.getItem('kbc_saved_password');
-    const rememberFlag = localStorage.getItem('kbc_remember_flag');
-
-    const phoneInput = document.getElementById('login-phone');
-    const passInput = document.getElementById('login-pass');
-    const rememberCheckbox = document.getElementById('remember-me');
-
-    if (savedUser && savedPass && rememberFlag === 'true') {
-        if (phoneInput) phoneInput.value = savedUser;
-        if (passInput) passInput.value = savedPass;
-        if (rememberCheckbox) rememberCheckbox.checked = true;
-    }
-}
-
-function checkUserTrialAndProceed(userData) {
-    if (userData.role === 'admin') {
-        show('scr-lang');
-        return;
-    }
-
-    const now = Date.now();
-    const registeredOn = userData.regTimestamp || now;
-    const allowedDays = userData.trialDays || 5;
-    const elapsedDays = (now - registeredOn) / (1000 * 60 * 60 * 24);
-
-    const promoSec = document.getElementById('promo-section');
-
-    if (elapsedDays > allowedDays) {
-        if (promoSec) promoSec.style.display = 'block';
-        alert(t('trialExpired'));
-        show('scr-login');
-    } else {
-        if (promoSec) promoSec.style.display = 'none';
-        show('scr-lang');
-    }
-}
-
-// ==========================================
-// FIX: Sign Up no longer auto-logs the user into the game.
-// After creating the account, the credentials are saved, the Sign Up form
-// is cleared, and the user is switched back to the Login tab (with their
-// username pre-filled) so they must actively log in.
-// ==========================================
-function registerUser() {
-    const nameElem = document.getElementById('signup-name');
-    const phoneElem = document.getElementById('signup-phone');
-    const userElem = document.getElementById('signup-username');
-    const passElem = document.getElementById('signup-pass');
-
-    const name = nameElem ? nameElem.value.trim() : '';
-    const phone = phoneElem ? phoneElem.value.trim() : '';
-    const username = userElem ? userElem.value.trim() : '';
-    const pass = passElem ? passElem.value.trim() : '';
-
-    if (!name || !username || !pass) {
-        alert(t('fillAllFields'));
-        return;
-    }
-
-    // Prevent overwriting an existing account with the same username
-    if (localStorage.getItem('kbc_user_account_' + username)) {
-        alert(curLang === 'bn'
-            ? 'এই ইউজারনেমটি ইতিমধ্যে ব্যবহৃত হয়েছে! অন্য একটি ইউজারনেম চেষ্টা করুন।'
-            : 'This username is already taken! Please try another one.');
-        return;
-    }
-
-    const userData = {
-        id: username,
-        name: name,
-        phone: phone,
-        username: username,
-        pass: pass,
-        role: 'player',
-        regTimestamp: Date.now(),
-        trialDays: 5,
-        highScore: 0,
-        status: 'Active'
-    };
-
-    localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
-
-    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-    const existingIndex = realPlayers.findIndex(p => p.id === username || p.username === username);
-    if (existingIndex >= 0) {
-        realPlayers[existingIndex] = userData;
-    } else {
-        realPlayers.push(userData);
-    }
-    localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
-
-    // Sync this player to Google Sheet via networkadapter.js so the Admin
-    // panel (even on a different device) can eventually see them too.
-    if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.registerPlayer === 'function') {
-        window.KBCNetworkAdapter.registerPlayer(username, name, 0, function(res) {
-            // Sync happens in the background; no UI action needed here.
-        });
-    }
-
-    // --- Do NOT auto-login. Clear form and send back to Login tab. ---
-    if (nameElem) nameElem.value = '';
-    if (phoneElem) phoneElem.value = '';
-    if (passElem) passElem.value = '';
-    if (userElem) userElem.value = '';
-
-    alert(t('signupSuccess'));
-
-    switchAuthTab('login');
-
-    // Pre-fill the username on the login form for convenience
-    const loginPhoneElem = document.getElementById('login-phone');
-    if (loginPhoneElem) loginPhoneElem.value = username;
-    const loginPassElem = document.getElementById('login-pass');
-    if (loginPassElem) loginPassElem.value = '';
-    if (loginPassElem) loginPassElem.focus();
-}
-
 // Optimized Promo Code Handler
 function handlePromoSubmit() {
     const codeInput = document.getElementById('promoInput');
@@ -790,7 +770,6 @@ function handlePromoSubmit() {
         alert(t('invalidPromo'));
     }
 }
-
 function selectLanguage(l) {
     curLang = l;
     show('scr-subject');
@@ -854,7 +833,9 @@ function startGameWithLevel(lvl) {
 function loadQ() {
     clearInterval(timerInt);
     if (explanationTimer) clearTimeout(explanationTimer);
-    closeExplanationModal();
+
+    const modal = document.getElementById("modal-explanation");
+    if (modal) modal.style.display = "none";
 
     if (!activeQuestions || activeQuestions.length === 0 || curIdx >= activeQuestions.length) {
         return end();
@@ -891,7 +872,7 @@ function loadQ() {
         timerVal = 20;
     } else {
         if(diffBadge) diffBadge.innerText = 'ROUND 3: EXPERT';
-        timerVal = 19;
+        timerVal = 15;
     }
 
     const stCount = document.getElementById('st-count');
@@ -957,6 +938,7 @@ function proceedToNextSlab() {
     show('scr-game');
     loadQ();
 }
+
 function check(idx) {
     if (!canAnswer) return;
     canAnswer = false;
@@ -1010,16 +992,15 @@ function showExplanationModal(q, isCorrect) {
 
     speak(explanationText);
 
-    // Auto-advance after enough time to read the explanation.
     if (explanationTimer) clearTimeout(explanationTimer);
     explanationTimer = setTimeout(() => {
         proceedToNextQuestion();
     }, 6000);
 }
 
-// Called by BOTH the auto-timer above AND the "ঠিক আছে (Continue)" button —
-// this is the fix for the game "hanging": previously the button only closed
-// the modal without moving to the next question.
+// Called by BOTH the auto-timer above AND the "ঠিক আছে (Continue)" button.
+// This is the fix for the game "hanging" — previously the button only closed
+// the modal without ever moving to the next question.
 function proceedToNextQuestion() {
     const modal = document.getElementById("modal-explanation");
     if (modal) modal.style.display = "none";
@@ -1031,12 +1012,61 @@ function proceedToNextQuestion() {
     loadQ();
 }
 
-// Kept for backward compatibility with the button's onclick="closeExplanationModal()"
+// Kept so the HTML button's onclick="closeExplanationModal()" still works.
 function closeExplanationModal() {
     proceedToNextQuestion();
 }
 
-// Game Completion & End Handler
+function resetLifelineUI() {
+    const keys = ['fiftyFifty', 'audiencePoll', 'skipQuestion', 'timeFreeze'];
+    keys.forEach(k => {
+        const btn = document.getElementById(`life-${k}`);
+        if (btn) {
+            btn.classList.remove('disabled');
+            btn.style.opacity = '1';
+            btn.style.pointerEvents = 'auto';
+        }
+    });
+}
+
+function useLifeline(type) {
+    if (!canAnswer) return;
+    if (lifelinesUsed[type]) {
+        alert(t('lifelineUsed'));
+        return;
+    }
+
+    lifelinesUsed[type] = true;
+    const btn = document.getElementById(`life-${type}`);
+    if (btn) {
+        btn.classList.add('disabled');
+        btn.style.opacity = '0.4';
+        btn.style.pointerEvents = 'none';
+    }
+
+    const q = activeQuestions[curIdx];
+
+    if (type === 'fiftyFifty') {
+        let removed = 0;
+        for (let i = 0; i < 4; i++) {
+            if (i !== q.ans && removed < 2) {
+                const optElem = document.getElementById(`opt-${i}`);
+                if (optElem) optElem.style.visibility = 'hidden';
+                removed++;
+            }
+        }
+    } else if (type === 'audiencePoll') {
+        alert(`Audience Poll Results:\nOption A: ${q.ans === 0 ? '65%' : '10%'}\nOption B: ${q.ans === 1 ? '65%' : '15%'}\nOption C: ${q.ans === 2 ? '65%' : '10%'}\nOption D: ${q.ans === 3 ? '65%' : '10%'}`);
+    } else if (type === 'skipQuestion') {
+        clearInterval(timerInt);
+        curIdx++;
+        loadQ();
+    } else if (type === 'timeFreeze') {
+        timerVal += 15;
+        alert(t('freezeActive'));
+    }
+}
+
 function end() {
     clearInterval(timerInt);
     const bg = document.getElementById('bg-music');
@@ -1051,7 +1081,6 @@ function end() {
                 userData.highScore = score;
                 localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
 
-                // Keep kbc_real_players list in sync with the latest high score too
                 let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
                 const idx = realPlayers.findIndex(p => p.id === currentUser || p.username === currentUser);
                 if (idx >= 0) {
@@ -1071,10 +1100,9 @@ function end() {
     if (resWr) resWr.innerText = wr;
 
     triggerConfettiFX();
-    show('scr-end');
+    show('scr-res');
 }
 
-// Confetti Visual Effects
 function triggerConfettiFX() {
     const canvas = document.getElementById('confetti-canvas');
     if (!canvas) return;
@@ -1110,52 +1138,4 @@ function triggerConfettiFX() {
         }
     }
     render();
-}
-
-// Forgot Password Modal Handlers
-function openForgotPassModal() {
-    const modal = document.getElementById('modal-forgot-pass');
-    if (modal) modal.style.display = 'flex';
-}
-
-function closeForgotPassModal() {
-    const modal = document.getElementById('modal-forgot-pass');
-    if (modal) modal.style.display = 'none';
-}
-
-function resetPasswordSubmit() {
-    const userElem = document.getElementById('forgot-username');
-    const oldPassElem = document.getElementById('forgot-old-pass');
-    const newPassElem = document.getElementById('forgot-new-pass');
-
-    const username = userElem ? userElem.value.trim() : '';
-    const oldPass = oldPassElem ? oldPassElem.value.trim() : '';
-    const newPass = newPassElem ? newPassElem.value.trim() : '';
-
-    if (!username || !oldPass || !newPass) {
-        alert(t('fillAllFields'));
-        return;
-    }
-
-    if (newPass.length < 4) {
-        alert(t('passMinLength'));
-        return;
-    }
-
-    const savedUserRaw = localStorage.getItem('kbc_user_account_' + username);
-    if (!savedUserRaw) {
-        alert(t('invalidCredentials'));
-        return;
-    }
-
-    let userData = JSON.parse(savedUserRaw);
-    if (userData.pass !== oldPass) {
-        alert(t('oldPassMismatch'));
-        return;
-    }
-
-    userData.pass = newPass;
-    localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
-    alert(t('passUpdated'));
-    closeForgotPassModal();
 }

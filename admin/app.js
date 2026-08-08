@@ -1,9 +1,11 @@
 /**
  * Project: KBC Admin Dashboard Logic
  * Role: Senior Software Architect & Security Expert
- * Description: Fully updated administrative logic supporting cross-storage fallback,
- * live player tracking, custom + base question insertion/edit/delete, audit logging,
- * password view toggle, and dynamic status updates.
+ * Description: Fully updated administrative logic — reads/writes players via
+ * the shared Google Sheet (through networkadapter.js) so every device sees
+ * the same live data. Falls back to local browser storage only when offline.
+ * Also supports base + custom question insertion/edit/delete, audit logging,
+ * and password view toggle.
  */
 
 // Tracks which question is currently being edited (null = adding new)
@@ -13,7 +15,8 @@ let editingIsBaseQuestion = false;
 // Cache for the fetched base questions.json so we don't re-fetch every time
 let baseQuestionsCache = null;
 
-// Helper Function: Find which localStorage key currently holds the player array
+// ================= LOCAL FALLBACK PLAYER STORAGE (offline only) =================
+
 function findPlayerStorageKey() {
     const keysToTry = ['kbc_real_players', 'kbc_players', 'players', 'users', 'registered_users', 'kbc_users'];
     for (let key of keysToTry) {
@@ -129,12 +132,10 @@ async function addNewQuestionFromAdmin() {
         };
 
         if (editingIsBaseQuestion) {
-            // Base (questions.json) question: store as an override, don't touch the file
             let overrides = getOverrides();
             overrides[editingQuestionId] = updatedQ;
             saveOverrides(overrides);
         } else {
-            // Admin-added custom question: update in place
             let customQuestions = JSON.parse(localStorage.getItem('kbc_custom_questions') || '[]');
             const customIdx = customQuestions.findIndex(q => q.id === editingQuestionId);
             if (customIdx >= 0) customQuestions[customIdx] = updatedQ;
@@ -190,7 +191,6 @@ async function addNewQuestionFromAdmin() {
     loadCustomQuestionsList();
 }
 
-// Load an existing question (base OR custom) back into the form for editing
 async function editCustomQuestion(qId, isBase) {
     let q = null;
 
@@ -238,7 +238,6 @@ function resetAddQuestionFormLabel() {
     if (saveBtn) saveBtn.innerText = '💾 Save Question to Game';
 }
 
-// Delete a question (base OR custom) permanently from the player's pool
 function deleteCustomQuestion(qId, isBase) {
     if (!confirm("আপনি কি নিশ্চিত এই প্রশ্নটি স্থায়ীভাবে মুছে ফেলতে চান? এটি প্লেয়ারদের প্রশ্ন তালিকা থেকেও সরে যাবে।")) {
         return;
@@ -274,6 +273,7 @@ function deleteCustomQuestion(qId, isBase) {
     updateAdminDashboardStats();
     loadCustomQuestionsList();
 }
+
 // ================= QUESTION LIST (base + custom merged) =================
 
 async function loadCustomQuestionsList() {
@@ -390,47 +390,46 @@ function loadAuditLogs() {
     });
     logTbody.innerHTML = html;
 }
-
-// ================= PLAYER LIST (with Password view toggle) =================
+// ================= PLAYER LIST (reads from shared Google Sheet) =================
 
 function loadRealPlayersList() {
     const tableBody = document.getElementById('player-table-body');
     if (!tableBody) return;
 
-    let savedPlayers = getAllStoredPlayers();
+    tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #aaa;">লোড হচ্ছে...</td></tr>`;
 
-    if (savedPlayers.length === 0) {
+    if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.getAllPlayers === 'function' && navigator.onLine) {
+        window.KBCNetworkAdapter.getAllPlayers(function (res) {
+            if (res && res.status === 'success' && Array.isArray(res.players)) {
+                renderPlayersTable(res.players, true);
+            } else {
+                renderPlayersTable(getAllStoredPlayers(), false);
+            }
+        });
+    } else {
+        renderPlayersTable(getAllStoredPlayers(), false);
+    }
+}
+
+function renderPlayersTable(playerList, isFromSheet) {
+    const tableBody = document.getElementById('player-table-body');
+    if (!tableBody) return;
+
+    if (!playerList || playerList.length === 0) {
         tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #aaa;">কোনো প্লেয়ার পাওয়া যায়নি</td></tr>`;
         return;
     }
 
     let html = '';
-    const currentTime = Date.now();
-
-    savedPlayers.forEach((player, idx) => {
-        const playerId = player.id || player.phone || player.userId || 'N/A';
-        const playerStatus = player.status || (player.isBlocked ? 'Blocked' : 'Active');
-
-        let isLive = false;
-        if (player.lastActive && (currentTime - player.lastActive < 30000)) {
-            isLive = true;
-        }
-
-        const liveBadge = isLive
-            ? `<span class="badge badge-active" style="display: inline-flex; align-items: center; gap: 4px; background: rgba(16, 185, 129, 0.2); color: #10b981; padding: 2px 8px; border-radius: 12px; font-size: 11px;"><span style="width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block;"></span> LIVE</span>`
-            : `<span class="badge" style="display: inline-flex; align-items: center; gap: 4px; background: rgba(149, 165, 166, 0.2); color: #95a5a6; padding: 2px 8px; border-radius: 12px; font-size: 11px;"><span style="width: 6px; height: 6px; background: #95a5a6; border-radius: 50%; display: inline-block;"></span> Offline</span>`;
-
-        const playerName = player.name || player.fullName || 'Unknown';
-        const playerUsername = player.username || player.id || 'N/A';
+    playerList.forEach((player, idx) => {
+        const playerId = player.userId || player.id || player.phone || 'N/A';
+        const playerUsername = player.userId || player.username || player.id || 'N/A';
         const playerPhone = player.phone || 'N/A';
-        const playerScore = player.highScore || player.score || 0;
+        const playerName = player.name || player.fullName || 'Unknown';
+        const playerScore = player.score || player.highScore || 0;
         const formattedScore = typeof playerScore === 'number' ? '৳ ' + playerScore.toLocaleString() : playerScore;
+        const playerStatus = player.status || 'Active';
         const isBlocked = playerStatus === 'Blocked';
-
-        // Password is only available if this player's account was created on THIS
-        // same browser (localStorage). Players synced from another device via
-        // Google Sheets will show "N/A" here since we do not store passwords
-        // in the Sheet for security reasons.
         const playerPass = player.pass || 'N/A';
 
         html += `
@@ -442,12 +441,7 @@ function loadRealPlayersList() {
                     <span id="pass-visible-${idx}" style="display:none;">${playerPass}</span>
                     <button class="btn-sm" style="background:#334155; padding:2px 8px;" onclick="togglePasswordView(${idx})">👁️</button>
                 </td>
-                <td>
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
-                        <span>${playerName}</span>
-                        ${liveBadge}
-                    </div>
-                </td>
+                <td>${playerName}</td>
                 <td>${formattedScore}</td>
                 <td><span class="badge ${isBlocked ? 'badge-blocked' : 'badge-active'}">${playerStatus}</span></td>
                 <td>
@@ -462,6 +456,10 @@ function loadRealPlayersList() {
         `;
     });
     tableBody.innerHTML = html;
+
+    if (!isFromSheet) {
+        tableBody.innerHTML += `<tr><td colspan="7" style="text-align:center; color:#f59e0b; font-size:11px; padding-top:10px;">⚠️ ইন্টারনেট সংযোগ পাওয়া যায়নি — শুধু এই ব্রাউজারের স্থানীয় তথ্য দেখানো হচ্ছে</td></tr>`;
+    }
 }
 
 function togglePasswordView(idx) {
@@ -479,40 +477,76 @@ function togglePasswordView(idx) {
 }
 
 function toggleBlockPlayer(playerId) {
-    let savedPlayers = getAllStoredPlayers();
-    savedPlayers = savedPlayers.map(player => {
-        if (player.id === playerId || player.phone === playerId || player.userId === playerId) {
-            player.isBlocked = !player.isBlocked;
-            player.status = player.isBlocked ? 'Blocked' : 'Active';
-        }
-        return player;
-    });
-    savePlayersList(savedPlayers);
-    loadRealPlayersList();
-    updateAdminDashboardStats();
+    if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.getAllPlayers === 'function') {
+        window.KBCNetworkAdapter.getAllPlayers(function (res) {
+            let currentStatus = 'Active';
+            if (res && res.status === 'success' && Array.isArray(res.players)) {
+                const found = res.players.find(p => p.userId === playerId);
+                if (found) currentStatus = found.status || 'Active';
+            }
+            const newStatus = currentStatus === 'Blocked' ? 'Active' : 'Blocked';
+
+            window.KBCNetworkAdapter.updatePlayerStatus(playerId, newStatus, function (updateRes) {
+                loadRealPlayersList();
+                updateAdminDashboardStats();
+            });
+        });
+    } else {
+        let savedPlayers = getAllStoredPlayers();
+        savedPlayers = savedPlayers.map(player => {
+            if (player.id === playerId || player.phone === playerId || player.userId === playerId) {
+                player.isBlocked = !player.isBlocked;
+                player.status = player.isBlocked ? 'Blocked' : 'Active';
+            }
+            return player;
+        });
+        savePlayersList(savedPlayers);
+        loadRealPlayersList();
+        updateAdminDashboardStats();
+    }
 }
 
 function deletePlayerPermanently(playerId) {
     if (!confirm("আপনি কি নিশ্চিত এই প্লেয়ারকে স্থায়ীভাবে মুছে ফেলতে চান? এই কাজটি ফেরানো যাবে না।")) {
         return;
     }
-    let savedPlayers = getAllStoredPlayers();
-    savedPlayers = savedPlayers.filter(player =>
-        player.id !== playerId && player.phone !== playerId && player.userId !== playerId
-    );
-    savePlayersList(savedPlayers);
-    loadRealPlayersList();
-    updateAdminDashboardStats();
+
+    if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.deletePlayer === 'function') {
+        window.KBCNetworkAdapter.deletePlayer(playerId, function (res) {
+            loadRealPlayersList();
+            updateAdminDashboardStats();
+        });
+    } else {
+        let savedPlayers = getAllStoredPlayers();
+        savedPlayers = savedPlayers.filter(player =>
+            player.id !== playerId && player.phone !== playerId && player.userId !== playerId
+        );
+        savePlayersList(savedPlayers);
+        loadRealPlayersList();
+        updateAdminDashboardStats();
+    }
 }
 
 // ================= DASHBOARD STATS =================
 
 function updateAdminDashboardStats() {
+    const totalPlayersElem = document.getElementById('total-players');
+    if (totalPlayersElem) {
+        if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.getAllPlayers === 'function') {
+            window.KBCNetworkAdapter.getAllPlayers(function (res) {
+                if (res && res.status === 'success' && Array.isArray(res.players)) {
+                    totalPlayersElem.innerText = res.players.length;
+                } else {
+                    totalPlayersElem.innerText = getAllStoredPlayers().length;
+                }
+            });
+        } else {
+            totalPlayersElem.innerText = getAllStoredPlayers().length;
+        }
+    }
+
     let savedPlayers = getAllStoredPlayers();
     const currentTime = Date.now();
-
-    const totalPlayersElem = document.getElementById('total-players');
-    if (totalPlayersElem) totalPlayersElem.innerText = savedPlayers.length;
 
     const activeSessionsElem = document.getElementById('active-sessions');
     if (activeSessionsElem) {

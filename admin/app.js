@@ -427,7 +427,7 @@ function renderPlayersTable(playerList, isFromSheet) {
         const playerPhone = player.phone || 'N/A';
         const playerName = player.name || player.fullName || 'Unknown';
         const playerScore = player.score || player.highScore || 0;
-        const formattedScore = typeof playerScore === 'number' ? '৳ ' + playerScore.toLocaleString() : playerScore;
+        const formattedScore = typeof playerScore === 'number' ?  + playerScore.toLocaleString() : playerScore;
         const playerStatus = player.status || 'Active';
         const isBlocked = playerStatus === 'Blocked';
         const playerPass = player.pass || 'N/A';

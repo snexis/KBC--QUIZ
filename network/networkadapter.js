@@ -7,9 +7,8 @@
     'use strict';
 
     // Global Configuration
-    // নোট: গুগল অ্যাপস স্ক্রিপ্ট ডিপ্লয় করার পর যে URLটি পাবেন, সেটি নিচের উদ্ধৃতি চিহ্নের ("") ভেতরে বসাবেন।
     var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbynhzEYW5ZIUNYvj0gMyvpAMimEQgMJxq-ucTNi2xprY6r4vi1cxrAb7p-ZVR7ItVxN/exec"; 
-    var SECRET_KEY = "MyKbcSecret2026"; // গুগল অ্যাপস স্ক্রিপ্টের সাথে মেলানো পাসকোড
+    var SECRET_KEY = "MyKbcSecret2026";
 
     // Global Network State & Storage Keys
     var STORAGE_KEYS = {
@@ -19,13 +18,9 @@
         PENDING_LOGS: 'kbc_pending_network_logs'
     };
 
-    // Default RTP Configuration (Default: 80% / 0.8)
     var DEFAULT_RTP = 0.8;
-
-    // Check if Secret Debug Mode is active in URL (e.g., yoursite.com/?debug=true)
     var IS_DEBUG_MODE = window.location.search.indexOf('debug=true') !== -1;
 
-    // Initialize Network Adapter Module
     function initNetworkAdapter() {
         setupOnlineOfflineListeners();
         setupPopupUI();
@@ -37,7 +32,6 @@
         }
     }
 
-    // Default Local Storage Setup
     function initDefaultStorage() {
         if (!localStorage.getItem(STORAGE_KEYS.PLAYERS)) {
             localStorage.setItem(STORAGE_KEYS.PLAYERS, JSON.stringify([]));
@@ -50,7 +44,6 @@
         }
     }
 
-    // Dynamic Online Warning UI Generation
     function setupPopupUI() {
         if (document.getElementById('kbc-net-modal')) return;
 
@@ -74,7 +67,6 @@
         document.body.appendChild(div.firstChild);
     }
 
-    // Setup Debug Toast Notification UI
     function setupDebugBannerUI() {
         if (document.getElementById('kbc-debug-box')) return;
         var debugDiv = document.createElement('div');
@@ -83,7 +75,6 @@
         document.body.appendChild(debugDiv);
     }
 
-    // Show Debug Log on Screen when ?debug=true
     function showDebugLog(msg) {
         if (!IS_DEBUG_MODE) return;
         var box = document.getElementById('kbc-debug-box');
@@ -94,12 +85,9 @@
         }
     }
 
-    // Listen for Online and Offline Browser Events
     function setupOnlineOfflineListeners() {
         window.addEventListener('online', handleNetworkOnline);
         window.addEventListener('offline', handleNetworkOffline);
-
-        // Initial check on page load
         if (!navigator.onLine) {
             handleNetworkOffline();
         }
@@ -122,7 +110,6 @@
         syncPendingData();
     }
 
-    // Core HTTP Request Handler to Google Apps Script Web App
     function sendHttpRequest(actionType, payloadData, callback) {
         if (!navigator.onLine) {
             showDebugLog("Cannot send HTTP request. Offline mode.");
@@ -141,7 +128,6 @@
             secretKey: SECRET_KEY
         };
 
-        // Merge payload attributes
         for (var attrname in payloadData) {
             if (payloadData.hasOwnProperty(attrname)) {
                 requestData[attrname] = payloadData[attrname];
@@ -180,16 +166,14 @@
         xhr.send(JSON.stringify(requestData));
     }
 
-    // Timeset Data-Sync Scheduler Engine
     function startDataSyncScheduler() {
         setInterval(function () {
             if (navigator.onLine) {
                 syncPendingData();
             }
-        }, 10000); // Syncs every 10 seconds
+        }, 10000);
     }
 
-    // Sync Data with Edge Storage & Server
     function syncPendingData() {
         var now = Date.now();
         localStorage.setItem(STORAGE_KEYS.NETWORK_SYNC, now.toString());
@@ -200,7 +184,7 @@
                 var logToSync = pendingLogs[0];
                 sendHttpRequest(logToSync.action, logToSync.data, function (res) {
                     if (res && res.status === 'success') {
-                        pendingLogs.shift(); // Remove successfully sent log
+                        pendingLogs.shift();
                         localStorage.setItem(STORAGE_KEYS.PENDING_LOGS, JSON.stringify(pendingLogs));
                         showDebugLog("Synced 1 pending offline item.");
                     }
@@ -211,7 +195,6 @@
         }
     }
 
-    // Manual Retry Button Action
     function checkConnectionManual() {
         if (navigator.onLine) {
             handleNetworkOnline();
@@ -230,7 +213,6 @@
         }
     }
 
-    // Check if player is blocked by Admin
     function isPlayerBlocked(phone) {
         if (!phone) return false;
         try {
@@ -246,9 +228,7 @@
         return false;
     }
 
-    // Centralized Helper for Admin Dashboard Statistics (Supports Local + Live Network Data)
     function getAdminDashboardStats(callback) {
-        // Fallback Local Storage Data First
         var localPlayers = [];
         try {
             localPlayers = JSON.parse(localStorage.getItem(STORAGE_KEYS.PLAYERS)) || [];
@@ -271,7 +251,6 @@
             totalQuestions: 0
         };
 
-        // If online and callback is provided, attempt live fetch from Google Sheets
         if (navigator.onLine && callback) {
             sendHttpRequest("GET_DASHBOARD", {}, function (res) {
                 if (res && res.status === "success") {
@@ -291,7 +270,7 @@
         return fallbackResult;
     }
 
-   // Register Player Functionality
+    // Register Player Functionality (now includes phone number)
     function registerPlayer(userId, name, phone, score, callback) {
         var playerData = {
             userId: userId,
@@ -301,7 +280,6 @@
             date: new Date().toLocaleString()
         };
 
-        // Save locally
         try {
             var players = JSON.parse(localStorage.getItem(STORAGE_KEYS.PLAYERS)) || [];
             players.push(playerData);
@@ -310,7 +288,6 @@
             showDebugLog("Local Storage Error on player register");
         }
 
-        // Send to Server or add to pending queue
         if (navigator.onLine) {
             sendHttpRequest("REGISTER_PLAYER", playerData, function (res) {
                 if (callback) callback(res);
@@ -330,7 +307,7 @@
         isPlayerBlocked: isPlayerBlocked,
         getAdminStats: getAdminDashboardStats,
         registerPlayer: registerPlayer,
-        registerPlayer: registerPlayer,
+        sendHttpRequest: sendHttpRequest,
         getAllPlayers: function (callback) {
             sendHttpRequest("GET_PLAYERS", {}, function (res) {
                 if (callback) callback(res);
@@ -346,7 +323,22 @@
                 if (callback) callback(res);
             });
         },
-        
+        getRTP: function () {
+            try {
+                var data = JSON.parse(localStorage.getItem(STORAGE_KEYS.GLOBAL_RTP));
+                return data ? data.rtp : DEFAULT_RTP;
+            } catch (e) {
+                return DEFAULT_RTP;
+            }
+        },
+        setRTP: function (rtpVal) {
+            localStorage.setItem(STORAGE_KEYS.GLOBAL_RTP, JSON.stringify({
+                rtp: parseFloat(rtpVal) || DEFAULT_RTP,
+                updatedAt: Date.now()
+            }));
+        }
+    };
+
     // Auto Run on Load
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
         initNetworkAdapter();

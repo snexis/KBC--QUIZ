@@ -1,0 +1,16 @@
+name: KBC Quiz Automation
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+
+    - name: Run a simple message
+      run: echo "কেবিসি কুইজ অটোমেশন সফলভাবে কাজ করছে!"

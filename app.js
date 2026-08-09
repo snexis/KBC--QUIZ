@@ -872,7 +872,7 @@ function loadQ() {
         timerVal = 20;
     } else {
         if(diffBadge) diffBadge.innerText = 'ROUND 3: EXPERT';
-        timerVal = 15;
+        timerVal = 19;
     }
 
     const stCount = document.getElementById('st-count');

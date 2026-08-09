@@ -1,171 +1,362 @@
-var SECRET_KEY = "MyKbcSecret2026";
+/**
+ * KBC PREMIUM - Network & Edge Sync Adapter Module
+ * Architecture: ES5 Compatible / Edge Data Sync / Autonomous RTP & Admin Override / Google Apps Script Integration
+ */
 
-function doPost(e) {
-  try {
-    var data = JSON.parse(e.postData.contents);
+(function () {
+    'use strict';
 
-    if (data.secretKey !== SECRET_KEY) {
-      return jsonResponse({ status: "error", message: "https://script.google.com/macros/s/AKfycbynhzEYW5ZIUNYvj0gMyvpAMimEQgMJxq-ucTNi2xprY6r4vi1cxrAb7p-ZVR7ItVxN/exec" });
+    var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbynhzEYW5ZIUNYvj0gMyvpAMimEQgMJxq-ucTNi2xprY6r4vi1cxrAb7p-ZVR7ItVxN/exec"; 
+    var SECRET_KEY = "MyKbcSecret2026";
+
+    var STORAGE_KEYS = {
+        PLAYERS: 'kbc_players',
+        GLOBAL_RTP: 'kbc_global_rtp',
+        NETWORK_SYNC: 'kbc_network_sync_timestamp',
+        PENDING_LOGS: 'kbc_pending_network_logs'
+    };
+
+    var DEFAULT_RTP = 0.8;
+    var IS_DEBUG_MODE = window.location.search.indexOf('debug=true') !== -1;
+
+    function initNetworkAdapter() {
+        setupOnlineOfflineListeners();
+        setupPopupUI();
+        setupDebugBannerUI();
+        initDefaultStorage();
+        startDataSyncScheduler();
+        if (IS_DEBUG_MODE) {
+            showDebugLog("Network Adapter Debug Mode Active!");
+        }
     }
 
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
-    var action = data.action;
-
-    if (action === "REGISTER_PLAYER") return registerPlayer(ss, data);
-    if (action === "LOGIN_USER") return loginUser(ss, data);
-    if (action === "GET_DASHBOARD") return getDashboard(ss);
-    if (action === "GET_PLAYERS") return getPlayers(ss);
-    if (action === "UPDATE_PLAYER_STATUS") return updatePlayerStatus(ss, data);
-    if (action === "DELETE_PLAYER") return deletePlayer(ss, data);
-    if (action === "UPDATE_TRIAL_DAYS") return updateTrialDays(ss, data);
-
-    return jsonResponse({ status: "error", message: "Invalid action" });
-
-  } catch (error) {
-    return jsonResponse({ status: "error", message: error.toString() });
-  }
-}
-
-function jsonResponse(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
-}
-
-// Columns: A=UserID, B=Name, C=Phone, D=Password, E=Score, F=Date, G=Status, H=TrialDays, I=RegTimestamp
-function getPlayersSheet(ss) {
-  var sheet = ss.getSheetByName("Players");
-  if (!sheet) {
-    sheet = ss.insertSheet("Players");
-    sheet.appendRow(["User ID", "Name", "Phone", "Password", "Score", "Date", "Status", "Trial Days", "Reg Timestamp"]);
-  }
-  return sheet;
-}
-
-// Registers a NEW player only. If the username already exists, returns an error
-// (so the app can tell the player to pick a different username).
-function registerPlayer(ss, data) {
-  var sheet = getPlayersSheet(ss);
-  var values = sheet.getDataRange().getValues();
-
-  for (var i = 1; i < values.length; i++) {
-    if (values[i][0] === data.userId) {
-      return jsonResponse({ status: "error", message: "Username already exists" });
+    function initDefaultStorage() {
+        if (!localStorage.getItem(STORAGE_KEYS.PLAYERS)) {
+            localStorage.setItem(STORAGE_KEYS.PLAYERS, JSON.stringify([]));
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.GLOBAL_RTP)) {
+            localStorage.setItem(STORAGE_KEYS.GLOBAL_RTP, JSON.stringify({ rtp: DEFAULT_RTP, updatedAt: Date.now() }));
+        }
+        if (!localStorage.getItem(STORAGE_KEYS.PENDING_LOGS)) {
+            localStorage.setItem(STORAGE_KEYS.PENDING_LOGS, JSON.stringify([]));
+        }
     }
-  }
 
-  sheet.appendRow([
-    data.userId || "",
-    data.name || "",
-    data.phone || "",
-    data.password || "",
-    data.score || 0,
-    data.date || new Date().toLocaleString(),
-    "Active",
-    data.trialDays || 5,
-    data.regTimestamp || Date.now()
-  ]);
+    function setupPopupUI() {
+        if (document.getElementById('kbc-net-modal')) return;
 
-  return jsonResponse({ status: "success", message: "Player registered successfully" });
-}
+        var modalHtml = 
+            '<div id="kbc-net-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(8px); z-index: 999999; justify-content: center; align-items: center; font-family: sans-serif;">' +
+                '<div style="background: #1e293b; border: 2px solid #ef4444; border-radius: 16px; padding: 30px; width: 90%; max-width: 420px; text-align: center; box-shadow: 0 0 30px rgba(239, 68, 68, 0.4); color: #ffffff;">' +
+                    '<div style="font-size: 48px; margin-bottom: 10px;">📡</div>' +
+                    '<h2 style="color: #ef4444; margin: 0 0 10px 0; font-size: 22px; font-weight: bold;">Connection Lost!</h2>' +
+                    '<p style="color: #cbd5e1; font-size: 14px; line-height: 1.5; margin-bottom: 20px;">' +
+                        'Please check your internet connection. <br>' +
+                        '<span style="color: #ffd700; font-size: 12px;">KBC Live Game Server Syncing Paused...</span>' +
+                    '</p>' +
+                    '<button id="kbc-net-retry-btn" onclick="window.KBCNetworkAdapter.checkConnectionManual()" style="background: linear-gradient(135deg, #ef4444, #b91c1c); color: #ffffff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 14px; width: 100%; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);">' +
+                        '🔄 Retry Connection' +
+                    '</button>' +
+                '</div>' +
+            '</div>';
 
-// Verifies username + password against the Sheet. Works from ANY device,
-// since the Sheet is the single shared source of truth.
-function loginUser(ss, data) {
-  var sheet = getPlayersSheet(ss);
-  var values = sheet.getDataRange().getValues();
+        var div = document.createElement('div');
+        div.innerHTML = modalHtml;
+        document.body.appendChild(div.firstChild);
+    }
 
-  for (var i = 1; i < values.length; i++) {
-    if (values[i][0] === data.userId) {
-      if (values[i][6] === "Blocked") {
-        return jsonResponse({ status: "blocked", message: "This account has been blocked by admin" });
-      }
-      if (values[i][3] === data.password) {
-        return jsonResponse({
-          status: "success",
-          player: {
-            userId: values[i][0],
-            name: values[i][1],
-            phone: values[i][2],
-            score: values[i][4],
-            trialDays: values[i][7],
-            regTimestamp: values[i][8]
-          }
+    function setupDebugBannerUI() {
+        if (document.getElementById('kbc-debug-box')) return;
+        var debugDiv = document.createElement('div');
+        debugDiv.id = 'kbc-debug-box';
+        debugDiv.style.cssText = 'display: none; position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.85); color: #00ffcc; border: 1px solid #00ffcc; padding: 10px 14px; border-radius: 8px; font-size: 12px; font-family: monospace; z-index: 9999999; max-width: 320px; word-wrap: break-word; box-shadow: 0 4px 10px rgba(0,0,0,0.5);';
+        document.body.appendChild(debugDiv);
+    }
+
+    function showDebugLog(msg) {
+        if (!IS_DEBUG_MODE) return;
+        var box = document.getElementById('kbc-debug-box');
+        if (box) {
+            box.style.display = 'block';
+            box.innerText = '⚙️ [KBC Debug]: ' + msg;
+            console.log('[KBC Network Log]:', msg);
+        }
+    }
+
+    function setupOnlineOfflineListeners() {
+        window.addEventListener('online', handleNetworkOnline);
+        window.addEventListener('offline', handleNetworkOffline);
+        if (!navigator.onLine) {
+            handleNetworkOffline();
+        }
+    }
+
+    function handleNetworkOffline() {
+        var modal = document.getElementById('kbc-net-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+        showDebugLog("App is Offline");
+    }
+
+    function handleNetworkOnline() {
+        var modal = document.getElementById('kbc-net-modal');
+        if (modal) {
+            modal.style.display = 'none';
+        }
+        showDebugLog("App is Online. Attempting Sync...");
+        syncPendingData();
+    }
+
+    function sendHttpRequest(actionType, payloadData, callback) {
+        if (!navigator.onLine) {
+            showDebugLog("Cannot send HTTP request. Offline mode.");
+            if (callback) callback({ status: "offline", message: "Internet connection offline" });
+            return;
+        }
+
+        if (!WEB_APP_URL || WEB_APP_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE") {
+            showDebugLog("Web App URL is not set in networkAdapter.js!");
+            if (callback) callback({ status: "error", message: "Google Web App URL Missing" });
+            return;
+        }
+
+        var requestData = {
+            action: actionType,
+            secretKey: SECRET_KEY
+        };
+
+        for (var attrname in payloadData) {
+            if (payloadData.hasOwnProperty(attrname)) {
+                requestData[attrname] = payloadData[attrname];
+            }
+        }
+
+        showDebugLog("Sending Action: " + actionType);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", WEB_APP_URL, true);
+        xhr.setRequestHeader("Content-Type", "text/plain;charset=utf-8");
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    try {
+                        var response = JSON.parse(xhr.responseText);
+                        showDebugLog("Server Responded: " + response.status);
+                        if (callback) callback(response);
+                    } catch (e) {
+                        showDebugLog("JSON Response Error: " + e.message);
+                        if (callback) callback({ status: "error", message: "Invalid JSON server response" });
+                    }
+                } else {
+                    showDebugLog("HTTP Error Code: " + xhr.status);
+                    if (callback) callback({ status: "error", message: "Server connection failed HTTP " + xhr.status });
+                }
+            }
+        };
+
+        xhr.onerror = function () {
+            showDebugLog("Network Error Occurred during request");
+            if (callback) callback({ status: "error", message: "Network connection error" });
+        };
+
+        xhr.send(JSON.stringify(requestData));
+    }
+
+    function startDataSyncScheduler() {
+        setInterval(function () {
+            if (navigator.onLine) {
+                syncPendingData();
+            }
+        }, 10000);
+    }
+
+    function syncPendingData() {
+        var now = Date.now();
+        localStorage.setItem(STORAGE_KEYS.NETWORK_SYNC, now.toString());
+
+        try {
+            var pendingLogs = JSON.parse(localStorage.getItem(STORAGE_KEYS.PENDING_LOGS)) || [];
+            if (pendingLogs.length > 0 && navigator.onLine) {
+                var logToSync = pendingLogs[0];
+                sendHttpRequest(logToSync.action, logToSync.data, function (res) {
+                    if (res && res.status === 'success') {
+                        pendingLogs.shift();
+                        localStorage.setItem(STORAGE_KEYS.PENDING_LOGS, JSON.stringify(pendingLogs));
+                        showDebugLog("Synced 1 pending offline item.");
+                    }
+                });
+            }
+        } catch (e) {
+            showDebugLog("Sync Error: " + e.message);
+        }
+    }
+
+    function checkConnectionManual() {
+        if (navigator.onLine) {
+            handleNetworkOnline();
+        } else {
+            var btn = document.getElementById('kbc-net-retry-btn');
+            if (btn) {
+                var originalText = btn.innerText;
+                btn.innerText = 'Connecting...';
+                setTimeout(function () {
+                    btn.innerText = originalText;
+                    if (!navigator.onLine) {
+                        alert('সার্ভারে সাথে সংযোগ করা যাচ্ছে না! দয়া করে ইন্টারনেট কানেকশন চালু করুন।');
+                    }
+                }, 1500);
+            }
+        }
+    }
+
+    function isPlayerBlocked(phone) {
+        if (!phone) return false;
+        try {
+            var players = JSON.parse(localStorage.getItem(STORAGE_KEYS.PLAYERS)) || [];
+            for (var i = 0; i < players.length; i++) {
+                if (players[i].phone === phone || players[i].id === phone) {
+                    return !!players[i].isBlocked || players[i].status === 'Blocked';
+                }
+            }
+        } catch (e) {
+            showDebugLog('Error checking player status: ' + e.message);
+        }
+        return false;
+    }
+
+    function getAdminDashboardStats(callback) {
+        var localPlayers = [];
+        try {
+            localPlayers = JSON.parse(localStorage.getItem(STORAGE_KEYS.PLAYERS)) || [];
+        } catch (e) {
+            localPlayers = [];
+        }
+
+        var activeCount = 0;
+        for (var i = 0; i < localPlayers.length; i++) {
+            var p = localPlayers[i];
+            var isBlocked = p.isBlocked || p.status === 'Blocked';
+            if (!isBlocked) {
+                activeCount++;
+            }
+        }
+
+        var fallbackResult = {
+            totalPlayers: localPlayers.length,
+            activeSessions: activeCount,
+            totalQuestions: 0
+        };
+
+        if (navigator.onLine && callback) {
+            sendHttpRequest("GET_DASHBOARD", {}, function (res) {
+                if (res && res.status === "success") {
+                    callback({
+                        totalPlayers: res.totalPlayers || fallbackResult.totalPlayers,
+                        activeSessions: fallbackResult.activeSessions,
+                        totalQuestions: res.totalQuestions || 0
+                    });
+                } else {
+                    callback(fallbackResult);
+                }
+            });
+        } else if (callback) {
+            callback(fallbackResult);
+        }
+
+        return fallbackResult;
+    }
+
+    // Registers a brand-new player in the shared Google Sheet (includes password now)
+    function registerPlayer(userId, name, phone, password, trialDays, callback) {
+        var playerData = {
+            userId: userId,
+            name: name,
+            phone: phone || '',
+            password: password || '',
+            score: 0,
+            date: new Date().toLocaleString(),
+            trialDays: trialDays || 5,
+            regTimestamp: Date.now()
+        };
+
+        try {
+            var players = JSON.parse(localStorage.getItem(STORAGE_KEYS.PLAYERS)) || [];
+            players.push(playerData);
+            localStorage.setItem(STORAGE_KEYS.PLAYERS, JSON.stringify(players));
+        } catch (e) {
+            showDebugLog("Local Storage Error on player register");
+        }
+
+        if (navigator.onLine) {
+            sendHttpRequest("REGISTER_PLAYER", playerData, function (res) {
+                if (callback) callback(res);
+            });
+        } else {
+            if (callback) callback({ status: "error", message: "Internet connection required to register" });
+        }
+    }
+
+    // Verifies login against the shared Google Sheet — works from ANY device
+    function loginUser(userId, password, callback) {
+        if (!navigator.onLine) {
+            if (callback) callback({ status: "offline", message: "Internet connection required to login" });
+            return;
+        }
+        sendHttpRequest("LOGIN_USER", { userId: userId, password: password }, function (res) {
+            if (callback) callback(res);
         });
-      } else {
-        return jsonResponse({ status: "error", message: "Wrong password" });
-      }
     }
-  }
 
-  return jsonResponse({ status: "error", message: "User not found" });
-}
+    window.KBCNetworkAdapter = {
+        init: initNetworkAdapter,
+        checkConnectionManual: checkConnectionManual,
+        isPlayerBlocked: isPlayerBlocked,
+        getAdminStats: getAdminDashboardStats,
+        registerPlayer: registerPlayer,
+        loginUser: loginUser,
+        sendHttpRequest: sendHttpRequest,
+        getAllPlayers: function (callback) {
+            sendHttpRequest("GET_PLAYERS", {}, function (res) {
+                if (callback) callback(res);
+            });
+        },
+        updatePlayerStatus: function (userId, status, callback) {
+            sendHttpRequest("UPDATE_PLAYER_STATUS", { userId: userId, status: status }, function (res) {
+                if (callback) callback(res);
+            });
+        },
+        deletePlayer: function (userId, callback) {
+            sendHttpRequest("DELETE_PLAYER", { userId: userId }, function (res) {
+                if (callback) callback(res);
+            });
+        },
+        updateTrialDays: function (userId, trialDays, callback) {
+            sendHttpRequest("UPDATE_TRIAL_DAYS", { userId: userId, trialDays: trialDays }, function (res) {
+                if (callback) callback(res);
+            });
+        },
+        getRTP: function () {
+            try {
+                var data = JSON.parse(localStorage.getItem(STORAGE_KEYS.GLOBAL_RTP));
+                return data ? data.rtp : DEFAULT_RTP;
+            } catch (e) {
+                return DEFAULT_RTP;
+            }
+        },
+        setRTP: function (rtpVal) {
+            localStorage.setItem(STORAGE_KEYS.GLOBAL_RTP, JSON.stringify({
+                rtp: parseFloat(rtpVal) || DEFAULT_RTP,
+                updatedAt: Date.now()
+            }));
+        }
+    };
 
-function getDashboard(ss) {
-  var pSheet = ss.getSheetByName("Players");
-  var totalPlayers = pSheet ? Math.max(0, pSheet.getLastRow() - 1) : 0;
-
-  var qSheet = ss.getSheetByName("Questions");
-  var totalQuestions = qSheet ? Math.max(0, qSheet.getLastRow() - 1) : 0;
-
-  return jsonResponse({ status: "success", totalPlayers: totalPlayers, totalQuestions: totalQuestions });
-}
-
-function getPlayers(ss) {
-  var sheet = ss.getSheetByName("Players");
-  if (!sheet || sheet.getLastRow() < 2) {
-    return jsonResponse({ status: "success", players: [] });
-  }
-  var values = sheet.getDataRange().getValues();
-  var players = [];
-  for (var i = 1; i < values.length; i++) {
-    players.push({
-      userId: values[i][0],
-      name: values[i][1],
-      phone: values[i][2],
-      score: values[i][4],
-      date: values[i][5],
-      status: values[i][6],
-      trialDays: values[i][7]
-    });
-  }
-  return jsonResponse({ status: "success", players: players });
-}
-
-function updatePlayerStatus(ss, data) {
-  var sheet = ss.getSheetByName("Players");
-  if (!sheet) return jsonResponse({ status: "error", message: "Players sheet not found" });
-  var values = sheet.getDataRange().getValues();
-  for (var i = 1; i < values.length; i++) {
-    if (values[i][0] === data.userId) {
-      sheet.getRange(i + 1, 7).setValue(data.status || "Active");
-      return jsonResponse({ status: "success" });
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        initNetworkAdapter();
+    } else {
+        document.addEventListener('DOMContentLoaded', initNetworkAdapter);
     }
-  }
-  return jsonResponse({ status: "error", message: "Player not found" });
-}
 
-function deletePlayer(ss, data) {
-  var sheet = ss.getSheetByName("Players");
-  if (!sheet) return jsonResponse({ status: "error", message: "Players sheet not found" });
-  var values = sheet.getDataRange().getValues();
-  for (var i = 1; i < values.length; i++) {
-    if (values[i][0] === data.userId) {
-      sheet.deleteRow(i + 1);
-      return jsonResponse({ status: "success" });
-    }
-  }
-  return jsonResponse({ status: "error", message: "Player not found" });
-}
-
-// Admin: extend or set a specific player's trial days
-function updateTrialDays(ss, data) {
-  var sheet = ss.getSheetByName("Players");
-  if (!sheet) return jsonResponse({ status: "error", message: "Players sheet not found" });
-  var values = sheet.getDataRange().getValues();
-  for (var i = 1; i < values.length; i++) {
-    if (values[i][0] === data.userId) {
-      sheet.getRange(i + 1, 8).setValue(data.trialDays || 5);
-      return jsonResponse({ status: "success" });
-    }
-  }
-  return jsonResponse({ status: "error", message: "Player not found" });
-}
+})();

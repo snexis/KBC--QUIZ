@@ -5,7 +5,7 @@ function doPost(e) {
     var data = JSON.parse(e.postData.contents);
 
     if (data.secretKey !== SECRET_KEY) {
-      return jsonResponse({ status: "error", message: "Unauthorized Secret Key" });
+      return jsonResponse({ status: "error", message: "https://script.google.com/macros/s/AKfycbynhzEYW5ZIUNYvj0gMyvpAMimEQgMJxq-ucTNi2xprY6r4vi1cxrAb7p-ZVR7ItVxN/exec" });
     }
 
     var ss = SpreadsheetApp.getActiveSpreadsheet();

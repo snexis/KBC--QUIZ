@@ -1,5 +1,5 @@
 // ==========================================
-// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED NAVIGATION, PROMO & SOUND LOGIC)
+// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED SIGNUP & LOGIN FLOW)
 // ==========================================
 
 let curLang = 'bn';
@@ -20,10 +20,8 @@ let fullQuestionPool = [];
 let explanationTimer = null;
 let forgotPassVerified = false;
 
-// Track failed login attempts per user ID
 let failedLoginAttempts = {};
 
-// Active Lifelines State
 let lifelinesUsed = {
     fiftyFifty: false,
     audiencePoll: false,
@@ -31,7 +29,6 @@ let lifelinesUsed = {
     timeFreeze: false
 };
 
-// Central i18n Translations Dictionary
 const i18n = {
     bn: {
         fillAllFields: "সবগুলো ফিল্ড পূরণ করা বাধ্যতামূলক!",
@@ -57,7 +54,7 @@ const i18n = {
         explanationTitle: "ব্যাখ্যা",
         lifelineUsed: "আপনি ইতিমধ্যে এই লাইফলাইন ব্যবহার করেছেন!",
         freezeActive: "টাইম ফ্রিজ! টাইমার আরও ১৫ সেকেন্ড বাড়ানো হয়েছে।",
-        signupSuccess: "একাউন্ট সফলভাবে তৈরি হয়েছে! দয়া করে নতুন পাসওয়ার্ড দিয়ে লগইন করুন।"
+        signupSuccess: "একাউন্ট সফলভাবে তৈরি হয়েছে! দয়া করে আপনার ইউজারনেম ও নতুন পাসওয়ার্ড দিয়ে লগইন করুন।"
     },
     en: {
         fillAllFields: "Please fill in all required fields!",
@@ -83,7 +80,7 @@ const i18n = {
         explanationTitle: "Explanation",
         lifelineUsed: "You have already used this lifeline!",
         freezeActive: "Time Frozen! 15 seconds added to timer.",
-        signupSuccess: "Account created successfully! Please login with your new password."
+        signupSuccess: "Account created successfully! Please login with your username and new password."
     }
 };
 
@@ -252,7 +249,6 @@ function togglePasswordVisibility(fieldId, iconElem) {
     }
 }
 
-// Merge Custom Admin Questions into Main Question Pool
 function loadCustomAdminQuestions() {
     try {
         const savedCustom = localStorage.getItem('kbc_custom_questions');
@@ -277,7 +273,6 @@ function loadCustomAdminQuestions() {
     }
 }
 
-// Automatic Syntax Recovery & Robust JSON Parser
 function autoFixAndParseObj(rawText) {
     let cleanText = rawText.trim();
     if (cleanText.endsWith(',')) {
@@ -313,7 +308,6 @@ async function loadQuestionBank() {
     try {
         const response = await fetch('questions.json');
         if (!response.ok) {
-            console.warn(`questions.json HTTP response status: ${response.status}`);
             loadCustomAdminQuestions();
             return;
         }
@@ -326,9 +320,7 @@ async function loadQuestionBank() {
             applyAdminOverridesAndDeletions();
             loadCustomAdminQuestions();
             return;
-        } catch (e) {
-            // Direct JSON parsing failed, fallback to chunk parsing
-        }
+        } catch (e) {}
 
         fullQuestionPool = [];
         let items = [];
@@ -364,7 +356,6 @@ async function loadQuestionBank() {
         loadCustomAdminQuestions();
 
     } catch (error) {
-        console.warn("Could not load external questions.json file:", error);
         loadCustomAdminQuestions();
     }
 }
@@ -382,9 +373,7 @@ function initVoice() {
             processVoiceCommand(transcript);
         };
         
-        recognition.onerror = (event) => {
-            console.log('Voice error:', event.error);
-        };
+        recognition.onerror = (event) => {};
     }
 }
 
@@ -407,9 +396,7 @@ function startListening() {
     if (voiceEnabled && recognition && canAnswer) {
         try {
             recognition.start();
-        } catch(e) {
-            console.log('Recognition already running or busy');
-        }
+        } catch(e) {}
     }
 }
 
@@ -417,10 +404,10 @@ function processVoiceCommand(cmd) {
     if (!canAnswer) return;
     
     const mappings = {
-        'a': 0, 'এ': 0, '১': 0, 'one': 0, 'অপশন এ': 0, 'ক': 0, '1': 0, 'a': 0,
-        'b': 1, 'বি': 1, '২': 1, 'two': 1, 'অপশন বি': 1, 'খ': 1, '2': 1, 'b': 1,
-        'c': 2, 'সি': 2, '৩': 2, 'three': 2, 'অপশন সি': 2, 'গ': 2, '3': 2, 'c': 2,
-        'd': 3, 'ডি': 3, '৪': 3, 'four': 3, 'অপশন ডি': 3, 'ঘ': 3, '4': 3, 'd': 3
+        'a': 0, 'এ': 0, '১': 0, 'one': 0, 'অপশন এ': 0, 'ক': 0, '1': 0,
+        'b': 1, 'বি': 1, '২': 1, 'two': 1, 'অপশন বি': 1, 'খ': 1, '2': 1,
+        'c': 2, 'সি': 2, '৩': 2, 'three': 2, 'অপশন সি': 2, 'গ': 2, '3': 2,
+        'd': 3, 'ডি': 3, '৪': 3, 'four': 3, 'অপশন ডি': 3, 'ঘ': 3, '4': 3
     };
     
     for (let key in mappings) {
@@ -442,7 +429,7 @@ function toggleMute() {
         if (window.speechSynthesis) window.speechSynthesis.cancel();
     } else {
         if (bg && document.getElementById('scr-game') && document.getElementById('scr-game').classList.contains('active')) {
-            bg.play().catch(e => console.log("Audio play blocked"));
+            bg.play().catch(e => {});
         }
         if (label) label.innerText = curLang === 'bn' ? 'মিউট' : 'Mute';
     }
@@ -648,11 +635,8 @@ function registerUser() {
     }
     localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
 
-    // এখানে পাসওয়ার্ড পাঠানো হলো যাতে গুগল শিটে পাসওয়ার্ড ব্ল্যাঙ্ক না থাকে
     if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.registerPlayer === 'function') {
-        window.KBCNetworkAdapter.registerPlayer(username, name, phone, 0, function(res) {
-            // Sync happens in the background; no UI action needed here.
-        }, pass);
+        window.KBCNetworkAdapter.registerPlayer(username, name, phone, 0, function(res) {}, pass);
     }
 
     if (nameElem) nameElem.value = '';
@@ -816,7 +800,7 @@ function startGameWithLevel(lvl) {
     const bg = document.getElementById('bg-music');
     if (bg && !isMuted) {
         bg.volume = 0.3;
-        bg.play().catch(e => console.log("Audio play blocked until interaction"));
+        bg.play().catch(e => {});
     }
 
     if (voiceEnabled) initVoice();

@@ -1,5 +1,5 @@
 // ==========================================
-// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED SIGNUP & LOGIN FLOW)
+// KBC PREMIUM 2026 - COMPLETE APP LOGIC (PASSWORD FIX)
 // ==========================================
 
 let curLang = 'bn';
@@ -54,7 +54,7 @@ const i18n = {
         explanationTitle: "ব্যাখ্যা",
         lifelineUsed: "আপনি ইতিমধ্যে এই লাইফলাইন ব্যবহার করেছেন!",
         freezeActive: "টাইম ফ্রিজ! টাইমার আরও ১৫ সেকেন্ড বাড়ানো হয়েছে।",
-        signupSuccess: "একাউন্ট সফলভাবে তৈরি হয়েছে! দয়া করে আপনার ইউজারনেম ও নতুন পাসওয়ার্ড দিয়ে লগইন করুন।"
+        signupSuccess: "একাউন্ট সফলভাবে তৈরি হয়েছে! দয়া করে আপনার ইউজারনেম ও পাসওয়ার্ড দিয়ে লগইন করুন।"
     },
     en: {
         fillAllFields: "Please fill in all required fields!",
@@ -80,7 +80,7 @@ const i18n = {
         explanationTitle: "Explanation",
         lifelineUsed: "You have already used this lifeline!",
         freezeActive: "Time Frozen! 15 seconds added to timer.",
-        signupSuccess: "Account created successfully! Please login with your username and new password."
+        signupSuccess: "Account created successfully! Please login with your username and password."
     }
 };
 

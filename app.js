@@ -34,30 +34,30 @@ let lifelinesUsed = {
 // Central i18n Translations Dictionary
 const i18n = {
     bn: {
-        fillAllFields: "দয়া করে সব প্রয়োজনীয় ঘরগুলো পূরণ করুন!",
-        validCredentials: "সঠিক ইউজার আইডি এবং পাসওয়ার্ড দিন!",
+        fillAllFields: "সবগুলো ফিল্ড পূরণ করা বাধ্যতামূলক!",
+        validCredentials: "সঠিক তথ্য দিয়ে লগইন করুন!",
         loginSuccess: "লগইন সফল হয়েছে!",
-        invalidCredentials: "ভুল ইউজার আইডি বা পাসওয়ার্ড!",
-        maxFailedAttempts: "৩ বার ভুল পাসওয়ার্ড দেওয়া হয়েছে! পাসওয়ার্ড পুনরুদ্ধারের পেজে রিডাইরেক্ট করা হচ্ছে।",
-        trialExpired: "আপনার ট্রায়াল সময় শেষ হয়ে গেছে! অনুগ্রহ করে একটি ভ্যালিড প্রোমো কোড দিন।",
-        promoSuccess: "প্রোমো কোড সফলভাবে যোগ হয়েছে!",
-        invalidPromo: "ভুল প্রোমো কোড!",
-        loginFirst: "প্রথমে লগইন বা সাইন আপ করুন!",
-        confirmExit: "আপনি কি নিশ্চিতভাবে গেম থেকে বের হতে চান?",
-        confirmLogout: "আপনি কি নিশ্চিতভাবে লগআউট করতে চান?",
-        adminActive: "অ্যাডমিন টেস্ট মোড অ্যাক্টিভেটেড!",
+        invalidCredentials: "ভুল আইডি বা পাসওয়ার্ড!",
+        maxFailedAttempts: "৩ বার ভুল পাসওয়ার্ড দেওয়া হয়েছে! পাসওয়ার্ড রিকভারি পেজে পাঠানো হচ্ছে।",
+        trialExpired: "আপনার ট্রায়াল মেয়াদ শেষ! অনুগ্রহ করে প্রোমো কোড দিন।",
+        promoSuccess: "প্রোমো কোড সফলভাবে যুক্ত হয়েছে!",
+        invalidPromo: "অবৈধ প্রোমো কোড!",
+        loginFirst: "আগে লগইন বা সাইন আপ করুন!",
+        confirmExit: "আপনি কি নিশ্চিত খেলাটি বন্ধ করতে চান?",
+        confirmLogout: "আপনি কি নিশ্চিত লগআউট করতে চান?",
+        adminActive: "অ্যাডমিন টেস্ট মোড চালু হয়েছে!",
         wrongPasscode: "ভুল মাস্টার পাসকোড!",
         copiedCode: "আমন্ত্রণ কোড কপি করা হয়েছে!",
-        passUpdated: "পাসওয়ার্ড সফলভাবে আপডেট হয়েছে! নতুন পাসওয়ার্ড দিয়ে লগইন করুন।",
+        passUpdated: "পাসওয়ার্ড সফলভাবে আপডেট হয়েছে! নতুন পাসওয়ার্ড ব্যবহার করুন।",
         oldPassMismatch: "পুরনো পাসওয়ার্ড মিলেনি!",
-        passMinLength: "পাসওয়ার্ড অন্তত ৪ অক্ষরের হতে হবে!",
+        passMinLength: "পাসওয়ার্ড কমপক্ষে ৪ অক্ষরের হতে হবে!",
         explanationNav: "ব্যাখ্যা উপলব্ধ নয়।",
-        correctHeader: "✓ সঠিক উত্তর! দারুন হয়েছে।",
-        wrongHeader: "✗ ভুল উত্তর! সঠিক উত্তর: Option ",
+        correctHeader: " সঠিক উত্তর! চমৎকার।",
+        wrongHeader: " ভুল উত্তর! সঠিক উত্তর: Option ",
         explanationTitle: "ব্যাখ্যা",
-        lifelineUsed: "আপনি এই লাইফলাইনটি আগেই ব্যবহার করেছেন!",
-        freezeActive: "টাইম ফ্রিজ! টাইমে ১৫ সেকেন্ড যোগ করা হয়েছে।",
-        signupSuccess: "অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! এখন নতুন পাসওয়ার্ড দিয়ে লগইন করুন।"
+        lifelineUsed: "আপনি ইতিমধ্যে এই লাইফলাইন ব্যবহার করেছেন!",
+        freezeActive: "টাইম ফ্রিজ! টাইমার আরও ১৫ সেকেন্ড বাড়ানো হয়েছে।",
+        signupSuccess: "একাউন্ট সফলভাবে তৈরি হয়েছে! দয়া করে নতুন পাসওয়ার্ড দিয়ে লগইন করুন।"
     },
     en: {
         fillAllFields: "Please fill in all required fields!",
@@ -78,8 +78,8 @@ const i18n = {
         oldPassMismatch: "Old password does not match!",
         passMinLength: "Password must be at least 4 characters long!",
         explanationNav: "Explanation not available.",
-        correctHeader: "✓ Correct Answer! Well done.",
-        wrongHeader: "✗ Incorrect! Correct Answer: Option ",
+        correctHeader: " Correct Answer! Well done.",
+        wrongHeader: " Incorrect! Correct Answer: Option ",
         explanationTitle: "Explanation",
         lifelineUsed: "You have already used this lifeline!",
         freezeActive: "Time Frozen! 15 seconds added to timer.",
@@ -234,7 +234,7 @@ function updatePlayerProfileUI(userData) {
     const headerTrialElem = document.getElementById('header-trial-days');
     const langTrialElem = document.getElementById('lang-trial-days');
     
-    const dayText = curLang === 'bn' ? `ট্রায়াল: ${remainingDays} দিন` : `Trial: ${remainingDays} Days`;
+    const dayText = curLang === 'bn' ? `মেয়াদ: ${remainingDays} দিন` : `Trial: ${remainingDays} Days`;
     if (headerTrialElem) headerTrialElem.innerText = dayText;
     if (langTrialElem) langTrialElem.innerText = dayText;
 }
@@ -251,6 +251,7 @@ function togglePasswordVisibility(fieldId, iconElem) {
         if (iconElem) iconElem.innerText = 'দেখুন';
     }
 }
+
 // Merge Custom Admin Questions into Main Question Pool
 function loadCustomAdminQuestions() {
     try {
@@ -295,8 +296,6 @@ function autoFixAndParseObj(rawText) {
     }
 }
 
-// Applies any Admin-panel edits/deletions (stored locally) on top of the
-// base questions.json pool, before custom admin-added questions are merged in.
 function applyAdminOverridesAndDeletions() {
     try {
         const overrides = JSON.parse(localStorage.getItem('kbc_question_overrides') || '{}');
@@ -310,7 +309,6 @@ function applyAdminOverridesAndDeletions() {
     }
 }
 
-// External JSON Question Bank Loader
 async function loadQuestionBank() {
     try {
         const response = await fetch('questions.json');
@@ -371,7 +369,6 @@ async function loadQuestionBank() {
     }
 }
 
-// Speech Recognition Engine
 function initVoice() {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -420,10 +417,10 @@ function processVoiceCommand(cmd) {
     if (!canAnswer) return;
     
     const mappings = {
-        'a': 0, 'এ': 0, '১': 0, 'one': 0, 'প্রথম': 0, 'option a': 0, 'ক': 0, '1': 0, 'a': 0,
-        'b': 1, 'বি': 1, '২': 1, 'two': 1, 'দ্বিতীয়': 1, 'option b': 1, 'খ': 1, '2': 1, 'b': 1,
-        'c': 2, 'সি': 2, '৩': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2, 'গ': 2, '3': 2, 'c': 2,
-        'd': 3, 'ডি': 3, '৪': 3, 'four': 3, 'চতুর্থ': 3, 'option d': 3, 'ঘ': 3, '4': 3, 'd': 3
+        'a': 0, 'এ': 0, '১': 0, 'one': 0, 'অপশন এ': 0, 'ক': 0, '1': 0, 'a': 0,
+        'b': 1, 'বি': 1, '২': 1, 'two': 1, 'অপশন বি': 1, 'খ': 1, '2': 1, 'b': 1,
+        'c': 2, 'সি': 2, '৩': 2, 'three': 2, 'অপশন সি': 2, 'গ': 2, '3': 2, 'c': 2,
+        'd': 3, 'ডি': 3, '৪': 3, 'four': 3, 'অপশন ডি': 3, 'ঘ': 3, '4': 3, 'd': 3
     };
     
     for (let key in mappings) {
@@ -441,13 +438,13 @@ function toggleMute() {
     
     if (isMuted) {
         if (bg) bg.pause();
-        if (label) label.innerText = curLang === 'bn' ? 'মিউট' : 'Unmute';
+        if (label) label.innerText = curLang === 'bn' ? 'সাউন্ড' : 'Unmute';
         if (window.speechSynthesis) window.speechSynthesis.cancel();
     } else {
         if (bg && document.getElementById('scr-game') && document.getElementById('scr-game').classList.contains('active')) {
             bg.play().catch(e => console.log("Audio play blocked"));
         }
-        if (label) label.innerText = curLang === 'bn' ? 'সাউন্ড' : 'Mute';
+        if (label) label.innerText = curLang === 'bn' ? 'মিউট' : 'Mute';
     }
 }
 
@@ -514,6 +511,7 @@ function switchAuthTab(type) {
         }
     }
 }
+
 function loginUser() {
     const userOrPhone = document.getElementById('login-phone') ? document.getElementById('login-phone').value.trim() : '';
     const pass = document.getElementById('login-pass') ? document.getElementById('login-pass').value.trim() : '';
@@ -603,8 +601,6 @@ function checkUserTrialAndProceed(userData) {
     }
 }
 
-// Sign Up no longer auto-logs the user into the game — it saves the account,
-// then sends them back to the Login tab so they must actively log in.
 function registerUser() {
     const nameElem = document.getElementById('signup-name');
     const phoneElem = document.getElementById('signup-phone');
@@ -623,7 +619,7 @@ function registerUser() {
 
     if (localStorage.getItem('kbc_user_account_' + username)) {
         alert(curLang === 'bn'
-            ? 'এই ইউজারনেমটি ইতিমধ্যে ব্যবহৃত হয়েছে! অন্য একটি ইউজারনেম দিয়ে চেষ্টা করুন।'
+            ? 'এই ইউজারনেমের অ্যাকাউন্ট ইতিমধ্যে তৈরি রয়েছে! দয়া করে অন্য একটি নাম দিয়ে চেষ্টা করুন।'
             : 'This username is already taken! Please try another one.');
         return;
     }
@@ -652,12 +648,11 @@ function registerUser() {
     }
     localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
 
-    // Sync this player to Google Sheet via networkadapter.js so the Admin
-    // panel (even on a different device) can eventually see them too.
+    // এখানে পাসওয়ার্ড পাঠানো হলো যাতে গুগল শিটে পাসওয়ার্ড ব্ল্যাঙ্ক না থাকে
     if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.registerPlayer === 'function') {
         window.KBCNetworkAdapter.registerPlayer(username, name, phone, 0, function(res) {
             // Sync happens in the background; no UI action needed here.
-        });
+        }, pass);
     }
 
     if (nameElem) nameElem.value = '';
@@ -675,8 +670,6 @@ function registerUser() {
     if (loginPassElem) loginPassElem.value = '';
     if (loginPassElem) loginPassElem.focus();
 }
-
-// ================= FORGOT PASSWORD (single, correct version) =================
 
 function openForgotPassModal() {
     forgotPassVerified = false;
@@ -717,7 +710,7 @@ function verifyAndResetPassword() {
         const newPassGroup = document.getElementById('new-pass-group');
         if (newPassGroup) newPassGroup.style.display = 'block';
         const btn = document.getElementById('btn-verify-forgot');
-        if (btn) btn.innerText = 'নতুন পাসওয়ার্ড সেভ করুন';
+        if (btn) btn.innerText = 'নতুন পাসওয়ার্ড সেট করুন';
         return;
     }
 
@@ -737,7 +730,6 @@ function verifyAndResetPassword() {
     closeForgotPassModal();
 }
 
-// Optimized Promo Code Handler
 function handlePromoSubmit() {
     const codeInput = document.getElementById('promoInput');
     if (!codeInput) return;
@@ -770,6 +762,7 @@ function handlePromoSubmit() {
         alert(t('invalidPromo'));
     }
 }
+
 function selectLanguage(l) {
     curLang = l;
     show('scr-subject');
@@ -848,7 +841,7 @@ function loadQ() {
         if (slabScore) slabScore.innerText = score;
         if (slabMsg) {
             slabMsg.innerText = curLang === 'bn' 
-                ? `অভিনন্দন! আপনি ${curIdx}টি প্রশ্ন সফলভাবে সম্পন্ন করেছেন!` 
+                ? `অভিনন্দন! আপনি ${curIdx}টি প্রশ্নের সঠিক উত্তর সফলভাবে দিয়েছেন!` 
                 : `You have successfully completed ${curIdx} questions!`;
         }
         triggerConfettiFX();
@@ -963,8 +956,6 @@ function check(idx) {
         if (opts[q.ans]) opts[q.ans].classList.add('correct');
     }
 
-    // Give the player ~1 second to see the red/green highlight before the
-    // explanation popup appears.
     setTimeout(() => {
         showExplanationModal(q, isCorrect);
     }, 1000);
@@ -998,9 +989,6 @@ function showExplanationModal(q, isCorrect) {
     }, 6000);
 }
 
-// Called by BOTH the auto-timer above AND the "পরবর্তী প্রশ্ন (Continue)" button.
-// This is the fix for the game "hanging" — previously the button only closed
-// the modal without ever moving to the next question.
 function proceedToNextQuestion() {
     const modal = document.getElementById("modal-explanation");
     if (modal) modal.style.display = "none";
@@ -1012,7 +1000,6 @@ function proceedToNextQuestion() {
     loadQ();
 }
 
-// Kept so the HTML button's onclick="closeExplanationModal()" still works.
 function closeExplanationModal() {
     proceedToNextQuestion();
 }

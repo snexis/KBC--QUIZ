@@ -216,7 +216,6 @@ function checkSavedSession() {
    show('scr-login');
         loadSavedCredentials();
     }
-
 function loadSavedCredentials() {
     const savedUser = localStorage.getItem('kbc_saved_username');
     const savedPass = localStorage.getItem('kbc_saved_password');
@@ -230,6 +229,26 @@ function loadSavedCredentials() {
         if (phoneElem) phoneElem.value = savedUser;
         if (passElem) passElem.value = savedPass || '';
         if (rememberElem) rememberElem.checked = true;
+    }
+}
+
+function checkUserTrialAndProceed(userData) {
+    if (!userData) {
+        show('scr-login');
+        return;
+    }
+    const now = Date.now();
+    const registeredOn = userData.regTimestamp || now;
+    const allowedDays = userData.trialDays || 5;
+    const elapsedDays = (now - registeredOn) / (1000 * 60 * 60 * 24);
+
+    if (elapsedDays > allowedDays) {
+        alert(t('trialExpired'));
+        const promoSec = document.getElementById('promo-section');
+        if (promoSec) promoSec.style.display = 'block';
+        show('scr-login');
+    } else {
+        show('scr-lang');
     }
 }
 

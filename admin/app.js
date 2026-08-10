@@ -430,7 +430,7 @@ function renderPlayersTable(playerList, isFromSheet) {
         const formattedScore = typeof playerScore === 'number' ?  + playerScore.toLocaleString() : playerScore;
         const playerStatus = player.status || 'Active';
         const isBlocked = playerStatus === 'Blocked';
-        const playerPass = player.pass || 'N/A';
+      const playerPass = player.password || player.pass || 'N/A';
 
         html += `
             <tr>

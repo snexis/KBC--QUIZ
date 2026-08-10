@@ -1084,6 +1084,7 @@ function useLifeline(type) {
 function check(idx) {
     if (!canAnswer) return;
     canAnswer = false;
+    questionStartGuard = false;
     clearInterval(timerInt);
 
     const q = activeQuestions[curIdx];

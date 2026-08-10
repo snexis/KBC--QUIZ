@@ -985,13 +985,23 @@ function loadQ() {
         });
     }
 
-    if (!isMuted && ('speechSynthesis' in window)) {
-        speak(speechText, startQuestionTimer);
+ if (!isMuted && ('speechSynthesis' in window)) {
+        speak(speechText, startQuestionTimerOnce);
+        // Safety valve: if speech synthesis silently hangs (a known browser
+        // bug), force the timer to start anyway after 8 seconds so the game
+        // never gets permanently stuck.
+        setTimeout(startQuestionTimerOnce, 8000);
     } else {
-        startQuestionTimer();
+        startQuestionTimerOnce();
     }
 }
 
+let questionStartGuard = false;
+function startQuestionTimerOnce() {
+    if (questionStartGuard) return;
+    questionStartGuard = true;
+    startQuestionTimer();
+}
 // Begins the countdown — only called AFTER the question has been fully
 // narrated (or immediately if voice is muted/unavailable).
 function startQuestionTimer() {

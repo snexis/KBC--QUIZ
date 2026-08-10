@@ -1,5 +1,7 @@
 // ==========================================
-// KBC PREMIUM 2026 - COMPLETE APP LOGIC (FIXED NAVIGATION, PROMO & SOUND LOGIC)
+// KBC PREMIUM 2026 - COMPLETE APP LOGIC
+// Now with: Sheet-based Login/Signup, live Block detection,
+// clean "no questions" screen, and fixed game-hang/timing.
 // ==========================================
 
 let curLang = 'bn';
@@ -19,11 +21,10 @@ let currentSlabCount = 0;
 let fullQuestionPool = [];
 let explanationTimer = null;
 let forgotPassVerified = false;
+let blockCheckInterval = null;
 
-// Track failed login attempts per user ID
 let failedLoginAttempts = {};
 
-// Active Lifelines State
 let lifelinesUsed = {
     fiftyFifty: false,
     audiencePoll: false,
@@ -31,33 +32,35 @@ let lifelinesUsed = {
     timeFreeze: false
 };
 
-// Central i18n Translations Dictionary
 const i18n = {
     bn: {
-        fillAllFields: "??? ??? ?? ????????? ?????? ???? ????!",
-        validCredentials: "???? ????? ???? ??? ?????????? ???!",
-        loginSuccess: "???? ??? ?????!",
-        invalidCredentials: "??? ????? ???? ?? ?????????!",
-        maxFailedAttempts: "? ??? ??? ????????? ????? ?????! ????????? ???????????? ???? ?????????? ??? ??????",
-        trialExpired: "????? ??????? ??? ??? ??? ????! ??????? ??? ???? ??????? ?????? ??? ????",
-        promoSuccess: "?????? ??? ??????? ??? ?????!",
-        invalidPromo: "??? ?????? ???!",
-        loginFirst: "?????? ???? ?? ???? ?? ????!",
-        confirmExit: "???? ?? ??????????? ??? ???? ??? ??? ????",
-        confirmLogout: "???? ?? ??????????? ????? ???? ????",
-        adminActive: "???????? ????? ??? ?????????????!",
-        wrongPasscode: "??? ??????? ??????!",
-        copiedCode: "???????? ??? ??? ??? ?????!",
-        passUpdated: "????????? ??????? ????? ?????! ???? ????????? ???? ???? ?????",
-        oldPassMismatch: "????? ????????? ??????!",
-        passMinLength: "????????? ????? ? ??????? ??? ???!",
-        explanationNav: "???????? ?????? ???",
-        correctHeader: "? ???? ?????! ????? ??????",
-        wrongHeader: "? ??? ?????! ???? ?????: Option ",
-        explanationTitle: "????????",
-        lifelineUsed: "???? ?? ?????????? ???? ??????? ??????!",
-        freezeActive: "???? ?????! ????? ?? ??????? ??? ??? ??????",
-        signupSuccess: "?????????? ??????? ???? ?????! ??? ???? ????????? ???? ???? ?????"
+        fillAllFields: "দয়া করে সমস্ত ফিল্ড পূরণ করুন!",
+        validCredentials: "ইউজার আইডি এবং পাসওয়ার্ড সঠিকভাবে দিন!",
+        loginSuccess: "লগইন সফল হয়েছে!",
+        invalidCredentials: "ভুল আইডি বা পাসওয়ার্ড!",
+        maxFailedAttempts: "পরপর ৩ বার ভুল পাসওয়ার্ড দেওয়া হয়েছে! অ্যাকাউন্ট সুরক্ষায় পাসওয়ার্ড রিকভারি পেজে পাঠানো হচ্ছে।",
+        trialExpired: "আপনার ট্রায়ালের মেয়াদ শেষ হয়ে গেছে! অনুগ্রহ করে প্রমো কোড ব্যবহার করুন।",
+        promoSuccess: "প্রোমো কোড সফল হয়েছে!",
+        invalidPromo: "অবৈধ প্রোমো কোড!",
+        loginFirst: "প্রথমে লগইন অথবা সাইন-আপ করুন!",
+        confirmExit: "আপনি কি খেলা ছেড়ে বাইরে যেতে চান?",
+        confirmLogout: "আপনি কি নিশ্চিত যে আপনি লগআউট করতে চান?",
+        adminActive: "অ্যাডমিন টেস্ট মোড সক্রিয় হয়েছে!",
+        wrongPasscode: "ভুল মাস্টার পাসকোড!",
+        copiedCode: "ইনভাইট কোড কপি করা হয়েছে!",
+        passUpdated: "পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে! এখন নতুন পাসওয়ার্ড দিয়ে ব্যবহার করুন।",
+        oldPassMismatch: "পুরাতন পাসওয়ার্ড সঠিক নয়!",
+        passMinLength: "পাসওয়ার্ড অন্তত ৪ অক্ষরের হতে হবে!",
+        explanationNav: "ব্যাখ্যা উপলব্ধ নেই।",
+        correctHeader: "✓ চমৎকার! আপনার উত্তর সঠিক হয়েছে।",
+        wrongHeader: "✗ ভুল উত্তর! সঠিক উত্তর: Option ",
+        explanationTitle: "ব্যাখ্যা",
+        lifelineUsed: "এই লাইফলাইনটি আপনি ইতিপূর্বে ব্যবহার করেছেন!",
+        freezeActive: "সময় থমকে গেছে! অতিরিক্ত ১৫ সেকেন্ড যোগ করা হলো।",
+        signupSuccess: "অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে! এখন আপনার পাসওয়ার্ড দিয়ে লগইন করুন।",
+        usernameExists: "এই ইউজারনেমটি ইতিমধ্যে ব্যবহৃত হয়েছে! অন্য একটি ইউজারনেম চেষ্টা করুন।",
+        internetRequired: "সাইন আপ এবং লগইন করতে ইন্টারনেট সংযোগ প্রয়োজন।",
+        accountBlocked: "⛔ আপনার আইডি এডমিন কর্তৃক ব্লক করা হয়েছে!"
     },
     en: {
         fillAllFields: "Please fill in all required fields!",
@@ -78,12 +81,15 @@ const i18n = {
         oldPassMismatch: "Old password does not match!",
         passMinLength: "Password must be at least 4 characters long!",
         explanationNav: "Explanation not available.",
-        correctHeader: "? Correct Answer! Well done.",
-        wrongHeader: "? Incorrect! Correct Answer: Option ",
+        correctHeader: "✓ Correct Answer! Well done.",
+        wrongHeader: "✗ Incorrect! Correct Answer: Option ",
         explanationTitle: "Explanation",
         lifelineUsed: "You have already used this lifeline!",
         freezeActive: "Time Frozen! 15 seconds added to timer.",
-        signupSuccess: "Account created successfully! Please login with your new password."
+        signupSuccess: "Account created successfully! Please login with your new password.",
+        usernameExists: "This username is already taken! Please try another one.",
+        internetRequired: "An internet connection is required to sign up and login.",
+        accountBlocked: "⛔ Your ID has been blocked by admin!"
     }
 };
 
@@ -182,7 +188,7 @@ function checkSavedSession() {
     if (isAdminTestMode()) {
         const adminTestUser = {
             id: 'admin_tester',
-            name: (curLang === 'bn') ? '???????? ???????' : 'Admin Tester',
+            name: (curLang === 'bn') ? 'অ্যাডমিন টেস্টার' : 'Admin Tester',
             username: 'admin_tester',
             role: 'admin',
             regTimestamp: Date.now(),
@@ -203,6 +209,7 @@ function checkSavedSession() {
             const userData = JSON.parse(savedUserRaw);
             updatePlayerProfileUI(userData);
             checkUserTrialAndProceed(userData);
+            startBlockStatusMonitor();
             return;
         }
     }
@@ -234,7 +241,7 @@ function updatePlayerProfileUI(userData) {
     const headerTrialElem = document.getElementById('header-trial-days');
     const langTrialElem = document.getElementById('lang-trial-days');
     
-    const dayText = curLang === 'bn' ? `???????: ${remainingDays} ???` : `Trial: ${remainingDays} Days`;
+    const dayText = curLang === 'bn' ? `মেয়াদ: ${remainingDays} দিন` : `Trial: ${remainingDays} Days`;
     if (headerTrialElem) headerTrialElem.innerText = dayText;
     if (langTrialElem) langTrialElem.innerText = dayText;
 }
@@ -245,10 +252,10 @@ function togglePasswordVisibility(fieldId, iconElem) {
     
     if (passInput.type === 'password') {
         passInput.type = 'text';
-        if (iconElem) iconElem.innerText = '?????';
+        if (iconElem) iconElem.innerText = '👁️‍🗨️';
     } else {
         passInput.type = 'password';
-        if (iconElem) iconElem.innerText = '?????';
+        if (iconElem) iconElem.innerText = '👁️';
     }
 }
 // Merge Custom Admin Questions into Main Question Pool
@@ -276,7 +283,6 @@ function loadCustomAdminQuestions() {
     }
 }
 
-// Automatic Syntax Recovery & Robust JSON Parser
 function autoFixAndParseObj(rawText) {
     let cleanText = rawText.trim();
     if (cleanText.endsWith(',')) {
@@ -295,8 +301,6 @@ function autoFixAndParseObj(rawText) {
     }
 }
 
-// Applies any Admin-panel edits/deletions (stored locally) on top of the
-// base questions.json pool, before custom admin-added questions are merged in.
 function applyAdminOverridesAndDeletions() {
     try {
         const overrides = JSON.parse(localStorage.getItem('kbc_question_overrides') || '{}');
@@ -310,7 +314,6 @@ function applyAdminOverridesAndDeletions() {
     }
 }
 
-// External JSON Question Bank Loader
 async function loadQuestionBank() {
     try {
         const response = await fetch('questions.json');
@@ -420,10 +423,10 @@ function processVoiceCommand(cmd) {
     if (!canAnswer) return;
     
     const mappings = {
-        'a': 0, '?': 0, '?': 0, 'one': 0, '?????': 0, 'option a': 0, '?': 0, '1': 0, 'a': 0,
-        'b': 1, '??': 1, '?': 1, 'two': 1, '????????': 1, 'option b': 1, '?': 1, '2': 1, 'b': 1,
-        'c': 2, '??': 2, '?': 2, 'three': 2, '??????': 2, 'option c': 2, '?': 2, '3': 2, 'c': 2,
-        'd': 3, '??': 3, '?': 3, 'four': 3, '??????': 3, 'option d': 3, '?': 3, '4': 3, 'd': 3
+        'a': 0, 'এ': 0, 'এক': 0, 'one': 0, 'প্রথম': 0, 'option a': 0, '১': 0, '1': 0, 'ক': 0,
+        'b': 1, 'বি': 1, 'দুই': 1, 'two': 1, 'দ্বিতীয়': 1, 'option b': 1, '২': 1, '2': 1, 'খ': 1,
+        'c': 2, 'সি': 2, 'তিন': 2, 'three': 2, 'তৃতীয়': 2, 'option c': 2, '৩': 2, '3': 2, 'গ': 2,
+        'd': 3, 'ডি': 3, 'চার': 3, 'four': 3, 'চতুর্থ': 3, 'option d': 3, '৪': 3, '4': 3, 'ঘ': 3
     };
     
     for (let key in mappings) {
@@ -441,13 +444,13 @@ function toggleMute() {
     
     if (isMuted) {
         if (bg) bg.pause();
-        if (label) label.innerText = curLang === 'bn' ? '????' : 'Unmute';
+        if (label) label.innerText = curLang === 'bn' ? 'আনমিউট' : 'Unmute';
         if (window.speechSynthesis) window.speechSynthesis.cancel();
     } else {
         if (bg && document.getElementById('scr-game') && document.getElementById('scr-game').classList.contains('active')) {
             bg.play().catch(e => console.log("Audio play blocked"));
         }
-        if (label) label.innerText = curLang === 'bn' ? '??????' : 'Mute';
+        if (label) label.innerText = curLang === 'bn' ? 'সাউন্ড' : 'Mute';
     }
 }
 
@@ -467,6 +470,7 @@ function logoutUser() {
     if (confirm(t('confirmLogout'))) {
         clearInterval(timerInt);
         if (explanationTimer) clearTimeout(explanationTimer);
+        if (blockCheckInterval) clearInterval(blockCheckInterval);
         const bg = document.getElementById('bg-music');
         if (bg) bg.pause();
         if (window.speechSynthesis) window.speechSynthesis.cancel();
@@ -514,97 +518,8 @@ function switchAuthTab(type) {
         }
     }
 }
-function loginUser() {
-    const userOrPhone = document.getElementById('login-phone') ? document.getElementById('login-phone').value.trim() : '';
-    const pass = document.getElementById('login-pass') ? document.getElementById('login-pass').value.trim() : '';
-    const rememberMe = document.getElementById('remember-me') ? document.getElementById('remember-me').checked : false;
 
-    if (!userOrPhone || !pass) {
-        alert(t('validCredentials'));
-        return;
-    }
-
-    const savedUserRaw = localStorage.getItem('kbc_user_account_' + userOrPhone);
-    if (savedUserRaw) {
-        const userData = JSON.parse(savedUserRaw);
-        if (userData.pass === pass) {
-            failedLoginAttempts[userOrPhone] = 0;
-
-            localStorage.setItem('kbc_current_user', userOrPhone);
-            localStorage.setItem('kbc_login_session', 'active');
-
-            if (rememberMe) {
-                localStorage.setItem('kbc_saved_username', userOrPhone);
-                localStorage.setItem('kbc_saved_password', pass);
-                localStorage.setItem('kbc_remember_flag', 'true');
-            } else {
-                localStorage.removeItem('kbc_saved_username');
-                localStorage.removeItem('kbc_saved_password');
-                localStorage.removeItem('kbc_remember_flag');
-            }
-
-            updatePlayerProfileUI(userData);
-            playSound('alert');
-            checkUserTrialAndProceed(userData);
-            return;
-        }
-    }
-
-    failedLoginAttempts[userOrPhone] = (failedLoginAttempts[userOrPhone] || 0) + 1;
-
-    if (failedLoginAttempts[userOrPhone] >= 3) {
-        alert(t('maxFailedAttempts'));
-        failedLoginAttempts[userOrPhone] = 0;
-        openForgotPassModal();
-        const forgotUserElem = document.getElementById('forgot-username');
-        if (forgotUserElem) forgotUserElem.value = userOrPhone;
-        return;
-    }
-
-    alert(`${t('invalidCredentials')} (${failedLoginAttempts[userOrPhone]}/3)`);
-}
-
-function loadSavedCredentials() {
-    const savedUser = localStorage.getItem('kbc_saved_username');
-    const savedPass = localStorage.getItem('kbc_saved_password');
-    const rememberFlag = localStorage.getItem('kbc_remember_flag');
-
-    const phoneInput = document.getElementById('login-phone');
-    const passInput = document.getElementById('login-pass');
-    const rememberCheckbox = document.getElementById('remember-me');
-
-    if (savedUser && savedPass && rememberFlag === 'true') {
-        if (phoneInput) phoneInput.value = savedUser;
-        if (passInput) passInput.value = savedPass;
-        if (rememberCheckbox) rememberCheckbox.checked = true;
-    }
-}
-
-function checkUserTrialAndProceed(userData) {
-    if (userData.role === 'admin') {
-        show('scr-lang');
-        return;
-    }
-
-    const now = Date.now();
-    const registeredOn = userData.regTimestamp || now;
-    const allowedDays = userData.trialDays || 5;
-    const elapsedDays = (now - registeredOn) / (1000 * 60 * 60 * 24);
-
-    const promoSec = document.getElementById('promo-section');
-
-    if (elapsedDays > allowedDays) {
-        if (promoSec) promoSec.style.display = 'block';
-        alert(t('trialExpired'));
-        show('scr-login');
-    } else {
-        if (promoSec) promoSec.style.display = 'none';
-        show('scr-lang');
-    }
-}
-
-// Sign Up no longer auto-logs the user into the game — it saves the account,
-// then sends them back to the Login tab so they must actively log in.
+// ================= SIGN UP (via shared Google Sheet) =================
 function registerUser() {
     const nameElem = document.getElementById('signup-name');
     const phoneElem = document.getElementById('signup-phone');
@@ -621,61 +536,138 @@ function registerUser() {
         return;
     }
 
-    if (localStorage.getItem('kbc_user_account_' + username)) {
-        alert(curLang === 'bn'
-            ? '?? ?????????? ???????? ??????? ?????! ???? ???? ???????? ???? ?????? ?????'
-            : 'This username is already taken! Please try another one.');
+    if (!navigator.onLine || !window.KBCNetworkAdapter || typeof window.KBCNetworkAdapter.registerPlayer !== 'function') {
+        alert(t('internetRequired'));
         return;
     }
 
-    const userData = {
-        id: username,
-        name: name,
-        phone: phone,
-        username: username,
-        pass: pass,
-        role: 'player',
-        regTimestamp: Date.now(),
-        trialDays: 5,
-        highScore: 0,
-        status: 'Active'
-    };
+    window.KBCNetworkAdapter.registerPlayer(username, name, phone, pass, 5, function (res) {
+        if (res && res.status === 'success') {
+            // Also keep a local copy for offline convenience on THIS device
+            const userData = {
+                id: username, name: name, phone: phone, username: username, pass: pass,
+                role: 'player', regTimestamp: Date.now(), trialDays: 5, highScore: 0, status: 'Active'
+            };
+            localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
 
-    localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
+            if (nameElem) nameElem.value = '';
+            if (phoneElem) phoneElem.value = '';
+            if (passElem) passElem.value = '';
+            if (userElem) userElem.value = '';
 
-    let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-    const existingIndex = realPlayers.findIndex(p => p.id === username || p.username === username);
-    if (existingIndex >= 0) {
-        realPlayers[existingIndex] = userData;
-    } else {
-        realPlayers.push(userData);
-    }
-    localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
+            alert(t('signupSuccess'));
+            switchAuthTab('login');
 
-    // Sync this player to Google Sheet via networkadapter.js so the Admin
-    // panel (even on a different device) can eventually see them too.
-    if (window.KBCNetworkAdapter && typeof window.KBCNetworkAdapter.registerPlayer === 'function') {
-        window.KBCNetworkAdapter.registerPlayer(username, name, phone, 0, function(res) {
-            // Sync happens in the background; no UI action needed here.
-        });
-    }
+            const loginPhoneElem = document.getElementById('login-phone');
+            if (loginPhoneElem) loginPhoneElem.value = username;
+            const loginPassElem = document.getElementById('login-pass');
+            if (loginPassElem) { loginPassElem.value = ''; loginPassElem.focus(); }
 
-    if (nameElem) nameElem.value = '';
-    if (phoneElem) phoneElem.value = '';
-    if (passElem) passElem.value = '';
-    if (userElem) userElem.value = '';
-
-    alert(t('signupSuccess'));
-
-    switchAuthTab('login');
-
-    const loginPhoneElem = document.getElementById('login-phone');
-    if (loginPhoneElem) loginPhoneElem.value = username;
-    const loginPassElem = document.getElementById('login-pass');
-    if (loginPassElem) loginPassElem.value = '';
-    if (loginPassElem) loginPassElem.focus();
+        } else if (res && res.message === 'Username already exists') {
+            alert(t('usernameExists'));
+        } else {
+            alert(t('invalidCredentials'));
+        }
+    });
 }
 
+// ================= LOGIN (via shared Google Sheet — works cross-device) =================
+function loginUser() {
+    const userOrPhone = document.getElementById('login-phone') ? document.getElementById('login-phone').value.trim() : '';
+    const pass = document.getElementById('login-pass') ? document.getElementById('login-pass').value.trim() : '';
+    const rememberMe = document.getElementById('remember-me') ? document.getElementById('remember-me').checked : false;
+
+    if (!userOrPhone || !pass) {
+        alert(t('validCredentials'));
+        return;
+    }
+
+    if (!navigator.onLine || !window.KBCNetworkAdapter || typeof window.KBCNetworkAdapter.loginUser !== 'function') {
+        alert(t('internetRequired'));
+        return;
+    }
+
+    window.KBCNetworkAdapter.loginUser(userOrPhone, pass, function (res) {
+        if (res && res.status === 'success' && res.player) {
+            failedLoginAttempts[userOrPhone] = 0;
+
+            const userData = {
+                id: res.player.userId,
+                name: res.player.name,
+                phone: res.player.phone,
+                username: res.player.userId,
+                pass: pass,
+                role: 'player',
+                regTimestamp: res.player.regTimestamp || Date.now(),
+                trialDays: res.player.trialDays || 5,
+                highScore: res.player.score || 0,
+                status: 'Active'
+            };
+            localStorage.setItem('kbc_user_account_' + userOrPhone, JSON.stringify(userData));
+            localStorage.setItem('kbc_current_user', userOrPhone);
+            localStorage.setItem('kbc_login_session', 'active');
+
+            if (rememberMe) {
+                localStorage.setItem('kbc_saved_username', userOrPhone);
+                localStorage.setItem('kbc_saved_password', pass);
+                localStorage.setItem('kbc_remember_flag', 'true');
+            } else {
+                localStorage.removeItem('kbc_saved_username');
+                localStorage.removeItem('kbc_saved_password');
+                localStorage.removeItem('kbc_remember_flag');
+            }
+
+            updatePlayerProfileUI(userData);
+            playSound('alert');
+            checkUserTrialAndProceed(userData);
+            startBlockStatusMonitor();
+
+        } else if (res && res.status === 'blocked') {
+            alert(t('accountBlocked'));
+
+        } else {
+            failedLoginAttempts[userOrPhone] = (failedLoginAttempts[userOrPhone] || 0) + 1;
+
+            if (failedLoginAttempts[userOrPhone] >= 3) {
+                alert(t('maxFailedAttempts'));
+                failedLoginAttempts[userOrPhone] = 0;
+                openForgotPassModal();
+                const forgotUserElem = document.getElementById('forgot-username');
+                if (forgotUserElem) forgotUserElem.value = userOrPhone;
+                return;
+            }
+            alert(`${t('invalidCredentials')} (${failedLoginAttempts[userOrPhone]}/3)`);
+        }
+    });
+}
+
+// Polls the shared Sheet every 15s while a player is logged in — if the
+// admin blocks them mid-game, they are kicked out immediately.
+function startBlockStatusMonitor() {
+    if (blockCheckInterval) clearInterval(blockCheckInterval);
+
+    blockCheckInterval = setInterval(() => {
+        const currentUser = localStorage.getItem('kbc_current_user');
+        if (!currentUser || !navigator.onLine || !window.KBCNetworkAdapter) return;
+
+        window.KBCNetworkAdapter.getAllPlayers(function (res) {
+            if (res && res.status === 'success' && Array.isArray(res.players)) {
+                const me = res.players.find(p => p.userId === currentUser);
+                if (me && me.status === 'Blocked') {
+                    clearInterval(blockCheckInterval);
+                    clearInterval(timerInt);
+                    if (explanationTimer) clearTimeout(explanationTimer);
+                    const bg = document.getElementById('bg-music');
+                    if (bg) bg.pause();
+                    localStorage.removeItem('kbc_login_session');
+                    localStorage.removeItem('kbc_current_user');
+                    alert(t('accountBlocked'));
+                    show('scr-login');
+                }
+            }
+        });
+    }, 15000);
+}
 // ================= FORGOT PASSWORD (single, correct version) =================
 
 function openForgotPassModal() {
@@ -685,7 +677,7 @@ function openForgotPassModal() {
     const newPassGroup = document.getElementById('new-pass-group');
     if (newPassGroup) newPassGroup.style.display = 'none';
     const btn = document.getElementById('btn-verify-forgot');
-    if (btn) btn.innerText = '????? ????';
+    if (btn) btn.innerText = 'যাচাই করুন';
 }
 
 function closeForgotPassModal() {
@@ -703,21 +695,26 @@ function verifyAndResetPassword() {
             alert(t('fillAllFields'));
             return;
         }
-        const savedUserRaw = localStorage.getItem('kbc_user_account_' + username);
-        if (!savedUserRaw) {
-            alert(t('invalidCredentials'));
+        if (!navigator.onLine || !window.KBCNetworkAdapter) {
+            alert(t('internetRequired'));
             return;
         }
-        const userData = JSON.parse(savedUserRaw);
-        if (userData.phone !== phone) {
-            alert(t('invalidCredentials'));
-            return;
-        }
-        forgotPassVerified = true;
-        const newPassGroup = document.getElementById('new-pass-group');
-        if (newPassGroup) newPassGroup.style.display = 'block';
-        const btn = document.getElementById('btn-verify-forgot');
-        if (btn) btn.innerText = '???? ?????????? ??? ????';
+        window.KBCNetworkAdapter.getAllPlayers(function (res) {
+            if (res && res.status === 'success' && Array.isArray(res.players)) {
+                const found = res.players.find(p => p.userId === username && p.phone === phone);
+                if (!found) {
+                    alert(t('invalidCredentials'));
+                    return;
+                }
+                forgotPassVerified = true;
+                const newPassGroup = document.getElementById('new-pass-group');
+                if (newPassGroup) newPassGroup.style.display = 'block';
+                const btn = document.getElementById('btn-verify-forgot');
+                if (btn) btn.innerText = 'নতুন পাসওয়ার্ড সেভ করুন';
+            } else {
+                alert(t('invalidCredentials'));
+            }
+        });
         return;
     }
 
@@ -727,10 +724,16 @@ function verifyAndResetPassword() {
         return;
     }
 
+    // NOTE: Actually writing the new password back to the Sheet requires an
+    // UPDATE_PASSWORD action (not yet added to Apps Script). For now this
+    // updates the LOCAL copy only. We'll add the Sheet-side reset together
+    // with the score-sync feature in the next small patch.
     const savedUserRaw = localStorage.getItem('kbc_user_account_' + username);
-    let userData = JSON.parse(savedUserRaw);
-    userData.pass = newPass;
-    localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
+    if (savedUserRaw) {
+        let userData = JSON.parse(savedUserRaw);
+        userData.pass = newPass;
+        localStorage.setItem('kbc_user_account_' + username, JSON.stringify(userData));
+    }
 
     alert(t('passUpdated'));
     forgotPassVerified = false;
@@ -770,6 +773,7 @@ function handlePromoSubmit() {
         alert(t('invalidPromo'));
     }
 }
+
 function selectLanguage(l) {
     curLang = l;
     show('scr-subject');
@@ -780,6 +784,7 @@ function selectSubject(subj) {
     show('scr-level');
 }
 
+// ================= GAME START (strict subject match, no more mixed-in questions) =================
 function startGameWithLevel(lvl) {
     curLevel = lvl;
     curIdx = 0; 
@@ -802,8 +807,12 @@ function startGameWithLevel(lvl) {
         return matchSubj && matchLvl;
     });
 
-    if (filtered.length === 0) {
-        filtered = fullQuestionPool;
+    // If NOT enough questions for this exact subject+level, show a friendly
+    // "coming soon" screen instead of mixing in unrelated (e.g. general
+    // knowledge) questions — never silently substitute wrong-subject content.
+    if (filtered.length < 5) {
+        showComingSoonScreen();
+        return;
     }
 
     const charMap = { 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
@@ -830,6 +839,26 @@ function startGameWithLevel(lvl) {
     loadQ();
 }
 
+// Friendly "not enough questions yet" screen — reuses the slab-cleared
+// overlay style so it feels like part of the game, not an error message.
+function showComingSoonScreen() {
+    const slabMsg = document.getElementById('slab-msg');
+    const slabScore = document.getElementById('slab-score');
+    if (slabScore) slabScore.innerText = '0';
+    if (slabMsg) {
+        slabMsg.innerText = curLang === 'bn'
+            ? '🚧 এই বিষয়ে নতুন প্রশ্ন যুক্ত হচ্ছে, খুব শীঘ্রই আসছে! ততক্ষণে অন্য একটি বিষয় বেছে নিন।'
+            : '🚧 New questions for this subject are coming soon! Please try another subject for now.';
+    }
+    const nextBtn = document.querySelector('#scr-slab-cleared .btn');
+    if (nextBtn) {
+        nextBtn.innerText = curLang === 'bn' ? 'বিষয় বদলান 🔄' : 'Change Subject 🔄';
+        nextBtn.onclick = function () { show('scr-subject'); };
+    }
+    show('scr-slab-cleared');
+}
+
+// ================= QUESTION DISPLAY: voice reads FIRST, timer starts AFTER =================
 function loadQ() {
     clearInterval(timerInt);
     if (explanationTimer) clearTimeout(explanationTimer);
@@ -848,15 +877,20 @@ function loadQ() {
         if (slabScore) slabScore.innerText = score;
         if (slabMsg) {
             slabMsg.innerText = curLang === 'bn' 
-                ? `????????! ???? ${curIdx}?? ?????? ??????? ??????? ??????!` 
+                ? `আপনি সফলভাবে ${curIdx}টি প্রশ্ন সম্পন্ন করেছেন!` 
                 : `You have successfully completed ${curIdx} questions!`;
+        }
+        const nextBtn = document.querySelector('#scr-slab-cleared .btn');
+        if (nextBtn) {
+            nextBtn.innerText = curLang === 'bn' ? 'পরবর্তী স্লাবে যান (Next Slab) 🚀' : 'Next Slab 🚀';
+            nextBtn.onclick = proceedToNextSlab;
         }
         triggerConfettiFX();
         show('scr-slab-cleared');
         return;
     }
 
-    canAnswer = true;
+    canAnswer = false; // stays false until narration finishes — see startQuestionTimer()
     const q = activeQuestions[curIdx];
 
     const diffBadge = document.getElementById('diff-badge');
@@ -872,7 +906,7 @@ function loadQ() {
         timerVal = 20;
     } else {
         if(diffBadge) diffBadge.innerText = 'ROUND 3: EXPERT';
-        timerVal = 19;
+        timerVal = 15;
     }
 
     const stCount = document.getElementById('st-count');
@@ -901,11 +935,34 @@ function loadQ() {
         }
     }
 
+    // Timer is shown but NOT counting yet — it will start once narration ends.
     const timerElem = document.getElementById('timer');
     if (timerElem) {
         timerElem.innerText = timerVal;
         timerElem.classList.remove('critical');
     }
+
+    let speechText = txt;
+    if (opts && opts.length > 0) {
+        opts.forEach((o, i) => {
+            const letter = String.fromCharCode(65 + i);
+            speechText += (curLang === 'bn') ? `. অপশন ${letter}: ${o}` : `. Option ${letter}: ${o}`;
+        });
+    }
+
+    if (!isMuted && ('speechSynthesis' in window)) {
+        speak(speechText, startQuestionTimer);
+    } else {
+        startQuestionTimer();
+    }
+}
+
+// Begins the countdown — only called AFTER the question has been fully
+// narrated (or immediately if voice is muted/unavailable).
+function startQuestionTimer() {
+    canAnswer = true;
+    clearInterval(timerInt);
+    const timerElem = document.getElementById('timer');
 
     timerInt = setInterval(() => {
         timerVal--;
@@ -922,101 +979,13 @@ function loadQ() {
         }
     }, 1000);
 
-    let speechText = txt;
-    if (opts && opts.length > 0) {
-        opts.forEach((o, i) => {
-            const letter = String.fromCharCode(65 + i);
-            speechText += (curLang === 'bn') ? `. ???? ${letter}: ${o}` : `. Option ${letter}: ${o}`;
-        });
-    }
-
-    speak(speechText);
-    if (voiceEnabled) setTimeout(startListening, 2000);
+    if (voiceEnabled) setTimeout(startListening, 500);
 }
 
 function proceedToNextSlab() {
     show('scr-game');
     loadQ();
 }
-
-function check(idx) {
-    if (!canAnswer) return;
-    canAnswer = false;
-    clearInterval(timerInt);
-
-    const q = activeQuestions[curIdx];
-    const opts = document.querySelectorAll('.option');
-    let isCorrect = (idx === q.ans);
-
-    if (isCorrect) {
-        let points = 10;
-        if (curIdx >= 10) points = 20;
-        if (curIdx >= 25) points = 50;
-        score += points;
-        cor++;
-        playSound('cor');
-        if (idx !== -1 && opts[idx]) opts[idx].classList.add('correct');
-    } else {
-        wr++;
-        playSound('wr');
-        if (idx !== -1 && opts[idx]) opts[idx].classList.add('wrong');
-        if (opts[q.ans]) opts[q.ans].classList.add('correct');
-    }
-
-    // Give the player ~1 second to see the red/green highlight before the
-    // explanation popup appears.
-    setTimeout(() => {
-        showExplanationModal(q, isCorrect);
-    }, 1000);
-}
-
-function showExplanationModal(q, isCorrect) {
-    const explanationText = curLang === "bn" ? (q.expb || q.expe || t('explanationNav')) : (q.expe || q.expb || t('explanationNav'));
-    const correctLetter = String.fromCharCode(65 + q.ans);
-
-    let statusHeader = "";
-    if (isCorrect) {
-        statusHeader = `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">${t('correctHeader')}</div>`;
-    } else {
-        statusHeader = `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">${t('wrongHeader')}${correctLetter}</div>`;
-    }
-
-    const modal = document.getElementById("modal-explanation");
-    const modalText = document.getElementById("modal-exp-text");
-    const fullHTML = statusHeader + "<hr style='margin: 8px 0; border: 0; border-top: 1px solid #ccc;'>" + "<b>" + t('explanationTitle') + ":</b><br>" + explanationText;
-
-    if (modal && modalText) {
-        modalText.innerHTML = fullHTML;
-        modal.style.display = "flex";
-    }
-
-    speak(explanationText);
-
-    if (explanationTimer) clearTimeout(explanationTimer);
-    explanationTimer = setTimeout(() => {
-        proceedToNextQuestion();
-    }, 6000);
-}
-
-// Called by BOTH the auto-timer above AND the "??????? ?????? (Continue)" button.
-// This is the fix for the game "hanging" — previously the button only closed
-// the modal without ever moving to the next question.
-function proceedToNextQuestion() {
-    const modal = document.getElementById("modal-explanation");
-    if (modal) modal.style.display = "none";
-    if (explanationTimer) {
-        clearTimeout(explanationTimer);
-        explanationTimer = null;
-    }
-    curIdx++;
-    loadQ();
-}
-
-// Kept so the HTML button's onclick="closeExplanationModal()" still works.
-function closeExplanationModal() {
-    proceedToNextQuestion();
-}
-
 function resetLifelineUI() {
     const keys = ['fiftyFifty', 'audiencePoll', 'skipQuestion', 'timeFreeze'];
     keys.forEach(k => {
@@ -1067,8 +1036,81 @@ function useLifeline(type) {
     }
 }
 
+function check(idx) {
+    if (!canAnswer) return;
+    canAnswer = false;
+    clearInterval(timerInt);
+
+    const q = activeQuestions[curIdx];
+    const opts = document.querySelectorAll('.option');
+    let isCorrect = (idx === q.ans);
+
+    if (isCorrect) {
+        let points = 10;
+        if (curIdx >= 10) points = 20;
+        if (curIdx >= 25) points = 50;
+        score += points;
+        cor++;
+        playSound('cor');
+        if (idx !== -1 && opts[idx]) opts[idx].classList.add('correct');
+    } else {
+        wr++;
+        playSound('wr');
+        if (idx !== -1 && opts[idx]) opts[idx].classList.add('wrong');
+        if (opts[q.ans]) opts[q.ans].classList.add('correct');
+    }
+
+    setTimeout(() => {
+        showExplanationModal(q, isCorrect);
+    }, 1000);
+}
+
+function showExplanationModal(q, isCorrect) {
+    const explanationText = curLang === "bn" ? (q.expb || q.expe || t('explanationNav')) : (q.expe || q.expb || t('explanationNav'));
+    const correctLetter = String.fromCharCode(65 + q.ans);
+
+    let statusHeader = "";
+    if (isCorrect) {
+        statusHeader = `<div style="color: #2e7d32; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">${t('correctHeader')}</div>`;
+    } else {
+        statusHeader = `<div style="color: #c62828; font-size: 1.2rem; font-weight: bold; margin-bottom: 8px;">${t('wrongHeader')}${correctLetter}</div>`;
+    }
+
+    const modal = document.getElementById("modal-explanation");
+    const modalText = document.getElementById("modal-exp-text");
+    const fullHTML = statusHeader + "<hr style='margin: 8px 0; border: 0; border-top: 1px solid #ccc;'>" + "<b>" + t('explanationTitle') + ":</b><br>" + explanationText;
+
+    if (modal && modalText) {
+        modalText.innerHTML = fullHTML;
+        modal.style.display = "flex";
+    }
+
+    speak(explanationText);
+
+    if (explanationTimer) clearTimeout(explanationTimer);
+    explanationTimer = setTimeout(() => {
+        proceedToNextQuestion();
+    }, 6000);
+}
+
+function proceedToNextQuestion() {
+    const modal = document.getElementById("modal-explanation");
+    if (modal) modal.style.display = "none";
+    if (explanationTimer) {
+        clearTimeout(explanationTimer);
+        explanationTimer = null;
+    }
+    curIdx++;
+    loadQ();
+}
+
+function closeExplanationModal() {
+    proceedToNextQuestion();
+}
+
 function end() {
     clearInterval(timerInt);
+    if (blockCheckInterval) clearInterval(blockCheckInterval);
     const bg = document.getElementById('bg-music');
     if (bg) bg.pause();
 
@@ -1080,13 +1122,6 @@ function end() {
             if (score > (userData.highScore || 0)) {
                 userData.highScore = score;
                 localStorage.setItem('kbc_user_account_' + currentUser, JSON.stringify(userData));
-
-                let realPlayers = JSON.parse(localStorage.getItem('kbc_real_players') || '[]');
-                const idx = realPlayers.findIndex(p => p.id === currentUser || p.username === currentUser);
-                if (idx >= 0) {
-                    realPlayers[idx] = userData;
-                    localStorage.setItem('kbc_real_players', JSON.stringify(realPlayers));
-                }
             }
         }
     }

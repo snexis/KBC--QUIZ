@@ -213,8 +213,24 @@ function checkSavedSession() {
             return;
         }
     }
-    show('scr-login');
-    loadSavedCredentials();
+   show('scr-login');
+        loadSavedCredentials();
+    }
+
+function loadSavedCredentials() {
+    const savedUser = localStorage.getItem('kbc_saved_username');
+    const savedPass = localStorage.getItem('kbc_saved_password');
+    const rememberFlag = localStorage.getItem('kbc_remember_flag');
+
+    const phoneElem = document.getElementById('login-phone');
+    const passElem = document.getElementById('login-pass');
+    const rememberElem = document.getElementById('remember-me');
+
+    if (rememberFlag === 'true' && savedUser) {
+        if (phoneElem) phoneElem.value = savedUser;
+        if (passElem) passElem.value = savedPass || '';
+        if (rememberElem) rememberElem.checked = true;
+    }
 }
 
 function updatePlayerProfileUI(userData) {

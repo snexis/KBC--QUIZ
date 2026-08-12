@@ -607,7 +607,7 @@ function registerUser() {
 }
 
 // ================= LOGIN (via shared Google Sheet — works cross-device) =================
-function loginUser() {
+function loginUser(isRetry) {
     const userOrPhone = document.getElementById('login-phone') ? document.getElementById('login-phone').value.trim() : '';
     const pass = document.getElementById('login-pass') ? document.getElementById('login-pass').value.trim() : '';
     const rememberMe = document.getElementById('remember-me') ? document.getElementById('remember-me').checked : false;
@@ -660,7 +660,8 @@ function loginUser() {
         } else if (res && res.status === 'blocked') {
             alert(t('accountBlocked'));
 
-        } else {
+        } else if (res && res.status === 'error' && (res.message === 'Wrong password' || res.message === 'User not found')) {
+            // ---- This IS a genuine credential mistake ----
             failedLoginAttempts[userOrPhone] = (failedLoginAttempts[userOrPhone] || 0) + 1;
 
             if (failedLoginAttempts[userOrPhone] >= 3) {
@@ -672,10 +673,20 @@ function loginUser() {
                 return;
             }
             alert(`${t('invalidCredentials')} (${failedLoginAttempts[userOrPhone]}/3)`);
+
+        } else {
+            // ---- Network / server hiccup — NOT a credential mistake ----
+            if (!isRetry) {
+                // Silently retry once before bothering the player
+                setTimeout(() => loginUser(true), 1200);
+            } else {
+                alert(curLang === 'bn'
+                    ? 'সার্ভারের সাথে সংযোগ করতে সমস্যা হচ্ছে। কিছুক্ষণ পর আবার চেষ্টা করুন।'
+                    : 'Having trouble connecting to the server. Please try again in a moment.');
+            }
         }
     });
 }
-
 // Polls the shared Sheet every 15s while a player is logged in — if the
 // admin blocks them mid-game, they are kicked out immediately.
 function startBlockStatusMonitor() {

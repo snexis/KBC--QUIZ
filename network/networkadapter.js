@@ -6,7 +6,7 @@
 (function () {
     'use strict';
 
-    var WEB_APP_URL = "https://script.google.com/macros/s/AKfycbynhzEYW5ZIUNYvj0gMyvpAMimEQgMJxq-ucTNi2xprY6r4vi1cxrAb7p-ZVR7ItVxN/exec"; 
+    var WEB_APP_URL = "https://script.google.com/macros/library/d/17Jv2kNrX7OnPSvHGgDBc1HtXXLlnmDBill8hpKI5_9qdScNpBvDOT6yu/6"; 
     var SECRET_KEY = "MyKbcSecret2026";
 
     var STORAGE_KEYS = {

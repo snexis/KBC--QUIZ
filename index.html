@@ -11,40 +11,40 @@
     <!-- Top Global Navigation Control Bar (Initially Hidden Until Authenticated) -->
     <header class="top-nav-bar" id="top-nav-bar">
         <div class="nav-brand">
-            <span class="brand-logo">🏆</span>
+            <span class="brand-logo">??</span>
             <span class="brand-title">KBC PREMIUM</span>
         </div>
         <div class="nav-controls">
             <!-- Validity Expiry Badge & Live Clock (Top Navigation Bar) -->
             <div id="expiry-badge" class="nav-btn validity-badge-btn" style="background: rgba(0, 123, 255, 0.2); border: 1px solid #007bff; color: #4dabf7; font-weight: bold; cursor: default;">
-                <span class="nav-btn-icon">⏳</span> 
-                <span id="header-trial-days" class="nav-btn-text">মেয়াদ: -- দিন</span>
+                <span class="nav-btn-icon">?</span> 
+                <span id="header-trial-days" class="nav-btn-text">??????: -- ???</span>
                 <span id="live-clock" style="color: #ffd700; font-weight: bold; font-family: monospace; margin-left: 8px;"></span>
             </div>
             <!-- Audio Mute / Unmute Button -->
             <button id="btn-mute" class="nav-btn" onclick="toggleMute()" title="Mute/Unmute Audio">
-                <span class="nav-btn-icon">🔊</span> <span id="mute-label" class="nav-btn-text">Audio</span>
+                <span class="nav-btn-icon">??</span> <span id="mute-label" class="nav-btn-text">Audio</span>
             </button>
             <!-- 3D Animated Glowing Voice Indicator -->
             <div class="voice-indicator mic-3d-pulse" id="voice-btn" onclick="toggleVoice()" title="Toggle Voice Assistance">
-                <span class="mic-icon">🎤</span>
+                <span class="mic-icon">??</span>
                 <span class="mic-pulse-ring"></span>
             </div>
             <!-- Admin Login Trigger -->
             <button id="btn-admin-trigger" class="nav-btn admin-btn" onclick="openAdminModal()" title="Admin Test Mode">
-                <span class="nav-btn-icon">🔑</span> <span class="admin-label nav-btn-text">Admin</span>
+                <span class="nav-btn-icon">??</span> <span class="admin-label nav-btn-text">Admin</span>
             </button>
             <!-- Invite Player Button -->
             <button id="btn-invite" class="nav-btn invite-btn" onclick="invitePlayer()" title="Invite Player">
-                <span class="nav-btn-icon">📩</span> <span class="invite-label nav-btn-text">Invite</span>
+                <span class="nav-btn-icon">??</span> <span class="invite-label nav-btn-text">Invite</span>
             </button>
             <!-- Exit Game Button -->
             <button id="btn-exit" class="nav-btn exit-btn" onclick="confirmExitGame()" title="Exit Game">
-                <span class="nav-btn-icon">🚪</span> <span class="exit-label nav-btn-text">Exit</span>
+                <span class="nav-btn-icon">??</span> <span class="exit-label nav-btn-text">Exit</span>
             </button>
             <!-- Logout Button -->
             <button id="btn-logout" class="nav-btn logout-btn" onclick="logoutUser()" title="Logout">
-                <span class="nav-btn-icon">🛑</span> <span class="logout-label nav-btn-text">Logout</span>
+                <span class="nav-btn-icon">??</span> <span class="logout-label nav-btn-text">Logout</span>
             </button>
         </div>
     </header>
@@ -73,7 +73,7 @@
                         <label for="login-pass">Password</label>
                         <div class="password-wrapper">
                             <input type="password" id="login-pass" placeholder="Enter your Password">
-                            <span class="toggle-password-icon" onclick="togglePasswordVisibility('login-pass', this)">👁️</span>
+                            <span class="toggle-password-icon" onclick="togglePasswordVisibility('login-pass', this)">???</span>
                         </div>
                     </div>
                     <div class="remember-group">
@@ -104,7 +104,7 @@
                         <label for="signup-pass">Password</label>
                         <div class="password-wrapper">
                             <input type="password" id="signup-pass" placeholder="Create password">
-                            <span class="toggle-password-icon" onclick="togglePasswordVisibility('signup-pass', this)">👁️</span>
+                            <span class="toggle-password-icon" onclick="togglePasswordVisibility('signup-pass', this)">???</span>
                         </div>
                     </div>
                     <button class="btn btn-success" onclick="registerUser()">CREATE ACCOUNT</button>
@@ -112,10 +112,10 @@
 
                 <!-- Integrated Modern Promo Code Section -->
                 <div id="promo-section" class="promo-card" style="display: none; margin-top: 20px; padding: 15px; border-radius: 8px; background: rgba(255,255,255,0.05); border: 1px dashed var(--gold, #ffd700);">
-                    <span class="promo-title" style="display: block; margin-bottom: 10px; font-weight: bold; color: #ffcc00;">⚠️ আপনার ট্রায়ালের মেয়াদ শেষ হয়েছে! প্রোমো কোড দিন:</span>
+                    <span class="promo-title" style="display: block; margin-bottom: 10px; font-weight: bold; color: #ffcc00;">?? ????? ?????????? ?????? ??? ??????! ?????? ??? ???:</span>
                     <div class="promo-input-wrapper" style="display: flex; gap: 8px;">
-                        <input type="text" id="promoInput" placeholder="যেমন: WELCOME2026" style="flex: 1; padding: 8px; text-transform: uppercase;">
-                        <button class="btn btn-small" onclick="applyPromoCode()">রিডিম করুন</button>
+                        <input type="text" id="promoInput" placeholder="????: WELCOME2026" style="flex: 1; padding: 8px; text-transform: uppercase;">
+                        <button class="btn btn-small" onclick="applyPromoCode()">????? ????</button>
                     </div>
                 </div>
             </div>
@@ -123,43 +123,43 @@
 
         <!-- Screen 2: Language Selection -->
         <div id="scr-lang" class="screen">
-            <h1>SELECT LANGUAGE / ভাষা নির্বাচন</h1>
+            <h1>SELECT LANGUAGE / ???? ????????</h1>
             
             <!-- Expiry Badge for Main Menu -->
             <div style="text-align: center; margin-bottom: 15px;">
                 <div id="expiry-badge-lang" style="background: rgba(0, 123, 255, 0.15); border: 1px solid #007bff; color: #00d2ff; padding: 6px 15px; border-radius: 20px; font-size: 14px; display: inline-block; font-weight: bold;">
-                    ⏳ <span id="lang-trial-days">ট্রায়াল / সাবস্ক্রিপশন মেয়াদ বাকি: -- দিন</span>
+                    ? <span id="lang-trial-days">???????? / ???????????? ?????? ????: -- ???</span>
                 </div>
             </div>
 
             <div class="lang-grid">
-                <button class="btn btn-lang" onclick="selectLanguage('bn')">🌐 বাংলা (BENGALI)</button>
-                <button class="btn btn-lang" onclick="selectLanguage('en')">🌐 ENGLISH</button>
+                <button class="btn btn-lang" onclick="selectLanguage('bn')">?? ????? (BENGALI)</button>
+                <button class="btn btn-lang" onclick="selectLanguage('en')">?? ENGLISH</button>
             </div>
         </div>
 
         <!-- Screen 3: Subject Selection -->
         <div id="scr-subject" class="screen">
-            <h1>SELECT SUBJECT / বিষয় নির্বাচন</h1>
+            <h1>SELECT SUBJECT / ????? ????????</h1>
             <div class="subject-grid">
-                <button class="btn sub-btn" onclick="selectSubject('all')">🌐 All Mixed / সব বিষয়</button>
-                <button class="btn sub-btn" onclick="selectSubject('science')">🧪 Science / বিজ্ঞান</button>
-                <button class="btn sub-btn" onclick="selectSubject('history')">📜 History / ইতিহাস</button>
-                <button class="btn sub-btn" onclick="selectSubject('philosophy')">🧠 Philosophy / দর্শন</button>
-                <button class="btn sub-btn" onclick="selectSubject('math')">📐 Math / গণিত</button>
-                <button class="btn sub-btn" onclick="selectSubject('commerce')">💼 Business / ব্যবসা ও অর্থনীতি</button>
-                <button class="btn sub-btn" onclick="selectSubject('tech')">💻 Coding & Tech / কম্পিউটার</button>
+                <button class="btn sub-btn" onclick="selectSubject('all')">?? All Mixed / ?? ?????</button>
+                <button class="btn sub-btn" onclick="selectSubject('science')">?? Science / ???????</button>
+                <button class="btn sub-btn" onclick="selectSubject('history')">?? History / ??????</button>
+                <button class="btn sub-btn" onclick="selectSubject('philosophy')">?? Philosophy / ?????</button>
+                <button class="btn sub-btn" onclick="selectSubject('math')">?? Math / ????</button>
+                <button class="btn sub-btn" onclick="selectSubject('commerce')">?? Business / ?????? ? ????????</button>
+                <button class="btn sub-btn" onclick="selectSubject('tech')">?? Coding & Tech / ?????????</button>
             </div>
         </div>
 
         <!-- Screen 4: Level / Class Selection -->
         <div id="scr-level" class="screen">
-            <h1>SELECT LEVEL / শ্রেণী নির্বাচন</h1>
+            <h1>SELECT LEVEL / ?????? ????????</h1>
             <div class="level-grid">
-                <button class="btn lvl-btn" onclick="startGameWithLevel('junior')">🐣 Junior (Class 5 - 8)</button>
-                <button class="btn lvl-btn" onclick="startGameWithLevel('secondary')">🎓 Secondary (Class 9 - 10)</button>
-                <button class="btn lvl-btn" onclick="startGameWithLevel('higher')">🏛️ Higher Secondary (Class 11 - 12)</button>
-                <button class="btn lvl-btn" onclick="startGameWithLevel('advanced')">🔬 Advanced / Degree / Tech</button>
+                <button class="btn lvl-btn" onclick="startGameWithLevel('junior')">?? Junior (Class 5 - 8)</button>
+                <button class="btn lvl-btn" onclick="startGameWithLevel('secondary')">?? Secondary (Class 9 - 10)</button>
+                <button class="btn lvl-btn" onclick="startGameWithLevel('higher')">??? Higher Secondary (Class 11 - 12)</button>
+                <button class="btn lvl-btn" onclick="startGameWithLevel('advanced')">?? Advanced / Degree / Tech</button>
             </div>
         </div>
 
@@ -177,7 +177,7 @@
             
             <div id="timer" class="timer-circle">30</div>
             
-            <div class="question-box" id="q-text">এখানে প্রশ্নটি প্রদর্শিত হবে...</div>
+            <div class="question-box" id="q-text">????? ???????? ????????? ???...</div>
             
             <div class="options-grid" id="opt-container">
                 <!-- Options populated dynamically -->
@@ -186,10 +186,10 @@
 
         <!-- Screen 6: Slab Completion Modal / Intermission -->
         <div id="scr-slab-cleared" class="screen">
-            <h1>🎉 SLAB CLEARED!</h1>
-            <p id="slab-msg">আপনি ১ম ৫টি রাউন্ড সফলভাবে সম্পন্ন করেছেন!</p>
-            <p>বর্তমান পয়েন্ট: <span id="slab-score" style="color:var(--gold); font-weight:bold;">0</span></p>
-            <button class="btn" onclick="proceedToNextSlab()">পরবর্তী স্লাবে যান (Next Slab) 🚀</button>
+            <h1>?? SLAB CLEARED!</h1>
+            <p id="slab-msg">???? ?? ??? ?????? ??????? ??????? ??????!</p>
+            <p>??????? ???????: <span id="slab-score" style="color:var(--gold); font-weight:bold;">0</span></p>
+            <button class="btn" onclick="proceedToNextSlab()">??????? ?????? ??? (Next Slab) ??</button>
         </div>
 
         <!-- Screen 7: Result -->
@@ -200,7 +200,7 @@
                 <p>CORRECT: <span id="res-cor" style="color:var(--correct)">0</span></p>
                 <p>WRONG: <span id="res-wr" style="color:var(--wrong)">0</span></p>
             </div>
-            <button class="btn" onclick="location.reload()">RESTART / পুনরায় শুরু</button>
+            <button class="btn" onclick="location.reload()">RESTART / ??????? ????</button>
         </div>
 
     </div>
@@ -209,14 +209,14 @@
     <div id="modal-explanation" class="modal-overlay" style="display: none;">
         <div class="modal-content explanation-modal-card">
             <div class="modal-header">
-                <h2>💡 সঠিক ব্যাখ্যার বিশ্লেষণ</h2>
+                <h2>?? ???? ????????? ????????</h2>
                 <span class="close-modal" onclick="closeExplanationModal()">&times;</span>
             </div>
             <div class="modal-body">
-                <p id="modal-exp-text">প্রশ্নের উত্তর ব্যাখ্যা এখানে পপআপ আকারে প্রদর্শিত হবে...</p>
+                <p id="modal-exp-text">???????? ????? ???????? ????? ???? ????? ????????? ???...</p>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-small" onclick="closeExplanationModal()">ঠিক আছে (Continue)</button>
+                <button class="btn btn-small" onclick="closeExplanationModal()">??? ??? (Continue)</button>
             </div>
         </div>
     </div>
@@ -225,15 +225,15 @@
     <div id="modal-admin" class="modal-overlay" style="display: none;">
         <div class="modal-content admin-modal-card">
             <div class="modal-header">
-                <h2>🔑 Admin & Tester Access</h2>
+                <h2>?? Admin & Tester Access</h2>
                 <span class="close-modal" onclick="closeAdminModal()">&times;</span>
             </div>
             <div class="modal-body">
-                <p>অ্যাডমিন টেস্ট মোডে প্রবেশ করতে মাস্টার সিক্রেট কোড লিখুন:</p>
+                <p>???????? ????? ???? ?????? ???? ??????? ??????? ??? ?????:</p>
                 <input type="password" id="admin-passcode-input" placeholder="Master Key (e.g. ADMIN2026)">
             </div>
             <div class="modal-footer">
-                <button class="btn btn-warning" onclick="verifyAdminAccess()">অ্যাক্সেস যাচাই করুন</button>
+                <button class="btn btn-warning" onclick="verifyAdminAccess()">????????? ????? ????</button>
             </div>
         </div>
     </div>
@@ -242,15 +242,15 @@
     <div id="modal-invite" class="modal-overlay" style="display: none;">
         <div class="modal-content invite-modal-card">
             <div class="modal-header">
-                <h2>📩 Invite a Player</h2>
+                <h2>?? Invite a Player</h2>
                 <span class="close-modal" onclick="closeInviteModal()">&times;</span>
             </div>
             <div class="modal-body">
-                <p>অন্য প্লেয়ারকে গেম খেলতে আমন্ত্রণ জানাতে আপনার ইনভাইট কোড কপি করুন:</p>
+                <p>???? ?????????? ??? ????? ???????? ?????? ????? ?????? ??? ??? ????:</p>
                 <input type="text" id="invite-code-input" readonly value="KBC-ROOM-2026">
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" onclick="copyInviteCode()">কোড কপি করুন</button>
+                <button class="btn btn-primary" onclick="copyInviteCode()">??? ??? ????</button>
             </div>
         </div>
     </div>
@@ -259,11 +259,11 @@
     <div id="modal-forgot" class="modal-overlay" style="display: none;">
         <div class="modal-content forgot-modal-card">
             <div class="modal-header">
-                <h2>🔒 Password Recovery</h2>
+                <h2>?? Password Recovery</h2>
                 <span class="close-modal" onclick="closeForgotPassModal()">&times;</span>
             </div>
             <div class="modal-body">
-                <p id="forgot-instruction" class="instruction-text">আপনার ইউজারনেম এবং নিবন্ধিত মোবাইল নম্বর দিন:</p>
+                <p id="forgot-instruction" class="instruction-text">????? ???????? ??? ???????? ?????? ????? ???:</p>
                 <div class="input-group">
                     <label for="forgot-username">Username</label>
                     <input type="text" id="forgot-username" placeholder="Enter your username">
@@ -278,7 +278,7 @@
                 </div>
             </div>
             <div class="modal-footer center-footer">
-                <button id="btn-verify-forgot" class="btn btn-primary" onclick="verifyAndResetPassword()">যাচাই করুন</button>
+                <button id="btn-verify-forgot" class="btn btn-primary" onclick="verifyAndResetPassword()">????? ????</button>
             </div>
         </div>
     </div>
